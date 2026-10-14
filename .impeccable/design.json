@@ -1,0 +1,548 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-14T16:31:07+00:00",
+  "title": "Design System: Devin en el día a día",
+  "extensions": {
+    "colorMeta": {
+      "prussian": {
+        "role": "neutral",
+        "displayName": "Prussian blue · tinta",
+        "canonical": "oklch(27.7% 0.065 241.7)",
+        "tonalRamp": [
+          "#000C19",
+          "#01273E",
+          "#1C445F",
+          "#3A627F",
+          "#5A82A1",
+          "#7AA4C4",
+          "#9FCAEB",
+          "#E0F1FF"
+        ]
+      },
+      "bluewood": {
+        "role": "neutral",
+        "displayName": "Pickled bluewood",
+        "canonical": "oklch(36.4% 0.043 249.1)",
+        "tonalRamp": [
+          "#000C1B",
+          "#122538",
+          "#2E4256",
+          "#4B6075",
+          "#6A8096",
+          "#8AA1B9",
+          "#AFC7E0",
+          "#E3F0FE"
+        ]
+      },
+      "red-ribbon": {
+        "role": "primary",
+        "displayName": "Red ribbon · acento sobre claro",
+        "canonical": "oklch(57.4% 0.230 15.5)",
+        "tonalRamp": [
+          "#1E0004",
+          "#490313",
+          "#780B26",
+          "#AB173A",
+          "#E5134D",
+          "#F96779",
+          "#FEAAAF",
+          "#FEE8E9"
+        ]
+      },
+      "rojo-oscuro": {
+        "role": "primary",
+        "displayName": "Rojo del logo · acento sobre navy",
+        "canonical": "oklch(63.3% 0.254 18.7)",
+        "tonalRamp": [
+          "#1F0003",
+          "#4A020F",
+          "#790920",
+          "#AC1432",
+          "#E70A42",
+          "#FB6671",
+          "#FBACAD",
+          "#FFE8E8"
+        ]
+      },
+      "rojo-logo": {
+        "role": "primary",
+        "displayName": "Rojo del logo · solo en el logo",
+        "canonical": "oklch(59.3% 0.237 15.7)",
+        "tonalRamp": [
+          "#1E0104",
+          "#4A0112",
+          "#7A0525",
+          "#AD0F39",
+          "#E12450",
+          "#FB6477",
+          "#FBABAF",
+          "#FFE8E9"
+        ]
+      },
+      "pizarra": {
+        "role": "neutral",
+        "displayName": "Pizarra",
+        "canonical": "oklch(52.2% 0.036 227.9)",
+        "tonalRamp": [
+          "#000D14",
+          "#0F2732",
+          "#2B444F",
+          "#48626E",
+          "#67828E",
+          "#88A3B0",
+          "#ADC9D7",
+          "#DAF3FF"
+        ]
+      },
+      "old-lace": {
+        "role": "neutral",
+        "displayName": "Old lace · fondo",
+        "canonical": "oklch(98.5% 0.009 62.6)",
+        "tonalRamp": [
+          "#0E0A07",
+          "#27231F",
+          "#433F3B",
+          "#625D58",
+          "#817C78",
+          "#A39D99",
+          "#C9C3BE",
+          "#F3EDE8"
+        ]
+      },
+      "cinderella": {
+        "role": "neutral",
+        "displayName": "Cinderella · superficie 2",
+        "canonical": "oklch(96.6% 0.022 63.2)",
+        "tonalRamp": [
+          "#120903",
+          "#2C2219",
+          "#483D34",
+          "#675B51",
+          "#877B70",
+          "#A99C91",
+          "#CFC1B6",
+          "#FAECE0"
+        ]
+      },
+      "blanco": {
+        "role": "neutral",
+        "displayName": "Blanco · superficie",
+        "canonical": "oklch(100.0% 0.000 89.9)",
+        "tonalRamp": [
+          "#0B0B0B",
+          "#242424",
+          "#404040",
+          "#5D5D5D",
+          "#7D7D7D",
+          "#9E9E9E",
+          "#C4C4C4",
+          "#EEEEEE"
+        ]
+      },
+      "gris-marca": {
+        "role": "neutral",
+        "displayName": "Gris claro de marca (navy 20 %)",
+        "canonical": "oklch(86.8% 0.012 231.7)",
+        "tonalRamp": [
+          "#060C0F",
+          "#1E2529",
+          "#3A4145",
+          "#575F63",
+          "#767F83",
+          "#97A0A5",
+          "#BDC6CB",
+          "#E7F0F5"
+        ]
+      },
+      "separador": {
+        "role": "neutral",
+        "displayName": "Separador (navy 10 %)",
+        "canonical": "oklch(90.2% 0.015 64.3)",
+        "tonalRamp": [
+          "#100A05",
+          "#29231D",
+          "#453E38",
+          "#645C55",
+          "#847C74",
+          "#A59D95",
+          "#CBC2BB",
+          "#F6EDE5"
+        ]
+      },
+      "razonamiento": {
+        "role": "neutral",
+        "displayName": "Razonamiento (navy 40 %)",
+        "canonical": "oklch(72.8% 0.025 236.1)",
+        "tonalRamp": [
+          "#020D14",
+          "#18262F",
+          "#33424B",
+          "#51606A",
+          "#70808A",
+          "#90A1AC",
+          "#B6C7D2",
+          "#DFF2FD"
+        ]
+      },
+      "razonamiento-rayado": {
+        "role": "neutral",
+        "displayName": "Razonamiento rayado (navy 27 %)",
+        "canonical": "oklch(81.9% 0.016 233.1)",
+        "tonalRamp": [
+          "#050C11",
+          "#1C262B",
+          "#374147",
+          "#555F66",
+          "#747F86",
+          "#95A0A7",
+          "#BAC6CD",
+          "#E4F1F8"
+        ]
+      },
+      "texto-3-inverso": {
+        "role": "neutral",
+        "displayName": "Texto 3 inverso (navy 42 %)",
+        "canonical": "oklch(71.5% 0.026 234.6)",
+        "tonalRamp": [
+          "#020D14",
+          "#17262F",
+          "#33424C",
+          "#50606A",
+          "#6F808B",
+          "#90A1AC",
+          "#B5C7D3",
+          "#DFF2FE"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "cifra-xl": {
+        "displayName": "Cifra XL",
+        "purpose": "Una cifra protagonista sola."
+      },
+      "cifra": {
+        "displayName": "Cifra",
+        "purpose": "Contadores de tokens y coste."
+      },
+      "titulo-xl": {
+        "displayName": "Título XL",
+        "purpose": "Portada y cierre."
+      },
+      "titulo": {
+        "displayName": "Título",
+        "purpose": "Título de zona."
+      },
+      "titulo-s": {
+        "displayName": "Título S",
+        "purpose": "Títulos secundarios."
+      },
+      "entradilla": {
+        "displayName": "Entradilla",
+        "purpose": "Ideas clave y citas."
+      },
+      "texto": {
+        "displayName": "Texto",
+        "purpose": "La frase principal de una zona."
+      },
+      "texto-s": {
+        "displayName": "Texto S",
+        "purpose": "Nombres de zona en el mapa y texto secundario."
+      },
+      "etiqueta": {
+        "displayName": "Etiqueta",
+        "purpose": "Etiquetas, leyendas y escalas. Mínimo absoluto: 24 px."
+      },
+      "mono": {
+        "displayName": "Mono",
+        "purpose": "Fichas de token y código."
+      },
+      "mono-s": {
+        "displayName": "Mono S",
+        "purpose": "Nombres de fichero, escalas y anotaciones."
+      }
+    },
+    "shadows": [
+      {
+        "name": "elevacion-1",
+        "value": "0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent)",
+        "purpose": "Única elevación, plana: solo para lo que flota sobre la escena (ficha arrastrada, aviso, documento delante en una pila)."
+      }
+    ],
+    "motion": [
+      {
+        "name": "dur-micro",
+        "value": "0.2s",
+        "purpose": "Estados, ticks y pulsaciones (pulso de herramienta)."
+      },
+      {
+        "name": "dur-salida",
+        "value": "0.3s",
+        "purpose": "Salidas."
+      },
+      {
+        "name": "dur-entrada",
+        "value": "0.5s",
+        "purpose": "Aparición de elementos."
+      },
+      {
+        "name": "dur-contador",
+        "value": "0.9s",
+        "purpose": "Cifras que suben."
+      },
+      {
+        "name": "dur-camara-corta",
+        "value": "0.8s",
+        "purpose": "Cámara entre zonas vecinas."
+      },
+      {
+        "name": "dur-camara",
+        "value": "1.2s",
+        "purpose": "Vuelo de cámara estándar."
+      },
+      {
+        "name": "dur-camara-larga",
+        "value": "1.5s",
+        "purpose": "Saltos largos y vista general."
+      },
+      {
+        "name": "ease-aparicion",
+        "value": "power3.out",
+        "purpose": "Apariciones."
+      },
+      {
+        "name": "ease-salida",
+        "value": "power2.in",
+        "purpose": "Salidas."
+      },
+      {
+        "name": "ease-camara",
+        "value": "power2.inOut",
+        "purpose": "Cámara."
+      },
+      {
+        "name": "ease-camara-larga",
+        "value": "sine.inOut",
+        "purpose": "Cámara en saltos largos."
+      },
+      {
+        "name": "ease-interfaz",
+        "value": "back.out(1.4)",
+        "purpose": "Elementos de interfaz (muelle)."
+      },
+      {
+        "name": "ease-caida",
+        "value": "power2.in",
+        "purpose": "Fichas que caen al recipiente."
+      },
+      {
+        "name": "ease-asentado",
+        "value": "back.out(1.2)",
+        "purpose": "La capa se asienta."
+      },
+      {
+        "name": "ease-contador",
+        "value": "power1.out",
+        "purpose": "Contadores."
+      },
+      {
+        "name": "escalonado",
+        "value": "0.06s",
+        "purpose": "Elementos de una lista, tarjetas, leyendas."
+      },
+      {
+        "name": "escalonado-tokens",
+        "value": "0.03s",
+        "purpose": "Fichas de token."
+      },
+      {
+        "name": "escalonado-capas",
+        "value": "0.12s",
+        "purpose": "Capas del recipiente."
+      },
+      {
+        "name": "pausa-tras-camara",
+        "value": "0.3s",
+        "purpose": "La cámara llega; después empieza la zona."
+      },
+      {
+        "name": "pausa-lectura-corta",
+        "value": "1.5s",
+        "purpose": "Mínimo con una etiqueta o una cifra."
+      },
+      {
+        "name": "pausa-lectura",
+        "value": "3s",
+        "purpose": "Mínimo con una frase."
+      },
+      {
+        "name": "pausa-por-palabra",
+        "value": "0.3s",
+        "purpose": "Pausa = máx(1,5 s; palabras × 0,3 s)."
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Ficha de token · entrada",
+      "kind": "chip",
+      "refersTo": "ficha-entrada",
+      "description": "Token de entrada: píldora sólida navy en DM Mono. Un espacio inicial se dibuja como «·».",
+      "html": "<span class=\"ds-ficha ds-entrada\">Arre</span> <span class=\"ds-ficha ds-entrada\">gla</span> <span class=\"ds-ficha ds-entrada\"><span class=\"ds-sp\">·</span>la</span>",
+      "css": ".ds-ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}.ds-ficha .ds-sp{opacity:.45}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}"
+    },
+    {
+      "name": "Ficha de token · salida",
+      "kind": "chip",
+      "refersTo": "ficha-salida",
+      "description": "Token de salida: píldora hueca con contorno navy de 3 px.",
+      "html": "<span class=\"ds-ficha ds-salida\">Cam</span> <span class=\"ds-ficha ds-salida\">bio</span>",
+      "css": ".ds-ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}.ds-ficha .ds-sp{opacity:.45}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}"
+    },
+    {
+      "name": "Ficha de token · razonamiento",
+      "kind": "chip",
+      "refersTo": "ficha-razonamiento",
+      "description": "Token de razonamiento: píldora con el patrón rayado de navy.",
+      "html": "<span class=\"ds-ficha ds-razonamiento\">Rev</span> <span class=\"ds-ficha ds-razonamiento\">iso</span>",
+      "css": ".ds-ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}.ds-ficha .ds-sp{opacity:.45}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento)}"
+    },
+    {
+      "name": "Recipiente con capas",
+      "kind": "custom",
+      "refersTo": "recipiente",
+      "description": "Ventana de contexto: se llena de abajo arriba; la línea de acento marca el nivel.",
+      "html": "<div class=\"ds-vaso\"><div class=\"ds-recipiente\"><div class=\"ds-capa ds-c-entrada\" style=\"bottom:10px;height:96px\">Entrada</div><div class=\"ds-capa ds-c-razonamiento\" style=\"bottom:109px;height:40px\"></div><div class=\"ds-capa ds-c-salida\" style=\"bottom:152px;height:24px\"></div></div><div class=\"ds-nivel\" style=\"bottom:182px\"></div></div>",
+      "css": ".ds-vaso{position:relative;width:224px;height:320px}.ds-recipiente{position:absolute;inset:0 12px;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);background:var(--color-superficie);overflow:hidden}.ds-capa{position:absolute;left:10px;right:10px;border-radius:var(--radio-s);display:flex;align-items:center;padding:0 22px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);white-space:nowrap;overflow:hidden}.ds-c-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-c-salida{background:var(--color-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-c-razonamiento{background:var(--patron-razonamiento)}.ds-nivel{position:absolute;left:0;right:0;height:var(--trazo-fuerte);background:var(--color-acento);border-radius:3px}"
+    },
+    {
+      "name": "Corchete de caché",
+      "kind": "custom",
+      "description": "Corchete a la derecha de lo que cubre: continuo con ✓ si acierta, discontinuo con ✕ si falla.",
+      "html": "<div class=\"ds-cache\"><div class=\"ds-corchete\"></div><div class=\"ds-cache-lbl\"><svg class=\"ds-ic\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Acierto</div></div><div class=\"ds-cache\"><div class=\"ds-corchete ds-fallo\"></div><div class=\"ds-cache-lbl\">Fallo</div></div>",
+      "css": ".ds-cache{display:flex;align-items:center;gap:18px;height:176px}.ds-corchete{width:20px;height:100%;border:var(--trazo-fuerte) solid var(--color-cache-acierto);border-left:0;border-radius:0 8px 8px 0}.ds-corchete.ds-fallo{border-style:dashed;border-color:var(--color-cache-fallo)}.ds-cache-lbl{display:flex;align-items:center;gap:8px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1.3 var(--fuente-texto);color:var(--color-texto-1)}.ds-cache-lbl .ds-ic{color:var(--color-cache-acierto)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+    },
+    {
+      "name": "Agente",
+      "kind": "card",
+      "refersTo": "agente",
+      "description": "Tarjeta navy sólida con el icono bot; el subagente es la misma tarjeta, más pequeña y hueca.",
+      "html": "<div class=\"ds-agente\"><svg class=\"ds-ic\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2\"/><path d=\"M20 14h2\"/><path d=\"M15 13v2\"/><path d=\"M9 13v2\"/></svg><div><div class=\"ds-agente-nm\">Agente</div><div class=\"ds-agente-sub\">modelo · effort</div></div></div>",
+      "css": ".ds-agente{box-sizing:border-box;width:390px;height:150px;display:flex;align-items:center;gap:18px;padding:0 26px;border-radius:var(--radio-m);background:var(--color-superficie-inversa);color:var(--color-texto-inverso)}.ds-agente-nm{font:var(--peso-enfasis) var(--tipo-texto)/1.1 var(--fuente-texto)}.ds-agente-sub{font:400 var(--tipo-mono-s)/1.3 var(--fuente-mono);color:var(--color-texto-inverso-2);margin-top:6px}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+    },
+    {
+      "name": "Contador de coste",
+      "kind": "chip",
+      "refersTo": "contador-coste",
+      "description": "Píldora navy con monedas y la cifra en mono; siempre con unidad y marca de ficticio.",
+      "html": "<span class=\"ds-coste\"><svg class=\"ds-ic\" width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"8\" r=\"6\"/><path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\"/><path d=\"M7 6h1v4\"/><path d=\"m16.71 13.88.7.71-2.82 2.82\"/></svg>0,050 u.</span>",
+      "css": ".ds-coste{display:inline-flex;align-items:center;gap:12px;height:64px;padding:0 26px;border-radius:var(--radio-pildora);background:var(--color-coste);color:var(--color-sobre-coste);font:var(--peso-enfasis) var(--tipo-mono)/1 var(--fuente-mono);font-variant-numeric:var(--cifras)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+    },
+    {
+      "name": "Isla del mapa",
+      "kind": "card",
+      "refersTo": "isla",
+      "description": "Zona del mapa: tarjeta blanca con contorno navy, número e icono.",
+      "html": "<div class=\"ds-isla\"><div class=\"ds-isla-top\"><span class=\"ds-isla-n\">03</span><svg class=\"ds-ic\" width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/></svg></div><div class=\"ds-isla-nm\">Ventana de contexto</div></div>",
+      "css": ".ds-isla{box-sizing:border-box;width:320px;height:190px;padding:22px 30px;display:flex;flex-direction:column;justify-content:space-between;background:var(--color-superficie);color:var(--color-texto-1);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l)}.ds-isla-top{display:flex;justify-content:space-between;align-items:flex-start}.ds-isla-n{font:var(--peso-display) 60px/1 var(--fuente-display);font-variant-numeric:var(--cifras)}.ds-isla-nm{font:var(--peso-enfasis) var(--tipo-texto-s)/1.15 var(--fuente-texto)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+    },
+    {
+      "name": "Isla del mapa · actual",
+      "kind": "card",
+      "refersTo": "isla-actual",
+      "description": "La zona actual: el único acento rojo de la pantalla («usted está aquí»).",
+      "html": "<div class=\"ds-isla ds-actual\"><div class=\"ds-isla-top\"><span class=\"ds-isla-n\">03</span><svg class=\"ds-ic\" width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/></svg></div><div class=\"ds-isla-nm\">Ventana de contexto</div></div>",
+      "css": ".ds-isla{box-sizing:border-box;width:320px;height:190px;padding:22px 30px;display:flex;flex-direction:column;justify-content:space-between;background:var(--color-superficie);color:var(--color-texto-1);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l)}.ds-isla-top{display:flex;justify-content:space-between;align-items:flex-start}.ds-isla-n{font:var(--peso-display) 60px/1 var(--fuente-display);font-variant-numeric:var(--cifras)}.ds-isla-nm{font:var(--peso-enfasis) var(--tipo-texto-s)/1.15 var(--fuente-texto)}.ds-isla.ds-actual{background:var(--color-acento);border-color:var(--color-acento);color:var(--color-sobre-acento)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+    },
+    {
+      "name": "Etiqueta y marca de cifras ficticias",
+      "kind": "chip",
+      "refersTo": "etiqueta",
+      "description": "Etiqueta en píldora con borde fino; la marca «Cifras ficticias» es la misma píldora en gris.",
+      "html": "<span class=\"ds-pildora\">Zona 03 · Ventana de contexto</span> <span class=\"ds-ficticio\"><svg class=\"ds-ic\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/></svg>Cifras ficticias</span>",
+      "css": ".ds-pildora,.ds-ficticio{display:inline-flex;align-items:center;gap:10px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);border-radius:var(--radio-pildora)}.ds-pildora{color:var(--color-texto-1);border:var(--trazo-fino) solid var(--color-contorno);padding:10px 22px;background:var(--color-superficie)}.ds-ficticio{color:var(--color-texto-2);border:var(--trazo-fino) solid var(--color-texto-3);padding:10px 20px}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+    }
+  ],
+  "narrative": {
+    "northStar": "Usted está aquí",
+    "overview": "La charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, recipientes, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo o discontinuo). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de navy. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados, las sombras difusas y los giros 3D decorativos.",
+    "keyCharacteristics": [
+      "Tinta navy sobre crema, con superficies blancas siempre contorneadas a 3 px.",
+      "Un único acento rojo por pantalla; los tres rojos de la marca cuentan como uno.",
+      "Conceptos distinguidos por luminosidad y forma, no por tono.",
+      "Escala tipográfica que empieza en 24 px; Outfit ligera en grande y DM Mono para tokens y código.",
+      "Plano: una sola elevación, también plana.",
+      "Cámara que llega, espera `--pausa-tras-camara` y después anima la zona."
+    ],
+    "rules": [
+      {
+        "name": "La regla del único acento",
+        "body": "El rojo marca lo que hay que mirar ahora. Nunca hay dos elementos rojos a la vez en pantalla.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del rojo según el fondo",
+        "body": "Red ribbon sobre claro, el rojo del logo para fondo oscuro sobre navy y el rojo del logo para fondo claro solo dentro del logo, que nunca se recolorea.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de luminosidad y forma",
+        "body": "Un concepto nuevo se distingue por luminosidad (oscuro, medio, hueco) y por forma, nunca por un tono nuevo. Acierto y fallo de caché comparten color: los separa el trazo, continuo o discontinuo, y el icono ✓ o ✕.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla del hex de marca",
+        "body": "Solo los colores de marca llevan hex, en `design-system.css`. Todo lo demás es `color-mix()` de una variable de marca, y el código usa siempre `var(--color-<rol>)`.",
+        "section": "colors"
+      },
+      {
+        "name": "La regla de los 24 px",
+        "body": "Nada se escribe por debajo de 24 px a 1920×1080, ni siquiera una escala o una nota.",
+        "section": "typography"
+      },
+      {
+        "name": "La regla de las cifras quietas",
+        "body": "Toda cifra que se anima usa dígitos tabulares (`--cifras: tabular-nums`) para que no baile al contar.",
+        "section": "typography"
+      },
+      {
+        "name": "La regla de la cámara quieta",
+        "body": "La cámara nunca se mueve mientras algo se anima dentro de la zona: primero llega, luego espera y después anima.",
+        "section": "layout"
+      },
+      {
+        "name": "La regla del contorno",
+        "body": "Toda superficie lleva un contorno navy de 3 px (`--trazo-contorno`). El tono por sí solo no separa nada.",
+        "section": "elevation"
+      },
+      {
+        "name": "La regla de la sombra plana",
+        "body": "Una sola sombra, sin difuminado. Lo demás queda a `--elevacion-0`.",
+        "section": "elevation"
+      },
+      {
+        "name": "La regla del icono a 36",
+        "body": "Un icono suelto en escena va a 36 px, para que su trazo coincida con el contorno.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "**Do** usar las variables de rol y de semántica (`--color-texto-1`, `--color-acento`, `--color-entrada`…) en componentes y escenas; en SVG, el color va por CSS y en GSAP se lee con `v()`.",
+      "**Do** contornear cada superficie con 3 px de navy, porque el proyector iguala crema y blanco.",
+      "**Do** reservar el rojo para una sola cosa por pantalla: la zona actual, el nivel o la cifra protagonista.",
+      "**Do** mantener el texto en 24 px o más, con contraste de al menos 4,5:1; el mínimo de 3:1 solo vale para texto de 24 px o más y para gráficos.",
+      "**Do** marcar «Cifras ficticias» en toda escena con cifras de ejemplo.",
+      "**Do** usar iconos Lucide a 36 px con `stroke-width 2`.",
+      "**Do** encadenar cámara, `--pausa-tras-camara` y animación de zona, y dejar las pausas de lectura (1,5 s con una etiqueta o una cifra, 3 s con una frase).",
+      "**Do** usar los logos oficiales de `design/assets/logos/` tal cual."
+    ],
+    "donts": [
+      "**Don't** escribir un color a mano (hex, `rgb()`, `hsl()` o nombres como `red`) en el código de la presentación, ni en atributos SVG ni en una animación.",
+      "**Don't** poner dos elementos rojos a la vez ni introducir tonos rojizos que compitan con el acento.",
+      "**Don't** usar partículas, brillos, destellos, degradados, sombras difusas ni giros 3D decorativos.",
+      "**Don't** mover la cámara mientras algo se anima dentro de la zona.",
+      "**Don't** dibujar un concepto de otra forma: un token es siempre una píldora en DM Mono y la caché, siempre un corchete.",
+      "**Don't** sobrescribir una variable dentro de una escena; si una escena necesita otro valor, se crea una variable con nombre propio en `design-system.css`.",
+      "**Don't** recolorear los logos."
+    ]
+  }
+}

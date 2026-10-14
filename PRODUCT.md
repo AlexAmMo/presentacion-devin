@@ -35,6 +35,7 @@ No es un deck de diapositivas: es un único gran mapa por el que se mueve una c�
 - Charla interna: el contenido se cuenta en español.
 - Todo el diseño y el movimiento salen de `design/` y de las reglas de `CLAUDE.md`.
 - Pendiente de decidir: si se incluye un caso práctico final.
+- Previsto: un modo de impresión de la presentación (fuera del esqueleto).
 
 ## Brand Commitments
 
@@ -45,7 +46,7 @@ No es un deck de diapositivas: es un único gran mapa por el que se mueve una c�
 ## Evidence on Hand
 
 - Guion: `Guion Devin.md`. Escenas: `escenas.md`.
-- Gráficas de referencia con fuente: `referencias/graficas/` (coste-rendimiento de Anthropic y Cognition; degradación del contexto de Context Arena y Chroma).
+- Gráficas de referencia con fuente: `referencias/graficas/` (coste-rendimiento de Anthropic y Cognition; degradación del contexto de Context Arena, Chroma y FictionLiveBench).
 - Investigación: `research_notes/`.
 - Ausencias que no deben inventarse: tarifas reales de la cuenta, capturas reales de Devin Desktop y herramientas reales del departamento. Mientras falten, se usan marcadores de posición visibles.
 - Las cifras de ejemplo son ficticias y se marcan como tales en pantalla.

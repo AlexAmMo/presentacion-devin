@@ -2,6 +2,12 @@
 
 Presentación HTML para una charla interna de Openbank: un único gran mapa por el que se mueve una cámara (GSAP). El guion está en `Guion Devin.md`.
 
+> **Aviso (14-10-2026): `design/design-system.html` está desactualizado.** No lo uses como referencia de aspecto, medidas ni movimiento hasta que se complete su renovación (`prompts/02-renovar-design-system.md`).
+> - Mientras tanto, la referencia es `design/design-system.css`.
+> - `DESIGN.md` se generó en parte desde ese HTML: tómalo con cautela y regenéralo tras la renovación.
+> - Lo que habría que documentar en el HTML durante este periodo se anota para incluirlo en la renovación.
+> - Quien complete la renovación borra este aviso.
+
 ## Fuentes únicas del diseño
 
 Todo lo visual y todo el movimiento salen de estos ficheros. No se copian ni se duplican: se importan.
