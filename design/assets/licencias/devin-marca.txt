@@ -1,0 +1,8 @@
+Logo de Devin (design/assets/logos/devin-avatar-*.svg)
+
+Marca registrada de Cognition AI, Inc. Ficheros oficiales, sin modificar, de su página de
+marca (cognition.com/brand → carpeta «Brand Logos 2026» › Devin › SVG):
+- devin-avatar-fondo-claro.svg = DEVIN_AVATAR_SQUARE_WHITE.svg (símbolo negro sobre blanco)
+- devin-avatar-fondo-oscuro.svg = DEVIN_AVATAR_SQUARE_BLACK.svg (símbolo blanco sobre negro)
+Descargados el 15-10-2026. Se usan tal cual, sin recolorear, solo para identificar el
+producto en una charla interna de Openbank.

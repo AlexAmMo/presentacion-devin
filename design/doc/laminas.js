@@ -233,8 +233,8 @@ function v7(n) {
   const resaltado = { left: 760, top: 520, width: 280, height: 72 };
   const [gx, gy] = [x + resaltado.left + resaltado.width + px('--trazo-fuerte'), y + resaltado.top + resaltado.height / 2];
   const muestra = (texto, clase) => `<div style="display:grid;gap:var(--esp-2)">${vet(texto)}<svg width="480" height="16"><path class="${clase}" d="M8 8H472"/></svg></div>`;
-  return lamina('vocabulario-7', `Vocabulario ${n} · Captura y guía`,
-    cabecera(`Vocabulario · ${n} · Captura y guía`) +
+  return lamina('vocabulario-7', `Vocabulario ${n} · Captura, guía y tapa`,
+    cabecera(`Vocabulario · ${n} · Captura, guía y tapa`) +
     en(x, 150, '<div class="vh">Captura con resaltado</div>') +
     en(x, y, `<div class="captura" style="width:${ancho}px;height:${alto}px">
         <div class="captura__pendiente">${icono('image', 'icono--l')}Captura pendiente · Devin Desktop</div>
@@ -244,6 +244,10 @@ function v7(n) {
     en(1316, gy - 24, `<span class="etiqueta">${icono('gauge', 'icono--s')}Effort</span>`) +
     en(1320, 150, '<div class="vh">Ruta y guía</div>') +
     en(1320, 230, `<div style="display:grid;gap:var(--esp-5)">${muestra('Ruta · puntos: recorrido de la cámara o del subagente', 'camino')}${muestra('Guía · línea fina: une una etiqueta con lo que señala', 'camino camino--guia')}</div>`) +
+    en(1320, 430, '<div class="vh">Tapa de bloque</div>') +
+    // En el mapa se dibuja ×--tapa-escala; aquí, a escala 1: así se ve desde la vista general.
+    en(1320, 490, '<div class="tapa" style="--tapa-escala:1;width:280px;height:175px"><h2 class="tapa__titulo">Primeros pasos</h2></div>') +
+    en(1624, 500, vet('En el mapa, ×8: así se ve desde la vista general'), 'width:200px') +
     en(x, 870, '<div class="vregla" style="width:1680px">Sin captura real, el marcador «Captura pendiente» queda a la vista. El resaltado rodea el control que se explica y una guía lo une a su etiqueta.</div>'));
 }
 
@@ -252,41 +256,34 @@ export const VOCABULARIO = [v1, v2, v3, v4, v5, v6, v7];
 
 // ── Aplicado ──────────────────────────────────────────────────────────────
 
-/** Mapa de escenas.md: hub, anillo horario de la parte 2, parte 1 arriba, parte 3 a la derecha y parte 4 abajo. */
+/** Mapa de escenas.md: una cruz de cinco bloques, con Devin en el centro de una cuadrícula de 3 × 3. */
 export function mapa(duraciones) {
-  const cx = 900, cy = 540, rx = 410, ry = 220;
-  const anillo = [
-    ['cpu', 'Modelos', 'E05–E07'], ['gauge', 'Effort', 'E08'], ['app-window', 'Contexto', 'E09–E11'], ['file-text', 'Rules', 'E12'],
-    ['puzzle', 'Skills', 'E13'], ['wrench', 'Tools propias', 'E15'], ['plug', 'MCP', 'E16'], ['git-fork', 'Subagentes', 'E17'],
-  ].map(([ic, nombre, ids], i) => {
-    const a = (i * Math.PI) / 4;
-    return { ic, nombre, ids, x: Math.round(cx + rx * Math.sin(a)), y: Math.round(cy - ry * Math.cos(a)) };
-  });
-  const radios = anillo.map(p => `<path class="camino camino--guia" d="M${p.x} ${p.y}L${cx} ${cy}"/>`).join('');
-  const piezas = anillo.map(p =>
-    `<div class="abs" style="left:${p.x}px;top:${p.y}px;transform:translate(-50%,-50%)"><span class="etiqueta">${icono(p.ic, 'icono--s')}${p.nombre} · ${p.ids}</span></div>`).join('');
+  const [cx, cy, dx, dy] = [1020, 560, 350, 170];
+  // Alrededor de Devin, en sentido horario desde arriba: [columna, fila, icono, nombre, escenas].
+  const temas = [
+    [0, -1, 'cpu', 'Modelos', 'E05–E07'], [1, -1, 'gauge', 'Effort', 'E08'], [1, 0, 'app-window', 'Contexto', 'E09–E11'], [1, 1, 'file-text', 'Rules', 'E12'],
+    [0, 1, 'puzzle', 'Skills', 'E13'], [-1, 1, 'wrench', 'Tools propias', 'E15'], [-1, 0, 'plug', 'MCP', 'E16'], [-1, -1, 'git-fork', 'Subagentes', 'E17'],
+  ].map(([c, f, ic, nombre, ids]) =>
+    `<div class="abs" style="left:${cx + c * dx}px;top:${cy + f * dy}px;transform:translate(-50%,-50%)"><span class="etiqueta">${icono(ic, 'icono--s')}${nombre} · ${ids}</span></div>`).join('');
+  const bloque = (x, y, numero, ic, nombre, ids) => en(x, y, isla(numero, ic, nombre, '', `<span class="tipo-mono-s">${ids}</span>`), 'width:320px');
   const leyenda = duraciones.map(([texto, valor]) => `<div class="leyenda__elemento">${texto} · ${valor}</div>`).join('');
-  return lamina('mapa', 'Mapa · hub, anillo y partes',
+  return lamina('mapa', 'Mapa · cruz de cinco bloques',
     `<svg class="abs" style="left:0;top:0" ${lienzo()}>
-      <ellipse class="camino" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>
-      ${radios}
-      <path class="camino" d="M${cx} 262V${cy - ry}"/>
-      <path class="camino" d="M1095 600C1250 650 1350 640 1480 620"/>
-      <path class="camino" d="M1640 700C1640 830 1460 920 1290 920"/>
+      <path class="camino camino--guia" d="M${cx} 290V${cy}M${cx} ${cy}H1540M${cx} ${cy}V800M${cx} ${cy}H500"/>
     </svg>` +
     en(120, 64, `<div class="etiqueta" style="padding:var(--esp-2) var(--esp-4)"><img src="${logoClaro}" alt="Openbank" style="height:32px"></div>`) +
-    en(120, 150, '<div class="tipo-etiqueta" style="width:420px;font-weight:var(--peso-texto);color:var(--color-texto-2)">Apertura y cierre: el mapa entero. La cámara sigue la línea de puntos y vuelve al hub cada vez que una pieza se encaja.</div>') +
-    en(740, 56, isla('1', 'map-pin', 'Primeros pasos', '', '<span class="tipo-mono-s">E02 E03</span>'), 'width:320px') +
-    piezas +
-    en(705, 465, agente('2 · El agente', 'E04 E14 E18 E19')) +
-    en(1480, 470, isla('3', 'coins', 'Tokens y coste', '', '<span class="tipo-mono-s">E19–E23</span>'), 'width:320px') +
-    en(520, 800, circuito({
+    en(120, 150, '<div class="tipo-etiqueta" style="width:440px;font-weight:var(--peso-texto);color:var(--color-texto-2)">Apertura: la portada es el logo de Devin y, desde la vista general, los cinco bloques tapados. Cada tapa se levanta al entrar en su bloque.</div>') +
+    en(120, 830, `<div class="leyenda" style="flex-direction:column;align-items:flex-start;gap:var(--esp-1)">${rotulo('Ruta de la cámara', 'margin-bottom:var(--esp-1);color:var(--color-texto-1)')}${leyenda}</div>`) +
+    bloque(cx - 160, 96, '1', 'map-pin', 'Primeros pasos', 'E02 E03') +
+    temas +
+    en(cx - 195, cy - 75, agente('2 · Devin', 'E04 E14 E18 E19')) +
+    bloque(1540, 452, '3', 'coins', 'Coste', 'E19–E23') +
+    bloque(180, 452, '5', 'map-pin', 'Preguntas', 'E30 E31') +
+    en(cx - 410, 800, circuito({
       ancho: 820, alto: 240, actual: 0,
       paradas: ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(24 + i), nombre })),
     })) +
-    en(120, 310, `<div class="leyenda" style="flex-direction:column;align-items:flex-start;gap:var(--esp-1)">${rotulo('Ruta de la cámara', 'margin-bottom:var(--esp-1);color:var(--color-texto-1)')}${leyenda}</div>`) +
-    // Etiqueta de la parte 4 pegada al extremo izquierdo de la pista del circuito.
-    `<div class="abs" style="right:${px('--escena-ancho') - 560}px;top:896px"><span class="etiqueta">${icono('list-checks', 'icono--s')}4 · Buenas prácticas</span></div>`);
+    en(1480, 900, `<span class="etiqueta">${icono('list-checks', 'icono--s')}4 · Buenas prácticas</span>`));
 }
 
 /** Fotograma de E23 en la llamada 12: con y sin caché (Anexo A del guion, cifras ficticias). */

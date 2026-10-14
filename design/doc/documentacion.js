@@ -329,13 +329,6 @@ const DEMOS = {
     conservar: true,
   },
   agotarTemporizador: { html: () => temporizador({ segundos: 300 }), play: e => gsap.effects.agotarTemporizador($('.temporizador', e)) },
-  encajarPieza: {
-    ancha: true,
-    html: () => `<div style="position:relative;width:900px;height:96px">
-      <div class="hueco" data-hueco style="position:absolute;right:0;top:0;width:220px;height:96px">${icono('cpu')}Modelo</div>
-      <div class="hueco hueco--lleno" data-viajero style="position:absolute;left:0;top:0;width:220px;height:96px;visibility:hidden">${icono('cpu')}Modelo</div></div>`,
-    play: e => gsap.effects.encajarPieza($('[data-viajero]', e), { desde: { x: 0, y: 0 }, hasta: { x: 680, y: 0 }, hueco: $('[data-hueco]', e) }),
-  },
   volarCamara: {
     ancha: true,
     html: () => {
@@ -420,7 +413,7 @@ function reglas() {
 function aplicado() {
   const tramo = (texto, n) => [texto, `${String(s(n)).replace('.', ',')} s`];
   $('#aplicado-mapa').innerHTML = figura(mapa([
-    tramo('Misma zona', '--dur-camara-corta'), tramo('Entre zonas', '--dur-camara'), tramo('Vista general y entre regiones', '--dur-camara-larga'),
+    tramo('Mismo bloque, en línea recta', '--dur-camara-corta'), tramo('Entre bloques', '--dur-camara'), tramo('Hacia o desde la vista general', '--dur-camara-larga'),
   ]));
   $('#aplicado-e23').innerHTML = figura(e23());
   const { html, pasos, preparar } = e09();

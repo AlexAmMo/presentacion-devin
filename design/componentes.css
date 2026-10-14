@@ -220,7 +220,7 @@
    color: Contorno punteado y texto --color-texto-3, sin relleno · lleno: --color-superficie-inversa con --color-texto-inverso.
    medidas: Las de la pieza · --trazo-contorno · --radio-m (círculo: --radio-pildora; recipiente: --radio-l; documento: --radio-s)
    icono: El de la pieza (cpu, gauge, app-window, file-text, puzzle, terminal, wrench, plug, git-fork)
-   movimiento: encajarPieza (la silueta viaja desde su zona y llena el hueco) · desaparecer (cuando llegue la pieza con su dibujo)
+   movimiento: entrarConMuelle (se llena con el hub a la vista: herramientas, E14; los demás huecos se llenan fuera de cámara, sin animación, mientras se explica su tema) · desaparecer (cuando llegue la pieza con su dibujo)
    escenas: E04–E18 (hub)
    ─────────────────────────────────────────────────────────────────────── */
 .hueco {
@@ -419,7 +419,7 @@
    medidas: Mínimo --isla-ancho × --isla-alto · --radio-l · número --tipo-titulo-s · nombre --tipo-texto-s
    icono: El de la zona (laptop, cloud, cpu, gauge, app-window…) a --icono-m
    movimiento: entrarConMuelle · atenuar · avivar
-   escenas: E01, E02, E30 (mapa)
+   escenas: E02 y el mapa de referencia
    ─────────────────────────────────────────────────────────────────────── */
 .isla {
   display: flex; flex-direction: column; justify-content: space-between; gap: var(--esp-3);
@@ -431,6 +431,27 @@
 .isla__numero { font: var(--peso-display) var(--tipo-titulo-s)/var(--interlineado-cifra) var(--fuente-display); font-variant-numeric: var(--cifras); }
 .isla__nombre { font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-display) var(--fuente-texto); }
 .isla--actual { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); }
+
+/* ── Componente · Tapa de bloque ───────────────────────────────────────────
+   clase: .tapa
+   forma: La isla de un bloque del mapa, dibujada ×--tapa-escala: lo cubre entero en la apertura con su título, para que desde la vista general se lean los cinco bloques. La del centro lleva además el logo de Devin, y la portada es esa tapa vista de cerca.
+   color: --color-superficie con --color-contorno · título --color-texto-1 · el logo, tal cual.
+   medidas: Las del bloque · ×--tapa-escala: --trazo-contorno, --radio-l, relleno --esp-4 y título --tipo-entradilla · logo --tapa-logo
+   icono: — (la del centro, el logo oficial de Devin: assets/logos/devin-avatar-fondo-claro.svg)
+   movimiento: desaparecer (se levanta la primera vez que se entra en su bloque, cuando la cámara ya ha llegado)
+   escenas: E01 (portada y vista general) y la primera de cada bloque (E02, E04, E20, E24, E30)
+   ─────────────────────────────────────────────────────────────────────── */
+.tapa {
+  box-sizing: border-box; display: flex; align-items: center; justify-content: center;
+  padding: calc(var(--esp-4) * var(--tapa-escala));
+  border: calc(var(--trazo-contorno) * var(--tapa-escala)) solid var(--color-contorno); border-radius: calc(var(--radio-l) * var(--tapa-escala));
+  background: var(--color-superficie); color: var(--color-texto-1);
+}
+.tapa__titulo {
+  margin: 0; text-align: center;
+  font: var(--peso-display) calc(var(--tipo-entradilla) * var(--tapa-escala))/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display);
+}
+.tapa__logo { display: block; width: var(--tapa-logo); height: var(--tapa-logo); }
 
 /* ── Componente · Etiqueta ─────────────────────────────────────────────────
    clase: .etiqueta

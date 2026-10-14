@@ -8,9 +8,7 @@ body.presentacion { overflow: hidden; background: var(--color-fondo); color: var
 /* El escenario es 16:9 y se centra en la ventana (main.js le da tamaño y sitio). */
 #escenario { position: fixed; overflow: hidden; background: var(--color-fondo); }
 #mundo { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
-#pantalla { position: absolute; left: 0; top: 0; width: var(--escena-ancho); height: var(--escena-alto); transform-origin: 0 0; pointer-events: none; }
 .escena { position: absolute; }
-#pantalla > .escena { inset: 0; }
 .oculto { visibility: hidden; }
 .solo-lectores { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -18,12 +16,10 @@ body.presentacion { overflow: hidden; background: var(--color-fondo); color: var
 
 .marcador { position: absolute; box-sizing: border-box; min-width: 0; min-height: 0; padding: var(--esp-4) var(--esp-6); }
 .marcador--escena { inset: var(--margen-y) var(--margen-x); }
-.marcador--pantalla { left: var(--margen-x); right: var(--margen-x); bottom: var(--margen-y); min-height: 0; padding: var(--esp-4) var(--esp-5); }
 .marcador--panel { padding: var(--esp-4); }
 .marcador__cuerpo { flex: 1; min-height: 0; display: grid; grid-template-columns: 460px 1fr; gap: var(--esp-5); }
 .marcador--panel .marcador__cuerpo { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: var(--esp-4); }
 .marcador--panel .marcador__ficha { gap: var(--esp-2); }
-.marcador--pantalla .marcador__cuerpo { grid-template-columns: 560px 1fr; }
 .marcador__ficha { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-3); min-width: 0; }
 .marcador__titulo, .marcador__mensaje, .marcador__meta { margin: 0; }
 .marcador__mensaje { color: var(--color-texto-2); }
@@ -60,7 +56,6 @@ body.presentacion { overflow: hidden; background: var(--color-fondo); color: var
 /* ── Hub ──────────────────────────────────────────────────────────────── */
 
 .hub { position: absolute; }
-.hub > *, .hub__pieza, .hub__viajero { position: absolute; }
+.hub > *, .hub__pieza { position: absolute; }
 .hub__plugin { box-sizing: border-box; }
-.hub__viajero > .hueco { box-sizing: border-box; }
 .hub .hueco { box-sizing: border-box; }

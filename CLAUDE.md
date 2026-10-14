@@ -24,10 +24,12 @@ La presentación se construye con Vite y se exporta a un único HTML autoconteni
 ## La presentación
 
 - `index.html` y `src/`: el mapa con la cámara, la navegación y la vista de ponente (el mismo HTML con `?ponente`). `npm run dev` la abre en `/`; `npm run build` genera `dist/index.html`, autocontenido; `npm run preview` lo sirve.
-- `src/datos/escenas.js` se genera con `npm run escenas` (también antes de `dev` y `build`) a partir de `escenas.md` (texto) y `src/datos/mapa.js` (posición de cada escena, encuadres propios y piezas del hub). No se edita a mano; si los dos ficheros no cuadran, el generador para y dice qué falla.
+- `src/datos/escenas.js` se genera con `npm run escenas` (también antes de `dev` y `build`) a partir de `escenas.md` (texto) y `src/datos/mapa.js` (zona de cada escena, encuadres propios y piezas del hub). No se edita a mano; si los dos ficheros no cuadran, el generador para y dice qué falla.
+- El mapa es una cruz de cinco bloques (regiones): Devin y sus temas en el centro, en una cuadrícula de 3 × 3, y una pantalla arriba, a la derecha, abajo y a la izquierda. Cada zona es una pantalla; las escenas de un mismo tema comparten zona y se suceden en ella sin mover la cámara.
+- Cada bloque tiene una tapa con su título (`src/tapas.js`; la del centro, con el logo de Devin, es la portada). Se levanta la primera vez que se entra en el bloque, cuando la cámara ya ha llegado.
 - Cada escena real va en `src/escenas/EXX.js` y cumple el contrato documentado en `src/escenas/contrato.js` (`montar`, `irA(paso, { animar, tl })`, `desmontar`). Las que no tienen fichero usan el marcador de posición.
-- La cámara (`src/camara.js`) solo se mueve con el efecto `volarCamara` y la ruta de `escenas.md`: misma zona → `--dur-camara-corta`; otra zona del hub y su anillo → `--dur-camara`; otra región o la vista general → `--dur-camara-larga`. Las escenas nunca mueven la cámara.
-- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general; `A` incluir o saltar los pasos [A]; `P` vista de ponente. Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar.
+- La cámara (`src/camara.js`) solo se mueve con el efecto `volarCamara` y la ruta de `escenas.md`: misma pantalla → no se mueve; otra pantalla del mismo bloque → `--dur-camara-corta`, en línea recta; otro bloque → `--dur-camara`; hacia o desde la vista general → `--dur-camara-larga`. Las escenas nunca mueven la cámara, y los pasos [A] no acercan la cámara.
+- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general (los bloques aún no visitados, con su tapa); `A` incluir o saltar los pasos [A]; `P` vista de ponente. Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar.
 
 ## Colores: solo variables
 

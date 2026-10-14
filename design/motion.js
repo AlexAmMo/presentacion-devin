@@ -165,19 +165,6 @@ registrar('desplegar', (t, c) => {
   return tl;
 }, () => ({ duration: s('--dur-entrada'), ease: v('--ease-interfaz') }));
 
-/**
- * Una pieza viaja desde su zona hasta su hueco del hub en línea recta, y el hueco
- * queda lleno: la silueta que viaja desaparece y el hueco pasa a «hueco--lleno».
- */
-registrar('encajarPieza', (t, c) => {
-  const viajero = gsap.utils.toArray(t)[0];
-  return gsap.timeline()
-    .fromTo(viajero, { autoAlpha: 1, x: c.desde.x, y: c.desde.y },
-      { x: c.hasta.x, y: c.hasta.y, duration: c.duration, ease: c.ease, immediateRender: false })
-    .set(c.hueco, { attr: { class: (i, el) => conClase(el, 'hueco--lleno', true) } })
-    .set(viajero, { autoAlpha: 0 });
-}, () => ({ duration: s('--dur-trazado'), ease: v('--ease-trazado') }));
-
 // ── Trazados, recorridos y tiempo ─────────────────────────────────────────
 
 /** Una línea SVG se dibuja. Las continuas, a lo largo; las discontinuas, de izquierda a derecha. */

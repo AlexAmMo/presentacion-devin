@@ -152,7 +152,7 @@
   --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent);   /* Lo que flota: una ficha que se arrastra o un documento encima de otro */
 
   /* ── Opacidad ────────────────────────────────────────────────────────── */
-  --opacidad-atenuado: 0.3;   /* Estado atenuado: lo que no toca mirar ahora (E01, E09) y el «·» de espacio en las fichas */
+  --opacidad-atenuado: 0.3;   /* Estado atenuado: lo que no toca mirar ahora (E09) y el «·» de espacio en las fichas */
 
   /* ── Componentes · medidas ───────────────────────────────────────────── */
   --ficha-alto: 60px;                 /* Ficha de token */
@@ -185,6 +185,8 @@
   --circuito-parada: 64px;            /* Diámetro de cada parada del circuito */
   --punto-diametro: 28px;             /* Punto que recorre un camino */
   --bucle-diametro: 480px;            /* Bucle del agente: rodea la tarjeta del agente */
+  --tapa-escala: 8;                   /* Tapa de bloque: se dibuja ×8, porque la vista general se ve a ≈ 1:8 y desde allí se lee como una isla a escala 1 */
+  --tapa-logo: 640px;                 /* Logo de Devin en la tapa del centro: en la portada, su símbolo ocupa ≈ 40 % del alto; en la vista general, ≈ 50 px */
   --grafica-discontinua: 18px 12px;   /* Serie 2 de una gráfica y franja: trazo discontinuo */
   --grafica-punteada: 0 14px;         /* Serie 4 de una gráfica: trazo de puntos */
 
@@ -194,9 +196,9 @@
   --dur-entrada: 0.5s;        /* Entrada · aparición de elementos */
   --dur-contador: 0.9s;       /* Progresión · cifras que suben */
   --dur-trazado: 1.2s;        /* Progresión · líneas que se dibujan y puntos que recorren un camino */
-  --dur-camara-corta: 0.8s;   /* Cámara · entre escenas de una misma zona, en línea recta */
-  --dur-camara: 1.2s;         /* Cámara · vuelo estándar: entre zonas de una misma región (el hub y su anillo) */
-  --dur-camara-larga: 1.5s;   /* Cámara · saltos largos: hacia o desde la vista general y entre regiones (partes 1, 3 y 4, y el centro) */
+  --dur-camara-corta: 0.8s;   /* Cámara · entre pantallas de un mismo bloque (las casillas del centro), en línea recta */
+  --dur-camara: 1.2s;         /* Cámara · vuelo estándar: entre bloques del mapa, «alejar, viajar, acercar» */
+  --dur-camara-larga: 1.5s;   /* Cámara · saltos largos: hacia o desde la vista general */
   --dur-temporizador: 3s;     /* Tiempo simulado · un temporizador se agota (cinco minutos comprimidos) */
 
   /* ── Movimiento · curvas (nombres de GSAP) ───────────────────────────── */

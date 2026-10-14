@@ -1,9 +1,9 @@
 // Genera src/datos/escenas.js a partir de escenas.md (texto) y src/datos/mapa.js
-// (posiciones, encuadres y piezas del hub). Uso: npm run escenas
+// (zonas, encuadres y piezas del hub). Uso: npm run escenas
 // (también se ejecuta solo antes de npm run dev y npm run build).
 // Si escenas.md y mapa.js no cuadran, para con un mensaje claro: no inventa nada.
 import { readFileSync, writeFileSync } from 'node:fs';
-import { ZONAS, POSICIONES, ENCUADRES, HUB } from '../src/datos/mapa.js';
+import { ZONAS, ZONA_DE, ENCUADRES, HUB } from '../src/datos/mapa.js';
 
 const raiz = new URL('../', import.meta.url);
 const md = readFileSync(new URL('escenas.md', raiz), 'utf8');
@@ -31,8 +31,10 @@ md.split('\n').forEach((linea, i) => {
   let m;
   if ((m = linea.match(/^## (.+)$/))) {
     const partes = m[1].split(' · ');
+    const nombres = partes.filter(p => !p.startsWith('~'));
+    // «Parte 1 · Primeros pasos»: corto «Parte 1» y título «Primeros pasos» (el de su tapa en el mapa).
     bloque = /^(Apertura|Parte \d+|Cierre)$/.test(partes[0])
-      ? { nombre: partes.filter(p => !p.startsWith('~')).join(' · '), corto: partes[0], minutos: minutosDe(partes) }
+      ? { nombre: nombres.join(' · '), corto: partes[0], titulo: nombres.at(-1), minutos: minutosDe(partes), escenas: 0 }
       : null;
     escena = paso = null;
     return;
@@ -40,8 +42,8 @@ md.split('\n').forEach((linea, i) => {
   if ((m = linea.match(/^### (E\d\d) · (.+)$/))) {
     const partes = m[2].split(' · ');
     if (!bloque) error(`${donde}: ${m[1]} está fuera de un bloque (## Apertura, ## Parte N o ## Cierre).`);
-    escena = { id: m[1], titulo: partes[0], bloque: bloque?.nombre, bloqueCorto: bloque?.corto, minutos: minutosDe(partes), enHub: partes.includes('en el hub'), pasos: [] };
-    if (escena.minutos == null && bloque?.minutos != null) escena.minutosBloque = bloque.minutos;
+    escena = { id: m[1], titulo: partes[0], bloque: bloque?.nombre, bloqueCorto: bloque?.corto, bloqueTitulo: bloque?.titulo, minutos: minutosDe(partes), enHub: partes.includes('en el hub'), pasos: [], deBloque: bloque };
+    if (bloque) bloque.escenas++;
     escenas.push(escena);
     paso = null;
     return;
@@ -76,7 +78,7 @@ for (const e of escenas) {
     p.avanzado = p.texto.startsWith('[A] ');
     if (p.avanzado) p.texto = p.texto.slice(4);
     p.detalleAvanzado = /\[A\]/.test(p.texto) || p.detalle.some(d => /\[A\]/.test(d));
-    p.piezaAlHub = /\*\*Pieza al hub\*\*/.test(p.texto);
+    if (/\*\*Pieza al hub\*\*/.test(p.texto)) error(`${e.id}/${p.n}: «Pieza al hub» ya no es un paso; la pieza se coloca sola al terminar su escena (HUB.llega en mapa.js).`);
     p.texto = sinNegrita(p.texto);
     p.detalle = p.detalle.map(sinNegrita);
   }
@@ -93,48 +95,47 @@ const existe = ref => {
   const e = conPasos.find(x => x.id === id);
   return e && (n === undefined || e.pasos.some(p => p.n === Number(n)));
 };
+const zonaDe = id => ZONA_DE[id];
 for (const e of conPasos) {
-  const pos = POSICIONES[e.id];
-  if (!pos) { error(`${e.id} no tiene posición en src/datos/mapa.js (POSICIONES).`); continue; }
-  if (!ZONAS[pos.zona]) error(`${e.id}: la zona «${pos.zona}» no existe en ZONAS.`);
-  if (pos.zona !== 'general' && (pos.x == null || pos.y == null)) error(`${e.id}: falta x o y en POSICIONES.`);
-  if (e.enHub && pos.zona !== 'hub') error(`${e.id} dice «en el hub» en escenas.md, pero su zona en mapa.js es «${pos.zona}».`);
+  const zona = zonaDe(e.id);
+  if (!zona) { error(`${e.id} no tiene zona en src/datos/mapa.js (ZONA_DE).`); continue; }
+  if (!ZONAS[zona]) { error(`${e.id}: la zona «${zona}» no existe en ZONAS.`); continue; }
+  if (zona !== 'general' && (ZONAS[zona].x == null || ZONAS[zona].y == null)) error(`Zona «${zona}»: falta x o y en ZONAS.`);
+  if (e.enHub && zona !== 'hub') error(`${e.id} dice «en el hub» en escenas.md, pero su zona en mapa.js es «${zona}».`);
 }
-for (const id of Object.keys(POSICIONES)) if (!ids.has(id)) error(`${id} tiene posición en mapa.js, pero no está en escenas.md (o no tiene pasos).`);
+for (const id of Object.keys(ZONA_DE)) if (!ids.has(id)) error(`${id} tiene zona en mapa.js, pero no está en escenas.md (o no tiene pasos).`);
 for (const [ref, destino] of Object.entries(ENCUADRES)) {
   if (!existe(ref)) error(`ENCUADRES: el paso ${ref} no existe en escenas.md.`);
-  if (destino !== 'general' && !(ids.has(destino) && POSICIONES[destino]?.x != null)) error(`ENCUADRES: ${ref} apunta a ${destino}, que no tiene sitio en el mapa.`);
+  if (destino !== 'general' && !(ids.has(destino) && zonaDe(destino) !== 'general')) error(`ENCUADRES: ${ref} apunta a ${destino}, que no tiene pantalla en el mapa.`);
 }
+// HUB.llega: una escena ('E07' → su último paso, sin animación) o un paso de una escena del hub ('E14/1', animada).
 const llegadas = new Map();
 for (const pieza of HUB.piezas) {
   if (!existe(pieza.llega)) { error(`HUB: la pieza «${pieza.id}» llega en ${pieza.llega}, que no existe en escenas.md.`); continue; }
-  if (llegadas.has(pieza.llega)) error(`HUB: dos piezas llegan en ${pieza.llega}.`);
-  llegadas.set(pieza.llega, pieza);
-}
-for (const e of conPasos) {
-  for (const p of e.pasos) {
-    const ref = `${e.id}/${p.n}`, pieza = llegadas.get(ref);
-    if (p.piezaAlHub && !pieza) error(`${ref} es «Pieza al hub» en escenas.md, pero ninguna pieza de HUB (mapa.js) llega en ese paso.`);
-    if (pieza && !p.piezaAlHub && POSICIONES[e.id]?.zona !== 'hub') error(`HUB: «${pieza.id}» llega en ${ref}, que no es «Pieza al hub» ni ocurre en el hub.`);
-  }
+  const [id, n] = pieza.llega.split('/');
+  if (n !== undefined && zonaDe(id) !== 'hub') error(`HUB: «${pieza.id}» llega en el paso ${pieza.llega}, que no ocurre en el hub; indica solo la escena (${id}).`);
+  const ref = n !== undefined ? pieza.llega : `${id}/${conPasos.find(x => x.id === id).pasos.length}`;
+  if (llegadas.has(ref)) error(`HUB: dos piezas llegan en ${ref}.`);
+  llegadas.set(ref, pieza);
 }
 
 // ── Salida ──────────────────────────────────────────────────────────────────
 
 const salida = conPasos.map(e => {
-  const pos = POSICIONES[e.id] ?? {};
-  const general = pos.zona === 'general';
+  const zona = zonaDe(e.id), z = ZONAS[zona] ?? {};
+  const general = zona === 'general';
+  // Si el bloque tiene una sola escena y ella no dice sus minutos, son los del bloque.
+  const minutos = e.minutos ?? (e.deBloque?.escenas === 1 ? e.deBloque.minutos : null);
   return {
-    id: e.id, titulo: e.titulo, bloque: e.bloque, bloqueCorto: e.bloqueCorto, mensaje: e.mensaje ?? '', guion: e.guion ?? '',
-    minutos: e.minutos ?? e.minutosBloque ?? null,
-    zona: pos.zona, region: ZONAS[pos.zona]?.region,
-    x: general ? null : pos.x, y: general ? null : pos.y, ancho, alto,
+    id: e.id, titulo: e.titulo, bloque: e.bloque, bloqueCorto: e.bloqueCorto, bloqueTitulo: e.bloqueTitulo, mensaje: e.mensaje ?? '', guion: e.guion ?? '',
+    minutos: minutos ?? null,
+    zona, region: z.region,
+    x: general ? null : z.x, y: general ? null : z.y, ancho, alto,
     pasos: e.pasos.map(p => {
       const ref = `${e.id}/${p.n}`, pieza = llegadas.get(ref);
-      const encuadre = ENCUADRES[ref] ?? (p.piezaAlHub ? 'pieza' : p.avanzado ? 'avanzado' : null);
       return {
         n: p.n, texto: p.texto, detalle: p.detalle, avanzado: p.avanzado, detalleAvanzado: p.detalleAvanzado,
-        hub: pieza?.id ?? null, viaja: Boolean(pieza && p.piezaAlHub), encuadre,
+        hub: pieza?.id ?? null, encuadre: ENCUADRES[ref] ?? null,
       };
     }),
   };
@@ -149,12 +150,13 @@ const js = o => JSON.stringify(o).replace(/"(\w+)":/g, '$1: ').replace(/,(?=\w+:
 const texto = `// Generado por \`npm run escenas\` a partir de escenas.md y src/datos/mapa.js. No se edita a mano:
 // el texto se cambia en escenas.md, y la posición, los encuadres y las piezas del hub, en mapa.js.
 //
-// Por escena: id, título, bloque, mensaje, guion, minutos previstos, zona y región, y su
-// rectángulo en el mundo (x, y, ancho, alto; null en las que se ven desde la vista general).
+// Por escena: id, título, bloque (nombre, corto y título de su tapa), mensaje, guion, minutos
+// previstos, zona (su pantalla) y región (su bloque del mapa), y el rectángulo de su pantalla
+// en el mundo (x, y, ancho, alto; null en las que se ven desde la vista general). Las escenas
+// de una misma zona comparten pantalla.
 // Por paso: n, texto, detalle (sublista o filas de tabla), avanzado ([A]: se puede saltar),
-// detalleAvanzado (un detalle [A] dentro del paso), hub (pieza que entra en el hub),
-// viaja (la pieza viaja desde su zona: «Pieza al hub») y encuadre propio:
-// null (su escena) · 'general' · 'pieza' (zona + hub) · 'avanzado' (zoom a su fila) · id de otra escena.
+// detalleAvanzado (un detalle [A] dentro del paso), hub (pieza que entra en el hub) y
+// encuadre propio: null (su pantalla) · 'general' · id de otra escena.
 
 export const ESCENAS = [
 ${salida.map(({ pasos, ...e }) => `  {\n    ${js(e).slice(1, -1)},\n    pasos: [\n${pasos.map(p => `      ${js(p)},`).join('\n')}\n    ],\n  },`).join('\n')}

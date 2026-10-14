@@ -8,13 +8,14 @@
 //       montar() { … },
 //       irA(paso, { animar, tl }) { … },
 //       desmontar() { … },
-//       encuadreAvanzado(paso) { … },   // opcional
 //     };
 //   }
 //
 // - escena: sus datos de src/datos/escenas.js (id, título, mensaje, pasos…).
 // - raiz: un elemento de --escena-ancho × --escena-alto ya colocado en el mundo. La escena
-//   dibuja dentro con posiciones en px de 1920×1080 y nunca toca nada de fuera.
+//   dibuja dentro con posiciones en px de 1920×1080 y nunca toca nada de fuera. Si varias
+//   escenas comparten pantalla (un tema con varias escenas), sus raíces están en el mismo
+//   sitio: el esqueleto muestra una y hace el relevo (la anterior desaparece y esta aparece).
 // - montar(): crea su DOM en el estado 0, el de antes del primer paso.
 // - irA(paso, { animar: false }): pone al instante el estado final de ese paso
 //   (0 = antes del primero; pasos.length = terminada). Tiene que poder llamarse en
@@ -25,17 +26,12 @@
 //   Los cambios de clase van con tl.set(…, { attr: { class } }), para que el timeline
 //   pueda completarse de golpe si el ponente avanza antes de que termine.
 // - desmontar(): mata sus timelines y vacía raiz.
-// - encuadreAvanzado(paso): opcional. Rectángulo { x, y, ancho, alto }, relativo a la
-//   escena, al que se acerca la cámara en un paso [A]. Sin él, la cámara no se acerca.
-// - reservaInferior(): opcional, solo en las escenas que se ven desde la vista general
-//   (E01 y E30). Alto en px de 1920×1080 que su capa ocupa abajo: la cámara sube el
-//   mapa para que no quede tapado.
+// - Los pasos [A] ocurren en la misma pantalla, sin acercar la cámara.
 //
 // Las escenas sin fichero usan el marcador de posición de abajo: una isla con el id,
 // el título, el mensaje y la lista de pasos, con el paso actual resaltado.
 import { icono } from '../../design/iconos.js';
 import { esc, enLinea } from '../texto.js';
-import { px } from '../../design/motion.js';
 import { ZONAS, HUB } from '../datos/mapa.js';
 
 const PIEZAS = Object.fromEntries(HUB.piezas.map(p => [p.id, p]));
@@ -49,24 +45,23 @@ const clasesFila = (fila, actual) => {
 };
 
 /**
- * Marcador de posición de una escena. Variantes: 'escena' (isla a pantalla completa),
- * 'panel' (escenas del hub: a la derecha del agente) y 'pantalla' (E01 y E30: sobre la
- * vista general, en la capa fija de la pantalla).
+ * Marcador de posición de una escena. Variantes: 'escena' (isla a pantalla completa) y
+ * 'panel' (escenas del hub: a la derecha del agente).
  */
 export function crearMarcador({ escena, raiz, variante = 'escena' }) {
   let filas = [];
   return {
     montar() {
       const zona = ZONAS[escena.zona];
-      const lugar = escena.zona === 'general' ? escena.bloqueCorto : `${escena.bloqueCorto} · ${zona.nombre}`;
-      // En el panel del hub y en la capa de la vista general no hay cabecera: el id va en la etiqueta.
+      const lugar = `${escena.bloqueCorto} · ${zona.nombre}`;
+      // En el panel del hub no hay cabecera: el id va en la etiqueta.
       const conCabecera = variante === 'escena';
       const meta = [escena.guion && `Guion: ${escena.guion}`, escena.minutos != null && `~${String(escena.minutos).replace('.', ',')}\u00a0min`].filter(Boolean).join(' · ');
       const pasos = escena.pasos.map(p => {
         const marcas = [
           p.avanzado && marca('', 'Avanzado'),
           p.detalleAvanzado && marca('', 'Detalle avanzado'),
-          p.hub && marca(PIEZAS[p.hub].icono, `${p.viaja ? 'Pieza al hub' : 'Entra en el hub'} · ${PIEZAS[p.hub].nombre}`),
+          p.hub && marca(PIEZAS[p.hub].icono, `${escena.zona === 'hub' ? 'Entra en el hub' : 'Se coloca en el hub'} · ${PIEZAS[p.hub].nombre}`),
         ].filter(Boolean).join('');
         const detalle = p.detalle.length ? `<ul class="marcador__detalle">${p.detalle.map(d => `<li>${enLinea(d)}</li>`).join('')}</ul>` : '';
         return `<li class="paso${p.avanzado ? ' paso--avanzado' : ''}" data-paso="${p.n}">
@@ -105,31 +100,6 @@ export function crearMarcador({ escena, raiz, variante = 'escena' }) {
     desmontar() {
       raiz.innerHTML = '';
       filas = [];
-    },
-
-    reservaInferior() {
-      if (variante !== 'pantalla') return 0;
-      const isla = raiz.querySelector('.marcador');
-      return raiz.offsetHeight - isla.offsetTop;
-    },
-
-    /**
-     * Paso [A]: la cámara se acerca ×1,5 a su fila. El encuadre empieza en la columna de pasos
-     * (puede asomar unos px al hueco entre escenas, nunca a la escena vecina) y no se sale por arriba ni por abajo.
-     */
-    encuadreAvanzado(paso) {
-      const fila = filas.find(f => Number(f.dataset.paso) === paso);
-      if (!fila) return null;
-      const enRaiz = el => {
-        let [x, y] = [0, 0];
-        for (; el && el !== raiz; el = el.offsetParent) { x += el.offsetLeft; y += el.offsetTop; }
-        return { x, y };
-      };
-      const lista = raiz.querySelector('.marcador__pasos');
-      const [ancho, alto] = [escena.ancho / 1.5, escena.alto / 1.5];
-      const x = Math.min(enRaiz(lista).x - px('--esp-4'), escena.ancho - ancho + px('--esp-6'));
-      const y = enRaiz(fila).y + fila.offsetHeight / 2 - alto / 2;
-      return { x: Math.max(x, 0), y: Math.min(Math.max(y, 0), escena.alto - alto), ancho, alto };
     },
   };
 }

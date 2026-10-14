@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T23:00:00+02:00",
+  "generatedAt": "2026-10-15T12:00:00+02:00",
   "title": "Design System: Devin en el día a día",
   "extensions": {
     "colorMeta": {
@@ -347,17 +347,17 @@
       {
         "name": "dur-camara-corta",
         "value": "0.8s",
-        "purpose": "Cámara · entre escenas de una misma zona, en línea recta"
+        "purpose": "Cámara · entre pantallas de un mismo bloque (las casillas del centro), en línea recta"
       },
       {
         "name": "dur-camara",
         "value": "1.2s",
-        "purpose": "Cámara · vuelo estándar: entre zonas de una misma región (el hub y su anillo)"
+        "purpose": "Cámara · vuelo estándar: entre bloques del mapa, «alejar, viajar, acercar»"
       },
       {
         "name": "dur-camara-larga",
         "value": "1.5s",
-        "purpose": "Cámara · saltos largos: hacia o desde la vista general y entre regiones (partes 1, 3 y 4, y el centro)"
+        "purpose": "Cámara · saltos largos: hacia o desde la vista general"
       },
       {
         "name": "dur-temporizador",
@@ -525,11 +525,6 @@
         "purpose": "Una skill plegada se despliega: pierde «skill--plegada» y su anatomía crece hasta su alto natural."
       },
       {
-        "name": "efecto · encajarPieza",
-        "value": "--dur-trazado · --ease-trazado",
-        "purpose": "Una pieza viaja desde su zona hasta su hueco del hub en línea recta, y el hueco queda lleno: la silueta que viaja desaparece y el hueco pasa a «hueco--lleno»."
-      },
-      {
         "name": "efecto · trazar",
         "value": "--dur-trazado · --ease-trazado · --escalonado",
         "purpose": "Una línea SVG se dibuja. Las continuas, a lo largo; las discontinuas, de izquierda a derecha."
@@ -633,14 +628,14 @@
       "name": "Hueco del hub",
       "kind": "custom",
       "refersTo": "hueco-lleno",
-      "description": "Silueta punteada de una pieza que aún no está en el agente; llena (sólido inverso) cuando encajarPieza la trae desde su zona.",
+      "description": "Silueta punteada de una pieza que aún no está en el agente; llena (sólido inverso) cuando la pieza ya forma parte del hub. Se llena con entrarConMuelle con el hub a la vista (herramientas, E14); los demás huecos, fuera de cámara y sin animación.",
       "html": "<div style=\"display:flex;gap:var(--esp-5)\"><div class=\"ds-hueco\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z\"/></svg>Skill</div><div class=\"ds-hueco ds-hueco--lleno\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z\"/></svg>Skill</div></div>",
       "css": ".ds-icono{width:var(--icono-m);height:var(--icono-m);fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-hueco{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:var(--esp-1);width:var(--subagente-ancho);height:var(--subagente-alto);text-align:center;border:var(--trazo-contorno) dotted var(--color-texto-3);border-radius:var(--radio-m);color:var(--color-texto-3);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);transition:background var(--dur-micro),color var(--dur-micro)}.ds-hueco--lleno{border-style:solid;border-color:var(--color-superficie-inversa);background:var(--color-superficie-inversa);color:var(--color-texto-inverso)}"
     }
   ],
   "narrative": {
     "northStar": "Usted está aquí",
-    "overview": "**Creative North Star: \"Usted está aquí\"**\n\nLa charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, recipientes, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de navy. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de treinta componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados (el rayado del razonamiento es de franjas duras, no un degradado), las sombras difusas y los giros 3D decorativos: hasta el volteo de una tarjeta es plano.",
+    "overview": "**Creative North Star: \"Usted está aquí\"**\n\nLa charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, recipientes, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de navy. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de treinta y un componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados (el rayado del razonamiento es de franjas duras, no un degradado), las sombras difusas y los giros 3D decorativos: hasta el volteo de una tarjeta es plano.",
     "keyCharacteristics": [
       "Tinta navy sobre crema, con superficies blancas siempre contorneadas a 3 px.",
       "Un único acento rojo por pantalla; los tres rojos de la marca cuentan como uno.",
@@ -713,7 +708,7 @@
       "**Do** encadenar cámara, `--pausa-tras-camara` y animación de zona, y dejar las pausas de lectura (1,5 s con una etiqueta o una cifra, 3 s con una frase).",
       "**Do** animar con los efectos de `motion.js` y, en una coreografía de escena, con `s()` y `v()`; el tiempo simulado, siempre con curva lineal.",
       "**Do** unir una etiqueta con lo que señala mediante la guía fina continua; los puntos redondos quedan para el movimiento (ruta de la cámara y salida del subagente).",
-      "**Do** usar los logos oficiales de `design/assets/logos/` tal cual."
+      "**Do** usar los logos oficiales de `design/assets/logos/` tal cual: los de Openbank y el de Devin (procedencia en `design/assets/licencias/devin-marca.txt`)."
     ],
     "donts": [
       "**Don't** escribir un color a mano (hex, `rgb()`, `hsl()` o nombres como `red`) en el código de la presentación, ni en atributos SVG ni en una animación.",

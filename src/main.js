@@ -17,7 +17,7 @@ async function iniciarPresentacion() {
     if (x.ctrl.ajustar?.() === false) console.warn(`${x.datos.id}: la lista de pasos no cabe ni a --tipo-etiqueta; se recorta.`);
   }
 
-  const camara = crearCamara({ mundo: mundo.mundo, escenas: mundo.escenas, hub: mundo.hubRect });
+  const camara = crearCamara({ mundo: mundo.mundo });
   const ajustar = () => {
     const [W, H] = [px('--escena-ancho'), px('--escena-alto')];
     const k = Math.min(innerWidth / W, innerHeight / H);
@@ -26,7 +26,6 @@ async function iniciarPresentacion() {
       width: `${ancho}px`, height: `${alto}px`,
       left: `${Math.round((innerWidth - ancho) / 2)}px`, top: `${Math.round((innerHeight - alto) / 2)}px`,
     });
-    mundo.pantalla.style.transform = `scale(${ancho / W})`;
     camara.ajustar(ancho, alto);
   };
   ajustar();

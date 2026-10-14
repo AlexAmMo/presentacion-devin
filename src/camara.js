@@ -2,16 +2,16 @@
 // #mundo (transform-origin 0 0). Una vista es { v: [centro x, centro y, ancho visible],
 // zona, region }. Los vuelos son el efecto volarCamara de design/motion.js, con la
 // duración y la curva de la ruta de escenas.md, leídas de las variables:
-// - misma zona → --dur-camara-corta, en línea recta;
-// - otra zona de la misma región (el hub y su anillo) → --dur-camara, «alejar, viajar, acercar»;
-// - otra región o la vista general → --dur-camara-larga, con --ease-camara-larga.
+// - misma pantalla → no hay vuelo: el contenido cambia en su sitio;
+// - otra pantalla del mismo bloque (las casillas del centro) → --dur-camara-corta, en línea recta;
+// - otro bloque → --dur-camara, «alejar, viajar, acercar»;
+// - hacia o desde la vista general → --dur-camara-larga, con --ease-camara-larga.
 import { s, v, px } from '../design/motion.js';
 import { ESCENAS } from './datos/escenas.js';
 import { ZONAS } from './datos/mapa.js';
 
-// Holgura alrededor de los encuadres compuestos, en px del mundo.
-const MARGEN_GENERAL = 480;   // vista general: alrededor del mapa entero
-const MARGEN_PIEZA = 240;     // «pieza al hub»: alrededor de la zona y el hub
+// Holgura alrededor del mapa entero en la vista general, en px del mundo.
+const MARGEN_GENERAL = 480;
 
 const RUTAS = {
   corta: { duracion: '--dur-camara-corta', curva: '--ease-camara', trayectoria: 'recta' },
@@ -29,11 +29,11 @@ const enMapa = ESCENAS.filter(e => e.x != null);
 
 /** Tipo de vuelo entre dos vistas. */
 export function ruta(a, b) {
-  if (!a || a.region === 'general' || b.region === 'general' || a.region !== b.region) return 'larga';
-  return a.zona === b.zona ? 'corta' : 'estandar';
+  if (!a || a.region === 'general' || b.region === 'general') return 'larga';
+  return a.region === b.region ? 'corta' : 'estandar';
 }
 
-export function crearCamara({ mundo, escenas, hub }) {
+export function crearCamara({ mundo }) {
   let pantalla = [px('--escena-ancho'), px('--escena-alto')];
   let actual = null;
 
@@ -51,34 +51,18 @@ export function crearCamara({ mundo, escenas, hub }) {
   const camara = {
     get actual() { return actual; },
 
-    /**
-     * Vista general: el mapa entero. Con reserva (px de pantalla abajo, a escala de
-     * --escena-alto), el mapa se encaja y centra en el hueco que queda encima.
-     */
-    general(reserva = 0) {
-      const r = ampliar(union(enMapa.map(rectDe)), MARGEN_GENERAL);
-      const util = 1 - reserva / px('--escena-alto');
-      const ancho = Math.max(r.ancho, r.alto * (pantalla[0] / (pantalla[1] * util)));
-      const altoVisible = ancho * (pantalla[1] / pantalla[0]);
-      return { v: [r.x + r.ancho / 2, r.y + r.alto / 2 + (altoVisible * (1 - util)) / 2, ancho], zona: 'general', region: 'general' };
+    /** Vista general: el mapa entero, encajado y centrado. */
+    general() {
+      return vista(ampliar(union(enMapa.map(rectDe)), MARGEN_GENERAL), 'general');
     },
 
-    /** La vista de un paso: su encuadre propio o el de su escena. */
+    /** La vista de un paso: su encuadre propio (otra escena o la vista general) o la pantalla de su escena. */
     vistaDe(paso) {
       const e = paso.escena;
       const encuadre = paso.encuadre ?? (e.zona === 'general' ? 'general' : null);
-      // E01 y E30: su capa ocupa la parte de abajo y el mapa sube.
-      if (encuadre === 'general') return camara.general(e.zona === 'general' ? escenas.get(e.id).ctrl.reservaInferior?.() ?? 0 : 0);
-      if (encuadre === 'pieza') return vista(ampliar(union([...enMapa.filter(o => o.zona === e.zona).map(rectDe), hub]), MARGEN_PIEZA), e.zona);
-      if (encuadre === 'avanzado') {
-        const r = escenas.get(e.id).ctrl.encuadreAvanzado?.(paso.n);
-        return r ? vista({ ...r, x: e.x + r.x, y: e.y + r.y }, e.zona) : vista(rectDe(e), e.zona);
-      }
-      if (encuadre) {
-        const otra = ESCENAS.find(o => o.id === encuadre);
-        return vista(rectDe(otra), otra.zona);
-      }
-      return vista(rectDe(e), e.zona);
+      if (encuadre === 'general') return camara.general();
+      const destino = encuadre ? ESCENAS.find(o => o.id === encuadre) : e;
+      return vista(rectDe(destino), destino.zona);
     },
 
     /** Al instante. */

@@ -1,14 +1,14 @@
 # Escenas de la presentación
 
-> Versión 1 · 14 de octubre de 2026 · Basado en `Guion Devin.md` (v3).
+> Versión 2 · 15 de octubre de 2026 · Basado en `Guion Devin.md` (v3).
 > Este documento define **qué se ve y qué pasa en cada click**. El texto que dice el ponente está en el guion; aquí solo se referencia su sección.
 > El aspecto y el movimiento salen siempre del design system (`design/`), según `CLAUDE.md`.
 
 ## Cómo leer este documento
 
-- **Escena** (E01, E02…): una pantalla del mapa, de 1920×1080, que la cámara encuadra. Una zona del guion puede ocupar varias escenas contiguas.
-- **Paso**: cada número de la lista de pasos es un click de «avanzar». Al llegar a una escena, el primer paso empieza cuando la cámara se detiene y pasa `--pausa-tras-camara`.
-- **[A] Avanzado**: paso de detalle que vive en un zoom más profundo dentro de la escena. Se puede saltar con una tecla según el público.
+- **Escena** (E01, E02…): una unidad de contenido con sus pasos. Se ve en una **pantalla** del mapa, de 1920×1080, que la cámara encuadra. Si un tema tiene varias escenas (Modelos, Contexto…), se suceden en la misma pantalla: el contenido cambia y la cámara no se mueve.
+- **Paso**: cada número de la lista de pasos es un click de «avanzar». Al llegar a una pantalla, el primer paso empieza cuando la cámara se detiene y pasa `--pausa-tras-camara`.
+- **[A] Avanzado**: paso de detalle, en la misma pantalla. Se puede saltar con una tecla según el público.
 - **Componentes**: los del vocabulario visual del design system (ficha de token, capa, recipiente, corchete de caché, contador de coste, agente, subagente, documento, skill y herramienta). Los que faltan se listan al final.
 - **Cifras ficticias**: toda escena con cifras de ejemplo lleva visible la etiqueta «Cifras ficticias».
 
@@ -18,48 +18,62 @@
 
 ### Idea
 
-Un **diagrama central del agente** (el *hub*) rodeado por las cuatro partes de la charla:
+Una **cruz de cinco bloques** con Devin en el centro. Cada bloque es una parte de la charla:
 
-- **Parte 1, arriba**: primeros pasos.
-- **Parte 2, en anillo alrededor del hub**: cada pieza tiene su zona. Al terminarla, la pieza viaja hasta el hub y se encaja en el diagrama. Al acabar la parte, el diagrama está completo.
-- **Parte 3, a la derecha**: tokens y coste. Empieza en el hub (el bucle relee el contexto) y continúa en su región.
-- **Parte 4, abajo**: un circuito con los pasos del método de trabajo.
-- **Apertura y cierre**: vista general del mapa entero.
+- **Centro, Principales herramientas**: Devin (el *hub*) en medio de una cuadrícula de 3 × 3 pantallas, con un tema en cada una de las ocho de alrededor. Mientras se explica un tema, su pieza se coloca en el hub; al volver a Devin, ya la tiene. Al acabar la parte, el diagrama está completo.
+- **Arriba, Primeros pasos.**
+- **A la derecha, Coste**: empieza en el hub (el bucle relee el contexto) y continúa en su pantalla.
+- **Abajo, Buenas prácticas**: un circuito con los pasos del método de trabajo.
+- **A la izquierda, Preguntas**: el cierre y el turno de preguntas.
+
+Los cuatro bloques de fuera son una sola pantalla cada uno: sus escenas se suceden en ella.
+
+### Tapas
+
+- En la apertura, cada bloque está cubierto por una **tapa** con su título, que es el de su parte en este documento. La del centro lleva además el logo de Devin, y la portada es esa tapa vista de cerca.
+- La tapa de un bloque se levanta la primera vez que se entra en él: la cámara llega, pasa `--pausa-tras-camara`, la tapa desaparece y empieza el primer paso.
+- En la vista general (tecla `O`), los bloques ya visitados se ven abiertos y los demás, tapados.
 
 ### Esquema
 
 ```
-                         ┌──────────────────────┐
-                         │ PARTE 1              │
-                         │ E02 Local y Cloud    │
-                         │ E03 Controles        │
-                         └──────────┬───────────┘
-                                    │
-       E17 Subagentes        E05–E07 Modelos         E08 Effort
-                  ╲                 │                ╱
-                   ╲                │               ╱
-   E16 MCP ──────── (  HUB · El agente: E04 E14 E18 E19  ) ──────── E09–E11 Contexto ──── PARTE 3
-                   ╱                │               ╲                                     E20 ACUs
-                  ╱                 │                ╲                                    E21 Tipos
-     E15 Tools propias        E13 Skills          E12 Rules                               E22 Caché
-                                    │                                                     E23 Conversación
-                    ┌───────────────┴────────────────────┐
-                    │ PARTE 4 · circuito                 │
-                    │ E24 → E25 → E26 → E27 → E28 → E29  │
-                    └────────────────────────────────────┘
+                         ┌────────────────────┐
+                         │ PRIMEROS PASOS     │
+                         │ E02 · E03          │
+                         └────────────────────┘
+
+             ┌────────────┬────────────┬────────────┐
+             │ Subagentes │ Modelos    │ Effort     │
+             │ E17        │ E05–E07    │ E08        │
+┌─────────┐  ├────────────┼────────────┼────────────┤  ┌─────────┐
+│PREGUNTAS│  │ MCP        │ DEVIN      │ Contexto   │  │ COSTE   │
+│E30 · E31│  │ E16        │ E04 E14    │ E09–E11    │  │ E20–E23 │
+└─────────┘  │            │ E18 E19    │            │  └─────────┘
+             ├────────────┼────────────┼────────────┤
+             │ Tools      │ Skills     │ Rules      │
+             │ E15        │ E13        │ E12        │
+             └────────────┴────────────┴────────────┘
+
+                         ┌────────────────────┐
+                         │ BUENAS PRÁCTICAS   │
+                         │ E24–E29 · circuito │
+                         └────────────────────┘
 ```
 
-Anillo de la parte 2, en el sentido de las agujas del reloj desde arriba: Modelos (N), Effort (NE), Contexto (E), Rules (SE), Skills (S), Tools propias (SO), MCP (O), Subagentes (NO).
+Alrededor de Devin, en el sentido de las agujas del reloj desde arriba: Modelos (N), Effort (NE), Contexto (E), Rules (SE), Skills (S), Tools propias (SO), MCP (O) y Subagentes (NO).
 
 ### Ruta de la cámara
 
-Apertura (mapa entero) → Parte 1 → hub → anillo en sentido horario, volviendo al hub cuando una pieza se encaja → hub (plugins y bucle) → Parte 3 → Parte 4 → cierre (mapa entero).
+Portada (Devin) → vista general → Primeros pasos → Devin → alrededor de Devin, en sentido horario, de Modelos a Skills → Devin (el bucle) → Tools propias, MCP y Subagentes → Devin (plugins y token) → Coste → Buenas prácticas → Preguntas.
 
-- Entre escenas contiguas de una misma zona: `--dur-camara-corta`.
-- Entre zonas: `--dur-camara`, con la trayectoria «alejar, viajar, acercar» de `d3.interpolateZoom`.
+- Entre escenas de una misma pantalla, la cámara no se mueve: el contenido cambia en su sitio.
+- Entre pantallas de un mismo bloque (las del centro, siempre contiguas): `--dur-camara-corta`, en línea recta.
+- Entre bloques: `--dur-camara`, con la trayectoria «alejar, viajar, acercar» de `d3.interpolateZoom`.
 - Hacia y desde la vista general: `--dur-camara-larga`.
 
 ### El hub, estado a estado
+
+Las piezas de los temas de alrededor se colocan sin animación al terminar su escena, porque el hub no está a la vista. Las de E14 y E18 entran animadas, con la cámara en Devin.
 
 | Tras la escena | El hub muestra |
 |---|---|
@@ -78,24 +92,22 @@ Apertura (mapa entero) → Parte 1 → hub → anillo en sentido horario, volvie
 
 ### Restricciones para el esqueleto
 
-- Cada escena se diseña para verse a **escala 1** (texto nítido, mínimo 24 px a 1920×1080).
+- Cada pantalla se diseña para verse a **escala 1** (texto nítido, mínimo 24 px a 1920×1080).
 - El hub completo debe leerse encuadrado entero: dimensionar sus piezas para que ningún texto baje de 24 px a esa escala.
-- Los encuadres de «pieza al hub» (zona + hub a la vez) solo muestran movimiento y formas, sin texto que leer.
-- El mapa de referencia de `design/design-system.html` (sección «Aplicado») sigue la estructura antigua de 8 zonas; hay que actualizarlo a este esquema.
+- Las tapas se leen desde la vista general, a una escala de 1:8 aproximadamente: se dibujan ×8, y su título se ve allí como `--tipo-entradilla`.
 
 ---
 
 ## Apertura · ~2 min
 
-### E01 · Bienvenida y mapa
+### E01 · Portada y mapa
 
 Guion: Apertura.
 
 Mensaje: esto es lo que vamos a recorrer.
 
-1. Vista general del mapa con todo atenuado. Título «Devin en el día a día» y subtítulo «Cómo aprovecharlo mejor y controlar el consumo». Logo de Openbank.
-2. Las cuatro regiones se iluminan una a una, cada una con su pregunta: «¿Dónde está cada cosa?», «¿Qué es cada pieza?», «¿Cuánto cuesta?», «¿Cómo lo uso bien?».
-3. → Cámara a la Parte 1.
+1. Portada: el logo de Devin, en grande, en el centro del mapa. Es la tapa del bloque central vista de cerca.
+2. La cámara se aleja a la vista general: los cinco bloques, cada uno con su tapa y su título (Primeros pasos, Principales herramientas, Coste, Buenas prácticas y Preguntas).
 
 ---
 
@@ -137,7 +149,7 @@ Pendiente: capturas reales de Desktop, con los controles y el consumo localizado
 
 ---
 
-## Parte 2 · Cómo funciona: las piezas · ~25 min
+## Parte 2 · Principales herramientas · ~25 min
 
 ### E04 · El agente, vacío · ~0,5 min
 
@@ -145,7 +157,7 @@ Guion: transición a la parte 2.
 
 Mensaje: vamos a montar el agente pieza a pieza.
 
-1. Cámara al hub. La tarjeta del agente, con los huecos vacíos de cada pieza.
+1. La tarjeta del agente, con los huecos vacíos de cada pieza.
 
 ### E05 · Modelos: niveles y generaciones · ~2 min
 
@@ -181,7 +193,7 @@ Mensaje: arriba a la izquierda es mejor, y la generación pesa tanto como el niv
 3. Lectura 1: se resaltan Opus 5 en Max y Opus 5.5 en su esfuerzo por defecto. Flecha: «más acierto por ~1/5 del coste».
 4. Lectura 3: dos puntos a la misma altura, uno de un modelo barato con más esfuerzo y otro de uno caro con menos.
 
-La lectura 2 (rendimientos decrecientes del esfuerzo) se hace en E08 sobre esta misma gráfica.
+La lectura 2 (rendimientos decrecientes del esfuerzo) se hace en E08, con esta misma gráfica en pequeño junto al dial.
 
 Datos: redibujar desde `referencias/graficas/coste-rendimiento_anthropic-opus55-terminalbench4_2026-09.png`, con los valores aproximados leídos de la imagen. Es una referencia de potencia, no una medida exacta.
 
@@ -195,7 +207,6 @@ Mensaje: lo que importa es el coste de completar bien la tarea.
 
 1. Tabla de tipo de tarea y estrategia inicial, con escalonado.
 2. Dos contadores: un modelo barato que necesita tres intentos frente a uno bueno que acierta a la primera; el barato acaba costando más. Etiqueta «Cifras ficticias».
-3. **Pieza al hub**: encuadre zona + hub; el modelo viaja y se encaja.
 
 ### E08 · Effort · ~2,5 min
 
@@ -205,10 +216,9 @@ Mensaje: subir el esfuerzo encarece más de lo que mejora.
 
 1. Dial de effort con cinco posiciones: Low, Medium, High, XHigh, Max. Nota pequeña: «Depende del modelo: SWE-2 solo tiene tres niveles».
 2. El dial gira de Low a Max: crecen las fichas de razonamiento (rayadas) y suben dos contadores, latencia y coste.
-3. Cámara corta a la gráfica de E06. Se resaltan los puntos de una línea: de Low a Medium, salto grande; de XHigh a Max, casi nulo.
-4. Vuelta a E08: «El esfuerzo no sustituye al contexto». Una pieza de información falta y pensar más no la crea.
+3. Junto al dial, la gráfica de E06 en pequeño. Se resaltan los puntos de una línea: de Low a Medium, salto grande; de XHigh a Max, casi nulo.
+4. «El esfuerzo no sustituye al contexto». Una pieza de información falta y pensar más no la crea.
 5. Tarjeta de consejo: «Empieza por un nivel medio; sube cuando lo justifique la tarea».
-6. **Pieza al hub**: el dial se une al modelo.
 
 Componentes nuevos: dial de effort, tarjeta de consejo.
 
@@ -246,7 +256,6 @@ Mensaje: decidir con criterio cuándo seguir, compactar o empezar de cero.
 1. Tres caminos desde una sesión: continuar, compactar y sesión nueva, cada uno con sus situaciones de la tabla.
 2. Compactar: el recipiente lleno se comprime en una capa de resumen. Al lado aparece la lista de lo que hay que guardar (cinco puntos).
 3. Consejos: «Una sesión por objetivo» y «No reinicies continuamente (y la caché… en la parte 3)».
-4. **Pieza al hub**: el recipiente se encaja en el agente.
 
 Pendiente: comando `/compact` y limpiar contexto en Desktop.
 
@@ -260,7 +269,6 @@ Mensaje: lo que va siempre debe ser breve y estable.
 2. Niveles: árbol del repositorio. El AGENTS.md de la raíz se carga al inicio; el de un subdirectorio aparece cuando el agente entra en esa carpeta.
 3. Un AGENTS.md largo engorda la capa del fondo, y en cada llamada se relee: un contador hace tic en cada llamada.
 4. Consejo: «Breve y estable; para lo largo, una skill». Una rule apunta a una skill.
-5. **Pieza al hub**: el documento se coloca al fondo del recipiente del hub.
 
 Componente nuevo: árbol de repositorio.
 
@@ -274,7 +282,6 @@ Mensaje: una skill solo ocupa contexto cuando se usa.
 2. Llega una tarea que encaja con una: esa skill se despliega y su contenido entra en el recipiente. Las demás siguen plegadas.
 3. Dos formas de activarla: `/nombre-de-la-skill` (nosotros) o el agente la elige por su descripción.
 4. Cuándo crear una: tres ejemplos y su anatomía (cuándo se aplica, qué necesita, pasos, resultado).
-5. **Pieza al hub**: las skills plegadas se colocan junto al agente.
 
 ### E14 · El bucle del agente · ~1,5 min · en el hub
 
@@ -282,7 +289,7 @@ Guion: 2.6, primeros párrafos.
 
 Mensaje: las herramientas convierten un modelo en un agente.
 
-1. Cámara al hub. Aparecen las herramientas de serie: `file-text` (leer), `pencil` (editar), `search` (buscar) y `terminal` (ejecutar).
+1. Aparecen las herramientas de serie: `file-text` (leer), `pencil` (editar), `search` (buscar) y `terminal` (ejecutar).
 2. El bucle da una vuelta lenta: el modelo decide, una herramienta pulsa y su resultado entra como ficha en el recipiente. Rótulo: «Esto es un agente».
 3. El bucle da tres vueltas más rápidas y el recipiente crece. Esto prepara la parte 3.
 
@@ -302,7 +309,6 @@ Mensaje: el agente decide por la descripción; una tool da manos, una skill da o
 5. «No compiten»: una skill se acopla a una herramienta.
 6. Nuestras herramientas: tabla con dónde está cada una, qué permisos necesita y quién la mantiene.
 7. Consejos para quien las crea (tres).
-8. **Pieza al hub**: las herramientas propias se colocan junto a las de serie.
 
 Pendiente: herramientas reales del departamento.
 
@@ -317,7 +323,6 @@ Mensaje: MCP es el enchufe para nuestras herramientas.
 1. Conector MCP del hub hacia dos servidores: uno local (`laptop`) y uno remoto (`cloud`).
 2. Cómo se añaden: `devin mcp add` (fichero local o de proyecto) y Cloud → Customize → MCPs.
 3. Candado: «Credenciales nunca en el repositorio».
-4. **Pieza al hub**: el conector.
 
 Componentes nuevos: conector MCP, candado.
 
@@ -334,7 +339,6 @@ Mensaje: contexto separado, coste propio.
 5. El encargo de ejemplo, en una tarjeta en mono.
 6. Dos subagentes editan el mismo archivo y aparece un conflicto. Solución: repartir archivos.
 7. Consejo: «No por defecto: cuando separar aporte más que coordinar».
-8. **Pieza al hub**: el subagente con su recipiente.
 
 ### E18 · Plugins · ~1 min · en el hub
 
@@ -350,7 +354,7 @@ Componente nuevo: caja de plugin.
 
 ---
 
-## Parte 3 · Tokens y coste · ~10 min
+## Parte 3 · Coste · ~10 min
 
 ### E19 · Qué es un token · ~1,5 min · en el hub
 
@@ -360,7 +364,6 @@ Mensaje: en cada llamada el modelo relee todo el contexto.
 
 1. La frase «Arregla la paginación» se parte en fichas de token.
 2. El bucle del agente gira y en cada vuelta una línea recorre todo el recipiente («se relee»). Un contador de llamadas sube: 1, 2, 3…
-3. → Cámara a la región de la parte 3.
 
 ### E20 · Qué pagamos · ~1 min
 
@@ -416,7 +419,7 @@ Datos: guion, Anexo A, con los valores por llamada.
 
 ## Parte 4 · Buenas prácticas · ~9,5 min
 
-La región es un circuito. Cada escena es una parada del método y un punto recorre el circuito al pasar de una a otra.
+La pantalla es un circuito fijo. Cada escena es una parada del método: al pasar de una a otra, un punto recorre el circuito hasta la parada siguiente y su contenido sustituye al de la anterior, sin mover la cámara.
 
 ### E24 · Definir la tarea · ~2,5 min
 
@@ -478,21 +481,28 @@ Mensaje: lo que gasta sin aportar.
 
 ---
 
-## Cierre · ~2 min
+## Cierre · Preguntas · ~2 min
 
-### E30 · Antes de pulsar Enter
+Una sola pantalla: el cierre y, en su sitio, el turno de preguntas.
+
+### E30 · Antes de pulsar Enter · ~2 min
 
 Guion: Cierre.
 
 Mensaje: cinco preguntas antes de empezar.
 
-1. La cámara se aleja al mapa entero.
-2. Las cinco preguntas aparecen una a una y cada una ilumina su región: resultado → Parte 4, configuración → Partes 1 y 2, contexto → Contexto, herramientas → Tools y plugins, terminado → Verificar.
-3. Mensaje final y logo de Openbank.
+1. Las cinco preguntas aparecen una a una, cada una con la etiqueta del bloque donde se explica: resultado → Buenas prácticas, configuración → Primeros pasos y Principales herramientas, contexto → Contexto, herramientas → Tools y plugins, terminado → Verificar.
+2. Mensaje final y logo de Openbank.
 
-### E31 · Caso práctico (pendiente de decidir)
+### E31 · Preguntas
 
-Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de paginación pasa por cada región con la decisión que toca en cada una.
+Mensaje: turno de preguntas.
+
+1. Rótulo «¿Preguntas?», con el título de la charla, «Devin en el día a día», y el logo de Openbank.
+
+### E32 · Caso práctico (pendiente de decidir)
+
+Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de paginación pasa por cada bloque con la decisión que toca en cada uno.
 
 ---
 
@@ -500,13 +510,13 @@ Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de pagi
 
 | Bloque | Escenas | Pasos | Tiempo |
 |---|---|---:|---:|
-| Apertura | E01 | 3 | ~2 min |
-| Parte 1 | E02–E03 | 14 | ~8 min |
-| Parte 2 | E04–E18 | 67 | ~25 min |
-| Parte 3 | E19–E23 | 19 | ~10 min |
-| Parte 4 | E24–E29 | 16 | ~9,5 min |
-| Cierre | E30 | 3 | ~2 min |
-| **Total** | **30** | **122** | **~57 min** |
+| Apertura | E01 | 2 | ~2 min |
+| Parte 1 · Primeros pasos | E02–E03 | 14 | ~8 min |
+| Parte 2 · Principales herramientas | E04–E18 | 59 | ~25 min |
+| Parte 3 · Coste | E19–E23 | 18 | ~10 min |
+| Parte 4 · Buenas prácticas | E24–E29 | 16 | ~9,5 min |
+| Cierre · Preguntas | E30–E31 | 3 | ~2 min + preguntas |
+| **Total** | **31** | **112** | **~57 min + preguntas** |
 
 Lo marcado con [A] se puede saltar: cuatro pasos completos (E05, E10, E15 y E21) y dos detalles dentro de otros pasos (E18 y E23). Saltarlo todo ahorra unos 3 minutos.
 
@@ -534,4 +544,4 @@ Siguiendo la regla «cada concepto, un único dibujo», hay que diseñarlos una 
 - [ ] Herramientas reales del departamento (E15).
 - [ ] Tarifas reales de los modelos de la cuenta (E21).
 - [ ] Duración de la caché en Devin (E22).
-- [ ] Decidir el caso práctico (E31).
+- [ ] Decidir el caso práctico (E32).
