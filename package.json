@@ -5,10 +5,16 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "predev": "npm run escenas",
+    "build": "vite build",
+    "prebuild": "npm run escenas",
+    "preview": "vite preview",
     "build:design": "vite build --mode design",
+    "escenas": "node scripts/escenas.mjs",
     "iconos": "node scripts/iconos.mjs"
   },
   "dependencies": {
+    "d3-interpolate": "3.0.1",
     "gsap": "3.15.0"
   },
   "devDependencies": {

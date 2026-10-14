@@ -135,7 +135,7 @@ function v3(n) {
     en(120, 860, '<div class="vregla" style="width:780px">Una vuelta por llamada: decide, usa una herramienta y lee su resultado. Un punto recorre el círculo.</div>') +
     en(1100, 150, '<div class="vh">Hueco del hub</div>') +
     en(1100, 210, `<div style="position:relative;width:700px;height:400px">
-        ${en(0, 0, hueco('cpu', 'Modelo', 220, 96))}
+        ${en(0, 0, hueco('cpu', 'Modelo', 220, 96, 'lleno'))}
         ${en(240, 0, hueco('gauge', 'Effort', 220, 96))}
         ${en(480, 0, hueco('wrench', 'Tools', 112, 112, 'circulo'))}
         ${en(612, 12, hueco('plug', 'MCP', 88, 88, 'circulo', 'icono--s'))}

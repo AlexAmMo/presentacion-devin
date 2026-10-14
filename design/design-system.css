@@ -194,16 +194,16 @@
   --dur-entrada: 0.5s;        /* Entrada · aparición de elementos */
   --dur-contador: 0.9s;       /* Progresión · cifras que suben */
   --dur-trazado: 1.2s;        /* Progresión · líneas que se dibujan y puntos que recorren un camino */
-  --dur-camara-corta: 0.8s;   /* Cámara · zonas vecinas */
-  --dur-camara: 1.2s;         /* Cámara · vuelo estándar */
-  --dur-camara-larga: 1.5s;   /* Cámara · saltos largos y vista general */
+  --dur-camara-corta: 0.8s;   /* Cámara · entre escenas de una misma zona, en línea recta */
+  --dur-camara: 1.2s;         /* Cámara · vuelo estándar: entre zonas de una misma región (el hub y su anillo) */
+  --dur-camara-larga: 1.5s;   /* Cámara · saltos largos: hacia o desde la vista general y entre regiones (partes 1, 3 y 4, y el centro) */
   --dur-temporizador: 3s;     /* Tiempo simulado · un temporizador se agota (cinco minutos comprimidos) */
 
   /* ── Movimiento · curvas (nombres de GSAP) ───────────────────────────── */
   --ease-aparicion: power3.out;       /* Apariciones · con --dur-entrada */
   --ease-salida: power2.in;           /* Salidas · con --dur-salida */
-  --ease-camara: power2.inOut;        /* Cámara · con --dur-camara */
-  --ease-camara-larga: sine.inOut;    /* Cámara en saltos largos · con --dur-camara-larga */
+  --ease-camara: power2.inOut;        /* Cámara, también en los vuelos cortos (--dur-camara-corta) · con --dur-camara */
+  --ease-camara-larga: sine.inOut;    /* Cámara en saltos largos y vista general · con --dur-camara-larga */
   --ease-interfaz: back.out(1.4);     /* Interfaz: efecto muelle · con --dur-entrada */
   --ease-caida: power2.in;            /* Fichas que caen al recipiente · con --dur-entrada */
   --ease-asentado: back.out(1.2);     /* La capa se asienta · con --dur-entrada */

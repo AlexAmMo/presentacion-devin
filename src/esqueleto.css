@@ -1,0 +1,66 @@
+/* Esqueleto de la presentación: escenario, mundo, marcadores de posición y hub.
+   Solo compone piezas de componentes.css con variables de design-system.css: aquí no
+   se define ningún aspecto nuevo. Las posiciones en px son de composición. */
+
+html, body { margin: 0; height: 100%; }
+body.presentacion { overflow: hidden; background: var(--color-fondo); color: var(--color-texto-1); font-family: var(--fuente-texto); }
+
+/* El escenario es 16:9 y se centra en la ventana (main.js le da tamaño y sitio). */
+#escenario { position: fixed; overflow: hidden; background: var(--color-fondo); }
+#mundo { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
+#pantalla { position: absolute; left: 0; top: 0; width: var(--escena-ancho); height: var(--escena-alto); transform-origin: 0 0; pointer-events: none; }
+.escena { position: absolute; }
+#pantalla > .escena { inset: 0; }
+.oculto { visibility: hidden; }
+.solo-lectores { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ── Marcador de posición ─────────────────────────────────────────────── */
+
+.marcador { position: absolute; box-sizing: border-box; min-width: 0; min-height: 0; padding: var(--esp-4) var(--esp-6); }
+.marcador--escena { inset: var(--margen-y) var(--margen-x); }
+.marcador--pantalla { left: var(--margen-x); right: var(--margen-x); bottom: var(--margen-y); min-height: 0; padding: var(--esp-4) var(--esp-5); }
+.marcador--panel { padding: var(--esp-4); }
+.marcador__cuerpo { flex: 1; min-height: 0; display: grid; grid-template-columns: 460px 1fr; gap: var(--esp-5); }
+.marcador--panel .marcador__cuerpo { grid-template-columns: 1fr; grid-template-rows: auto 1fr; gap: var(--esp-4); }
+.marcador--panel .marcador__ficha { gap: var(--esp-2); }
+.marcador--pantalla .marcador__cuerpo { grid-template-columns: 560px 1fr; }
+.marcador__ficha { display: flex; flex-direction: column; align-items: flex-start; gap: var(--esp-3); min-width: 0; }
+.marcador__titulo, .marcador__mensaje, .marcador__meta { margin: 0; }
+.marcador__mensaje { color: var(--color-texto-2); }
+.marcador__mensaje::first-letter { text-transform: uppercase; }
+.marcador__meta { color: var(--color-texto-3); font-weight: var(--peso-texto); }
+/* Texto de escenas.md (src/texto.js): código y símbolos en mono, iconos alineados con el texto. */
+.texto__codigo, .texto__simbolo { font-family: var(--fuente-mono); font-weight: var(--peso-texto); }
+.texto__codigo { font-size: var(--tipo-mono-s); }
+.texto__icono { vertical-align: middle; }
+
+.marcador__pasos {
+  list-style: none; margin: 0; padding: 0; min-height: 0; overflow: hidden;
+  display: flex; flex-direction: column; gap: var(--esp-2);
+  font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto);
+}
+.marcador--denso .marcador__pasos { font-size: var(--tipo-etiqueta); gap: var(--esp-1); }
+.marcador__detalle { margin: var(--esp-1) 0 0; padding-left: var(--esp-4); }
+.paso { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: var(--esp-2); color: var(--color-texto-3); }
+.paso__n {
+  box-sizing: border-box; min-width: var(--esp-5); padding: 0 var(--esp-2); text-align: center;
+  border: var(--trazo-fino) solid currentColor; border-radius: var(--radio-pildora);
+  font: var(--peso-enfasis) var(--tipo-mono-s)/var(--interlineado-texto) var(--fuente-mono);
+}
+.paso__marcas { display: inline-flex; flex-wrap: wrap; gap: var(--esp-1); margin-left: var(--esp-1); vertical-align: middle; }
+.marcador__marca { color: var(--color-texto-2); }
+/* Hechos en sólido; el actual, en acento, solo en la escena en curso (las terminadas se quedan en su último paso). */
+.paso--hecho, .escena:not(.escena--actual) .paso--actual { color: var(--color-texto-2); }
+.paso--hecho .paso__n, .escena:not(.escena--actual) .paso--actual .paso__n { border-color: var(--color-entrada); background: var(--color-entrada); color: var(--color-sobre-entrada); }
+.escena--actual .paso--actual { color: var(--color-texto-1); font-weight: var(--peso-enfasis); }
+.escena--actual .paso--actual .paso__n { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); }
+/* Pasos [A] cuando se saltan (tecla A). */
+.sin-avanzados .paso--avanzado:not(.paso--actual) .paso__texto { text-decoration: line-through; }
+
+/* ── Hub ──────────────────────────────────────────────────────────────── */
+
+.hub { position: absolute; }
+.hub > *, .hub__pieza, .hub__viajero { position: absolute; }
+.hub__plugin { box-sizing: border-box; }
+.hub__viajero > .hueco { box-sizing: border-box; }
+.hub .hueco { box-sizing: border-box; }

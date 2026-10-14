@@ -1,0 +1,56 @@
+/* Vista de ponente (index.html?ponente). No se proyecta: se ve en el portátil, pero
+   sigue el mismo sistema y ningún texto baja de --tipo-etiqueta. Un solo acento: el
+   botón «Siguiente». */
+
+body.ponente {
+  box-sizing: border-box; height: 100dvh; margin: 0; padding: var(--esp-3) var(--esp-5);
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--esp-3);
+  background: var(--color-fondo); color: var(--color-texto-1);
+  font: var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.ponente p, .ponente h1, .ponente h2, .ponente ul { margin: 0; }
+.ponente .icono { vertical-align: middle; }
+
+.ponente__barra { display: flex; justify-content: space-between; align-items: center; gap: var(--esp-4); flex-wrap: wrap; }
+.ponente__conexion { display: inline-flex; align-items: center; gap: var(--esp-1); color: var(--color-texto-2); font-weight: var(--peso-enfasis); }
+.ponente--desconectada .ponente__conexion { color: var(--color-texto-1); }
+.ponente__crono { display: flex; align-items: center; gap: var(--esp-2); }
+.ponente__tiempo { min-width: 4ch; text-align: right; font: var(--peso-display) var(--tipo-entradilla)/var(--interlineado-cifra) var(--fuente-display); font-variant-numeric: var(--cifras); }
+
+/* Dos columnas independientes: a la izquierda, la escena y el progreso; a la derecha, «Ahora»
+   (hasta dos tercios del alto) y «Siguiente», que cede espacio y se desplaza si no cabe. */
+.ponente__cuerpo { min-height: 0; display: grid; grid-template-columns: 2fr 3fr; gap: var(--esp-5); }
+.ponente__columna { min-height: 0; display: flex; flex-direction: column; gap: var(--esp-3); }
+.ponente__escena { flex: 1 1 auto; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: var(--esp-2); }
+.ponente__paso { flex: 0 0 auto; max-height: 65%; }
+.ponente__paso--siguiente { flex: 0 1 auto; max-height: none; }
+.ponente__lugar { color: var(--color-texto-3); }
+.ponente__titulo { font: var(--peso-display) var(--tipo-entradilla)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
+.ponente__mensaje { color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__mensaje::first-letter { text-transform: uppercase; }
+
+/* Si un paso es muy largo, su tarjeta se desplaza: los mandos nunca salen de la ventana. */
+.ponente__paso {
+  min-height: 0; overflow: auto; padding: var(--esp-3) var(--esp-4); border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m);
+  background: var(--color-superficie); display: flex; flex-direction: column; gap: var(--esp-2);
+}
+.ponente__paso--siguiente { border-style: dashed; border-color: var(--color-texto-3); background: transparent; color: var(--color-texto-2); }
+.ponente__rotulo { color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__texto { font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__paso--siguiente .ponente__texto { font-size: var(--tipo-etiqueta); }
+.ponente__texto ul { margin-top: var(--esp-1); padding-left: var(--esp-4); }
+
+.ponente__progreso { flex: none; display: flex; flex-direction: column; gap: var(--esp-1); color: var(--color-texto-2); }
+.ponente__barra-progreso { height: var(--esp-1); border-radius: var(--radio-pildora); background: var(--color-separador); overflow: hidden; }
+.ponente__barra-progreso > span { display: block; height: 100%; background: var(--color-texto-1); }
+
+.ponente__mandos { display: flex; flex-wrap: wrap; gap: var(--esp-2); }
+.ponente__boton {
+  display: inline-flex; align-items: center; gap: var(--esp-1); padding: var(--esp-2) var(--esp-4); cursor: pointer;
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-pildora);
+  background: var(--color-superficie); color: var(--color-texto-1);
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.ponente__boton:focus-visible { outline: var(--trazo-contorno) solid var(--color-contorno); outline-offset: var(--trazo-contorno); }
+.ponente__boton--principal { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); }
+.ponente__crono .ponente__boton { padding: var(--esp-1) var(--esp-3); }

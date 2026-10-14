@@ -354,17 +354,17 @@ gsap.effects.subirContador('.total', { hasta: 0.43, decimales: 2 });</pre>
     <li>Se registran en <code>motion.js</code> con <code>gsap.registerEffect({ …, extendTimeline: true })</code>: funcionan sueltos (<code>gsap.effects.nombre</code>) y como método de un timeline (<code>tl.nombre(objetivos, opciones, posición)</code>).</li>
     <li>Se nombran con un verbo en infinitivo y van precedidos de un comentario <code>/** … */</code> que esta página muestra como descripción.</li>
     <li>Sus valores por defecto se leen de las variables <b>cada vez que se llaman</b>. Las opciones que se pasen ganan, pero nunca son duraciones ni curvas literales: se pasan con <code>s()</code> y <code>v()</code>. Las distancias en px sí pueden ir literales.</li>
-    <li>Devuelven su tween o timeline y animan solo dentro de su zona: <b>ningún efecto mueve la cámara</b>.</li>
+    <li>Devuelven su tween o timeline y animan solo dentro de su zona: <b>ningún efecto mueve la cámara</b>, salvo <code>volarCamara</code>, que es la cámara y solo lo usa <code>src/camara.js</code>.</li>
     <li>Se pueden rebobinar: los cambios de clase se hacen con <code>tl.set(…, { attr: { class } })</code> y nunca en callbacks, así que retroceder o saltar hacia atrás no deja estados colgados.</li>
     <li>En modo estático (<code>?estatico</code>, <code>prefers-reduced-motion</code> o <code>data-movimiento="estatico"</code> en <code>&lt;html&gt;</code>) duran 0 y saltan a su estado final.</li>
-    <li>Un efecto nuevo lleva en el mismo cambio: su registro, su demo en <code>doc/documentacion.js</code> y su nombre en la línea <code>movimiento:</code> de los componentes que lo usan. Si falta algo, «Comprobaciones» lo marca.</li>
+    <li>Un efecto nuevo lleva en el mismo cambio: su registro, su demo en <code>doc/documentacion.js</code> y su nombre en la línea <code>movimiento:</code> de los componentes que lo usan (<code>volarCamara</code> no tiene ficha: mueve el mundo entero). Si falta algo, «Comprobaciones» lo marca.</li>
   </ol>
   <h3 class="sub">Ejecutar y exportar</h3>
   <ul>
     <li><code>npm install</code> una vez, con conexión. Después todo funciona sin ella.</li>
     <li><code>npm run dev</code>: servidor de Vite. Esta página está en <code>http://localhost:5173/design/design-system.html</code>.</li>
     <li><code>npm run build:design</code>: esta página como un único HTML autocontenido en <code>dist-design/design/design-system.html</code>, con código, CSS, fuentes e imágenes dentro. Se abre con doble clic.</li>
-    <li>La presentación (<code>index.html</code>) tendrá su propio build de un solo fichero; se añade en el esqueleto.</li>
+    <li><code>npm run build</code>: la presentación como un único HTML autocontenido en <code>dist/index.html</code>; <code>npm run preview</code> lo sirve. Con <code>?ponente</code>, el mismo fichero es la vista de ponente (tecla <code>P</code>).</li>
     <li><code>DESIGN.md</code>, en la raíz, es un resumen derivado para Impeccable: se regenera con <code>/impeccable document</code> cuando cambia <code>design/</code> y nunca se edita a mano.</li>
   </ul>
   <h3 class="sub">Ampliar el sistema</h3>

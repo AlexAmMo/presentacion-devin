@@ -216,6 +216,10 @@ components:
     rounded: "{rounded.m}"
     padding: "32px"
     width: "760px"
+  hueco-lleno:
+    backgroundColor: "{colors.prussian}"
+    textColor: "{colors.blanco}"
+    rounded: "{rounded.m}"
 ---
 
 <!-- Derivado: generado con `/impeccable document` a partir de design/ (design-system.css, componentes.css, motion.js, dibujos.js, iconos.js y assets/logos/). No se edita a mano: si cambia design/, se regenera. Si este fichero y design/ discrepan, manda design/. -->
@@ -310,7 +314,7 @@ Cada estilo tiene su clase `.tipo-*` en `componentes.css`; las escenas no escrib
 
 Cada escena mide `--escena-ancho` × `--escena-alto` (1920×1080) y se diseña para verse a escala 1, que es la escala de proyección. La zona segura deja `--margen-x` a los lados y `--margen-y` arriba y abajo. El espaciado sigue una base de 8 px (`--esp-1` a `--esp-8`): 8 entre capas y entre un icono y su texto, 16 dentro de una etiqueta o una fila, 24 de relleno en fichas y tarjetas pequeñas, 32 en tarjetas, 48 entre bloques, 64 entre grupos, 96 entre secciones y 128 para distancias de caída y grandes separaciones.
 
-No hay diseño adaptable: la presentación se proyecta a 1920×1080. Todas las escenas viven en un único mundo, el mapa, y una cámara las encuadra transformando ese mundo. En el mapa, cada zona es una isla y la ruta de la cámara se dibuja como un camino de puntos navy de 10 px con huecos de 24 px (`--ruta-grosor`, `--ruta-hueco`).
+No hay diseño adaptable: la presentación se proyecta a 1920×1080. Todas las escenas viven en un único mundo, el mapa, y una cámara (`volarCamara`) las encuadra transformando ese mundo. El esqueleto de la presentación (`index.html` y `src/`) compone este vocabulario: un mapa de escenas de 1920×1080, la cámara y el hub; este documento describe `design/`, no `src/`. En el mapa, cada zona es una isla y la ruta de la cámara se dibuja como un camino de puntos navy de 10 px con huecos de 24 px (`--ruta-grosor`, `--ruta-hueco`).
 
 Las medidas de cada pieza viven en el grupo «Componentes · medidas» de `design-system.css` (ficha 60 px y 52 px la pequeña, contador 64 px, recipiente 440×760 y 64×112 el del subagente, agente 390×150, subagente 312×112, documento 300×340, skill 390×250 con pestaña de 150×40, herramienta 112 px, isla 320×190 como mínimo, definición 600 px, conector 88 px, candado 96 px, consejo 760 px como máximo, dial de 200 px de radio, temporizador de 240 px, parada de circuito de 64 px, punto de 28 px y bucle de 480 px). La geometría SVG (gráfica, dial, temporizador, circuito, bucle y curvas para caminos) sale de `dibujos.js`, que lee esas mismas variables y no lleva colores.
 
@@ -319,14 +323,14 @@ Solo `motion.js` lee las variables de movimiento; las escenas encadenan sus efec
 - **Micro** (≤ 0,3 s): `--dur-micro` (0,2 s) para estados, ticks y pulsaciones; `--dur-salida` (0,3 s) para salidas.
 - **Entrada** (0,4–0,6 s): `--dur-entrada` (0,5 s) para la aparición de elementos.
 - **Progresión** (0,8–1,5 s): `--dur-contador` (0,9 s) para cifras que suben; `--dur-trazado` (1,2 s) para líneas que se dibujan y puntos que recorren un camino.
-- **Cámara** (0,8–1,5 s): `--dur-camara-corta` (0,8 s) entre zonas vecinas, `--dur-camara` (1,2 s) como vuelo estándar y `--dur-camara-larga` (1,5 s) para saltos largos y la vista general.
+- **Cámara** (0,8–1,5 s): `--dur-camara-corta` (0,8 s) entre escenas de una misma zona, en línea recta; `--dur-camara` (1,2 s) como vuelo estándar, entre zonas de una misma región (el hub y su anillo); y `--dur-camara-larga` (1,5 s) para los saltos largos: hacia o desde la vista general y entre regiones (partes 1, 3 y 4, y el centro).
 - **Tiempo simulado** (2–5 s, siempre lineal): `--dur-temporizador` (3 s), cinco minutos comprimidos. Es el paso del tiempo dentro de la escena y no se usa para transiciones.
 
-Las curvas van por propósito: apariciones con `--ease-aparicion` (`power3.out`), salidas con `--ease-salida` (`power2.in`), cámara con `--ease-camara` (`power2.inOut`) y `--ease-camara-larga` (`sine.inOut`), interfaz con `--ease-interfaz` (`back.out(1.4)`), cambios de estado breves con `--dur-micro` (atenuar, avivar, pulsar, caducar) con un ease-out suave, `--ease-estado` (`power1.out`), caídas al recipiente con `--ease-caida` (`power2.in`), asentado de capas con `--ease-asentado` (`back.out(1.2)`, cuyo rebote corto se ve porque la capa crece en escala vertical), cifras con `--ease-contador` (`power1.out`), trazados y recorridos con `--ease-trazado` (`power1.inOut`) y el temporizador con `--ease-temporizador` (`none`). Los escalonados son de 0,06 s para listas, tarjetas y leyendas (`--escalonado`), 0,03 s para fichas de token (`--escalonado-tokens`) y 0,12 s para capas (`--escalonado-capas`).
+Las curvas van por propósito: apariciones con `--ease-aparicion` (`power3.out`), salidas con `--ease-salida` (`power2.in`), cámara con `--ease-camara` (`power2.inOut`) y `--ease-camara-larga` (`sine.inOut`, para los saltos largos y la vista general), interfaz con `--ease-interfaz` (`back.out(1.4)`), cambios de estado breves con `--dur-micro` (atenuar, avivar, pulsar, caducar) con un ease-out suave, `--ease-estado` (`power1.out`), caídas al recipiente con `--ease-caida` (`power2.in`), asentado de capas con `--ease-asentado` (`back.out(1.2)`, cuyo rebote corto se ve porque la capa crece en escala vertical), cifras con `--ease-contador` (`power1.out`), trazados y recorridos con `--ease-trazado` (`power1.inOut`) y el temporizador con `--ease-temporizador` (`none`). Los escalonados son de 0,06 s para listas, tarjetas y leyendas (`--escalonado`), 0,03 s para fichas de token (`--escalonado-tokens`) y 0,12 s para capas (`--escalonado-capas`).
 
 Al llegar, la cámara espera `--pausa-tras-camara` (0,3 s) y después anima la zona. Hay que dejar tiempo de lectura: un mínimo de 1,5 s con una etiqueta o una cifra (`--pausa-lectura-corta`) y de 3 s con una frase (`--pausa-lectura`). En general, la pausa es el máximo entre 1,5 s y el número de palabras × 0,3 s (`--pausa-por-palabra`).
 
-El vocabulario de movimiento son los 18 efectos registrados en `motion.js`: `aparecer`, `desaparecer`, `entrarConMuelle`, `atenuar` y `avivar`; `caerAlRecipiente`, `apilarCapa`, `subirNivel`, `alargarCorchete`, `caducarCache` y `subirContador`; `pulsar`, `voltear` (plano, sin 3D) y `desplegar`; y `trazar`, `recorrerCamino`, `girarDial` y `agotarTemporizador`. Ninguno mueve la cámara. Todos son reversibles: los cambios de clase (`caducarCache`, `voltear`, `girarDial`, `agotarTemporizador`, `desplegar`) van dentro del timeline como un `set` de atributo, nunca en un callback, así que la escena se puede rebobinar paso a paso. En modo estático (`?estatico`, `prefers-reduced-motion` o `data-movimiento="estatico"`) duran 0 y saltan a su estado final.
+El vocabulario de movimiento son los 20 efectos registrados en `motion.js`: `aparecer`, `desaparecer`, `entrarConMuelle`, `atenuar` y `avivar`; `caerAlRecipiente`, `apilarCapa`, `subirNivel`, `alargarCorchete`, `caducarCache` y `subirContador`; `pulsar`, `voltear` (plano, sin 3D), `desplegar` y `encajarPieza`; `trazar`, `recorrerCamino`, `girarDial` y `agotarTemporizador`; y `volarCamara`. Ningún efecto mueve la cámara salvo `volarCamara`, que es la cámara: vuela el mundo entre dos vistas (centro x, centro y y ancho visible) y, por defecto, con `--dur-camara` y `--ease-camara`. Entre zonas sigue la trayectoria «alejar, viajar, acercar» (`d3.interpolateZoom`); dentro de una zona, línea recta, con el ancho cambiando en escala logarítmica. Redondea la traslación y solo pone `will-change` mientras vuela, para que el texto llegue nítido. Todos son reversibles: los cambios de clase (`caducarCache`, `voltear`, `girarDial`, `agotarTemporizador`, `desplegar`, `encajarPieza`) van dentro del timeline como un `set` de atributo, nunca en un callback, así que la escena se puede rebobinar paso a paso. En modo estático (`?estatico`, `prefers-reduced-motion` o `data-movimiento="estatico"`) duran 0 y saltan a su estado final.
 
 ### Named Rules
 **La regla de la cámara quieta.** La cámara nunca se mueve mientras algo se anima dentro de la zona: primero llega, luego espera y después anima.
@@ -400,7 +404,9 @@ El vocabulario visual: treinta componentes en `componentes.css`, cada uno con su
 
 ### Hub
 
-**Hueco del hub.** La silueta punteada (3 px, texto 3, sin relleno) de una pieza que aún no está en el agente, con su icono y su nombre en etiqueta. Toma la forma de la pieza que la ocupará: 24 px de radio por defecto, círculo, el radio del recipiente o el del documento. Desaparece con `desaparecer` cuando la pieza llega.
+**Hueco del hub.** La silueta punteada (3 px, texto 3, sin relleno) de una pieza que aún no está en el agente, con su icono (`cpu`, `gauge`, `app-window`, `file-text`, `puzzle`, `terminal`, `wrench`, `plug` o `git-fork`) y su nombre en etiqueta. Toma la forma de la pieza que la ocupará: 24 px de radio por defecto, círculo, el radio del recipiente o el del documento.
+- **Lleno:** la misma silueta en sólido, superficie inversa con texto inverso y trazo continuo. Ocupa el hueco mientras la pieza no tenga su dibujo propio en el hub.
+- **Movimiento:** `encajarPieza`: la silueta viaja en línea recta desde su zona hasta su hueco (`--dur-trazado`, `--ease-trazado`), desaparece y el hueco pasa a lleno. Cuando llegue la pieza con su dibujo, el hueco se va con `desaparecer`.
 
 ### Herramientas y MCP
 

@@ -45,7 +45,7 @@ export function leerEfectos(js) {
   return [...js.matchAll(/\/\*\*\s*((?:[^*]|\*(?!\/))*?)\s*\*\/\s*\nregistrar\('(\w+)'([\s\S]*?)(?=\n\/\*\*|\n\/\/ ──|$)/g)]
     .map(([, descripcion, nombre, cuerpo]) => ({
       nombre,
-      descripcion: descripcion.replace(/\s*\n\s*\*\s*/g, ' '),
+      descripcion: descripcion.replace(/^\*\s*/, '').replace(/\s*\n\s*\*\s*/g, ' '),
       // Solo las variables que el efecto lee con s(), v() o px(): no cuentan clases como `${clase}--fallo`.
       variables: [...new Set([...cuerpo.matchAll(/\b(?:s|v|px)\('(--[\w-]+)'/g)].map(m => m[1]))],
     }));

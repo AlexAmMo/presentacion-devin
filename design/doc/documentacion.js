@@ -265,6 +265,10 @@ const etiquetasDemo = clase => ['Modelos', 'Effort', 'Contexto'].map((t, i) => `
 const herramientaDemo = `<div class="herramienta"><div class="herramienta__circulo">${icono('wrench', 'icono--l')}</div><span class="herramienta__nombre">incidencias</span></div>`;
 const paradasDemo = ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(24 + i), nombre }));
 let posicionDial = 0;
+// Demo de la cámara: un escenario de 640×360 y cuatro vistas [centro x, centro y, ancho visible] del mundo.
+const PANTALLA_DEMO = [640, 360];
+const VISTAS_DEMO = [[960, 540, 1920], [3360, 540, 1920], [2160, 2100, 1920], [2160, 1320, 5600]];
+let vistaDemo = 0;
 
 const DEMOS = {
   aparecer: { html: fichasDemo, play: e => gsap.effects.aparecer($$('.ficha', e), { stagger: s('--escalonado-tokens') }) },
@@ -325,6 +329,36 @@ const DEMOS = {
     conservar: true,
   },
   agotarTemporizador: { html: () => temporizador({ segundos: 300 }), play: e => gsap.effects.agotarTemporizador($('.temporizador', e)) },
+  encajarPieza: {
+    ancha: true,
+    html: () => `<div style="position:relative;width:900px;height:96px">
+      <div class="hueco" data-hueco style="position:absolute;right:0;top:0;width:220px;height:96px">${icono('cpu')}Modelo</div>
+      <div class="hueco hueco--lleno" data-viajero style="position:absolute;left:0;top:0;width:220px;height:96px;visibility:hidden">${icono('cpu')}Modelo</div></div>`,
+    play: e => gsap.effects.encajarPieza($('[data-viajero]', e), { desde: { x: 0, y: 0 }, hasta: { x: 680, y: 0 }, hueco: $('[data-hueco]', e) }),
+  },
+  volarCamara: {
+    ancha: true,
+    html: () => {
+      const [ancho, alto] = [px('--escena-ancho'), px('--escena-alto')];
+      const k = PANTALLA_DEMO[0] / ancho, [x, y] = VISTAS_DEMO[vistaDemo = 0];
+      const islas = [['1', 'cpu', 'Modelos', 0, 0], ['2', 'gauge', 'Effort', 2400, 0], ['3', 'app-window', 'Contexto', 1200, 1560]].map(([n, ic, nombre, l, t]) =>
+        // Cada isla, con margen dentro de su escena: así se ve el fondo y el movimiento.
+        `<div class="isla" style="position:absolute;left:${l + ancho / 6}px;top:${t + alto / 6}px;width:${(ancho * 2) / 3}px;height:${(alto * 2) / 3}px"><div class="isla__cabecera"><span class="isla__numero">${n}</span>${icono(ic)}</div><div class="isla__nombre">${nombre}</div></div>`).join('');
+      return `<div style="position:relative;width:${PANTALLA_DEMO[0]}px;height:${PANTALLA_DEMO[1]}px;overflow:hidden;border:var(--trazo-fino) solid var(--color-separador);background:var(--color-fondo)">
+        <div data-mundo style="position:absolute;left:0;top:0;transform-origin:0 0;transform:translate(${PANTALLA_DEMO[0] / 2 - x * k}px, ${PANTALLA_DEMO[1] / 2 - y * k}px) scale(${k})">${islas}</div></div>`;
+    },
+    // Cada clic, a la vista siguiente: dos zonas vecinas, una zona lejana y la vista general (más lenta).
+    play: e => {
+      const desde = VISTAS_DEMO[vistaDemo];
+      vistaDemo = (vistaDemo + 1) % VISTAS_DEMO.length;
+      const general = vistaDemo === VISTAS_DEMO.length - 1 || vistaDemo === 0;
+      return gsap.effects.volarCamara($('[data-mundo]', e), {
+        desde, hasta: VISTAS_DEMO[vistaDemo], pantalla: PANTALLA_DEMO,
+        ...(general ? { duration: s('--dur-camara-larga'), ease: v('--ease-camara-larga') } : {}),
+      });
+    },
+    conservar: true,
+  },
 };
 
 function movimiento() {
@@ -386,7 +420,7 @@ function reglas() {
 function aplicado() {
   const tramo = (texto, n) => [texto, `${String(s(n)).replace('.', ',')} s`];
   $('#aplicado-mapa').innerHTML = figura(mapa([
-    tramo('Misma zona', '--dur-camara-corta'), tramo('Entre zonas', '--dur-camara'), tramo('Vista general', '--dur-camara-larga'),
+    tramo('Misma zona', '--dur-camara-corta'), tramo('Entre zonas', '--dur-camara'), tramo('Vista general y entre regiones', '--dur-camara-larga'),
   ]));
   $('#aplicado-e23').innerHTML = figura(e23());
   const { html, pasos, preparar } = e09();
@@ -576,13 +610,14 @@ function comprobaciones() {
   comprobar('Cada componente tiene su muestra en el vocabulario', COMPONENTES.filter(c => c.tipo === 'Componente' && !$(`#vocabulario .${c.clases[0]}`)).map(c => c.nombre));
   comprobar('Cada --tipo-* tiene su clase .tipo-*', [...NOMBRES].filter(n => n.startsWith('--tipo-') && !clasesCss.has(n.slice(2))));
   const registrados = Object.keys(gsap.effects);
+  const SIN_FICHA = new Set(['volarCamara']); // Mueve el mundo entero, no un componente.
   comprobar('Los efectos de las fichas están registrados en motion.js', COMPONENTES.flatMap(c => (c.movimiento ?? '').split(' · ')
     .map(p => p.match(/^(\w+)/)?.[1]).filter(n => n && /^[a-z]+[A-Z]?\w*$/.test(n) && !registrados.includes(n)).map(n => `${c.nombre}: ${n}`)));
   comprobar('Cada efecto registrado tiene descripción, demo y uso en alguna ficha', registrados.flatMap(n => [
     ...(efecto(n) ? [] : [`${n}: sin descripción /** … */`]),
     ...(efecto(n) && /=>|\bexport\b|\bconst\b|\/\/|[{}]/.test(efecto(n).descripcion) ? [`${n}: la descripción contiene código`] : []),
     ...(DEMOS[n] ? [] : [`${n}: sin demo`]),
-    ...(COMPONENTES.some(c => new RegExp(`\\b${n}\\b`).test(c.movimiento ?? '')) ? [] : [`${n}: ninguna ficha lo usa`]),
+    ...(SIN_FICHA.has(n) || COMPONENTES.some(c => new RegExp(`\\b${n}\\b`).test(c.movimiento ?? '')) ? [] : [`${n}: ninguna ficha lo usa`]),
   ]));
   comprobar('Los iconos de las fichas están guardados en iconos.js', COMPONENTES.flatMap(c =>
     [...(c.icono ?? '').matchAll(/(?:^|·\s*)([a-z][a-z0-9-]*)/g)].map(m => m[1]).filter(n => !ICONOS[n]).map(n => `${c.nombre}: ${n}`)));

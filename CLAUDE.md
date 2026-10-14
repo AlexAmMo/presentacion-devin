@@ -21,6 +21,14 @@ Todo lo visual y todo el movimiento salen de estos ficheros. No se copian ni se 
 
 La presentación se construye con Vite y se exporta a un único HTML autocontenido que funciona con doble clic y sin conexión. Nada se carga por CDN.
 
+## La presentación
+
+- `index.html` y `src/`: el mapa con la cámara, la navegación y la vista de ponente (el mismo HTML con `?ponente`). `npm run dev` la abre en `/`; `npm run build` genera `dist/index.html`, autocontenido; `npm run preview` lo sirve.
+- `src/datos/escenas.js` se genera con `npm run escenas` (también antes de `dev` y `build`) a partir de `escenas.md` (texto) y `src/datos/mapa.js` (posición de cada escena, encuadres propios y piezas del hub). No se edita a mano; si los dos ficheros no cuadran, el generador para y dice qué falla.
+- Cada escena real va en `src/escenas/EXX.js` y cumple el contrato documentado en `src/escenas/contrato.js` (`montar`, `irA(paso, { animar, tl })`, `desmontar`). Las que no tienen fichero usan el marcador de posición.
+- La cámara (`src/camara.js`) solo se mueve con el efecto `volarCamara` y la ruta de `escenas.md`: misma zona → `--dur-camara-corta`; otra zona del hub y su anillo → `--dur-camara`; otra región o la vista general → `--dur-camara-larga`. Las escenas nunca mueven la cámara.
+- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general; `A` incluir o saltar los pasos [A]; `P` vista de ponente. Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar.
+
 ## Colores: solo variables
 
 - Nunca escribas un color a mano en el código de la presentación: ni hex, ni `rgb()`/`hsl()`, ni nombres como `red`. Usa siempre `var(--color-…)` de `design/design-system.css`. Solo se admiten `currentColor` y `transparent`.

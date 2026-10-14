@@ -216,11 +216,11 @@
 
 /* ── Componente · Hueco del hub ────────────────────────────────────────────
    clase: .hueco
-   forma: Silueta punteada de una pieza que aún no está en el agente, con su icono y su nombre. Tiene la forma de la pieza que la ocupará.
-   color: Contorno punteado y texto --color-texto-3, sin relleno.
+   forma: Silueta punteada de una pieza que aún no está en el agente, con su icono y su nombre. Tiene la forma de la pieza que la ocupará. Lleno (.hueco--lleno): la silueta en sólido, que ocupa el hueco mientras la pieza no tenga su dibujo propio en el hub.
+   color: Contorno punteado y texto --color-texto-3, sin relleno · lleno: --color-superficie-inversa con --color-texto-inverso.
    medidas: Las de la pieza · --trazo-contorno · --radio-m (círculo: --radio-pildora; recipiente: --radio-l; documento: --radio-s)
-   icono: El de la pieza (cpu, gauge, app-window, file-text, puzzle, wrench, plug, git-fork)
-   movimiento: desaparecer (cuando la pieza llega)
+   icono: El de la pieza (cpu, gauge, app-window, file-text, puzzle, terminal, wrench, plug, git-fork)
+   movimiento: encajarPieza (la silueta viaja desde su zona y llena el hueco) · desaparecer (cuando llegue la pieza con su dibujo)
    escenas: E04–E18 (hub)
    ─────────────────────────────────────────────────────────────────────── */
 .hueco {
@@ -231,6 +231,7 @@
 .hueco--circulo { border-radius: var(--radio-pildora); }
 .hueco--recipiente { border-radius: var(--radio-l); }
 .hueco--documento { border-radius: var(--radio-s); }
+.hueco--lleno { border-style: solid; border-color: var(--color-superficie-inversa); background: var(--color-superficie-inversa); color: var(--color-texto-inverso); }
 
 /* ── Componente · Bucle del agente ─────────────────────────────────────────
    clase: .bucle

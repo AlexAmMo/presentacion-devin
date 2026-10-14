@@ -9,10 +9,11 @@
 //   cambio en design-system.css llega a todos sin tocar código. Las opciones que
 //   se pasen ganan, pero nunca son duraciones ni curvas literales: se pasan con s()/v().
 // - Devuelven el tween o timeline, y animan solo dentro de su zona: ningún efecto
-//   mueve la cámara.
+//   mueve la cámara, salvo volarCamara, que es la cámara.
 // - En modo estático (?estatico, prefers-reduced-motion o data-movimiento="estatico"
 //   en <html>) duran 0: saltan a su estado final.
 import { gsap } from 'gsap';
+import { interpolateZoom } from 'd3-interpolate';
 
 const raiz = document.documentElement;
 
@@ -164,6 +165,19 @@ registrar('desplegar', (t, c) => {
   return tl;
 }, () => ({ duration: s('--dur-entrada'), ease: v('--ease-interfaz') }));
 
+/**
+ * Una pieza viaja desde su zona hasta su hueco del hub en línea recta, y el hueco
+ * queda lleno: la silueta que viaja desaparece y el hueco pasa a «hueco--lleno».
+ */
+registrar('encajarPieza', (t, c) => {
+  const viajero = gsap.utils.toArray(t)[0];
+  return gsap.timeline()
+    .fromTo(viajero, { autoAlpha: 1, x: c.desde.x, y: c.desde.y },
+      { x: c.hasta.x, y: c.hasta.y, duration: c.duration, ease: c.ease, immediateRender: false })
+    .set(c.hueco, { attr: { class: (i, el) => conClase(el, 'hueco--lleno', true) } })
+    .set(viajero, { autoAlpha: 0 });
+}, () => ({ duration: s('--dur-trazado'), ease: v('--ease-trazado') }));
+
 // ── Trazados, recorridos y tiempo ─────────────────────────────────────────
 
 /** Una línea SVG se dibuja. Las continuas, a lo largo; las discontinuas, de izquierda a derecha. */
@@ -223,3 +237,34 @@ registrar('agotarTemporizador', (t, c) => {
     .to(resto, { segundos: 0, duration: c.duration, ease: c.ease, onUpdate: pintar }, 0)
     .set(temporizador, { attr: { class: (i, el) => conClase(el, 'temporizador--agotado', true) } });
 }, () => ({ duration: s('--dur-temporizador'), ease: v('--ease-temporizador'), segundos: 300 }));
+
+// ── Cámara ────────────────────────────────────────────────────────────────
+
+/**
+ * La cámara vuela entre dos vistas del mundo, cada una [centro x, centro y, ancho visible].
+ * Entre zonas sigue la trayectoria «alejar, viajar, acercar» (d3.interpolateZoom); dentro
+ * de una zona, línea recta. Escribe translate y scale en el mundo (con transform-origin 0 0),
+ * redondea la traslación y solo pone will-change mientras vuela, así el texto llega nítido.
+ * Opciones: desde, hasta, pantalla ([ancho, alto] del escenario en px, o una función que los
+ * devuelve: así un cambio de tamaño a mitad de vuelo se respeta) y trayectoria ('zoom' o 'recta').
+ */
+registrar('volarCamara', (t, c) => {
+  const mundo = gsap.utils.toArray(t)[0];
+  const [a, b] = [c.desde, c.hasta];
+  const ruta = c.trayectoria === 'zoom' ? interpolateZoom(a, b)
+    // En línea recta, el ancho cambia en proporción (escala logarítmica), como un zoom real.
+    : u => [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u, a[2] * (b[2] / a[2]) ** u];
+  const pintar = ([x, y, ancho]) => {
+    const [w, h] = typeof c.pantalla === 'function' ? c.pantalla() : c.pantalla;
+    const k = w / ancho;
+    mundo.style.transform = `translate(${Math.round(w / 2 - x * k)}px, ${Math.round(h / 2 - y * k)}px) scale(${k})`;
+  };
+  const avance = { u: 0 };
+  return gsap.to(avance, {
+    u: 1, duration: c.duration, ease: c.ease,
+    // will-change se pone en cada fotograma (también si se rebobina) y se quita al llegar a cualquiera de los dos extremos.
+    onUpdate: () => { mundo.style.willChange = 'transform'; pintar(avance.u === 1 ? b : ruta(avance.u)); },
+    onComplete: () => { pintar(b); mundo.style.willChange = 'auto'; },
+    onReverseComplete: () => { pintar(a); mundo.style.willChange = 'auto'; },
+  });
+}, () => ({ duration: s('--dur-camara'), ease: v('--ease-camara'), trayectoria: 'zoom' }));
