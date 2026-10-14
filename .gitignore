@@ -4,3 +4,4 @@ dist/
 *.local.json
 .playwright-mcp/
 .impeccable/*.cache.json
+dist-design/

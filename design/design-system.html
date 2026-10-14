@@ -3,713 +3,392 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Design system · Charla Devin</title>
-<link rel="stylesheet" href="design-system.css">
-<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<title>Design system v2 · Charla «Devin en el día a día»</title>
+<link rel="icon" href="data:,">
+<link rel="stylesheet" href="./design-system.css">
+<link rel="stylesheet" href="./componentes.css">
 <style>
-/* ============ Página de documentación (no se proyecta) ============ */
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--color-fondo);color:var(--color-texto-1);font:400 17px/1.55 var(--fuente-texto);-webkit-font-smoothing:antialiased}
-.wrap{max-width:1480px;margin:0 auto;padding:0 40px}
-.kicker{font:600 13px/1.3 var(--fuente-texto);letter-spacing:.12em;text-transform:uppercase;color:var(--color-texto-3)}
-header.pg{padding:56px 0 24px}
-header.pg h1{font:300 60px/1.04 var(--fuente-display);letter-spacing:var(--tracking-display);margin:12px 0 14px}
-.lede{max-width:980px;font-size:19px;color:var(--color-texto-2)}
-.lede b{font-weight:500;color:var(--color-texto-1)}
-code,.mono{font-family:var(--fuente-mono);font-size:.92em}
-code{background:var(--color-superficie-2);padding:1px 6px;border-radius:4px}
-nav.toc{position:sticky;top:0;z-index:5;background:rgba(255,249,244,.94);backdrop-filter:blur(6px);border-bottom:2px solid var(--color-separador);margin-top:20px}
-nav.toc .wrap{display:flex;gap:4px;flex-wrap:wrap;padding-top:10px;padding-bottom:10px}
-nav.toc a{font:500 15px var(--fuente-texto);color:var(--color-texto-2);text-decoration:none;padding:7px 14px;border-radius:999px}
-nav.toc a:hover{background:var(--color-superficie-2);color:var(--color-texto-1)}
-section.s{padding:56px 0 24px;scroll-margin-top:60px}
-section.s>h2{font:300 44px/1.05 var(--fuente-display);letter-spacing:var(--tracking-display);margin:6px 0 10px}
-section.s>p.intro{max-width:900px;color:var(--color-texto-2);font-size:18px;margin-bottom:24px}
-h3.sub{font:500 20px/1.3 var(--fuente-texto);margin:36px 0 14px}
-.card{background:var(--color-superficie);border:2px solid var(--color-contorno);border-radius:16px;padding:20px 22px}
-.grid{display:grid;gap:16px}
-.g5{grid-template-columns:repeat(5,minmax(0,1fr))}.g4{grid-template-columns:repeat(4,minmax(0,1fr))}.g3{grid-template-columns:repeat(3,minmax(0,1fr))}.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
-.sw{display:flex;flex-direction:column;gap:8px;font-size:15px}
-.sw i{display:block;height:96px;border-radius:12px;box-shadow:inset 0 0 0 2px rgba(0,43,69,.15)}
-.sw b{font-weight:500;font-size:17px}
-.sw code{background:none;padding:0;color:var(--color-texto-3);font-size:13px}
-.sw p{color:var(--color-texto-2);font-size:14px;line-height:1.4}
-table.t{width:100%;border-collapse:collapse;background:var(--color-superficie);border:2px solid var(--color-contorno);border-radius:16px;overflow:hidden;font-size:15px}
-table.t th,table.t td{padding:11px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--color-separador)}
-table.t thead th{background:var(--color-superficie-2);font-weight:600}
-table.t td code{white-space:nowrap}
-.ok{color:#14753A;font-weight:600}.ko{color:var(--color-acento);font-weight:600}
-.note{font-size:15px;color:var(--color-texto-2);margin-top:12px;max-width:980px}
-pre.code{background:var(--color-prussian);color:#E7EEF2;font:400 14px/1.6 var(--fuente-mono);padding:18px 20px;border-radius:12px;overflow-x:auto}
-pre.code .c{color:#93A9B7}
-.bw figcaption{font-size:15px;color:var(--color-texto-2);margin-top:8px}.bw figcaption b{color:var(--color-texto-1);font-weight:500}
-.boards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
-.boards .full{grid-column:1/-1}
-.hint{font-size:14px;color:var(--color-texto-3);margin-bottom:12px}
-ul.rules{list-style:none;display:grid;gap:10px;max-width:1100px}
-ul.rules li{background:var(--color-superficie);border:2px solid var(--color-contorno);border-radius:14px;padding:14px 18px;font-size:17px}
-ul.rules li b{font-weight:600}
-/* Espaciado, radios, trazos, elevación */
-.sp-row{display:flex;align-items:center;gap:16px;font-size:15px;margin:6px 0}
-.sp-row span.bar{height:20px;background:var(--color-prussian);border-radius:3px}
-.sp-row code{width:110px;background:none;padding:0}
-.rad{display:flex;gap:20px;flex-wrap:wrap;align-items:flex-end}
-.rad div{width:120px;height:90px;border:var(--trazo-contorno) solid var(--color-contorno);background:var(--color-superficie);display:grid;place-items:center;font:400 13px var(--fuente-mono)}
-.stroke{display:flex;align-items:center;gap:16px;margin:10px 0;font-size:15px}
-.stroke span.l{width:180px;background:var(--color-prussian);border-radius:6px}
-.stroke svg{flex:none}
-.elev{display:flex;gap:28px}
-.elev div{width:220px;height:110px;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-m);background:var(--color-superficie);display:grid;place-items:center;font:400 13px var(--fuente-mono)}
+/* ============ Solo para esta página de documentación: no se proyecta ============
+   Los tamaños --doc-* son de la página (se lee en un portátil, no en el proyector).
+   Colores, fuentes y espaciados salen del design system. */
+:root {
+  --doc-ancho: 1480px;
+  --doc-mini: 14px;
+  --doc-s: 15px;
+  --doc-texto: 17px;
+  --doc-lede: 19px;
+  --doc-h3: 22px;
+  --doc-h2: 44px;
+  --doc-h1: 60px;
+  --doc-interlineado: 1.55;
+  --doc-radio: 16px;
+  --doc-radio-s: 4px;
+  --doc-medida: 75ch;
+  --doc-linea: 1px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--color-fondo); color: var(--color-texto-1); font: var(--peso-texto) var(--doc-texto)/var(--doc-interlineado) var(--fuente-texto); -webkit-font-smoothing: antialiased; }
+.wrap { max-width: var(--doc-ancho); margin: 0 auto; padding: 0 var(--esp-5); }
+.kicker { font: var(--peso-fuerte) var(--doc-s)/1.3 var(--fuente-texto); color: var(--color-texto-3); }
+header.pg { padding: var(--esp-6) 0 var(--esp-3); }
+header.pg h1 { font: var(--peso-display) var(--doc-h1)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); margin: var(--esp-2) 0 var(--esp-1); }
+.version { font: var(--peso-enfasis) var(--doc-lede)/1.4 var(--fuente-texto); color: var(--color-texto-2); margin-bottom: var(--esp-2); }
+.lede { max-width: var(--doc-medida); font-size: var(--doc-lede); color: var(--color-texto-2); }
+.lede b, .intro b, .nota b { font-weight: var(--peso-enfasis); color: var(--color-texto-1); }
+code { font-family: var(--fuente-mono); font-size: 0.9em; background: var(--color-superficie-2); padding: 1px 6px; border-radius: var(--doc-radio-s); white-space: nowrap; }
+nav.toc { position: sticky; top: 0; z-index: 5; background: var(--color-fondo); border-bottom: var(--trazo-fino) solid var(--color-separador); margin-top: var(--esp-3); }
+nav.toc .wrap { display: flex; gap: var(--esp-1); flex-wrap: wrap; padding-top: var(--esp-1); padding-bottom: var(--esp-1); }
+nav.toc a { font: var(--peso-enfasis) var(--doc-s) var(--fuente-texto); color: var(--color-texto-2); text-decoration: none; padding: 6px 14px; border-radius: var(--radio-pildora); }
+nav.toc a:hover, nav.toc a:focus-visible, nav.toc a[aria-current] { background: var(--color-superficie-2); color: var(--color-texto-1); }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+summary { cursor: pointer; }
+abbr[title] { text-decoration: underline dotted var(--color-texto-3); cursor: help; }
+a.ancla { color: inherit; text-decoration: none; }
+a.ancla:hover, a.ancla:focus-visible { text-decoration: underline; }
+.desplazable { overflow-x: auto; }
+.con-accion { display: flex; align-items: center; gap: var(--esp-2); margin: var(--esp-5) 0 var(--esp-2); }
+.con-accion > h3.sub { margin: 0; }
+section.s { padding: var(--esp-6) 0 var(--esp-3); scroll-margin-top: var(--esp-6); }
+section.s > h2 { font: var(--peso-display) var(--doc-h2)/1.05 var(--fuente-display); letter-spacing: var(--tracking-display); margin: var(--esp-1) 0 var(--esp-2); }
+.intro { max-width: var(--doc-medida); color: var(--color-texto-2); font-size: var(--doc-lede); margin-bottom: var(--esp-3); }
+h3.sub, h4.sub { font: var(--peso-enfasis) var(--doc-h3)/1.3 var(--fuente-texto); margin: var(--esp-5) 0 var(--esp-2); display: flex; align-items: center; gap: var(--esp-2); }
+.nota { font-size: var(--doc-s); color: var(--color-texto-2); margin-top: var(--esp-2); max-width: var(--doc-medida); }
+small { font-size: var(--doc-mini); color: var(--color-texto-3); }
+.card { background: var(--color-superficie); border: var(--trazo-fino) solid var(--color-contorno); border-radius: var(--doc-radio); padding: var(--esp-3); }
+.card > b:first-child { display: block; margin-bottom: var(--esp-2); font-weight: var(--peso-enfasis); }
+.grid { display: grid; gap: var(--esp-2); }
+.g5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+.g2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+table.t { width: 100%; border-collapse: collapse; background: var(--color-superficie); border: var(--trazo-fino) solid var(--color-contorno); font-size: var(--doc-s); }
+table.t th, table.t td { padding: 10px 14px; text-align: left; vertical-align: top; border-bottom: var(--doc-linea) solid var(--color-separador); }
+table.t thead th { background: var(--color-superficie-2); font-weight: var(--peso-fuerte); }
+table.t td small { display: inline; }
+table.t .icono { vertical-align: -6px; margin-right: 4px; }
+.ok { color: var(--color-texto-1); font-weight: var(--peso-fuerte); }
+.ko { color: var(--color-acento); font-weight: var(--peso-fuerte); }
+.ok .icono, .ko .icono { vertical-align: -5px; }
+.boton { font: var(--peso-enfasis) var(--doc-s) var(--fuente-texto); border: var(--trazo-fino) solid var(--color-contorno); background: var(--color-superficie); color: var(--color-texto-1); border-radius: var(--radio-pildora); padding: 6px 16px; cursor: pointer; }
+.boton--principal { background: var(--color-superficie-inversa); color: var(--color-texto-inverso); }
+.boton:focus-visible, .bf:focus-visible, summary:focus-visible { outline: var(--trazo-contorno) solid var(--color-acento); outline-offset: 3px; }
+
+/* Comprobaciones */
+#comprobaciones-resumen { font: var(--peso-fuerte) var(--doc-lede) var(--fuente-texto); }
+#comprobaciones-detalle[open] > summary { margin-bottom: var(--esp-2); }
+#contraste-detalle > summary { font: var(--peso-enfasis) var(--doc-s) var(--fuente-texto); color: var(--color-texto-2); }
+#contraste-detalle[open] > summary { margin-bottom: var(--esp-2); }
+#comprobaciones-lista { list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--esp-1) var(--esp-3); }
+#comprobaciones-lista > li { display: flex; gap: var(--esp-1); align-items: flex-start; font-size: var(--doc-s); font-weight: var(--peso-texto); color: var(--color-texto-1); }
+#comprobaciones-lista > li.ko { font-weight: var(--peso-enfasis); }
+#comprobaciones-lista > li > .icono { margin-top: 1px; }
+#comprobaciones-lista ul { margin: 4px 0 0 18px; font: var(--peso-texto) var(--doc-mini)/1.5 var(--fuente-mono); color: var(--color-texto-2); }
+
+/* Color */
+.muestra { display: flex; flex-direction: column; gap: 6px; font-size: var(--doc-s); }
+.muestra__color { display: block; height: 88px; border-radius: var(--radio-s); box-shadow: inset 0 0 0 var(--trazo-fino) var(--color-separador); }
+.muestra__nombre { align-self: flex-start; }
+.muestra__valor { font: var(--peso-texto) var(--doc-mini)/1.4 var(--fuente-mono); color: var(--color-texto-3); }
+.muestra p { color: var(--color-texto-2); font-size: var(--doc-mini); line-height: 1.45; }
+.semantica { display: flex; flex-direction: column; gap: var(--esp-3); }
+.panel-inverso { background: var(--color-fondo); color: var(--color-texto-1); border-radius: var(--doc-radio); padding: var(--esp-4); display: grid; gap: var(--esp-4); }
+.panel-inverso code { background: var(--color-superficie-2); }
+
+/* Espaciado y forma */
+.fila-barra { display: grid; grid-template-columns: 170px 1fr 70px; gap: 2px var(--esp-2); align-items: center; margin: 0 0 var(--esp-2); font-size: var(--doc-s); }
+.fila-barra small { grid-column: 2 / -1; }
+.barra { display: block; height: 18px; background: var(--color-entrada); border-radius: var(--doc-radio-s); }
+.barra--tiempo { background: var(--color-texto-2); border-radius: var(--radio-pildora); }
+#forma-radios { display: flex; flex-wrap: wrap; gap: var(--esp-2); align-items: flex-end; }
+.caja-radio { width: 150px; height: 96px; display: grid; place-content: center; text-align: center; gap: 2px; border: var(--trazo-contorno) solid var(--color-contorno); background: var(--color-superficie); font-size: var(--doc-mini); }
+.fila-trazo { display: grid; grid-template-columns: 190px 140px 70px 1fr; gap: var(--esp-2); align-items: center; margin: 8px 0; font-size: var(--doc-s); }
+.fila-trazo .linea { display: block; width: 180px; background: var(--color-entrada); border-radius: var(--doc-radio-s); }
+#forma-elevacion { display: flex; gap: var(--esp-4); }
+.caja-elevacion { width: 260px; min-height: 110px; padding: var(--esp-2); display: grid; place-content: center; gap: 4px; text-align: center; border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m); background: var(--color-superficie); }
+
+/* Iconos */
+#iconos-lista { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: var(--esp-2); }
+.icono-muestra { display: flex; flex-direction: column; align-items: center; gap: var(--esp-1); padding: var(--esp-2); border: var(--trazo-fino) solid var(--color-separador); border-radius: var(--radio-s); background: var(--color-superficie); }
+.icono-muestra code { background: none; font-size: var(--doc-mini); }
+
 /* Movimiento */
-.mv{display:grid;grid-template-columns:230px 260px 1fr 90px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--color-separador);font-size:15px}
-.mv .track{position:relative;height:36px;border-radius:999px;background:var(--color-superficie-2);box-shadow:inset 0 0 0 2px var(--color-separador)}
-.mv .dot{position:absolute;left:4px;top:4px;width:28px;height:28px;border-radius:999px;background:var(--color-prussian)}
-.mv button,.btn{font:500 14px var(--fuente-texto);border:2px solid var(--color-contorno);background:var(--color-superficie);color:var(--color-texto-1);border-radius:999px;padding:6px 14px;cursor:pointer}
-.btn.primary{background:var(--color-prussian);color:#fff}
-.dur{display:grid;grid-template-columns:230px 1fr 70px;gap:14px;align-items:center;font-size:15px;margin:8px 0}
-.dur span.bar{height:16px;background:var(--color-bluewood);border-radius:999px}
-.demo-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:16px}
-.demo{background:var(--color-superficie);border:2px solid var(--color-contorno);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px}
-.demo h4{font:500 17px var(--fuente-texto);display:flex;justify-content:space-between;align-items:center}
-.demo .stage{height:200px;border-radius:12px;background:var(--color-fondo);box-shadow:inset 0 0 0 2px var(--color-separador);position:relative;overflow:hidden}
-.mini-pill{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;background:var(--color-prussian);color:#fff;font:400 14px var(--fuente-mono)}
-@media (max-width:1000px){.g5,.g4,.g3,.g2,.boards,.demo-row{grid-template-columns:1fr}.mv{grid-template-columns:1fr}.wrap{padding:0 16px}}
+.curva { display: grid; grid-template-columns: 220px 290px 1fr 110px; gap: var(--esp-2); align-items: center; padding: var(--esp-1) 0; border-bottom: var(--doc-linea) solid var(--color-separador); font-size: var(--doc-s); }
+.curva b { font-weight: var(--peso-enfasis); }
+.pista { position: relative; height: 36px; border-radius: var(--radio-pildora); background: var(--color-superficie-2); box-shadow: inset 0 0 0 var(--trazo-fino) var(--color-separador); }
+.punto { position: absolute; left: 4px; top: 4px; width: var(--punto-diametro); height: var(--punto-diametro); border-radius: var(--radio-pildora); background: var(--color-entrada); }
+.demos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--esp-2); margin-top: var(--esp-2); }
+.demo { background: var(--color-superficie); border: var(--trazo-fino) solid var(--color-contorno); border-radius: var(--doc-radio); padding: var(--esp-3); display: flex; flex-direction: column; gap: var(--esp-1); min-width: 0; }
+.demo--ancha { grid-column: 1 / -1; }
+.demo__cabecera { display: flex; justify-content: space-between; align-items: center; }
+.demo h4 { font-size: var(--doc-lede); }
+.demo .nota { margin-top: 0; }
+.demo__escenario svg { max-width: 100%; height: auto; }
+.demo__escenario { margin-top: var(--esp-1); min-height: 260px; padding: var(--esp-4); border-radius: var(--radio-s); background: var(--color-fondo); box-shadow: inset 0 0 0 var(--trazo-fino) var(--color-separador); display: grid; place-items: center; overflow: hidden; }
+.interruptor { display: inline-flex; align-items: center; gap: var(--esp-1); font: var(--peso-texto) var(--doc-s) var(--fuente-texto); margin-left: auto; }
+
+/* Reglas */
+ul.reglas { list-style: none; display: grid; gap: var(--esp-1); max-width: calc(var(--doc-medida) + 2 * 18px); }
+ul.reglas li { background: var(--color-superficie); border: var(--trazo-fino) solid var(--color-contorno); border-radius: var(--radio-s); padding: 14px 18px; }
+ul.reglas li b { font-weight: var(--peso-fuerte); }
+.regla-claude { font-size: var(--doc-s); }
+.regla-claude h4.sub { margin-top: 0; }
+.regla-claude ol, .regla-claude ul { padding-left: 22px; display: grid; gap: 6px; }
+.regla-claude li ul, .regla-claude li ol { margin-top: 6px; }
+.regla-claude p + p, .regla-claude p + ul, .regla-claude p + ol { margin-top: var(--esp-1); }
+
+/* Código */
+pre.codigo { background: var(--color-fondo); color: var(--color-texto-1); font: var(--peso-texto) var(--doc-s)/var(--doc-interlineado) var(--fuente-mono); padding: 18px 22px; border-radius: var(--radio-s); overflow-x: auto; margin: var(--esp-2) 0; }
+pre.codigo .c { color: var(--color-texto-3); }
+.uso ol, .uso ul { padding-left: 22px; display: grid; gap: 6px; max-width: var(--doc-medida); }
+
+/* Hoja de contactos */
+.hoja { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--esp-3) var(--esp-2); }
+.miniatura { display: grid; gap: var(--esp-1); color: var(--color-texto-2); text-decoration: none; font-size: var(--doc-s); border-radius: var(--radio-s); }
+.miniatura:hover > span { color: var(--color-texto-1); text-decoration: underline; }
+.miniatura:focus-visible { outline: var(--trazo-contorno) solid var(--color-acento); outline-offset: 3px; }
+figure.bw { scroll-margin-top: var(--esp-7); }
+
+/* Láminas de 1920×1080 */
+.laminas { display: grid; gap: var(--esp-3); }
+.bw figcaption { font-size: var(--doc-s); color: var(--color-texto-2); margin-top: var(--esp-1); }
+.bf { position: relative; aspect-ratio: 16 / 9; /* el escalado lo ajusta a --escena-ancho / --escena-alto */ overflow: hidden; border-radius: var(--radio-s); border: var(--trazo-fino) solid var(--color-contorno); background: var(--color-fondo); }
+.bf[role=button] { cursor: zoom-in; }
+.lamina { position: absolute; left: 0; top: 0; width: var(--escena-ancho); height: var(--escena-alto); transform-origin: 0 0; overflow: hidden; background: var(--color-fondo); color: var(--color-texto-1); font-family: var(--fuente-texto); }
+.lamina .abs { position: absolute; }
+.vh { font: var(--peso-enfasis) var(--tipo-texto)/var(--interlineado-display) var(--fuente-texto); }
+.vet { color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.vregla { margin-top: auto; width: 100%; min-height: calc(var(--tipo-etiqueta) * var(--interlineado-texto) * 4 + var(--esp-2) + var(--trazo-fino)); padding-top: var(--esp-2); border-top: var(--trazo-fino) solid var(--color-separador); color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.controles { display: flex; gap: var(--esp-1); align-items: center; margin-top: var(--esp-2); font-size: var(--doc-s); }
+.vregla .icono { vertical-align: -4px; }
+body.solo-lamina { overflow: hidden; }
+body.solo-lamina .lamina { position: relative; }
 
 /* Visor */
-.ov{position:fixed;inset:0;z-index:50;background:#000}.ov[hidden]{display:none}
-.ov-stage{position:absolute;inset:0 0 56px 0;overflow:hidden;cursor:pointer}
-.ov-bar{position:absolute;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;gap:10px;padding:0 16px;background:#111;color:#ddd;font-size:15px}
-.ov-bar .ov-title{font-weight:500;color:#fff}.ov-bar .ov-hint{margin-left:auto;color:#999}
-.ov-bar button{font:500 14px var(--fuente-texto);background:#2a2a2a;color:#fff;border:0;border-radius:6px;padding:8px 12px;cursor:pointer}
-.ov:fullscreen .ov-bar{display:none}.ov:fullscreen .ov-stage{inset:0}
+.visor { position: fixed; inset: 0; z-index: 50; background: var(--color-fondo); }
+.visor[hidden] { display: none; }
+.visor__escenario { position: absolute; inset: 0 0 56px 0; overflow: hidden; cursor: pointer; }
+.visor__barra { position: absolute; left: 0; right: 0; bottom: 0; height: 56px; display: flex; align-items: center; gap: var(--esp-1); padding: 0 var(--esp-2); background: var(--color-superficie-2); color: var(--color-texto-1); font-size: var(--doc-s); }
+.visor__titulo { font-weight: var(--peso-enfasis); }
+.visor__ayuda { margin-left: auto; color: var(--color-texto-2); }
+.visor .boton { background: var(--color-fondo); color: var(--color-texto-1); border-color: var(--color-contorno); }
+.visor:fullscreen .visor__barra { display: none; }
+.visor:fullscreen .visor__escenario { inset: 0; }
 
-/* ============ Láminas 1920×1080 (usan solo variables del sistema) ============ */
-.bf{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:10px;border:2px solid var(--color-contorno);cursor:zoom-in;background:var(--color-fondo)}
-.board{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--color-fondo);color:var(--color-texto-1);font-family:var(--fuente-texto)}
-.board .abs{position:absolute}
-.board svg.lucide{flex:none}
-.ic-24{width:var(--icono-s);height:var(--icono-s)}.ic-36{width:var(--icono-m);height:var(--icono-m)}.ic-48{width:var(--icono-l);height:var(--icono-l)}
-/* Etiqueta en píldora y marca de cifras ficticias */
-.board .pildora{display:inline-flex;align-items:center;gap:10px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);color:var(--color-texto-1);border:var(--trazo-fino) solid var(--color-contorno);border-radius:var(--radio-pildora);padding:10px 22px;background:var(--color-superficie)}
-.board .ficticio{display:inline-flex;align-items:center;gap:10px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);color:var(--color-texto-2);border:var(--trazo-fino) solid var(--color-texto-3);border-radius:var(--radio-pildora);padding:10px 20px}
-/* Token: siempre una píldora en mono */
-.board .fichas{display:flex;align-items:center;gap:10px;flex-wrap:nowrap}
-.board .ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}
-.board .ficha .sp{opacity:.45}
-.t-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}
-.t-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}
-.t-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento)}
-.board .mas{font:400 var(--tipo-mono)/1 var(--fuente-mono);color:var(--color-texto-3);margin-left:4px}
-/* Ventana de contexto: recipiente */
-.board .recipiente{border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);background:var(--color-superficie);overflow:hidden}
-.board .capa{position:absolute;left:10px;right:10px;border-radius:var(--radio-s);display:flex;align-items:center;padding:0 22px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);white-space:nowrap;overflow:hidden}
-.board .nivel{height:var(--trazo-fuerte);background:var(--color-acento);border-radius:3px}
-.board .nivel-lbl{font:var(--peso-fuerte) 34px/1 var(--fuente-texto);color:var(--color-acento);font-variant-numeric:var(--cifras)}
-.board .escala{height:var(--trazo-fino);width:18px;background:var(--color-texto-3)}
-.board .escala-l{font:400 var(--tipo-mono-s)/1 var(--fuente-mono);color:var(--color-texto-3);transform:translateY(-50%)}
-/* Caché: corchete */
-.board .corchete{width:20px;border:var(--trazo-fuerte) solid var(--color-cache-acierto);border-left:0;border-radius:0 8px 8px 0}
-.board .corchete.fallo{border-style:dashed;border-color:var(--color-cache-fallo)}
-.board .cache-lbl{font:var(--peso-enfasis) var(--tipo-etiqueta)/1.3 var(--fuente-texto);color:var(--color-texto-1)}
-.board .cache-lbl svg{vertical-align:-6px;margin-right:8px;color:var(--color-cache-acierto)}
-.board .cache-lbl span{font:400 26px/1.4 var(--fuente-mono);color:var(--color-texto-2);white-space:nowrap}
-/* Leyenda */
-.board .leyenda{display:flex;gap:32px;align-items:center;font:var(--peso-enfasis) 26px/1 var(--fuente-texto);color:var(--color-texto-2)}
-.board .leyenda span{display:flex;align-items:center;gap:12px}
-.board .leyenda i{display:inline-block;width:40px;height:28px;border-radius:var(--radio-pildora)}
-.board .leyenda i.sw-cache{width:16px;height:30px;border:5px solid var(--color-cache-acierto);border-left:0;border-radius:0 6px 6px 0;background:none}
-/* Textos de escena */
-.board .t-titulo{font:var(--peso-display) var(--tipo-titulo)/var(--interlineado-display) var(--fuente-display);letter-spacing:var(--tracking-display)}
-.board .t-texto{font:var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto);color:var(--color-texto-2)}
-.board .t-texto svg{vertical-align:-4px;margin-right:10px;color:var(--color-texto-1)}
-.board .t-etq{font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);color:var(--color-texto-3)}
-.board .t-cifra{font:var(--peso-display) var(--tipo-cifra)/1 var(--fuente-display);font-variant-numeric:var(--cifras);letter-spacing:var(--tracking-cifra)}
-.board .t-sub{font:var(--peso-texto) 30px/1.2 var(--fuente-texto);color:var(--color-texto-2)}
-/* Mapa: islas */
-.board .isla{position:absolute;width:320px;height:190px;box-sizing:border-box;background:var(--color-superficie);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);padding:22px 30px;display:flex;flex-direction:column;justify-content:space-between;color:var(--color-texto-1)}
-.board .isla.grande{width:380px;height:220px}
-.board .isla.actual{background:var(--color-acento);border-color:var(--color-acento);color:var(--color-sobre-acento)}
-.board .isla-top{display:flex;justify-content:space-between;align-items:flex-start}
-.board .isla .n{font:var(--peso-display) 60px/1 var(--fuente-display);font-variant-numeric:var(--cifras)}
-.board .isla .nm{font:var(--peso-enfasis) var(--tipo-texto-s)/1.15 var(--fuente-texto)}
-/* Muestra de escala tipográfica */
-.board .ann{font:400 var(--tipo-mono-s)/1.25 var(--fuente-mono);color:var(--color-texto-3)}
-/* Vocabulario */
-.board .vcol{display:flex;flex-direction:column;gap:24px}
-.board .vh{font:var(--peso-enfasis) 36px/1.1 var(--fuente-texto)}
-.board .vregla{font:400 var(--tipo-etiqueta)/1.35 var(--fuente-texto);color:var(--color-texto-2);border-top:var(--trazo-fino) solid var(--color-separador);padding-top:16px;margin-top:auto}
-.board .agente{border-radius:var(--radio-m);background:var(--color-superficie-inversa);color:var(--color-texto-inverso);display:flex;align-items:center;gap:18px;padding:0 26px}
-.board .subagente{border-radius:var(--radio-m);background:var(--color-superficie);border:var(--trazo-contorno) solid var(--color-contorno);display:flex;align-items:center;gap:14px;padding:0 20px}
-.board .doc{background:var(--color-superficie);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-s);overflow:hidden;display:flex;flex-direction:column}
-.board .doc-h{background:var(--color-superficie-inversa);color:var(--color-texto-inverso);font:400 var(--tipo-mono-s)/1 var(--fuente-mono);padding:16px 18px;display:flex;align-items:center;gap:10px}
-.board .doc-l{height:14px;border-radius:7px;background:color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));margin:0 18px}
-.board .herr{width:112px;height:112px;border-radius:50%;border:var(--trazo-contorno) solid var(--color-contorno);background:var(--color-superficie);display:grid;place-items:center}
-.board .coste{display:inline-flex;align-items:center;gap:12px;height:64px;padding:0 26px;border-radius:var(--radio-pildora);background:var(--color-coste);color:var(--color-sobre-coste);font:var(--peso-enfasis) var(--tipo-mono)/1 var(--fuente-mono)}
+@media (max-width: 1200px) {
+  .g2 { grid-template-columns: 1fr; }
+}
+@media (max-width: 1000px) {
+  .hoja { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .g5, .g2, .demos, #comprobaciones-lista { grid-template-columns: 1fr; }
+  .curva, .fila-trazo { grid-template-columns: 1fr; }
+  .wrap { padding: 0 var(--esp-2); }
+}
 </style>
 </head>
 <body>
 
 <header class="pg">
   <div class="wrap">
-    <p class="kicker">Design system · Charla «Devin en el día a día» · Openbank · v1</p>
+    <p class="kicker">Design system · Charla «Devin en el día a día» · Openbank</p>
     <h1>Crema, navy y rojo</h1>
-    <p class="lede">La dirección C con una paleta centrada en los colores más representativos de Openbank: <b>Prussian blue, Pickled bluewood y el rojo de la marca</b>. Todas las variables están en <code>design-system.css</code>, y esta página solo usa esas variables. Haz clic en cualquier lámina para verla grande; con ← → pasas de una a otra y con F la ves a pantalla completa.</p>
+    <p class="version">Versión 2 · renovado el 14-10-2026</p>
+    <p class="lede">Esta página <b>no copia ningún valor</b>: al cargarse lee <code>design-system.css</code> (variables), <code>componentes.css</code> (el vocabulario y su ficha técnica), <code>motion.js</code> (los efectos), <code>iconos.js</code>, <code>dibujos.js</code> y <code>CLAUDE.md</code> (las reglas). Lo que ves es exactamente lo que usa la presentación.</p>
+    <p class="nota"><b>Láminas:</b> haz clic en una para verla grande; con las flechas pasas de una a otra y con F la ves a pantalla completa. <b>Glosario:</b> una <i>lámina</i> es una referencia a tamaño de escena; una <i>isla</i>, una zona del mapa; el <i>hub</i>, el agente en el centro del mapa, donde encajan las piezas; un <i>hueco</i>, el sitio vacío de una pieza en el hub; y la <i>ficha técnica</i>, la cabecera de cada componente en <code>componentes.css</code>.</p>
   </div>
 </header>
 
-<nav class="toc"><div class="wrap">
-  <a href="#color">Color</a><a href="#tipografia">Tipografía</a><a href="#espacio">Espaciado y forma</a><a href="#vocabulario">Vocabulario visual</a><a href="#movimiento">Movimiento</a><a href="#reglas">Reglas</a><a href="#aplicado">Aplicado</a><a href="#uso">Uso</a>
+<nav class="toc" aria-label="Secciones"><div class="wrap">
+  <a href="#laminas">Láminas</a><a href="#comprobaciones">Comprobaciones</a><a href="#color">Color</a><a href="#tipografia">Tipografía</a><a href="#forma">Espaciado y forma</a><a href="#iconos">Iconos</a><a href="#vocabulario">Vocabulario</a><a href="#movimiento">Movimiento</a><a href="#reglas">Reglas</a><a href="#aplicado">Aplicado</a><a href="#uso">Uso en código</a>
 </div></nav>
 
 <main class="wrap">
 
-<!-- ============================ COLOR ============================ -->
+<section class="s" id="laminas">
+  <p class="kicker">Índice visual</p><h2>Láminas</h2>
+  <p class="intro">Todas las referencias a tamaño de escena, en el orden de la página. Haz clic en una para ir a ella; allí se abre grande.</p>
+  <div id="hoja" class="hoja"></div>
+</section>
+
+<section class="s" id="comprobaciones">
+  <p class="kicker">00</p><h2>Comprobaciones</h2>
+  <p class="intro">Se recalculan cada vez que se abre la página. Si algo deja de cuadrar entre las fuentes (una variable sin describir, un color a mano, un componente sin ficha, un efecto sin registrar, un par sin contraste, dos acentos en una lámina), el panel se abre y lo marca en rojo con una cruz.</p>
+  <details id="comprobaciones-detalle">
+    <summary id="comprobaciones-resumen" aria-live="polite">Calculando…</summary>
+    <ul id="comprobaciones-lista"></ul>
+  </details>
+</section>
+
 <section class="s" id="color">
   <p class="kicker">01</p><h2>Color</h2>
-  <p class="intro">Cinco colores de marca hacen todo el trabajo: navy para el contenido y rojo para el foco. Las cremas son el suelo de la dirección C y el blanco separa las superficies. Los tres rojos son el mismo rojo según el fondo, así que cuentan como <b>un único acento</b>.</p>
-  <div class="grid g5" id="sw-marca"></div>
-  <h3 class="sub">Neutros de apoyo</h3>
-  <div class="grid g5" id="sw-neutros"></div>
-  <h3 class="sub">Semántica: todo sale de navy; cambia el relleno, no el tono</h3>
-  <div class="grid g3">
-    <div class="card"><b>Tokens de entrada</b><p class="note">Relleno sólido Prussian, texto blanco. <code>--color-entrada</code></p><div style="margin-top:12px;display:flex;gap:8px"><span class="mini-pill">Arre</span><span class="mini-pill">gla</span><span class="mini-pill">·la</span></div></div>
-    <div class="card"><b>Tokens de salida</b><p class="note">Hueca: blanco con contorno navy de 3 px. <code>--color-salida</code> <code>--color-salida-borde</code></p><div style="margin-top:12px;display:flex;gap:8px"><span class="mini-pill" style="background:#fff;color:var(--color-prussian);box-shadow:inset 0 0 0 2px var(--color-prussian)">Cam</span><span class="mini-pill" style="background:#fff;color:var(--color-prussian);box-shadow:inset 0 0 0 2px var(--color-prussian)">bio</span></div></div>
-    <div class="card"><b>Tokens de razonamiento</b><p class="note">Rayado navy al 40 %. <code>--patron-razonamiento</code></p><div style="margin-top:12px;display:flex;gap:8px"><span class="mini-pill" style="background:var(--patron-razonamiento);color:var(--color-prussian)">Rev</span><span class="mini-pill" style="background:var(--patron-razonamiento);color:var(--color-prussian)">iso</span></div></div>
-    <div class="card"><b>Caché acertada</b><p class="note">Corchete continuo Bluewood + ✓. <code>--color-cache-acierto</code></p><div style="margin-top:12px;height:40px;width:22px;border:5px solid var(--color-bluewood);border-left:0;border-radius:0 6px 6px 0"></div></div>
-    <div class="card"><b>Caché fallida</b><p class="note">Corchete discontinuo Bluewood + ✕. <code>--color-cache-fallo</code></p><div style="margin-top:12px;height:40px;width:22px;border:5px dashed var(--color-bluewood);border-left:0;border-radius:0 6px 6px 0"></div></div>
-    <div class="card"><b>Coste</b><p class="note">Píldora navy con monedas y cifra en mono. <code>--color-coste</code></p><div style="margin-top:12px"><span class="mini-pill">● 0,050 u.</span></div></div>
-  </div>
-  <p class="note"><b>Por qué no hay más tonos:</b> la paleta se ciñe a la marca y los conceptos se distinguen por la luminosidad (oscuro, medio, hueco) y por la forma (sólido, rayado, contorno, continuo o discontinuo). Así siguen legibles con el proyector lavado y para personas con daltonismo. El precio: acierto y fallo de caché no tienen color propio. Se separan por el trazo y el icono.</p>
-  <h3 class="sub">Contraste (calculado con las variables)</h3>
-  <table class="t" id="contraste"><thead><tr><th>Par</th><th>Colores</th><th>Ratio</th><th>Uso permitido</th></tr></thead><tbody></tbody></table>
+  <p class="intro">Cinco colores de marca hacen todo el trabajo: navy para el contenido y rojo para el foco. Las cremas son el suelo y el blanco separa las superficies. Los tres rojos son el mismo rojo según el fondo, así que cuentan como <b>un único acento</b>. Cada muestra es la variable tal como está en <code>design-system.css</code>, con su valor final y su descripción.</p>
+  <div id="color-grupos"></div>
+  <h3 class="sub">Semántica en uso</h3>
+  <div id="color-semantica" class="card semantica"></div>
+  <h3 class="sub">Sobre navy (<code>.inverso</code>)</h3>
+  <div id="color-inverso" class="inverso panel-inverso"></div>
+  <p class="nota"><b>Por qué no hay más tonos:</b> la paleta se ciñe a la marca y los conceptos se distinguen por la luminosidad (oscuro, medio, hueco) y por la forma (sólido, rayado, contorno, continuo o discontinuo). Así siguen legibles con el proyector lavado y para personas con daltonismo. El precio: acierto y fallo de caché no tienen color propio; se separan por el trazo y el icono.</p>
+  <h3 class="sub">Contraste, calculado con las variables</h3>
+  <p class="nota" style="margin:0 0 var(--esp-2)">Los pares salen solos de los nombres: <code>--color-sobre-X</code> con <code>--color-X</code>, cada <code>-borde</code> con el fondo y los tres textos con fondo y superficies; más unos pocos pares fijos.</p>
+  <details id="contraste-detalle">
+    <summary id="contraste-resumen">Calculando…</summary>
+    <div class="desplazable"><table class="t" id="contraste"><thead><tr><th>Par</th><th>Variables</th><th>Ratio</th><th>Mínimo</th><th>Uso permitido</th></tr></thead><tbody></tbody></table></div>
+    <h4 class="sub">Sobre navy</h4>
+    <div class="desplazable"><table class="t" id="contraste-inverso"><thead><tr><th>Par</th><th>Variables</th><th>Ratio</th><th>Mínimo</th><th>Uso permitido</th></tr></thead><tbody></tbody></table></div>
+  </details>
 </section>
 
-<!-- ============================ TIPOGRAFÍA ============================ -->
 <section class="s" id="tipografia">
   <p class="kicker">02</p><h2>Tipografía</h2>
-  <p class="intro">Outfit, la tipografía de openbank.es, para títulos y texto, y DM Mono para código y tokens. Las dos están en Google Fonts. La escala parte de 24 px, el mínimo legible a 1920×1080, y las cifras usan dígitos tabulares para que no bailen al animarse.</p>
-  <table class="t" id="escala"><thead><tr><th>Variable</th><th>Tamaño</th><th>Fuente y peso</th><th>Uso</th></tr></thead><tbody>
-    <tr><td><code>--tipo-etiqueta</code></td><td>24 px</td><td>Outfit 500</td><td>Etiquetas, leyendas, escalas. Mínimo absoluto.</td></tr>
-    <tr><td><code>--tipo-texto-s</code></td><td>28 px</td><td>Outfit 400–500</td><td>Nombres de zona en el mapa, texto secundario.</td></tr>
-    <tr><td><code>--tipo-texto</code></td><td>32 px</td><td>Outfit 400 · 1,35</td><td>Frase principal de una zona.</td></tr>
-    <tr><td><code>--tipo-entradilla</code></td><td>40 px</td><td>Outfit 400</td><td>Ideas clave, citas.</td></tr>
-    <tr><td><code>--tipo-titulo-s</code></td><td>56 px</td><td>Outfit 300</td><td>Títulos secundarios.</td></tr>
-    <tr><td><code>--tipo-titulo</code></td><td>80 px</td><td>Outfit 300 · 1,04 · −1,5 %</td><td>Título de zona.</td></tr>
-    <tr><td><code>--tipo-titulo-xl</code></td><td>112 px</td><td>Outfit 300</td><td>Portada y cierre.</td></tr>
-    <tr><td><code>--tipo-cifra</code></td><td>176 px</td><td>Outfit 300 · tabulares · −3 %</td><td>Contadores de tokens y coste.</td></tr>
-    <tr><td><code>--tipo-cifra-xl</code></td><td>240 px</td><td>Outfit 300 · tabulares</td><td>Una cifra protagonista sola.</td></tr>
-    <tr><td><code>--tipo-mono</code> / <code>--tipo-mono-s</code></td><td>28 / 24 px</td><td>DM Mono 400</td><td>Fichas de token, código, nombres de fichero.</td></tr>
-  </tbody></table>
-  <div class="boards" style="margin-top:18px">
-    <figure class="bw full" data-group="ds"><div class="bf">
-      <div class="board" data-kind="tipo" data-label="Tipografía · escala">
-        <div class="abs" style="left:120px;top:64px"><span class="pildora">Tipografía · escala para 1920×1080</span></div>
-        <div class="abs" style="right:120px;top:64px"><span class="ficticio"><i data-lucide="info" class="ic-24"></i>Cifras ficticias</span></div>
-        <div class="abs" style="left:120px;top:150px;width:960px;display:flex;flex-direction:column;gap:22px">
-          <div><div class="ann">--tipo-etiqueta · 24 · Outfit 500</div><div style="font:500 24px/1.35 var(--fuente-texto);margin-top:6px">Zona 03 · Ventana de contexto</div></div>
-          <div><div class="ann">--tipo-texto-s · 28 · Outfit 400</div><div style="font:400 28px/1.35 var(--fuente-texto);margin-top:6px">Herramientas y subagentes</div></div>
-          <div><div class="ann">--tipo-texto · 32 · Outfit 400</div><div style="font:400 32px/1.35 var(--fuente-texto);color:var(--color-texto-2);margin-top:6px">El contexto es la información disponible en una llamada.</div></div>
-          <div><div class="ann">--tipo-entradilla · 40 · Outfit 400</div><div style="font:400 40px/1.35 var(--fuente-texto);margin-top:6px">Una ventana grande no obliga a llenarla.</div></div>
-          <div><div class="ann">--tipo-titulo-s · 56 · Outfit 300</div><div style="font:300 56px/1.04 var(--fuente-display);letter-spacing:-.015em;margin-top:6px">Tokens y caché</div></div>
-          <div><div class="ann">--tipo-titulo · 80 · Outfit 300</div><div style="font:300 80px/1.04 var(--fuente-display);letter-spacing:-.015em;margin-top:6px">Ventana de contexto</div></div>
-          <div><div class="ann">--tipo-titulo-xl · 112 · Outfit 300</div><div style="font:300 112px/1.02 var(--fuente-display);letter-spacing:-.015em;margin-top:6px">Subagentes</div></div>
-        </div>
-        <div class="abs" style="left:1130px;top:150px;width:670px;display:flex;flex-direction:column;gap:28px">
-          <div><div class="ann">--tipo-cifra · 176 · Outfit 300 · tabulares</div><div class="t-cifra" style="margin-top:6px">184.000</div></div>
-          <div><div class="ann">--tipo-cifra-xl · 240 · Outfit 300</div><div style="font:300 240px/.95 var(--fuente-display);letter-spacing:-.03em;font-variant-numeric:tabular-nums;margin-top:6px">92 %</div></div>
-          <div><div class="ann">--tipo-mono · 28 · DM Mono 400</div><div style="font:400 28px/1.3 var(--fuente-mono);margin-top:8px"><span style="color:var(--color-texto-3)">const</span> [page, setPage] = useState(1);</div>
-            <div class="fichas" style="margin-top:16px"><span class="ficha t-entrada">Arre</span><span class="ficha t-entrada">gla</span><span class="ficha t-entrada"><span class="sp">·</span>la</span><span class="ficha t-entrada"><span class="sp">·</span>pagin</span></div></div>
-          <div><div class="ann">--tipo-mono-s · 24 · DM Mono 400</div><div style="font:400 24px/1.3 var(--fuente-mono);margin-top:6px">AGENTS.md · /compact · 1 celda = 250 tokens</div></div>
-        </div>
-      </div>
-    </div><figcaption><b>Escala tipográfica</b> a tamaño real de escena.</figcaption></figure>
-  </div>
+  <p class="intro">Outfit, la tipografía de openbank.es, para títulos y texto, y DM Mono para código y tokens. Las dos están <b>alojadas en el proyecto</b> (<code>design/assets/fonts/</code>, woff2 con su licencia SIL OFL 1.1), así que no dependen de Google Fonts. La escala parte de 24 px, el mínimo legible a 1920×1080, y las cifras usan dígitos tabulares para que no bailen al animarse. Cada tamaño tiene su clase <code>.tipo-*</code> en <code>componentes.css</code>.</p>
+  <h3 class="sub">Familias y pesos</h3>
+  <div class="desplazable"><table class="t" id="tipo-familias"><thead><tr><th>Variable</th><th>Valor</th><th>Muestra</th><th>Uso</th></tr></thead><tbody></tbody></table></div>
+  <h3 class="sub">Escala</h3>
+  <div class="desplazable"><table class="t" id="tipo-escala"><thead><tr><th>Variable</th><th>Tamaño</th><th>Clase</th><th>Estilo calculado</th><th>Uso</th></tr></thead><tbody></tbody></table></div>
+  <h3 class="sub">Interlineado y espaciado de letras</h3>
+  <div class="desplazable"><table class="t" id="tipo-ajustes"><thead><tr><th>Variable</th><th>Valor</th><th>Uso</th></tr></thead><tbody></tbody></table></div>
+  <div id="tipo-lamina" style="margin-top:var(--esp-3)"></div>
+  <p class="nota"><b>Caracteres que faltan:</b> Outfit no tiene ↩ ✕ ≥ ≈ y DM Mono no tiene → ↩ ✓ ✕. Aquí se ven con la fuente del sistema, que cambia de un equipo a otro; en escena se usan los iconos <code>arrow-right</code>, <code>corner-down-left</code>, <code>check</code> y <code>x</code>.</p>
 </section>
 
-<!-- ============================ ESPACIO Y FORMA ============================ -->
-<section class="s" id="espacio">
-  <p class="kicker">03</p><h2>Espaciado, radios, trazos y elevación</h2>
-  <p class="intro">Base de 8 px. Formas redondeadas, como en la dirección C, y contornos navy de 3 px que separan las superficies, porque el proyector iguala las cremas. Hay una única elevación, plana, porque las sombras difusas desaparecen al proyectar.</p>
+<section class="s" id="forma">
+  <p class="kicker">03</p><h2>Espaciado y forma</h2>
+  <p class="intro">Base de 8 px. Formas redondeadas y contornos navy que separan las superficies, porque el proyector iguala las cremas. Una única elevación, plana, porque las sombras difusas desaparecen al proyectar.</p>
   <div class="grid g2">
-    <div class="card"><b>Espaciado</b>
-      <div id="sp-list" style="margin-top:10px"></div>
-      <p class="note">Zona segura de escena: <code>--margen-x</code> 120 px · <code>--margen-y</code> 96 px.</p>
-    </div>
-    <div class="card"><b>Radios</b>
-      <div class="rad" style="margin-top:14px">
-        <div style="border-radius:var(--radio-s)">--radio-s 12</div>
-        <div style="border-radius:var(--radio-m)">--radio-m 24</div>
-        <div style="border-radius:var(--radio-l)">--radio-l 48</div>
-        <div style="border-radius:var(--radio-pildora);width:180px;height:60px">--radio-pildora</div>
-      </div>
-      <p class="note">12: capas, código y documentos · 24: tarjetas (agente, skill) · 48: islas y recipiente · píldora: fichas, etiquetas y contadores.</p>
-    </div>
-    <div class="card"><b>Trazos (compatibles con Lucide, 2 px sobre 24)</b>
-      <div class="stroke"><span class="l" style="height:2px"></span><code>--trazo-fino 2</code> separadores, escalas</div>
-      <div class="stroke"><span class="l" style="height:3px"></span><code>--trazo-contorno 3</code> contorno de toda superficie</div>
-      <div class="stroke"><span class="l" style="height:6px"></span><code>--trazo-fuerte 6</code> corchete de caché, línea de nivel</div>
-      <div class="stroke"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/></svg><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/></svg><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 8h20"/></svg><span>Iconos a 24 / <b>36</b> / 48 px con <code>stroke-width 2</code>: a 36 px el trazo real es 3 px, igual que el contorno.</span></div>
-    </div>
-    <div class="card"><b>Elevación mínima</b>
-      <div class="elev" style="margin-top:14px"><div style="box-shadow:var(--elevacion-0)">--elevacion-0</div><div style="box-shadow:var(--elevacion-1)">--elevacion-1</div></div>
-      <p class="note">Solo para lo que flota sobre la escena: una ficha que se arrastra o un aviso. Todo lo demás queda plano.</p>
-    </div>
+    <div class="card"><b>Escena y espaciado</b><div id="forma-espaciado"></div></div>
+    <div class="card"><b>Radios</b><div id="forma-radios"></div></div>
+    <div class="card"><b>Trazos, iconos y camino de puntos</b><div id="forma-trazos"></div></div>
+    <div class="card"><b>Elevación y opacidad</b><div id="forma-elevacion"></div><div id="forma-opacidad" style="margin-top:var(--esp-3)"></div></div>
   </div>
+  <h3 class="sub">Medidas de los componentes</h3>
+  <div class="desplazable"><table class="t" id="forma-medidas"><thead><tr><th>Variable</th><th>Valor</th><th>Para</th></tr></thead><tbody></tbody></table></div>
 </section>
 
-<!-- ============================ VOCABULARIO ============================ -->
+<section class="s" id="iconos">
+  <p class="kicker">04</p><h2>Iconos</h2>
+  <p class="intro">Iconos de <b>Lucide</b> (licencia ISC), guardados en <code>design/iconos.js</code>: solo los que se usan, como SVG en línea, sin librería ni CDN. Para añadir uno: <code>npm run iconos -- nombre</code>. El color y el grosor van por CSS (<code>.icono</code>), nunca en atributos.</p>
+  <div id="iconos-lista"></div>
+</section>
+
 <section class="s" id="vocabulario">
-  <p class="kicker">04</p><h2>Vocabulario visual</h2>
-  <p class="intro">Cada concepto tiene un único dibujo y se ve igual en todas las zonas. Si una zona necesita algo nuevo, se añade aquí antes de usarlo.</p>
-  <div class="boards">
-    <figure class="bw full" data-group="ds"><div class="bf">
-      <div class="board" data-kind="vocab1" data-label="Vocabulario 1 · token, ventana, caché, coste">
-        <div class="abs" style="left:120px;top:64px"><span class="pildora">Vocabulario visual · 1 de 2</span></div>
-        <div class="abs" style="right:120px;top:64px"><span class="ficticio"><i data-lucide="info" class="ic-24"></i>Cifras ficticias</span></div>
-        <div class="abs" style="left:120px;top:150px;width:1680px;height:860px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px">
-          <div class="vcol">
-            <div class="vh">Token</div>
-            <div class="t-etq">Entrada</div>
-            <div class="fichas" style="flex-wrap:wrap"><span class="ficha t-entrada">Arre</span><span class="ficha t-entrada">gla</span><span class="ficha t-entrada"><span class="sp">·</span>la</span></div>
-            <div class="t-etq">Salida</div>
-            <div class="fichas" style="flex-wrap:wrap"><span class="ficha t-salida">Cam</span><span class="ficha t-salida">bio</span><span class="ficha t-salida"><span class="sp">·</span>el</span></div>
-            <div class="t-etq">Razonamiento</div>
-            <div class="fichas" style="flex-wrap:wrap"><span class="ficha t-razonamiento">Rev</span><span class="ficha t-razonamiento">iso</span><span class="ficha t-razonamiento"><span class="sp">·</span>use</span></div>
-            <div class="t-etq">Muchos tokens = una capa</div>
-            <div style="display:flex;flex-direction:column;gap:3px"><div class="t-entrada" style="height:40px;border-radius:12px"></div><div class="t-salida" style="height:18px;border-radius:12px"></div><div class="t-razonamiento" style="height:28px;border-radius:12px"></div></div>
-            <div class="vregla">Píldora en DM Mono 28, alto 60. Un espacio inicial se dibuja como un punto medio «<b>·</b>».</div>
-          </div>
-          <div class="vcol">
-            <div class="vh">Ventana de contexto</div>
-            <div style="position:relative;height:540px">
-              <div class="abs escala-l" style="left:0;top:20px">200k</div><div class="abs escala" style="left:74px;top:19px"></div>
-              <div class="abs escala-l" style="left:0;top:270px">100k</div><div class="abs escala" style="left:74px;top:269px"></div>
-              <div class="abs escala-l" style="left:28px;top:520px">0</div><div class="abs escala" style="left:74px;top:519px"></div>
-              <div class="abs recipiente" style="left:100px;top:0;width:250px;height:540px">
-                <div class="capa t-entrada" style="top:404px;height:117px">Entrada</div>
-                <div class="capa t-razonamiento" style="top:352px;height:49px"></div>
-                <div class="capa t-salida" style="top:322px;height:27px"></div>
-                <div class="capa t-entrada" style="top:262px;height:57px"></div>
-              </div>
-              <div class="abs nivel" style="left:88px;top:260px;width:274px"></div>
-              <div class="abs nivel-lbl" style="left:250px;top:212px">48 %</div>
-            </div>
-            <div class="vregla">Recipiente vertical con contorno de 3 px. Se llena de abajo arriba; la línea roja marca el nivel.</div>
-          </div>
-          <div class="vcol">
-            <div class="vh">Caché</div>
-            <div style="display:flex;gap:18px;align-items:stretch;height:200px">
-              <div style="width:140px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px"><div class="t-entrada" style="height:60px;border-radius:12px"></div><div class="t-razonamiento" style="height:30px;border-radius:12px"></div><div class="t-entrada" style="height:80px;border-radius:12px"></div></div>
-              <div class="corchete" style="height:176px;align-self:flex-end"></div>
-              <div class="cache-lbl" style="align-self:center"><i data-lucide="check" class="ic-24"></i>Acierto<br><span>se reutiliza</span></div>
-            </div>
-            <div style="display:flex;gap:18px;align-items:stretch;height:200px">
-              <div style="width:140px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px"><div class="t-entrada" style="height:60px;border-radius:12px"></div><div class="t-razonamiento" style="height:30px;border-radius:12px"></div><div class="t-entrada" style="height:80px;border-radius:12px"></div></div>
-              <div class="corchete fallo" style="height:176px;align-self:flex-end"></div>
-              <div class="cache-lbl" style="align-self:center"><i data-lucide="x" class="ic-24"></i>Fallo<br><span>se reprocesa</span></div>
-            </div>
-            <div class="vregla">Corchete a la derecha de lo que cubre. Continuo con ✓ si acierta; discontinuo con ✕ si falla.</div>
-          </div>
-          <div class="vcol">
-            <div class="vh">Contador de coste</div>
-            <div><span class="coste"><i data-lucide="coins" class="ic-36"></i>0,050 u.</span></div>
-            <div class="t-etq">Por llamada · ficticio</div>
-            <div style="display:flex;align-items:center;gap:14px;margin-top:24px"><i data-lucide="coins" class="ic-48"></i><span class="t-etq">Coste acumulado</span></div>
-            <div style="font:300 112px/1 var(--fuente-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em">0,330</div>
-            <div class="t-sub">unidades · ficticio</div>
-            <div class="vregla">Siempre con su unidad y la marca «ficticio». La cifra sube con <span style="font-family:var(--fuente-mono);white-space:nowrap">--dur-contador</span>.</div>
-          </div>
-        </div>
-      </div>
-    </div><figcaption><b>Vocabulario 1</b> · token, ventana de contexto, caché y coste.</figcaption></figure>
-
-    <figure class="bw full" data-group="ds"><div class="bf">
-      <div class="board" data-kind="vocab2" data-label="Vocabulario 2 · agente, rules, skill, herramienta">
-        <div class="abs" style="left:120px;top:64px"><span class="pildora">Vocabulario visual · 2 de 2</span></div>
-        <div class="abs" style="left:120px;top:150px;width:1680px;height:860px;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:40px">
-          <div class="vcol">
-            <div class="vh">Agente y subagente</div>
-            <div class="agente" style="height:150px"><i data-lucide="bot" class="ic-48"></i><div><div style="font:500 32px/1.1 var(--fuente-texto)">Agente</div><div style="font:400 24px/1.3 var(--fuente-mono);color:var(--color-texto-inverso-2);margin-top:6px">modelo · effort</div></div></div>
-            <div style="height:72px;margin-left:64px;border-left:10px dotted var(--color-contorno)"></div>
-            <div style="display:flex;gap:18px;align-items:flex-end">
-              <div class="subagente" style="height:112px;width:312px;flex:none"><i data-lucide="bot" class="ic-36"></i><div><div style="font:500 28px/1.1 var(--fuente-texto)">Subagente</div><div style="font:400 24px/1.3 var(--fuente-mono);color:var(--color-texto-3);margin-top:4px;white-space:nowrap">contexto propio</div></div></div>
-              <div class="recipiente" style="position:relative;width:56px;height:112px;border-radius:20px;flex:none"><div class="capa t-entrada" style="left:5px;right:5px;top:62px;height:40px;border-radius:8px;padding:0"></div></div>
-            </div>
-            <div><span class="ficha t-entrada" style="font-size:24px;height:52px">↩ resumen + evidencias</span></div>
-            <div class="vregla">El subagente es el mismo símbolo, más pequeño y hueco, y siempre lleva su propia ventana.</div>
-          </div>
-          <div class="vcol">
-            <div class="vh">Rules y AGENTS.md</div>
-            <div style="position:relative;height:420px">
-              <div class="abs doc" style="left:60px;top:0;width:300px;height:340px"><div class="doc-h"><i data-lucide="file-text" class="ic-24"></i>rules/*.md</div></div>
-              <div class="abs doc" style="left:0;top:60px;width:300px;height:340px;box-shadow:var(--elevacion-1)"><div class="doc-h"><i data-lucide="file-text" class="ic-24"></i>AGENTS.md</div><div style="height:28px"></div><div class="doc-l" style="width:200px"></div><div style="height:18px"></div><div class="doc-l" style="width:240px"></div><div style="height:18px"></div><div class="doc-l" style="width:170px"></div><div style="height:18px"></div><div class="doc-l" style="width:220px"></div></div>
-            </div>
-            <div class="vregla">Documento con su nombre de fichero en mono. Se carga al inicio y va siempre al fondo del recipiente.</div>
-          </div>
-          <div class="vcol">
-            <div class="vh">Skill</div>
-            <div style="position:relative;height:300px">
-              <div class="abs" style="left:28px;top:0;width:150px;height:40px;background:var(--color-superficie-inversa);border-radius:12px 12px 0 0"></div>
-              <div class="abs" style="left:0;top:38px;width:390px;height:250px;box-sizing:border-box;background:var(--color-superficie);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-m);padding:26px;display:flex;flex-direction:column;gap:16px">
-                <div style="display:flex;align-items:center;gap:14px"><i data-lucide="puzzle" class="ic-48"></i><span style="font:500 32px/1 var(--fuente-texto)">Skill</span></div>
-                <div style="font:400 24px/1 var(--fuente-mono)">revisar-migracion</div>
-                <div style="display:flex;gap:8px;font:500 24px/1 var(--fuente-texto)"><span class="pildora" style="padding:8px 14px">cuándo</span><span class="pildora" style="padding:8px 14px">pasos</span><span class="pildora" style="padding:8px 14px">entrega</span></div>
-              </div>
-            </div>
-            <div class="vregla">Pieza con pestaña. Solo entra en la ventana cuando se usa.</div>
-          </div>
-          <div class="vcol">
-            <div class="vh">Herramienta</div>
-            <div style="display:flex;gap:32px">
-              <div style="display:flex;flex-direction:column;align-items:center;gap:12px"><div class="herr"><i data-lucide="wrench" class="ic-48"></i></div><span style="font:400 24px/1 var(--fuente-mono)">read_file</span></div>
-              <div style="display:flex;flex-direction:column;align-items:center;gap:12px"><div class="herr"><i data-lucide="terminal" class="ic-48"></i></div><span style="font:400 24px/1 var(--fuente-mono)">run_tests</span></div>
-            </div>
-            <div style="padding-left:40px;color:var(--color-texto-3)"><i data-lucide="arrow-down" class="ic-36"></i></div>
-            <div><span class="ficha t-entrada" style="font-size:24px;height:52px">resultado → entrada</span></div>
-            <div class="vregla">Círculo con el icono de la acción. Su resultado entra en la ventana como tokens de entrada.</div>
-          </div>
-        </div>
-      </div>
-    </div><figcaption><b>Vocabulario 2</b> · agente y subagente, rules y AGENTS.md, skill y herramienta.</figcaption></figure>
-  </div>
+  <p class="kicker">05</p><h2>Vocabulario visual</h2>
+  <p class="intro">Cada concepto tiene un único dibujo, en <code>componentes.css</code>, y se ve igual en todas las zonas. Si una zona necesita algo nuevo, se añade allí antes de usarlo. Las láminas están a tamaño de escena (1920×1080) y solo usan esos componentes.</p>
+  <div id="vocabulario-laminas" class="laminas"></div>
   <h3 class="sub">Ficha técnica</h3>
-  <table class="t"><thead><tr><th>Concepto</th><th>Forma</th><th>Color</th><th>Medidas en escena</th><th>Icono Lucide</th><th>Movimiento</th></tr></thead><tbody>
-    <tr><td><b>Token</b></td><td>Píldora; texto en DM Mono; espacio inicial = «·»</td><td>Entrada sólida · salida hueca · razonamiento rayado</td><td>Alto 60 · mono 28 · padding 22</td><td>—</td><td>Aparece con <code>--ease-aparicion</code> y <code>--escalonado-tokens</code>; cae al recipiente con <code>--ease-caida</code></td></tr>
-    <tr><td><b>Muchos tokens</b></td><td>Capa del recipiente con el mismo relleno</td><td>Igual que el token</td><td>Alto proporcional a los tokens</td><td>—</td><td>Crece desde abajo con <code>--ease-asentado</code> y <code>--escalonado-capas</code></td></tr>
-    <tr><td><b>Ventana de contexto</b></td><td>Recipiente vertical, escala a la izquierda en mono</td><td>Interior blanco · contorno navy · nivel en acento</td><td>440 × 760 · radio 48</td><td><code>app-window</code> en etiquetas</td><td>La línea de nivel sube con <code>--ease-aparicion</code></td></tr>
-    <tr><td><b>Caché</b></td><td>Corchete a la derecha de lo que cubre</td><td>Bluewood · continuo = acierto · discontinuo = fallo</td><td>Trazo 6</td><td><code>check</code> / <code>x</code></td><td>El corchete se alarga con <code>--ease-aparicion</code></td></tr>
-    <tr><td><b>Agente</b></td><td>Tarjeta redondeada</td><td>Navy sólido · texto blanco</td><td>≈ 390 × 150 · radio 24</td><td><code>bot</code></td><td>Entra con <code>--ease-interfaz</code></td></tr>
-    <tr><td><b>Subagente</b></td><td>La misma tarjeta, más pequeña y hueca, con su propio recipiente</td><td>Blanco · contorno navy</td><td>≈ 75 % del agente</td><td><code>bot</code></td><td>Sale del agente por el camino de puntos y devuelve una ficha de resumen</td></tr>
-    <tr><td><b>Rules / AGENTS.md</b></td><td>Documento con cabecera y nombre de fichero</td><td>Blanco · cabecera navy</td><td>300 × 340 · radio 12</td><td><code>file-text</code></td><td>Es lo primero que entra: va al fondo del recipiente</td></tr>
-    <tr><td><b>Skill</b></td><td>Tarjeta-pieza con pestaña</td><td>Blanco · pestaña navy</td><td>390 × 250 · radio 24</td><td><code>puzzle</code></td><td>Entra solo cuando se usa, con <code>--ease-interfaz</code></td></tr>
-    <tr><td><b>Herramienta</b></td><td>Círculo con el icono de la acción y su nombre en mono</td><td>Blanco · contorno navy</td><td>Ø 112</td><td><code>wrench</code>, <code>terminal</code>…</td><td>Pulso de <code>--dur-micro</code> al usarse; su resultado entra como ficha de entrada</td></tr>
-    <tr><td><b>Contador de coste</b></td><td>Píldora con monedas y cifra en mono, o cifra grande</td><td>Navy · texto blanco</td><td>Alto 64 · o <code>--tipo-cifra</code></td><td><code>coins</code></td><td>Sube con <code>--dur-contador</code> y <code>--ease-contador</code></td></tr>
-  </tbody></table>
+  <p class="nota" style="margin:0 0 var(--esp-2)">Cada fila es la cabecera del componente en <code>componentes.css</code>. Las medidas muestran su valor actual y el movimiento, los efectos de <code>motion.js</code> con sus variables.</p>
+  <div class="desplazable"><table class="t" id="ficha"><thead><tr><th>Concepto</th><th>Forma</th><th>Color</th><th>Medidas en escena</th><th>Icono Lucide</th><th>Movimiento</th><th>Escenas</th></tr></thead><tbody></tbody></table></div>
+  <h3 class="sub">Utilidades</h3>
+  <div class="desplazable"><table class="t" id="utilidades"><thead><tr><th>Utilidad</th><th>Clases</th><th>Uso</th></tr></thead><tbody></tbody></table></div>
 </section>
 
-<!-- ============================ MOVIMIENTO ============================ -->
 <section class="s" id="movimiento">
-  <p class="kicker">05</p><h2>Movimiento</h2>
-  <p class="intro">Duraciones, curvas, escalonados y pausas como variables CSS. Las curvas usan nombres de GSAP. Pulsa «Reproducir» para ver cada una con su duración asignada.</p>
-  <h3 class="sub">Curvas por propósito <button class="btn primary" id="play-all" style="margin-left:12px">Reproducir todas</button></h3>
-  <div id="mv-list"></div>
+  <p class="kicker">06</p><h2>Movimiento</h2>
+  <p class="intro">Duraciones, curvas, escalonados y pausas son variables de <code>design-system.css</code>; las curvas usan nombres de GSAP. <code>motion.js</code> es el único módulo que las lee y registra los efectos del vocabulario. Las reglas para ampliarlos están en «Reglas».</p>
+  <div class="con-accion"><h3 class="sub">Curvas por propósito</h3><button class="boton boton--principal" id="curvas-todas">Reproducir todas</button></div>
+  <div id="curvas"></div>
   <h3 class="sub">Duraciones</h3>
-  <div id="dur-list"></div>
-  <div class="demo-row">
-    <div class="demo"><h4>Escalonado de fichas <button class="btn" id="play-stagger">Reproducir</button></h4><div class="stage" id="st-fichas" style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;padding:0 20px"></div><p class="note" style="margin:0"><code>--dur-entrada</code> · <code>--ease-aparicion</code> · <code>--escalonado-tokens</code></p></div>
-    <div class="demo"><h4>Capas que caen y se asientan <button class="btn" id="play-capas">Reproducir</button></h4><div class="stage" id="st-capas"><div style="position:absolute;left:50%;bottom:14px;width:150px;height:170px;margin-left:-75px;border:3px solid var(--color-prussian);border-radius:22px;background:#fff;overflow:hidden" id="mini-vaso"></div></div><p class="note" style="margin:0"><code>--ease-caida</code> + <code>--ease-asentado</code> · <code>--escalonado-capas</code></p></div>
-    <div class="demo"><h4>Elemento de interfaz (muelle) <button class="btn" id="play-ui">Reproducir</button></h4><div class="stage" style="display:grid;place-items:center"><span class="mini-pill" id="ui-pill" style="height:44px;font-size:18px;padding:0 20px">● 0,050 u.</span></div><p class="note" style="margin:0"><code>--dur-entrada</code> · <code>--ease-interfaz</code></p></div>
-    <div class="demo"><h4>Cámara sobre el mapa <button class="btn" id="play-cam">Reproducir</button></h4><div class="stage" id="st-cam" style="height:270px;width:480px;max-width:100%;align-self:center"></div><p class="note" style="margin:0">Ida: <code>--dur-camara</code> + <code>--ease-camara</code> · vuelta a la vista general: <code>--dur-camara-larga</code> + <code>--ease-camara-larga</code> · <code>--pausa-tras-camara</code></p></div>
-  </div>
+  <div id="duraciones"></div>
   <h3 class="sub">Escalonado y pausas de lectura</h3>
-  <table class="t"><thead><tr><th>Variable</th><th>Valor</th><th>Para qué</th></tr></thead><tbody>
-    <tr><td><code>--escalonado</code></td><td>0,06 s</td><td>Elementos de una lista, tarjetas, leyendas.</td></tr>
-    <tr><td><code>--escalonado-tokens</code></td><td>0,03 s</td><td>Fichas de token: rápido, se leen como una frase.</td></tr>
-    <tr><td><code>--escalonado-capas</code></td><td>0,12 s</td><td>Capas del recipiente: cada una debe verse entrar.</td></tr>
-    <tr><td><code>--pausa-tras-camara</code></td><td>0,3 s</td><td>La cámara se detiene antes de que empiece la animación de la zona.</td></tr>
-    <tr><td><code>--pausa-lectura-corta</code></td><td>1,5 s</td><td>Mínimo antes de cambiar algo que tiene una etiqueta o una cifra.</td></tr>
-    <tr><td><code>--pausa-lectura</code></td><td>3 s</td><td>Mínimo con una frase en pantalla.</td></tr>
-    <tr><td><code>--pausa-por-palabra</code></td><td>0,3 s</td><td>Regla general: pausa = máx(1,5 s; palabras × 0,3 s).</td></tr>
-  </tbody></table>
+  <div class="desplazable"><table class="t" id="pausas"><thead><tr><th>Variable</th><th>Valor</th><th>Para qué</th></tr></thead><tbody></tbody></table></div>
+  <div class="con-accion"><h3 class="sub">Efectos de <code>motion.js</code></h3>
+    <label class="interruptor"><input type="checkbox" id="modo-estatico"> Simular modo estático (<code>?estatico</code> o <code>prefers-reduced-motion</code>)</label></div>
+  <p class="nota" style="margin:0">Cada demo llama al efecto registrado, sin opciones de tiempo: lo que ves es su comportamiento por defecto. En modo estático todos duran 0 y saltan a su estado final. <code>volarCamara</code> y la pieza que viaja al hub se registran en el esqueleto.</p>
+  <div id="efectos" class="demos"></div>
 </section>
 
-<!-- ============================ REGLAS ============================ -->
 <section class="s" id="reglas">
-  <p class="kicker">06</p><h2>Reglas</h2>
-  <ul class="rules">
+  <p class="kicker">07</p><h2>Reglas</h2>
+  <h3 class="sub">Principios visuales</h3>
+  <p class="nota" style="margin:0 0 var(--esp-2)">Son del design system y no están en <code>CLAUDE.md</code>. Las reglas de trabajo (colores, cómo ampliar el sistema, cámara) se leen de <code>CLAUDE.md</code>, más abajo; si algo chocara, manda <code>CLAUDE.md</code>.</p>
+  <ul class="reglas">
     <li><b>Un solo acento por pantalla.</b> El rojo marca lo que hay que mirar ahora: la zona actual, el nivel de llenado o la cifra protagonista. Nunca hay dos elementos rojos a la vez.</li>
-    <li><b>El rojo según el fondo:</b> #DF0049 sobre claro, #FF0049 sobre navy y #E9004C solo dentro del logo, que nunca se recolorea.</li>
-    <li><b>Toda superficie lleva contorno navy de 3 px.</b> El proyector iguala crema y blanco; el tono por sí solo no separa nada.</li>
-    <li><b>Nada por debajo de 24 px</b> a 1920×1080. Contraste de texto ≥ 4,5:1, y ≥ 3:1 solo desde 24 px en adelante.</li>
-    <li><b>Sin decoración:</b> nada de partículas, brillos, destellos, degradados, sombras difusas ni giros 3D decorativos.</li>
-    <li><b>Cada concepto, un único dibujo</b> (ver vocabulario). Un token es siempre una píldora en DM Mono y la caché, siempre un corchete.</li>
-    <li><b>Las cifras de ejemplo son ficticias y se marcan así</b> en la propia escena, con la etiqueta «Cifras ficticias» visible.</li>
-    <li><b>Iconos Lucide a 36 px</b> con <code>stroke-width 2</code> (trazo real de 3 px, igual que el contorno). A 24 px solo dentro de etiquetas.</li>
-    <li><b>La cámara nunca se mueve mientras algo se anima dentro de la zona.</b> Primero llega la cámara, luego <code>--pausa-tras-camara</code> y después la zona.</li>
+    <li><b>El rojo según el fondo:</b> <code data-hex="--color-red-ribbon"></code> sobre claro, <code data-hex="--color-rojo-oscuro"></code> sobre navy y <code data-hex="--color-rojo-logo"></code> solo dentro del logo. Los logos de <code>design/assets/logos/</code> nunca se recolorean.</li>
+    <li><b>Toda superficie lleva contorno navy de <span data-var="--trazo-contorno"></span>.</b> El proyector iguala crema y blanco; el tono por sí solo no separa nada.</li>
+    <li><b>Nada por debajo de <span data-var="--tipo-etiqueta"></span></b> a 1920×1080. Contraste de texto de al menos 4,5:1; 3:1 solo para texto de 24 px o más y para gráficos.</li>
+    <li><b>Sin decoración:</b> nada de partículas, brillos, destellos, degradados, sombras difusas ni giros 3D decorativos. Hasta la herramienta que se da la vuelta lo hace en plano.</li>
+    <li><b>Cada concepto, un único dibujo:</b> se dibuja una vez en <code>componentes.css</code> y las escenas lo reutilizan. Un token es siempre una píldora en DM Mono; la caché, siempre un corchete.</li>
+    <li><b>Ningún dato inventado:</b> las cifras de ejemplo se marcan en la propia escena con «Cifras ficticias»; las reales llevan su nota de fuente.</li>
+    <li><b>Iconos Lucide con <code>stroke-width 2</code>:</b> <span data-var="--icono-m"></span> por defecto (trazo real de 3 px, igual que el contorno), <span data-var="--icono-s"></span> dentro de etiquetas y <span data-var="--icono-l"></span> para el icono principal de una pieza grande (agente, skill, herramienta).</li>
   </ul>
+  <h3 class="sub">Reglas de trabajo de <code>CLAUDE.md</code> (se leen del fichero al cargar)</h3>
+  <div id="reglas-claude" class="grid g2"></div>
 </section>
 
-<!-- ============================ APLICADO ============================ -->
 <section class="s" id="aplicado">
-  <p class="kicker">07</p><h2>Aplicado</h2>
-  <p class="intro">El mapa y la zona «la ventana de contexto se va llenando de tokens» redibujados con el sistema. Son referencias para construir las escenas en código, no las escenas finales.</p>
-  <p class="hint">Clic → visor · ← → · F pantalla completa · Esc</p>
-  <div class="boards" id="aplicado-boards">
-    <figure class="bw full" data-group="ds"><div class="bf">
-      <div class="board" data-kind="mapa" data-label="Mapa">
-        <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080"><path class="ruta" fill="none" style="stroke:var(--color-contorno)" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 24"/></svg>
-        <div class="abs" style="left:96px;top:110px;width:250px;height:90px;box-sizing:border-box;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:999px;background:var(--color-superficie);display:grid;place-items:center"><img src="assets/logos/openbank-logo-fondo-claro.svg" alt="Openbank" style="height:34px"></div>
-        <div class="abs" style="left:560px;top:478px;width:800px;text-align:center"><span class="pildora">Mapa de la charla · 8 zonas</span><div style="font:300 72px/1.05 var(--fuente-display);letter-spacing:-.015em;margin-top:22px">Devin en el día a día</div></div>
-        <div class="isla" style="left:330px;top:250px"><div class="isla-top"><span class="n">01</span><i data-lucide="monitor" class="ic-36"></i></div><div class="nm">Superficies</div></div>
-        <div class="isla" style="left:760px;top:200px"><div class="isla-top"><span class="n">02</span><i data-lucide="gauge" class="ic-36"></i></div><div class="nm">Agente, modo y effort</div></div>
-        <div class="isla grande actual" style="left:1190px;top:230px"><div class="isla-top"><span class="n">03</span><i data-lucide="app-window" class="ic-36"></i></div><div class="nm">Ventana de contexto</div></div>
-        <div class="isla" style="left:1500px;top:540px"><div class="isla-top"><span class="n">04</span><i data-lucide="cpu" class="ic-36"></i></div><div class="nm">Modelos y coste</div></div>
-        <div class="isla" style="left:1160px;top:750px"><div class="isla-top"><span class="n">05</span><i data-lucide="database" class="ic-36"></i></div><div class="nm">Tokens y caché</div></div>
-        <div class="isla" style="left:760px;top:780px"><div class="isla-top"><span class="n">06</span><i data-lucide="file-text" class="ic-36"></i></div><div class="nm">Rules, AGENTS.md y skills</div></div>
-        <div class="isla" style="left:360px;top:740px"><div class="isla-top"><span class="n">07</span><i data-lucide="git-fork" class="ic-36"></i></div><div class="nm">Herramientas y subagentes</div></div>
-        <div class="isla" style="left:96px;top:470px"><div class="isla-top"><span class="n">08</span><i data-lucide="list-checks" class="ic-36"></i></div><div class="nm">Método y caso práctico</div></div>
-        <div class="abs" style="right:96px;top:1000px;display:flex;gap:14px;align-items:center;font:500 24px/1 var(--fuente-texto);color:var(--color-texto-2)"><span style="display:inline-block;width:64px;height:10px;background:radial-gradient(circle,var(--color-contorno) 5px,transparent 5.5px) 0 0/22px 10px repeat-x"></span>Ruta de la cámara</div>
-      </div>
-    </div><figcaption><b>Mapa</b> · islas blancas con contorno navy; la zona actual, en rojo.</figcaption></figure>
+  <p class="kicker">08</p><h2>Aplicado</h2>
+  <p class="intro">El mapa de <code>escenas.md</code> y dos zonas con el vocabulario aplicado. Son referencias para construir las escenas, no las escenas finales: las coordenadas reales del mundo se fijan en el esqueleto.</p>
+  <h3 class="sub">Mapa: hub, anillo horario de la parte 2 y las otras tres partes</h3>
+  <div id="aplicado-mapa"></div>
+  <h3 class="sub">E23 · un fotograma: la llamada 12, con y sin caché</h3>
+  <div id="aplicado-e23"></div>
+  <h3 class="sub">E09 · el contexto, paso a paso, con los efectos de <code>motion.js</code></h3>
+  <div id="aplicado-e09"></div>
+  <div class="controles">
+    <button class="boton" id="e09-inicio">Inicio</button>
+    <button class="boton" id="e09-anterior">← Paso anterior</button>
+    <button class="boton boton--principal" id="e09-siguiente">Paso siguiente →</button>
+    <span id="e09-paso" aria-live="polite"></span>
+    <span class="nota" style="margin:0 0 0 auto">Avanzar anima el paso; retroceder salta a su estado, como hará la presentación. Para probarla en el proyector: <code>?lamina=e09&amp;paso=2</code> la abre sola, a tamaño real.</span>
   </div>
 </section>
 
-<!-- ============================ USO ============================ -->
-<section class="s" id="uso">
-  <p class="kicker">08</p><h2>Uso en código</h2>
-  <p class="intro">Importa <code>design-system.css</code> una vez. En GSAP, las curvas y duraciones se leen de las variables, así un cambio aquí se propaga a toda la presentación.</p>
-<pre class="code"><span class="c">// Leer variables del sistema desde GSAP</span>
-const raiz = getComputedStyle(document.documentElement);
-const v = (n) => raiz.getPropertyValue(n).trim();   <span class="c">// 'power3.out'</span>
-const s = (n) => parseFloat(v(n));                   <span class="c">// '0.5s' → 0.5</span>
+<section class="s uso" id="uso">
+  <p class="kicker">09</p><h2>Uso en código</h2>
+  <p class="intro">La presentación (Vite, JavaScript sin framework) importa las mismas fuentes que esta página. Nada se copia: si cambia una variable, un componente o un efecto, cambia aquí y en la presentación a la vez.</p>
+  <h3 class="sub">Importar</h3>
+<pre class="codigo"><span class="c">// src/main.js · el orden importa: primero las variables</span>
+import '../design/design-system.css';   <span class="c">// variables y fuentes locales</span>
+import '../design/componentes.css';     <span class="c">// el vocabulario visual</span>
+import { gsap } from 'gsap';            <span class="c">// desde npm, incluido en el build</span>
+import { v, s, px, esEstatico } from '../design/motion.js';   <span class="c">// al importarse registra los efectos</span>
+import { icono, pintarIconos } from '../design/iconos.js';
+import { grafica, dial, temporizador, circuito, bucle, curva } from '../design/dibujos.js';</pre>
+  <h3 class="sub">Usar los efectos en una escena</h3>
+<pre class="codigo"><span class="c">// Coreografía de una sola escena: encadena efectos; tiempos solo con s() y v().</span>
+const tl = gsap.timeline();
+tl.apilarCapa('.e09 .capa')
+  .subirNivel('.e09 .nivel', { y: -354 }, `+=${s('--pausa-lectura-corta')}`)
+  .atenuar('.e09 .capa:not(.relevante)');
 
-gsap.from('.ficha', {
-  y: 24, autoAlpha: 0,
-  duration: s('--dur-entrada'),
-  ease: v('--ease-aparicion'),
-  stagger: s('--escalonado-tokens'),
-});
-
-<span class="c">// Cámara: llega, espera y después anima la zona</span>
-gsap.timeline()
-  .to(mundo, { x, y, scale, duration: s('--dur-camara'), ease: v('--ease-camara') })
-  .add(animarZona, `+=${s('--pausa-tras-camara')}`);</pre>
-  <p class="note">Ficheros: <code>design/design-system.css</code> (variables), <code>design/assets/logos/</code> (logos oficiales), <code>design/ronda-1-direcciones.html</code> (las tres direcciones de partida).</p>
+<span class="c">// Una cifra: formato español y dígitos tabulares.</span>
+gsap.effects.subirContador('.total', { hasta: 0.43, decimales: 2 });</pre>
+  <h3 class="sub">Contrato de los efectos</h3>
+  <ol>
+    <li>Se registran en <code>motion.js</code> con <code>gsap.registerEffect({ …, extendTimeline: true })</code>: funcionan sueltos (<code>gsap.effects.nombre</code>) y como método de un timeline (<code>tl.nombre(objetivos, opciones, posición)</code>).</li>
+    <li>Se nombran con un verbo en infinitivo y van precedidos de un comentario <code>/** … */</code> que esta página muestra como descripción.</li>
+    <li>Sus valores por defecto se leen de las variables <b>cada vez que se llaman</b>. Las opciones que se pasen ganan, pero nunca son duraciones ni curvas literales: se pasan con <code>s()</code> y <code>v()</code>. Las distancias en px sí pueden ir literales.</li>
+    <li>Devuelven su tween o timeline y animan solo dentro de su zona: <b>ningún efecto mueve la cámara</b>.</li>
+    <li>Se pueden rebobinar: los cambios de clase se hacen con <code>tl.set(…, { attr: { class } })</code> y nunca en callbacks, así que retroceder o saltar hacia atrás no deja estados colgados.</li>
+    <li>En modo estático (<code>?estatico</code>, <code>prefers-reduced-motion</code> o <code>data-movimiento="estatico"</code> en <code>&lt;html&gt;</code>) duran 0 y saltan a su estado final.</li>
+    <li>Un efecto nuevo lleva en el mismo cambio: su registro, su demo en <code>doc/documentacion.js</code> y su nombre en la línea <code>movimiento:</code> de los componentes que lo usan. Si falta algo, «Comprobaciones» lo marca.</li>
+  </ol>
+  <h3 class="sub">Ejecutar y exportar</h3>
+  <ul>
+    <li><code>npm install</code> una vez, con conexión. Después todo funciona sin ella.</li>
+    <li><code>npm run dev</code>: servidor de Vite. Esta página está en <code>http://localhost:5173/design/design-system.html</code>.</li>
+    <li><code>npm run build:design</code>: esta página como un único HTML autocontenido en <code>dist-design/design/design-system.html</code>, con código, CSS, fuentes e imágenes dentro. Se abre con doble clic.</li>
+    <li>La presentación (<code>index.html</code>) tendrá su propio build de un solo fichero; se añade en el esqueleto.</li>
+    <li><code>DESIGN.md</code>, en la raíz, es un resumen derivado para Impeccable: se regenera con <code>/impeccable document</code> cuando cambia <code>design/</code> y nunca se edita a mano.</li>
+  </ul>
+  <h3 class="sub">Ampliar el sistema</h3>
+  <ul>
+    <li><b>Variable:</b> en su grupo de <code>design-system.css</code>, en una sola línea y con su descripción en un comentario. Las curvas dicen con qué duración van (<code>· con --dur-…</code>). Aparece sola en esta página.</li>
+    <li><b>Componente:</b> un bloque en <code>componentes.css</code> con su cabecera (<code>clase</code>, <code>forma</code>, <code>color</code>, <code>medidas</code>, <code>icono</code>, <code>movimiento</code>, <code>escenas</code>) y su muestra en <code>doc/laminas.js</code>. Si necesita geometría SVG, va en <code>dibujos.js</code>.</li>
+    <li><b>Icono:</b> <code>npm run iconos -- nombre</code>.</li>
+    <li><b>Efecto:</b> ver el contrato.</li>
+  </ul>
+  <p class="nota">Ficheros: <code>design/design-system.css</code>, <code>componentes.css</code>, <code>motion.js</code>, <code>iconos.js</code>, <code>dibujos.js</code>, <code>assets/fonts/</code> (Outfit y DM Mono, OFL), <code>assets/logos/</code> (logos oficiales), <code>assets/licencias/</code> (Lucide, ISC) y <code>doc/</code> (solo esta página). <code>ronda-1-direcciones.html</code> es la exploración inicial de direcciones: histórico, no es referencia.</p>
 </section>
 </main>
 
-<div class="ov" hidden>
-  <div class="ov-stage" title="Clic: siguiente"></div>
-  <div class="ov-bar"><span class="ov-title"></span><span class="ov-hint">← → lámina · F pantalla completa · Esc cerrar</span>
-    <button data-act="prev" aria-label="Anterior">←</button><button data-act="next" aria-label="Siguiente">→</button><button data-act="fs">Pantalla completa</button><button data-act="close">Cerrar</button></div>
+<div class="visor" role="dialog" aria-modal="true" aria-labelledby="visor-titulo" hidden>
+  <div class="visor__escenario" title="Clic: siguiente"></div>
+  <div class="visor__barra inverso">
+    <span class="visor__titulo" id="visor-titulo"></span><span class="visor__ayuda">← → lámina · F pantalla completa · Esc cerrar</span>
+    <button class="boton" data-accion="anterior" aria-label="Lámina anterior">←</button>
+    <button class="boton" data-accion="siguiente" aria-label="Lámina siguiente">→</button>
+    <button class="boton" data-accion="completa">Pantalla completa</button>
+    <button class="boton" data-accion="cerrar">Cerrar</button>
+  </div>
 </div>
 
-<script>
-const $ = (q, r = document) => r.querySelector(q);
-const $$ = (q, r = document) => [...r.querySelectorAll(q)];
-const raiz = getComputedStyle(document.documentElement);
-const v = n => raiz.getPropertyValue(n).trim();
-const s = n => parseFloat(v(n));
-const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-const sum = a => a.reduce((t, x) => t + x[2], 0);
-const esc = t => t.replace(/&/g, '&amp;').replace(/</g, '&lt;');
-
-/* Color final de una variable (resuelve var() y color-mix()) en #RRGGBB */
-const sonda = document.createElement('i');
-sonda.style.display = 'none';
-document.body.appendChild(sonda);
-const lienzo = document.createElement('canvas').getContext('2d', { willReadFrequently: true });
-const hex = k => {
-  sonda.style.color = `var(${k})`;
-  lienzo.clearRect(0, 0, 1, 1);
-  lienzo.fillStyle = getComputedStyle(sonda).color;
-  lienzo.fillRect(0, 0, 1, 1);
-  const [r, g, b] = lienzo.getImageData(0, 0, 1, 1).data;
-  return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
-};
-
-/* ---------- Muestras de color ---------- */
-const MARCA = [
-  ['Prussian blue', '--color-prussian', 'Texto principal, contornos, tokens de entrada, coste.'],
-  ['Pickled bluewood', '--color-bluewood', 'Texto secundario y corchete de caché.'],
-  ['Red ribbon', '--color-red-ribbon', 'El acento sobre fondo claro.'],
-  ['Rojo logo · oscuro', '--color-rojo-oscuro', 'El acento sobre superficies navy.'],
-  ['Rojo logo · claro', '--color-rojo-logo', 'Solo dentro del logo: no se usa en interfaz.'],
-];
-const NEUTROS = [
-  ['Old lace', '--color-old-lace', 'Fondo de escena.'],
-  ['Blanco', '--color-blanco', 'Superficies: islas, recipiente, tarjetas.'],
-  ['Cinderella', '--color-cinderella', 'Superficie 2: apoyos muy suaves.'],
-  ['Pizarra', '--color-pizarra', 'Texto 3: escalas y anotaciones.'],
-  ['Separador', '--color-separador', 'Navy al 10 % sobre Cinderella: líneas finas.'],
-];
-const swHTML = ([n, k, d]) => `<div class="sw"><i style="background:var(${k})"></i><b>${n}</b><code>${k} ${hex(k)}</code><p>${d}</p></div>`;
-$('#sw-marca').innerHTML = MARCA.map(swHTML).join('');
-$('#sw-neutros').innerHTML = NEUTROS.map(swHTML).join('');
-
-/* ---------- Contraste (WCAG) ---------- */
-const lum = h => { const c = h.replace('#', '').match(/../g).map(x => { const y = parseInt(x, 16) / 255; return y <= 0.03928 ? y / 12.92 : Math.pow((y + 0.055) / 1.055, 2.4); }); return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2]; };
-const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
-const PARES = [
-  ['Texto 1 sobre fondo', '--color-texto-1', '--color-fondo', 4.5],
-  ['Texto 2 sobre fondo', '--color-texto-2', '--color-fondo', 4.5],
-  ['Texto 3 sobre fondo', '--color-texto-3', '--color-fondo', 4.5],
-  ['Texto 1 sobre superficie', '--color-texto-1', '--color-superficie', 4.5],
-  ['Blanco sobre token de entrada', '--color-sobre-entrada', '--color-entrada', 4.5],
-  ['Texto 1 sobre razonamiento', '--color-sobre-razonamiento', '--color-razonamiento', 4.5],
-  ['Blanco sobre acento', '--color-sobre-acento', '--color-acento', 3],
-  ['Acento sobre fondo (cifras, nivel)', '--color-acento', '--color-fondo', 3],
-  ['Acento sobre navy', '--color-acento-sobre-oscuro', '--color-prussian', 3],
-  ['Contorno sobre fondo', '--color-contorno', '--color-fondo', 3],
-];
-$('#contraste tbody').innerHTML = PARES.map(([n, a, b, min]) => {
-  const r = ratio(hex(a), hex(b)), ok = r >= min;
-  const uso = r >= 4.5 ? 'Cualquier texto' : r >= 3 ? 'Texto ≥ 24 px y elementos gráficos' : 'No usar para texto';
-  return `<tr><td>${n}</td><td><code>${a}</code> / <code>${b}</code></td><td class="${ok ? 'ok' : 'ko'}">${r.toFixed(1)}:1</td><td>${uso}</td></tr>`;
-}).join('');
-
-/* ---------- Espaciado ---------- */
-$('#sp-list').innerHTML = [1, 2, 3, 4, 5, 6, 7, 8].map(i => `<div class="sp-row"><code>--esp-${i}</code><span class="bar" style="width:var(--esp-${i})"></span><span>${v('--esp-' + i)}</span></div>`).join('');
-
-/* ---------- Escena «la ventana de contexto se va llenando» (cifras ficticias) ---------- */
-const CAP = 200000;
-const SEGS = { inicio: [], mitad: [
-  ['Instrucciones y rules', 'entrada', 12000], ['AGENTS.md', 'entrada', 2400], ['Tu mensaje', 'entrada', 46],
-  ['Razonamiento', 'razonamiento', 3100], ['Respuesta', 'salida', 900],
-  ['TablaClientes.tsx', 'entrada', 18000], ['Razonamiento', 'razonamiento', 4200], ['Respuesta', 'salida', 1300],
-  ['Tests', 'entrada', 22000], ['Razonamiento', 'razonamiento', 5000], ['Respuesta', 'salida', 1054],
-  ['useFilters.ts', 'entrada', 26000]
-]};
-SEGS.final = SEGS.mitad.concat([
-  ['Razonamiento', 'razonamiento', 6000], ['Respuesta', 'salida', 2000], ['Tests (2.ª vez)', 'entrada', 22000],
-  ['Razonamiento', 'razonamiento', 12000], ['Respuesta', 'salida', 8000], ['Logs sin filtrar', 'entrada', 38000]
-]);
-const CACHED = { inicio: 0, mitad: 70000, final: 146000 };
-const CHIPS = {
-  inicio: ['Arre', 'gla', ' la', ' pagin', 'ación', '.'],
-  mitad: ['const', ' [', 'page', ',', ' set', 'Page', ']'],
-  final: ['2026', '-10', '-14', 'T09', ':12', ' WARN', ' ['],
-};
-const FT = {
-  inicio: { name: 'Inicio', body: 'Cada llamada al modelo envía todo lo que hay dentro.', more: false },
-  mitad: { name: 'Mitad', body: 'Instrucciones, archivos, resultados y respuestas: todo ocupa sitio.', more: true },
-  final: { name: 'Final', body: 'Más tokens no significa más información relevante.', more: true },
-};
-const ficha = t => `<span class="ficha t-entrada">${t.startsWith(' ') ? '<span class="sp">·</span>' : ''}${esc(t.trim())}</span>`;
-const leyenda = `<div class="leyenda"><span><i class="t-entrada"></i>Entrada</span><span><i class="t-salida"></i>Salida</span><span><i class="t-razonamiento"></i>Razonamiento</span><span><i class="sw-cache"></i>Caché acertada</span></div>`;
-
-function escena(f) {
-  const segs = SEGS[f], tot = sum(segs), cached = CACHED[f], pct = Math.round(tot / CAP * 100), t = FT[f];
-  const VX = 1000, VY = 230, VW = 440, VH = 760, B = 3, PAD = 10, IH = VH - 2 * B, H = IH - 2 * PAD;
-  const yOf = val => VY + B + IH - PAD - val / CAP * H;
-  let y = 0, capas = '';
-  for (const [n, ty, k] of segs) {
-    const h = k / CAP * H, top = IH - PAD - (y + h) + 3;
-    capas += `<div class="capa t-${ty}" style="top:${top.toFixed(1)}px;height:${Math.max(3, h - 3).toFixed(1)}px">${h >= 40 ? `${esc(n)} · ${fmt(k)}` : ''}</div>`;
-    y += h;
-  }
-  const marcas = [0, 50000, 100000, 150000, 200000].map(val => `<div class="abs escala" style="left:976px;top:${yOf(val) - 1}px"></div><div class="abs escala-l" style="right:${1920 - 964}px;top:${yOf(val)}px">${fmt(val)}</div>`).join('');
-  const nivel = yOf(tot), cTop = yOf(cached), cBot = yOf(0);
-  return `<div class="board" data-kind="${f}" data-label="Ventana de contexto · ${t.name}">
-    <div class="abs" style="left:120px;top:96px"><span class="pildora"><i data-lucide="app-window" class="ic-24"></i>Zona 03 · Ventana de contexto</span></div>
-    <div class="abs t-titulo" style="left:120px;top:170px;width:780px">La ventana de contexto se va llenando</div>
-    <p class="abs t-texto" style="left:120px;top:444px;width:740px">${f === 'final' ? '<i data-lucide="triangle-alert" class="ic-36"></i>' : ''}${t.body}</p>
-    <div class="abs" style="left:120px;top:604px"><div class="t-etq">Tokens en contexto</div><div class="t-cifra" style="margin-top:8px">${fmt(tot)}</div><div class="t-sub" style="margin-top:6px">de 200.000</div></div>
-    <div class="abs" style="left:120px;top:930px">${leyenda}</div>
-    <div class="abs fichas" style="left:1220px;top:104px;transform:translateX(-50%)">${CHIPS[f].map(ficha).join('')}${t.more ? '<span class="mas">…</span>' : ''}</div>
-    <div class="abs" style="left:1202px;top:178px;color:var(--color-texto-3)"><i data-lucide="arrow-down" class="ic-36"></i></div>
-    <div class="abs recipiente" style="left:${VX}px;top:${VY}px;width:${VW}px;height:${VH}px">${capas}</div>
-    ${marcas}
-    ${cached ? `<div class="abs corchete" style="left:${VX + VW + 14}px;top:${cTop.toFixed(1)}px;height:${(cBot - cTop).toFixed(1)}px"></div>
-    <div class="abs cache-lbl" style="left:${VX + VW + 50}px;top:${((cTop + cBot) / 2).toFixed(1)}px;transform:translateY(-50%)"><i data-lucide="check" class="ic-24"></i>Caché acertada<br><span>${fmt(cached)} tokens</span></div>` : ''}
-    <div class="abs nivel" style="left:${VX - 12}px;top:${(nivel - 3).toFixed(1)}px;width:${VW + 24}px"></div>
-    <div class="abs nivel-lbl" style="left:${VX + VW + 26}px;top:${nivel.toFixed(1)}px;transform:translateY(-50%)">${pct} %</div>
-    <div class="abs" style="right:96px;top:1000px"><span class="ficticio"><i data-lucide="info" class="ic-24"></i>Cifras ficticias</span></div>
-  </div>`;
-}
-$('#aplicado-boards').insertAdjacentHTML('beforeend', ['inicio', 'mitad', 'final'].map(f =>
-  `<figure class="bw${f === 'final' ? ' full' : ''}" data-group="ds"><div class="bf">${escena(f)}</div><figcaption><b>${FT[f].name}</b> · ${f === 'inicio' ? '0 tokens' : f === 'mitad' ? '96.000 tokens · 48 %' : '184.000 tokens · 92 %'}</figcaption></figure>`).join(''));
-
-/* Camino de puntos del mapa (Catmull-Rom → Bézier) */
-function crPath(p) {
-  let d = `M${p[0][0]} ${p[0][1]}`;
-  for (let i = 0; i < p.length - 1; i++) {
-    const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
-    d += ` C${(p1[0] + (p2[0] - p0[0]) / 6).toFixed(1)} ${(p1[1] + (p2[1] - p0[1]) / 6).toFixed(1)} ${(p2[0] - (p3[0] - p1[0]) / 6).toFixed(1)} ${(p2[1] - (p3[1] - p1[1]) / 6).toFixed(1)} ${p2[0]} ${p2[1]}`;
-  }
-  return d;
-}
-$$('.ruta').forEach(p => p.setAttribute('d', crPath([[221, 155], [490, 345], [920, 295], [1380, 340], [1660, 635], [1320, 845], [920, 875], [520, 835], [256, 565]])));
-
-if (window.lucide) lucide.createIcons();
-
-/* Escalado de láminas */
-const ro = new ResizeObserver(es => es.forEach(e => { const b = e.target.querySelector('.board'); if (b) b.style.transform = `scale(${e.contentRect.width / 1920})`; }));
-$$('.bf').forEach(f => ro.observe(f));
-
-/* ---------- Movimiento ---------- */
-const EASES = [
-  ['Apariciones', '--ease-aparicion', '--dur-entrada'],
-  ['Salidas', '--ease-salida', '--dur-salida'],
-  ['Cámara', '--ease-camara', '--dur-camara'],
-  ['Cámara · salto largo', '--ease-camara-larga', '--dur-camara-larga'],
-  ['Interfaz · muelle', '--ease-interfaz', '--dur-entrada'],
-  ['Caída de fichas', '--ease-caida', '--dur-entrada'],
-  ['Asentado de capa', '--ease-asentado', '--dur-entrada'],
-  ['Contadores', '--ease-contador', '--dur-contador'],
-];
-$('#mv-list').innerHTML = EASES.map(([n, e, d], i) => `<div class="mv"><b style="font-weight:500">${n}</b><span><code>${e}</code> ${v(e)}<br><code>${d}</code> ${v(d)}</span><div class="track"><div class="dot" id="dot-${i}"></div></div><button data-i="${i}">Reproducir</button></div>`).join('');
-const playEase = i => { const dot = $('#dot-' + i), tr = dot.parentElement; gsap.fromTo(dot, { x: 0 }, { x: tr.clientWidth - 36, duration: s(EASES[i][2]), ease: v(EASES[i][1]) }); };
-$('#mv-list').addEventListener('click', e => { const b = e.target.closest('button'); if (b) playEase(+b.dataset.i); });
-$('#play-all').addEventListener('click', () => EASES.forEach((_, i) => playEase(i)));
-
-const DURS = ['--dur-micro', '--dur-salida', '--dur-entrada', '--dur-contador', '--dur-camara-corta', '--dur-camara', '--dur-camara-larga'];
-$('#dur-list').innerHTML = DURS.map(d => `<div class="dur"><code>${d}</code><span class="bar" style="width:${s(d) / 1.5 * 100}%"></span><span>${v(d)}</span></div>`).join('');
-
-const stF = $('#st-fichas');
-stF.innerHTML = ['Arre', 'gla', '·la', '·pagin', 'ación', '.', 'Cor', 'rige', '·la', '·pag', 'inación', '.'].map(t => `<span class="mini-pill">${t}</span>`).join('');
-$('#play-stagger').addEventListener('click', () => gsap.fromTo('#st-fichas .mini-pill', { y: 24, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: s('--dur-entrada'), ease: v('--ease-aparicion'), stagger: s('--escalonado-tokens') }));
-
-const vaso = $('#mini-vaso');
-const CAPAS_DEMO = [['t-entrada', 40], ['t-razonamiento', 18], ['t-salida', 12], ['t-entrada', 30], ['t-razonamiento', 16]];
-let acc = 6;
-vaso.innerHTML = CAPAS_DEMO.map(([c, h]) => { const b = acc; acc += h + 3; return `<div class="${c}" style="position:absolute;left:6px;right:6px;bottom:${b}px;height:${h}px;border-radius:6px"></div>`; }).join('');
-$('#play-capas').addEventListener('click', () => {
-  const capas = [...vaso.children];
-  const tl = gsap.timeline();
-  capas.forEach((c, i) => {
-    tl.fromTo(c, { y: -220, autoAlpha: 0 }, { y: 0, autoAlpha: 1, duration: s('--dur-entrada'), ease: v('--ease-caida') }, i * s('--escalonado-capas'))
-      .fromTo(c, { scaleY: 0.7, transformOrigin: '50% 100%' }, { scaleY: 1, duration: s('--dur-micro') * 2, ease: v('--ease-asentado') }, '>');
-  });
-});
-
-$('#play-ui').addEventListener('click', () => gsap.fromTo('#ui-pill', { scale: 0.6, autoAlpha: 0 }, { scale: 1, autoAlpha: 1, duration: s('--dur-entrada'), ease: v('--ease-interfaz') }));
-
-/* Cámara: copia reducida del mapa */
-const camStage = $('#st-cam');
-const mundo = $('.board[data-kind="mapa"]').cloneNode(true);
-mundo.style.transformOrigin = '0 0';
-camStage.appendChild(mundo);
-const encuadreGeneral = () => { const k = camStage.clientWidth / 1920; return { x: 0, y: 0, scale: k }; };
-gsap.set(mundo, encuadreGeneral());
-$('#play-cam').addEventListener('click', () => {
-  const g = encuadreGeneral(), k = g.scale * 3, W = camStage.clientWidth, H = camStage.clientHeight;
-  const zona = { x: W / 2 - 1380 * k, y: H / 2 - 340 * k, scale: k };
-  gsap.timeline()
-    .set(mundo, g)
-    .to(mundo, { ...zona, duration: s('--dur-camara'), ease: v('--ease-camara') })
-    .to(mundo, { ...g, duration: s('--dur-camara-larga'), ease: v('--ease-camara-larga') }, `+=${s('--pausa-tras-camara') + s('--pausa-lectura-corta')}`);
-});
-addEventListener('resize', () => gsap.set(mundo, encuadreGeneral()));
-
-/* ---------- Visor ---------- */
-const ov = $('.ov'), stage = $('.ov-stage');
-let grupo = [], idx = 0;
-function fit() { const b = stage.firstElementChild; if (!b) return; const W = stage.clientWidth, H = stage.clientHeight, k = Math.min(W / 1920, H / 1080); b.style.transform = `translate(${(W - 1920 * k) / 2}px, ${(H - 1080 * k) / 2}px) scale(${k})`; }
-function pinta() { const b = grupo[idx].querySelector('.board').cloneNode(true); stage.replaceChildren(b); $('.ov-title').textContent = `${b.dataset.label}  (${idx + 1}/${grupo.length})`; fit(); }
-function abre(fig) { grupo = $$(`.bw[data-group="${fig.dataset.group}"]`); idx = grupo.indexOf(fig); ov.hidden = false; document.body.style.overflow = 'hidden'; pinta(); }
-function cierra() { if (document.fullscreenElement) document.exitFullscreen(); ov.hidden = true; document.body.style.overflow = ''; }
-const paso = n => { idx = (idx + n + grupo.length) % grupo.length; pinta(); };
-document.addEventListener('click', e => { const bf = e.target.closest('.bf'); if (bf && !ov.contains(bf)) abre(bf.closest('.bw')); });
-stage.addEventListener('click', () => paso(1));
-$('.ov-bar').addEventListener('click', e => { const a = e.target.closest('button')?.dataset.act; if (a === 'prev') paso(-1); else if (a === 'next') paso(1); else if (a === 'close') cierra(); else if (a === 'fs') ov.requestFullscreen?.(); });
-document.addEventListener('keydown', e => {
-  if (ov.hidden) return;
-  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); paso(1); }
-  else if (e.key === 'ArrowLeft') paso(-1);
-  else if (e.key === 'Escape' && !document.fullscreenElement) cierra();
-  else if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : ov.requestFullscreen?.();
-});
-addEventListener('resize', fit);
-document.addEventListener('fullscreenchange', () => requestAnimationFrame(fit));
-
-/* ?lamina=mitad → una sola lámina a 1:1 (capturas y prueba en proyector) */
-const solo = new URLSearchParams(location.search).get('lamina');
-if (solo) {
-  const src = $(`.board[data-kind="${solo}"]`);
-  if (src) { const b = src.cloneNode(true); b.style.transform = 'none'; document.body.replaceChildren(b); document.body.style.overflow = 'hidden'; }
-}
-</script>
+<script type="module" src="./doc/documentacion.js"></script>
 </body>
 </html>

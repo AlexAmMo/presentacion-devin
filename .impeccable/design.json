@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T16:31:07+00:00",
+  "generatedAt": "2026-10-14T00:00:00+02:00",
   "title": "Design System: Devin en el día a día",
   "extensions": {
     "colorMeta": {
@@ -21,7 +21,7 @@
       },
       "bluewood": {
         "role": "neutral",
-        "displayName": "Pickled bluewood",
+        "displayName": "Pickled bluewood · texto 2 y corchete",
         "canonical": "oklch(36.4% 0.043 249.1)",
         "tonalRamp": [
           "#000C1B",
@@ -36,7 +36,7 @@
       },
       "red-ribbon": {
         "role": "primary",
-        "displayName": "Red ribbon · acento sobre claro",
+        "displayName": "Red ribbon · el acento",
         "canonical": "oklch(57.4% 0.230 15.5)",
         "tonalRamp": [
           "#1E0004",
@@ -81,7 +81,7 @@
       },
       "pizarra": {
         "role": "neutral",
-        "displayName": "Pizarra",
+        "displayName": "Pizarra · texto 3",
         "canonical": "oklch(52.2% 0.036 227.9)",
         "tonalRamp": [
           "#000D14",
@@ -96,7 +96,7 @@
       },
       "old-lace": {
         "role": "neutral",
-        "displayName": "Old lace · fondo",
+        "displayName": "Old lace · fondo de escena",
         "canonical": "oklch(98.5% 0.009 62.6)",
         "tonalRamp": [
           "#0E0A07",
@@ -126,7 +126,7 @@
       },
       "blanco": {
         "role": "neutral",
-        "displayName": "Blanco · superficie",
+        "displayName": "Blanco · superficies",
         "canonical": "oklch(100.0% 0.000 89.9)",
         "tonalRamp": [
           "#0B0B0B",
@@ -141,7 +141,7 @@
       },
       "gris-marca": {
         "role": "neutral",
-        "displayName": "Gris claro de marca (navy 20 %)",
+        "displayName": "Gris claro de marca · texto 2 sobre navy y texto simulado",
         "canonical": "oklch(86.8% 0.012 231.7)",
         "tonalRamp": [
           "#060C0F",
@@ -156,7 +156,7 @@
       },
       "separador": {
         "role": "neutral",
-        "displayName": "Separador (navy 10 %)",
+        "displayName": "Separador · líneas finas",
         "canonical": "oklch(90.2% 0.015 64.3)",
         "tonalRamp": [
           "#100A05",
@@ -171,7 +171,7 @@
       },
       "razonamiento": {
         "role": "neutral",
-        "displayName": "Razonamiento (navy 40 %)",
+        "displayName": "Razonamiento · franja oscura del rayado",
         "canonical": "oklch(72.8% 0.025 236.1)",
         "tonalRamp": [
           "#020D14",
@@ -186,7 +186,7 @@
       },
       "razonamiento-rayado": {
         "role": "neutral",
-        "displayName": "Razonamiento rayado (navy 27 %)",
+        "displayName": "Razonamiento · franja clara del rayado",
         "canonical": "oklch(81.9% 0.016 233.1)",
         "tonalRamp": [
           "#050C11",
@@ -199,9 +199,24 @@
           "#E4F1F8"
         ]
       },
+      "superficie-2-inversa": {
+        "role": "neutral",
+        "displayName": "Superficie 2 sobre navy",
+        "canonical": "oklch(32.5% 0.062 238.8)",
+        "tonalRamp": [
+          "#000D18",
+          "#02273C",
+          "#1C445D",
+          "#3B637D",
+          "#5A839E",
+          "#7BA4C1",
+          "#A0CAE8",
+          "#DFF2FF"
+        ]
+      },
       "texto-3-inverso": {
         "role": "neutral",
-        "displayName": "Texto 3 inverso (navy 42 %)",
+        "displayName": "Texto 3 sobre navy",
         "canonical": "oklch(71.5% 0.026 234.6)",
         "tonalRamp": [
           "#020D14",
@@ -213,17 +228,39 @@
           "#B5C7D3",
           "#DFF2FE"
         ]
+      },
+      "texto-simulado-inverso": {
+        "role": "neutral",
+        "displayName": "Texto simulado sobre navy",
+        "canonical": "oklch(51.1% 0.045 235.2)",
+        "tonalRamp": [
+          "#000D17",
+          "#0A2737",
+          "#274454",
+          "#446274",
+          "#638295",
+          "#84A4B7",
+          "#A9C9DE",
+          "#DEF2FF"
+        ]
+      },
+      "separador-inverso": {
+        "role": "neutral",
+        "displayName": "Separador sobre navy",
+        "canonical": "oklch(43.3% 0.053 236.9)",
+        "tonalRamp": [
+          "#000D17",
+          "#04273A",
+          "#224458",
+          "#406278",
+          "#5F8299",
+          "#80A4BB",
+          "#A5CAE2",
+          "#DEF2FF"
+        ]
       }
     },
     "typographyMeta": {
-      "cifra-xl": {
-        "displayName": "Cifra XL",
-        "purpose": "Una cifra protagonista sola."
-      },
-      "cifra": {
-        "displayName": "Cifra",
-        "purpose": "Contadores de tokens y coste."
-      },
       "titulo-xl": {
         "displayName": "Título XL",
         "purpose": "Portada y cierre."
@@ -234,7 +271,7 @@
       },
       "titulo-s": {
         "displayName": "Título S",
-        "purpose": "Títulos secundarios."
+        "purpose": "Títulos secundarios y número de isla."
       },
       "entradilla": {
         "displayName": "Entradilla",
@@ -242,15 +279,23 @@
       },
       "texto": {
         "displayName": "Texto",
-        "purpose": "La frase principal de una zona."
+        "purpose": "Frase principal de una zona."
       },
       "texto-s": {
         "displayName": "Texto S",
-        "purpose": "Nombres de zona en el mapa y texto secundario."
+        "purpose": "Nombres de zona y texto secundario."
       },
       "etiqueta": {
         "displayName": "Etiqueta",
-        "purpose": "Etiquetas, leyendas y escalas. Mínimo absoluto: 24 px."
+        "purpose": "Etiquetas, leyendas y escalas · mínimo absoluto."
+      },
+      "cifra": {
+        "displayName": "Cifra",
+        "purpose": "Contadores de tokens y de coste."
+      },
+      "cifra-xl": {
+        "displayName": "Cifra XL",
+        "purpose": "Una cifra protagonista sola."
       },
       "mono": {
         "displayName": "Mono",
@@ -258,225 +303,339 @@
       },
       "mono-s": {
         "displayName": "Mono S",
-        "purpose": "Nombres de fichero, escalas y anotaciones."
+        "purpose": "Nombres de fichero, escalas y notas de fuente."
       }
     },
     "shadows": [
       {
+        "name": "elevacion-0",
+        "value": "none",
+        "purpose": "Todo lo que está quieto en la escena."
+      },
+      {
         "name": "elevacion-1",
         "value": "0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent)",
-        "purpose": "Única elevación, plana: solo para lo que flota sobre la escena (ficha arrastrada, aviso, documento delante en una pila)."
+        "purpose": "Única elevación, plana: lo que flota (una ficha que se arrastra o un documento encima de otro)."
       }
     ],
     "motion": [
       {
         "name": "dur-micro",
         "value": "0.2s",
-        "purpose": "Estados, ticks y pulsaciones (pulso de herramienta)."
+        "purpose": "Micro · estados, ticks y pulsaciones"
       },
       {
         "name": "dur-salida",
         "value": "0.3s",
-        "purpose": "Salidas."
+        "purpose": "Micro · salidas"
       },
       {
         "name": "dur-entrada",
         "value": "0.5s",
-        "purpose": "Aparición de elementos."
+        "purpose": "Entrada · aparición de elementos"
       },
       {
         "name": "dur-contador",
         "value": "0.9s",
-        "purpose": "Cifras que suben."
+        "purpose": "Progresión · cifras que suben"
+      },
+      {
+        "name": "dur-trazado",
+        "value": "1.2s",
+        "purpose": "Progresión · líneas que se dibujan y puntos que recorren un camino"
       },
       {
         "name": "dur-camara-corta",
         "value": "0.8s",
-        "purpose": "Cámara entre zonas vecinas."
+        "purpose": "Cámara · zonas vecinas"
       },
       {
         "name": "dur-camara",
         "value": "1.2s",
-        "purpose": "Vuelo de cámara estándar."
+        "purpose": "Cámara · vuelo estándar"
       },
       {
         "name": "dur-camara-larga",
         "value": "1.5s",
-        "purpose": "Saltos largos y vista general."
+        "purpose": "Cámara · saltos largos y vista general"
+      },
+      {
+        "name": "dur-temporizador",
+        "value": "3s",
+        "purpose": "Tiempo simulado · un temporizador se agota (cinco minutos comprimidos)"
       },
       {
         "name": "ease-aparicion",
         "value": "power3.out",
-        "purpose": "Apariciones."
+        "purpose": "Apariciones · con --dur-entrada"
       },
       {
         "name": "ease-salida",
         "value": "power2.in",
-        "purpose": "Salidas."
+        "purpose": "Salidas · con --dur-salida"
       },
       {
         "name": "ease-camara",
         "value": "power2.inOut",
-        "purpose": "Cámara."
+        "purpose": "Cámara · con --dur-camara"
       },
       {
         "name": "ease-camara-larga",
         "value": "sine.inOut",
-        "purpose": "Cámara en saltos largos."
+        "purpose": "Cámara en saltos largos · con --dur-camara-larga"
       },
       {
         "name": "ease-interfaz",
         "value": "back.out(1.4)",
-        "purpose": "Elementos de interfaz (muelle)."
+        "purpose": "Interfaz: efecto muelle · con --dur-entrada"
       },
       {
         "name": "ease-caida",
         "value": "power2.in",
-        "purpose": "Fichas que caen al recipiente."
+        "purpose": "Fichas que caen al recipiente · con --dur-entrada"
       },
       {
         "name": "ease-asentado",
         "value": "back.out(1.2)",
-        "purpose": "La capa se asienta."
+        "purpose": "La capa se asienta · con --dur-entrada"
+      },
+      {
+        "name": "ease-estado",
+        "value": "power1.out",
+        "purpose": "Cambios de estado breves: atenuar, avivar, pulsar, caducar · con --dur-micro"
       },
       {
         "name": "ease-contador",
         "value": "power1.out",
-        "purpose": "Contadores."
+        "purpose": "Cifras que suben · con --dur-contador"
+      },
+      {
+        "name": "ease-trazado",
+        "value": "power1.inOut",
+        "purpose": "Líneas que se dibujan y puntos que recorren · con --dur-trazado"
+      },
+      {
+        "name": "ease-temporizador",
+        "value": "none",
+        "purpose": "El tiempo corre a ritmo constante · con --dur-temporizador"
       },
       {
         "name": "escalonado",
         "value": "0.06s",
-        "purpose": "Elementos de una lista, tarjetas, leyendas."
+        "purpose": "Elementos de una lista, tarjetas y leyendas"
       },
       {
         "name": "escalonado-tokens",
         "value": "0.03s",
-        "purpose": "Fichas de token."
+        "purpose": "Fichas de token: rápido, se leen como una frase"
       },
       {
         "name": "escalonado-capas",
         "value": "0.12s",
-        "purpose": "Capas del recipiente."
+        "purpose": "Capas del recipiente: cada una debe verse entrar"
       },
       {
         "name": "pausa-tras-camara",
         "value": "0.3s",
-        "purpose": "La cámara llega; después empieza la zona."
+        "purpose": "La cámara llega; después empieza la zona"
       },
       {
         "name": "pausa-lectura-corta",
         "value": "1.5s",
-        "purpose": "Mínimo con una etiqueta o una cifra."
+        "purpose": "Mínimo con una etiqueta o una cifra en pantalla"
       },
       {
         "name": "pausa-lectura",
         "value": "3s",
-        "purpose": "Mínimo con una frase."
+        "purpose": "Mínimo con una frase en pantalla"
       },
       {
         "name": "pausa-por-palabra",
         "value": "0.3s",
-        "purpose": "Pausa = máx(1,5 s; palabras × 0,3 s)."
+        "purpose": "Regla general: pausa = máx(--pausa-lectura-corta; palabras × 0,3 s)"
+      },
+      {
+        "name": "efecto · aparecer",
+        "value": "--dur-entrada · --ease-aparicion · --escalonado · --esp-3",
+        "purpose": "Valor de una variable, en texto: v('--ease-aparicion') → 'power3.out'. */\nexport const v = (nombre, el = raiz) => getComputedStyle(el).getPropertyValue(nombre).trim();\n\n/** Variable de tiempo en segundos: s('--dur-entrada') → 0.5. */\nexport const s = (nombre, el = raiz) => {\n  const texto = v(nombre, el);\n  return texto.endsWith('ms') ? parseFloat(texto) / 1000 : parseFloat(texto);\n};\n\n/** Variable de distancia en px, como número: px('--esp-3') → 24. */\nexport const px = (nombre, el = raiz) => parseFloat(v(nombre, el));\n\n/** Modo estático: cortes en lugar de animaciones. */\nexport const esEstatico = () =>\n  raiz.dataset.movimiento === 'estatico' ||\n  new URLSearchParams(location.search).has('estatico') ||\n  matchMedia('(prefers-reduced-motion: reduce)').matches;\n\n// Los cambios de clase van con tl.set(…, { attr: { class } }): así un timeline se puede\n// rebobinar o saltar hacia atrás sin dejar estados colgados.\nconst conClase = (el, clase, poner) =>\n  [...(el.getAttribute('class') ?? '').split(/\\s+/).filter(x => x && x !== clase), ...(poner ? [clase] : [])].join(' ');\n\n// Opciones de tiempo que se anulan en modo estático (repeat también: sin bucles).\nconst TIEMPO = /^(duration|stagger|delay|repeat|dur[A-Z]\\w*)$/;\n\nfunction registrar(name, efecto, porDefecto) {\n  gsap.registerEffect({\n    name,\n    extendTimeline: true,\n    effect: (targets, opciones) => {\n      const c = { ...porDefecto(), ...opciones };\n      if (esEstatico()) for (const k of Object.keys(c)) if (TIEMPO.test(k)) c[k] = 0;\n      return efecto(targets, c);\n    },\n  });\n}\n\n// ── Aparecer y desaparecer ────────────────────────────────────────────────\n\n/** Entra desde abajo y se hace visible. Fichas: stagger s('--escalonado-tokens')."
+      },
+      {
+        "name": "efecto · desaparecer",
+        "value": "--dur-salida · --ease-salida",
+        "purpose": "Se desvanece."
+      },
+      {
+        "name": "efecto · entrarConMuelle",
+        "value": "--dur-entrada · --ease-interfaz · --escalonado",
+        "purpose": "Elemento de interfaz que entra con muelle: agente, skill, tarjetas, resaltado."
+      },
+      {
+        "name": "efecto · atenuar",
+        "value": "--dur-micro · --ease-estado · --opacidad-atenuado",
+        "purpose": "Pasa a segundo plano: opacidad --opacidad-atenuado."
+      },
+      {
+        "name": "efecto · avivar",
+        "value": "--dur-micro · --ease-estado",
+        "purpose": "Vuelve a primer plano lo atenuado."
+      },
+      {
+        "name": "efecto · caerAlRecipiente",
+        "value": "--dur-entrada · --ease-caida · --escalonado-tokens · --esp-8",
+        "purpose": "Una ficha o un documento cae al recipiente."
+      },
+      {
+        "name": "efecto · apilarCapa",
+        "value": "--dur-entrada · --ease-asentado · --escalonado-capas",
+        "purpose": "Las capas crecen desde el fondo del recipiente, una tras otra, y se asientan con un rebote corto."
+      },
+      {
+        "name": "efecto · subirNivel",
+        "value": "--dur-entrada · --ease-aparicion",
+        "purpose": "La línea de nivel sube (o baja) hasta y px."
+      },
+      {
+        "name": "efecto · alargarCorchete",
+        "value": "--dur-entrada · --ease-aparicion",
+        "purpose": "El corchete de caché se alarga desde abajo sobre lo que cubre."
+      },
+      {
+        "name": "efecto · caducarCache",
+        "value": "--dur-micro · --ease-estado",
+        "purpose": "La caché caduca: el corchete (y su etiqueta) pasan a su variante --fallo."
+      },
+      {
+        "name": "efecto · subirContador",
+        "value": "--dur-contador · --ease-contador",
+        "purpose": "Una cifra sube hasta «hasta», con formato español y dígitos tabulares."
+      },
+      {
+        "name": "efecto · pulsar",
+        "value": "--dur-micro · --ease-estado",
+        "purpose": "Una herramienta se usa: pulso breve."
+      },
+      {
+        "name": "efecto · voltear",
+        "value": "--dur-entrada · --dur-salida · --ease-aparicion",
+        "purpose": "Se da la vuelta en plano (sin 3D): se encoge, alterna la clase «volteado» y se abre."
+      },
+      {
+        "name": "efecto · desplegar",
+        "value": "--dur-entrada · --ease-interfaz",
+        "purpose": "Una skill plegada se despliega: pierde «skill--plegada» y su anatomía crece hasta su alto natural."
+      },
+      {
+        "name": "efecto · trazar",
+        "value": "--dur-trazado · --ease-trazado · --escalonado",
+        "purpose": "Una línea SVG se dibuja. Las continuas, a lo largo; las discontinuas, de izquierda a derecha."
+      },
+      {
+        "name": "efecto · recorrerCamino",
+        "value": "--dur-trazado · --ease-trazado",
+        "purpose": "Un punto (círculo SVG) recorre un camino SVG desde la fracción «desde» hasta «hasta»."
+      },
+      {
+        "name": "efecto · girarDial",
+        "value": "--dur-entrada · --ease-interfaz",
+        "purpose": "La aguja del dial de effort gira hasta la posición indicada (0 = la primera)."
+      },
+      {
+        "name": "efecto · agotarTemporizador",
+        "value": "--dur-temporizador · --ease-temporizador",
+        "purpose": "El temporizador se agota: el anillo se vacía y el tiempo baja hasta 0:00."
       }
     ]
   },
   "components": [
     {
-      "name": "Ficha de token · entrada",
+      "name": "Ficha de token",
       "kind": "chip",
       "refersTo": "ficha-entrada",
-      "description": "Token de entrada: píldora sólida navy en DM Mono. Un espacio inicial se dibuja como «·».",
-      "html": "<span class=\"ds-ficha ds-entrada\">Arre</span> <span class=\"ds-ficha ds-entrada\">gla</span> <span class=\"ds-ficha ds-entrada\"><span class=\"ds-sp\">·</span>la</span>",
-      "css": ".ds-ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}.ds-ficha .ds-sp{opacity:.45}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}"
+      "description": "Token del modelo: píldora en DM Mono. Entrada sólida, salida hueca, razonamiento rayado con contorno. Un espacio inicial se dibuja como «·» atenuado.",
+      "html": "<div class=\"ds-fichas\"><span class=\"ds-ficha ds-entrada\">Arre</span><span class=\"ds-ficha ds-entrada\">gla</span><span class=\"ds-ficha ds-salida\"><span class=\"ds-sp\">·</span>el</span><span class=\"ds-ficha ds-razonamiento\"><span class=\"ds-sp\">·</span>test</span></div>",
+      "css": ".ds-fichas{display:flex;flex-wrap:wrap;gap:var(--esp-1)}.ds-ficha{display:inline-flex;align-items:center;height:var(--ficha-alto);padding:0 var(--esp-3);border-radius:var(--radio-pildora);white-space:pre;font:var(--peso-texto) var(--tipo-mono)/var(--interlineado-mono) var(--fuente-mono);transition:transform var(--dur-micro)}.ds-ficha:hover{transform:translateY(calc(var(--esp-1) * -1));box-shadow:var(--elevacion-1)}.ds-ficha .ds-sp{opacity:var(--opacidad-atenuado)}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-razonamiento-borde)}"
     },
     {
-      "name": "Ficha de token · salida",
-      "kind": "chip",
-      "refersTo": "ficha-salida",
-      "description": "Token de salida: píldora hueca con contorno navy de 3 px.",
-      "html": "<span class=\"ds-ficha ds-salida\">Cam</span> <span class=\"ds-ficha ds-salida\">bio</span>",
-      "css": ".ds-ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}.ds-ficha .ds-sp{opacity:.45}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}"
-    },
-    {
-      "name": "Ficha de token · razonamiento",
-      "kind": "chip",
-      "refersTo": "ficha-razonamiento",
-      "description": "Token de razonamiento: píldora con el patrón rayado de navy.",
-      "html": "<span class=\"ds-ficha ds-razonamiento\">Rev</span> <span class=\"ds-ficha ds-razonamiento\">iso</span>",
-      "css": ".ds-ficha{display:inline-flex;align-items:center;height:60px;padding:0 22px;border-radius:var(--radio-pildora);font:400 var(--tipo-mono)/1 var(--fuente-mono);white-space:pre}.ds-ficha .ds-sp{opacity:.45}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento)}"
-    },
-    {
-      "name": "Recipiente con capas",
+      "name": "Ventana de contexto",
       "kind": "custom",
       "refersTo": "recipiente",
-      "description": "Ventana de contexto: se llena de abajo arriba; la línea de acento marca el nivel.",
-      "html": "<div class=\"ds-vaso\"><div class=\"ds-recipiente\"><div class=\"ds-capa ds-c-entrada\" style=\"bottom:10px;height:96px\">Entrada</div><div class=\"ds-capa ds-c-razonamiento\" style=\"bottom:109px;height:40px\"></div><div class=\"ds-capa ds-c-salida\" style=\"bottom:152px;height:24px\"></div></div><div class=\"ds-nivel\" style=\"bottom:182px\"></div></div>",
-      "css": ".ds-vaso{position:relative;width:224px;height:320px}.ds-recipiente{position:absolute;inset:0 12px;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);background:var(--color-superficie);overflow:hidden}.ds-capa{position:absolute;left:10px;right:10px;border-radius:var(--radio-s);display:flex;align-items:center;padding:0 22px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);white-space:nowrap;overflow:hidden}.ds-c-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-c-salida{background:var(--color-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-c-razonamiento{background:var(--patron-razonamiento)}.ds-nivel{position:absolute;left:0;right:0;height:var(--trazo-fuerte);background:var(--color-acento);border-radius:3px}"
+      "description": "Recipiente que se llena de abajo arriba con capas por tipo de token y la línea de nivel en acento.",
+      "html": "<div class=\"ds-recipiente\"><div class=\"ds-capas\"><div class=\"ds-capa ds-entrada\">rules · AGENTS.md</div><div class=\"ds-capa ds-entrada\" style=\"height:120px\">conversación</div><div class=\"ds-capa ds-razonamiento\">razonamiento</div><div class=\"ds-capa ds-salida\">salida</div></div><div class=\"ds-nivel\"><span class=\"ds-nivel-cifra\">62 %</span></div></div>",
+      "css": ".ds-recipiente{position:relative;width:var(--recipiente-ancho);height:calc(var(--recipiente-alto) / 1.6);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);background:var(--color-superficie);overflow:visible}.ds-capas{position:absolute;inset:var(--esp-1);display:flex;flex-direction:column-reverse;gap:var(--trazo-contorno);overflow:hidden;border-radius:calc(var(--radio-l) - var(--esp-1))}.ds-capa{flex:none;display:flex;align-items:center;height:64px;padding:0 var(--esp-3);border-radius:var(--radio-s);white-space:nowrap;font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-razonamiento-borde)}.ds-nivel{position:absolute;left:calc(var(--esp-3) * -1);right:calc(var(--esp-3) * -1);top:32%;height:var(--trazo-fuerte);border-radius:var(--radio-pildora);background:var(--color-acento)}.ds-nivel-cifra{position:absolute;left:100%;bottom:0;margin-left:var(--esp-2);color:var(--color-acento);white-space:nowrap;font:var(--peso-fuerte) var(--tipo-texto)/var(--interlineado-cifra) var(--fuente-texto);font-variant-numeric:var(--cifras)}"
     },
     {
       "name": "Corchete de caché",
       "kind": "custom",
-      "description": "Corchete a la derecha de lo que cubre: continuo con ✓ si acierta, discontinuo con ✕ si falla.",
-      "html": "<div class=\"ds-cache\"><div class=\"ds-corchete\"></div><div class=\"ds-cache-lbl\"><svg class=\"ds-ic\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Acierto</div></div><div class=\"ds-cache\"><div class=\"ds-corchete ds-fallo\"></div><div class=\"ds-cache-lbl\">Fallo</div></div>",
-      "css": ".ds-cache{display:flex;align-items:center;gap:18px;height:176px}.ds-corchete{width:20px;height:100%;border:var(--trazo-fuerte) solid var(--color-cache-acierto);border-left:0;border-radius:0 8px 8px 0}.ds-corchete.ds-fallo{border-style:dashed;border-color:var(--color-cache-fallo)}.ds-cache-lbl{display:flex;align-items:center;gap:8px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1.3 var(--fuente-texto);color:var(--color-texto-1)}.ds-cache-lbl .ds-ic{color:var(--color-cache-acierto)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+      "refersTo": "corchete",
+      "description": "Corchete a la derecha de lo que cubre: continuo con ✓ si acierta, discontinuo con ✕ si falla. Mismo tono; los separan el trazo y el icono.",
+      "html": "<div class=\"ds-cache\"><div class=\"ds-fila\"><span class=\"ds-corchete\"></span><span class=\"ds-cet\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Acierto</span></div><div class=\"ds-fila\"><span class=\"ds-corchete ds-fallo\"></span><span class=\"ds-cet\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg>Fallo</span></div></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-cache{display:grid;gap:var(--esp-4)}.ds-fila{display:flex;align-items:center;gap:var(--esp-2)}.ds-corchete{display:block;width:var(--corchete-ancho);height:96px;border:var(--trazo-fuerte) solid var(--color-cache-acierto);border-left:0;border-radius:0 var(--radio-s) var(--radio-s) 0}.ds-fallo{border-style:dashed;border-color:var(--color-cache-fallo)}.ds-cet{display:inline-flex;align-items:center;gap:var(--esp-1);color:var(--color-texto-1);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-cet .ds-icono{color:var(--color-cache-acierto)}"
     },
     {
       "name": "Agente",
       "kind": "card",
       "refersTo": "agente",
-      "description": "Tarjeta navy sólida con el icono bot; el subagente es la misma tarjeta, más pequeña y hueca.",
-      "html": "<div class=\"ds-agente\"><svg class=\"ds-ic\" width=\"48\" height=\"48\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2\"/><path d=\"M20 14h2\"/><path d=\"M15 13v2\"/><path d=\"M9 13v2\"/></svg><div><div class=\"ds-agente-nm\">Agente</div><div class=\"ds-agente-sub\">modelo · effort</div></div></div>",
-      "css": ".ds-agente{box-sizing:border-box;width:390px;height:150px;display:flex;align-items:center;gap:18px;padding:0 26px;border-radius:var(--radio-m);background:var(--color-superficie-inversa);color:var(--color-texto-inverso)}.ds-agente-nm{font:var(--peso-enfasis) var(--tipo-texto)/1.1 var(--fuente-texto)}.ds-agente-sub{font:400 var(--tipo-mono-s)/1.3 var(--fuente-mono);color:var(--color-texto-inverso-2);margin-top:6px}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+      "description": "Tarjeta navy sólida con el icono bot a 48 px, el nombre y su configuración en mono.",
+      "html": "<div class=\"ds-agente\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-l);height:var(--icono-l)\" aria-hidden=\"true\"><path d=\"M12 8V4H8\"/><rect width=\"16\" height=\"12\" x=\"4\" y=\"8\" rx=\"2\"/><path d=\"M2 14h2\"/><path d=\"M20 14h2\"/><path d=\"M15 13v2\"/><path d=\"M9 13v2\"/></svg><div><div class=\"ds-nombre\">Devin</div><div class=\"ds-detalle\">modelo · effort</div></div></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-agente{display:flex;align-items:center;gap:var(--esp-3);width:var(--agente-ancho);height:var(--agente-alto);padding:0 var(--esp-4);border-radius:var(--radio-m);background:var(--color-superficie-inversa);color:var(--color-texto-inverso);transition:transform var(--dur-micro)}.ds-agente:hover{transform:scale(1.02)}.ds-nombre{font:var(--peso-enfasis) var(--tipo-texto)/var(--interlineado-display) var(--fuente-texto)}.ds-detalle{margin-top:var(--esp-1);color:var(--color-texto-inverso-2);font:var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono)}"
     },
     {
       "name": "Contador de coste",
       "kind": "chip",
       "refersTo": "contador-coste",
-      "description": "Píldora navy con monedas y la cifra en mono; siempre con unidad y marca de ficticio.",
-      "html": "<span class=\"ds-coste\"><svg class=\"ds-ic\" width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"8\" cy=\"8\" r=\"6\"/><path d=\"M18.09 10.37A6 6 0 1 1 10.34 18\"/><path d=\"M7 6h1v4\"/><path d=\"m16.71 13.88.7.71-2.82 2.82\"/></svg>0,050 u.</span>",
-      "css": ".ds-coste{display:inline-flex;align-items:center;gap:12px;height:64px;padding:0 26px;border-radius:var(--radio-pildora);background:var(--color-coste);color:var(--color-sobre-coste);font:var(--peso-enfasis) var(--tipo-mono)/1 var(--fuente-mono);font-variant-numeric:var(--cifras)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+      "description": "Píldora navy con coins y la cifra en DM Mono con dígitos tabulares, siempre con su unidad.",
+      "html": "<span class=\"ds-contador\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-m);height:var(--icono-m)\" aria-hidden=\"true\"><path d=\"M13.744 17.736a6 6 0 1 1-7.48-7.48\"/><path d=\"M15 6h1v4\"/><path d=\"m6.134 14.768.866-.5 2 3.464\"/><circle cx=\"16\" cy=\"8\" r=\"6\"/></svg>1.240 <span class=\"ds-unidad\">ACU</span></span>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-contador{display:inline-flex;align-items:center;gap:var(--esp-2);height:var(--contador-alto);padding:0 var(--esp-4) 0 var(--esp-3);border-radius:var(--radio-pildora);background:var(--color-coste);color:var(--color-sobre-coste);white-space:nowrap;font:var(--peso-enfasis) var(--tipo-mono)/var(--interlineado-mono) var(--fuente-mono);font-variant-numeric:var(--cifras)}.ds-unidad{font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}"
     },
     {
       "name": "Isla del mapa",
       "kind": "card",
       "refersTo": "isla",
-      "description": "Zona del mapa: tarjeta blanca con contorno navy, número e icono.",
-      "html": "<div class=\"ds-isla\"><div class=\"ds-isla-top\"><span class=\"ds-isla-n\">03</span><svg class=\"ds-ic\" width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/></svg></div><div class=\"ds-isla-nm\">Ventana de contexto</div></div>",
-      "css": ".ds-isla{box-sizing:border-box;width:320px;height:190px;padding:22px 30px;display:flex;flex-direction:column;justify-content:space-between;background:var(--color-superficie);color:var(--color-texto-1);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l)}.ds-isla-top{display:flex;justify-content:space-between;align-items:flex-start}.ds-isla-n{font:var(--peso-display) 60px/1 var(--fuente-display);font-variant-numeric:var(--cifras)}.ds-isla-nm{font:var(--peso-enfasis) var(--tipo-texto-s)/1.15 var(--fuente-texto)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+      "description": "Zona del mapa: tarjeta muy redondeada con número, icono y nombre. La actual, en acento, es el «usted está aquí».",
+      "html": "<div class=\"ds-islas\"><div class=\"ds-isla\"><div class=\"ds-cab\"><span class=\"ds-num\">03</span><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-m);height:var(--icono-m)\" aria-hidden=\"true\"><path d=\"M12 20v2\"/><path d=\"M12 2v2\"/><path d=\"M17 20v2\"/><path d=\"M17 2v2\"/><path d=\"M2 12h2\"/><path d=\"M2 17h2\"/><path d=\"M2 7h2\"/><path d=\"M20 12h2\"/><path d=\"M20 17h2\"/><path d=\"M20 7h2\"/><path d=\"M7 20v2\"/><path d=\"M7 2v2\"/><rect x=\"4\" y=\"4\" width=\"16\" height=\"16\" rx=\"2\"/><rect x=\"8\" y=\"8\" width=\"8\" height=\"8\" rx=\"1\"/></svg></div><div class=\"ds-nom\">Modelos</div></div><div class=\"ds-isla ds-actual\"><div class=\"ds-cab\"><span class=\"ds-num\">04</span><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-m);height:var(--icono-m)\" aria-hidden=\"true\"><path d=\"M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0\"/><circle cx=\"12\" cy=\"10\" r=\"3\"/></svg></div><div class=\"ds-nom\">Contexto</div></div></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-islas{display:flex;gap:var(--esp-5)}.ds-isla{display:flex;flex-direction:column;justify-content:space-between;gap:var(--esp-3);min-width:var(--isla-ancho);min-height:var(--isla-alto);padding:var(--esp-3) var(--esp-4);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);background:var(--color-superficie);color:var(--color-texto-1);transition:opacity var(--dur-micro)}.ds-islas:hover .ds-isla:not(:hover){opacity:var(--opacidad-atenuado)}.ds-cab{display:flex;justify-content:space-between;align-items:flex-start;gap:var(--esp-3)}.ds-num{font:var(--peso-display) var(--tipo-titulo-s)/var(--interlineado-cifra) var(--fuente-display);font-variant-numeric:var(--cifras)}.ds-nom{font:var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-display) var(--fuente-texto)}.ds-actual{border-color:var(--color-acento);background:var(--color-acento);color:var(--color-sobre-acento)}"
     },
     {
-      "name": "Isla del mapa · actual",
-      "kind": "card",
-      "refersTo": "isla-actual",
-      "description": "La zona actual: el único acento rojo de la pantalla («usted está aquí»).",
-      "html": "<div class=\"ds-isla ds-actual\"><div class=\"ds-isla-top\"><span class=\"ds-isla-n\">03</span><svg class=\"ds-ic\" width=\"36\" height=\"36\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"2\" y=\"4\" width=\"20\" height=\"16\" rx=\"2\"/><path d=\"M10 4v4\"/><path d=\"M2 8h20\"/><path d=\"M6 4v4\"/></svg></div><div class=\"ds-isla-nm\">Ventana de contexto</div></div>",
-      "css": ".ds-isla{box-sizing:border-box;width:320px;height:190px;padding:22px 30px;display:flex;flex-direction:column;justify-content:space-between;background:var(--color-superficie);color:var(--color-texto-1);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l)}.ds-isla-top{display:flex;justify-content:space-between;align-items:flex-start}.ds-isla-n{font:var(--peso-display) 60px/1 var(--fuente-display);font-variant-numeric:var(--cifras)}.ds-isla-nm{font:var(--peso-enfasis) var(--tipo-texto-s)/1.15 var(--fuente-texto)}.ds-isla.ds-actual{background:var(--color-acento);border-color:var(--color-acento);color:var(--color-sobre-acento)}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
-    },
-    {
-      "name": "Etiqueta y marca de cifras ficticias",
+      "name": "Etiqueta y marca «Cifras ficticias»",
       "kind": "chip",
       "refersTo": "etiqueta",
-      "description": "Etiqueta en píldora con borde fino; la marca «Cifras ficticias» es la misma píldora en gris.",
-      "html": "<span class=\"ds-pildora\">Zona 03 · Ventana de contexto</span> <span class=\"ds-ficticio\"><svg class=\"ds-ic\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/></svg>Cifras ficticias</span>",
-      "css": ".ds-pildora,.ds-ficticio{display:inline-flex;align-items:center;gap:10px;font:var(--peso-enfasis) var(--tipo-etiqueta)/1 var(--fuente-texto);border-radius:var(--radio-pildora)}.ds-pildora{color:var(--color-texto-1);border:var(--trazo-fino) solid var(--color-contorno);padding:10px 22px;background:var(--color-superficie)}.ds-ficticio{color:var(--color-texto-2);border:var(--trazo-fino) solid var(--color-texto-3);padding:10px 20px}.ds-ic{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;flex:none}"
+      "description": "Píldora con borde fino en Outfit 500 a 24 px; la marca de cifras ficticias, sin relleno, en texto 3 y con info.",
+      "html": "<div class=\"ds-etqs\"><span class=\"ds-etiqueta\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Menos tokens</span><span class=\"ds-ficticio\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><circle cx=\"12\" cy=\"12\" r=\"10\"/><path d=\"M12 16v-4\"/><path d=\"M12 8h.01\"/></svg>Cifras ficticias</span></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-etqs{display:flex;gap:var(--esp-3);align-items:center}.ds-etiqueta,.ds-ficticio{display:inline-flex;align-items:center;gap:var(--esp-1);padding:var(--esp-1) var(--esp-3);white-space:nowrap;border-radius:var(--radio-pildora);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-etiqueta{border:var(--trazo-fino) solid var(--color-contorno);background:var(--color-superficie);color:var(--color-texto-1)}.ds-etiqueta:focus-visible{outline:var(--trazo-contorno) solid var(--color-contorno);outline-offset:var(--trazo-contorno)}.ds-ficticio{border:var(--trazo-fino) solid var(--color-texto-3);color:var(--color-texto-2)}"
+    },
+    {
+      "name": "Documento",
+      "kind": "card",
+      "refersTo": "documento",
+      "description": "Hoja con cabecera navy y nombre de fichero en mono; las líneas simulan texto. Va al fondo del recipiente.",
+      "html": "<div class=\"ds-doc\"><div class=\"ds-doc-cab\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/></svg>AGENTS.md</div><div class=\"ds-doc-cuerpo\"><i></i><i></i><i style=\"width:70%\"></i><i></i><i style=\"width:55%\"></i></div></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-doc{display:flex;flex-direction:column;width:var(--documento-ancho);height:var(--documento-alto);overflow:hidden;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-s);background:var(--color-superficie);transition:box-shadow var(--dur-micro)}.ds-doc:hover{box-shadow:var(--elevacion-1)}.ds-doc-cab{display:flex;align-items:center;gap:var(--esp-1);padding:var(--esp-2) var(--esp-3);background:var(--color-superficie-inversa);color:var(--color-texto-inverso);font:var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono)}.ds-doc-cuerpo{display:grid;gap:var(--esp-3);padding:var(--esp-4) var(--esp-3)}.ds-doc-cuerpo i{display:block;height:var(--esp-2);border-radius:var(--radio-pildora);background:var(--color-texto-simulado)}"
+    },
+    {
+      "name": "Tarjeta de consejo",
+      "kind": "card",
+      "refersTo": "consejo",
+      "description": "Tarjeta con la bombilla, el rótulo «Consejo» y una sola frase.",
+      "html": "<div class=\"ds-consejo\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-m);height:var(--icono-m)\" aria-hidden=\"true\"><path d=\"M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5\"/><path d=\"M9 18h6\"/><path d=\"M10 22h4\"/></svg><div class=\"ds-rotulo\">Consejo</div><div class=\"ds-frase\">Empieza una sesión nueva para cada tarea.</div></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-consejo{display:grid;grid-template-columns:auto 1fr;column-gap:var(--esp-3);row-gap:var(--esp-1);max-width:var(--consejo-ancho);padding:var(--esp-4);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-m);background:var(--color-superficie);color:var(--color-texto-1)}.ds-consejo>.ds-icono{grid-row:span 2;width:var(--icono-m);height:var(--icono-m)}.ds-rotulo{color:var(--color-texto-3);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-frase{font:var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto)}"
     }
   ],
   "narrative": {
     "northStar": "Usted está aquí",
-    "overview": "La charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, recipientes, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo o discontinuo). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de navy. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados, las sombras difusas y los giros 3D decorativos.",
+    "overview": "**Creative North Star: \"Usted está aquí\"**\n\nLa charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, recipientes, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de navy. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de treinta componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados (el rayado del razonamiento es de franjas duras, no un degradado), las sombras difusas y los giros 3D decorativos: hasta el volteo de una tarjeta es plano.",
     "keyCharacteristics": [
       "Tinta navy sobre crema, con superficies blancas siempre contorneadas a 3 px.",
       "Un único acento rojo por pantalla; los tres rojos de la marca cuentan como uno.",
       "Conceptos distinguidos por luminosidad y forma, no por tono.",
-      "Escala tipográfica que empieza en 24 px; Outfit ligera en grande y DM Mono para tokens y código.",
+      "Escala tipográfica que empieza en 24 px; Outfit ligera en grande y DM Mono para tokens y código, ambas alojadas en el proyecto.",
       "Plano: una sola elevación, también plana.",
-      "Cámara que llega, espera `--pausa-tras-camara` y después anima la zona."
+      "Cámara que llega, espera `--pausa-tras-camara` y después anima la zona.",
+      "Todo funciona sin conexión: fuentes, iconos y logos van dentro y la presentación se exporta a un único HTML."
     ],
     "rules": [
       {
         "name": "La regla del único acento",
-        "body": "El rojo marca lo que hay que mirar ahora. Nunca hay dos elementos rojos a la vez en pantalla.",
+        "body": "El rojo marca lo que hay que mirar ahora. Nunca hay dos elementos rojos a la vez en pantalla, ni en escena ni en una lámina de referencia.",
         "section": "colors"
       },
       {
@@ -501,7 +660,7 @@
       },
       {
         "name": "La regla de las cifras quietas",
-        "body": "Toda cifra que se anima usa dígitos tabulares (`--cifras: tabular-nums`) para que no baile al contar.",
+        "body": "Toda cifra que se anima o se compara usa dígitos tabulares (`--cifras: tabular-nums`) para que no baile al contar.",
         "section": "typography"
       },
       {
@@ -511,7 +670,7 @@
       },
       {
         "name": "La regla del contorno",
-        "body": "Toda superficie lleva un contorno navy de 3 px (`--trazo-contorno`). El tono por sí solo no separa nada.",
+        "body": "Toda superficie clara lleva un contorno de 3 px en `--color-contorno` (`--trazo-contorno`): navy sobre crema, blanco dentro de `.inverso`. Las piezas sólidas navy (agente, conector, entrada, coste) son tinta y no lo necesitan. El tono por sí solo no separa nada.",
         "section": "elevation"
       },
       {
@@ -521,18 +680,21 @@
       },
       {
         "name": "La regla del icono a 36",
-        "body": "Un icono suelto en escena va a 36 px, para que su trazo coincida con el contorno.",
+        "body": "Un icono suelto en escena va a 36 px, para que su trazo coincida con el contorno; 24 dentro de una etiqueta y 48 solo para el icono principal de una pieza grande.",
         "section": "shapes"
       }
     ],
     "dos": [
       "**Do** usar las variables de rol y de semántica (`--color-texto-1`, `--color-acento`, `--color-entrada`…) en componentes y escenas; en SVG, el color va por CSS y en GSAP se lee con `v()`.",
-      "**Do** contornear cada superficie con 3 px de navy, porque el proyector iguala crema y blanco.",
-      "**Do** reservar el rojo para una sola cosa por pantalla: la zona actual, el nivel o la cifra protagonista.",
+      "**Do** contornear cada superficie clara con 3 px de `--color-contorno`, porque el proyector iguala crema y blanco.",
+      "**Do** reservar el rojo para una sola cosa por pantalla, y también por lámina de referencia: la zona actual, el nivel, la parada actual o la cifra protagonista.",
       "**Do** mantener el texto en 24 px o más, con contraste de al menos 4,5:1; el mínimo de 3:1 solo vale para texto de 24 px o más y para gráficos.",
-      "**Do** marcar «Cifras ficticias» en toda escena con cifras de ejemplo.",
-      "**Do** usar iconos Lucide a 36 px con `stroke-width 2`.",
+      "**Do** usar las clases `.tipo-*` y la escala `--tipo-*` para todo texto.",
+      "**Do** marcar «Cifras ficticias» en toda escena con cifras de ejemplo, y poner la nota de fuente bajo toda cifra real o gráfica.",
+      "**Do** usar iconos Lucide de `design/iconos.js` a 36 px con `stroke-width 2` (24 dentro de etiquetas, 48 para el icono principal de una pieza grande), y el icono cuando la fuente no tenga el carácter.",
       "**Do** encadenar cámara, `--pausa-tras-camara` y animación de zona, y dejar las pausas de lectura (1,5 s con una etiqueta o una cifra, 3 s con una frase).",
+      "**Do** animar con los efectos de `motion.js` y, en una coreografía de escena, con `s()` y `v()`; el tiempo simulado, siempre con curva lineal.",
+      "**Do** unir una etiqueta con lo que señala mediante la guía fina continua; los puntos redondos quedan para el movimiento (ruta de la cámara y salida del subagente).",
       "**Do** usar los logos oficiales de `design/assets/logos/` tal cual."
     ],
     "donts": [
@@ -541,7 +703,9 @@
       "**Don't** usar partículas, brillos, destellos, degradados, sombras difusas ni giros 3D decorativos.",
       "**Don't** mover la cámara mientras algo se anima dentro de la zona.",
       "**Don't** dibujar un concepto de otra forma: un token es siempre una píldora en DM Mono y la caché, siempre un corchete.",
-      "**Don't** sobrescribir una variable dentro de una escena; si una escena necesita otro valor, se crea una variable con nombre propio en `design-system.css`.",
+      "**Don't** sobrescribir una variable dentro de una escena, ni poner una medida suelta a un componente cuando existe su variable; si una escena necesita otro valor, se crea una variable con nombre propio en `design-system.css`.",
+      "**Don't** escribir duraciones ni curvas literales, ni usar el tiempo simulado para transiciones.",
+      "**Don't** cargar fuentes, iconos ni librerías por CDN: todo va dentro del proyecto y funciona sin conexión.",
       "**Don't** recolorear los logos."
     ]
   }

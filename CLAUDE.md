@@ -2,22 +2,24 @@
 
 Presentación HTML para una charla interna de Openbank: un único gran mapa por el que se mueve una cámara (GSAP). El guion está en `Guion Devin.md`.
 
-> **Aviso (14-10-2026): `design/design-system.html` está desactualizado.** No lo uses como referencia de aspecto, medidas ni movimiento hasta que se complete su renovación (`prompts/02-renovar-design-system.md`).
-> - Mientras tanto, la referencia es `design/design-system.css`.
-> - `DESIGN.md` se generó en parte desde ese HTML: tómalo con cautela y regenéralo tras la renovación.
-> - Lo que habría que documentar en el HTML durante este periodo se anota para incluirlo en la renovación.
-> - Quien complete la renovación borra este aviso.
-
 ## Fuentes únicas del diseño
 
 Todo lo visual y todo el movimiento salen de estos ficheros. No se copian ni se duplican: se importan.
 
-- `design/design-system.css`: todas las variables (color, tipografía, espaciado, radios, trazos, elevación y movimiento).
-- `design/componentes.css`: el CSS de los componentes del vocabulario visual (ficha de token, capa, recipiente, corchete de caché, contador de coste, agente, subagente, documento, skill y herramienta). Cada componente se escribe una sola vez aquí y las escenas lo reutilizan.
-- `design/motion.js`: el único módulo que lee las variables de movimiento. Exporta `v(nombre)` (valor en texto) y `s(nombre)` (segundos como número) y registra las animaciones reutilizables con `gsap.registerEffect({ …, extendTimeline: true })`.
-- `design/design-system.html`: documentación y referencia visual. El aspecto y las medidas de cada componente salen de aquí.
+- `design/design-system.css`: todas las variables (color, tipografía, escena, espaciado, radios, trazos, elevación, opacidad, medidas de los componentes y movimiento) y las fuentes locales (`@font-face`).
+  - Cada variable va en una sola línea, dentro de su grupo (`/* ── Grupo ── */`), con su descripción en un comentario.
+  - Las curvas dicen con qué duración van (`· con --dur-…`).
+- `design/componentes.css`: el CSS de los componentes del vocabulario visual. Cada componente se escribe una sola vez aquí y las escenas lo reutilizan. Su cabecera (`clase`, `forma`, `color`, `medidas`, `icono`, `movimiento`, `escenas`) es su fila en la ficha técnica.
+- `design/motion.js`: el único módulo que lee las variables de movimiento. Exporta `v(nombre)` (valor en texto), `s(nombre)` (segundos como número), `px(nombre)` (distancias) y `esEstatico()`, y registra las animaciones reutilizables con `gsap.registerEffect({ …, extendTimeline: true })`.
+- `design/dibujos.js`: la geometría de los componentes SVG (gráfica, dial, temporizador, circuito, bucle y curvas para caminos). No lleva colores: devuelve marcado con las clases de `componentes.css`.
+- `design/iconos.js`: los iconos de Lucide que se usan, como SVG en línea. Se genera con `npm run iconos -- nombre` y no se edita a mano.
+- `design/assets/`: fuentes (Outfit y DM Mono en woff2, con su OFL), logos oficiales y licencias.
+- `design/design-system.html`: documentación y referencia visual.
+  - No copia ningún valor: al cargarse lee los ficheros anteriores y este `CLAUDE.md`, e importa `componentes.css` y `motion.js` para mostrar los componentes y sus efectos.
+  - Su sección «Comprobaciones» avisa de lo que no cuadre entre las fuentes. Revísala tras cada cambio en `design/`.
+  - Se abre con `npm run dev` en `/design/design-system.html` y se exporta a un único fichero con `npm run build:design`. Su código está en `design/doc/`.
 
-Si `componentes.css` o `motion.js` todavía no existen, créalos en esa ruta la primera vez que hagan falta, siguiendo estas reglas.
+La presentación se construye con Vite y se exporta a un único HTML autocontenido que funciona con doble clic y sin conexión. Nada se carga por CDN.
 
 ## Colores: solo variables
 
@@ -38,30 +40,47 @@ Si `componentes.css` o `motion.js` todavía no existen, créalos en esa ruta la 
    - Contraste de texto ≥ 4,5:1; 3:1 solo para texto de 24 px o más y para gráficos.
    - Que no compita con el acento: nada rojizo, porque el rojo es el único acento.
    - Que se distinga de los demás por luminosidad, no solo por tono.
-7. **Documenta en el mismo cambio, en `design/design-system.html`:**
-   - Su muestra: en `MARCA`/`NEUTROS` o en las tarjetas de semántica.
-   - Su par de contraste en `PARES`.
-   - Si es un concepto nuevo, su fila en la ficha técnica del vocabulario.
+7. **Documenta en el mismo cambio:**
+   - Su descripción, en el comentario de su línea en `design-system.css`. La muestra aparece sola en `design/design-system.html`.
+   - Su par de contraste sale solo si sigue los nombres (`--color-sobre-<rol>`, `--color-<rol>-borde`). Si no, añádelo a la lista de pares de `design/doc/documentacion.js`.
+   - Si es un concepto nuevo, su componente (ver «Cómo ampliar el vocabulario»).
 
 ## Cómo ampliar las animaciones
 
 1. Busca primero un efecto existente en `motion.js`. Si sirve con otras opciones, úsalo.
-2. **Nueva duración, curva, escalonado o pausa:** añade una variable al bloque «Movimiento» de `design-system.css`.
+2. **Nueva duración, curva, escalonado o pausa:** añade una variable a su grupo de movimiento en `design-system.css`.
    - Nómbrala por propósito (`--ease-aparicion`, no `--ease-power3`).
    - Las duraciones llevan la unidad `s`; las curvas son nombres de GSAP (`power3.out`, `back.out(1.4)`, `elastic.out(1, 0.6)`).
-   - Rangos: micro ≤ 0,3 s; entrada entre 0,4 y 0,6 s; cámara entre 0,8 y 1,5 s.
-   - Curvas por propósito: apariciones con ease-out, salidas con ease-in, cámara con ease-in-out, interfaz con `back` o `elastic`.
+   - Rangos de duración (el comentario de cada una empieza por su categoría):
+     - micro ≤ 0,3 s;
+     - entrada entre 0,4 y 0,6 s;
+     - cámara entre 0,8 y 1,5 s;
+     - progresión (cifras que suben, líneas que se dibujan, puntos que recorren un camino) entre 0,8 y 1,5 s;
+     - tiempo simulado (el paso del tiempo dentro de la escena, como el temporizador de E22) entre 2 y 5 s, siempre con curva lineal (`none`). No se usa para transiciones.
+   - Curvas por propósito: apariciones con ease-out, salidas con ease-in, cámara con ease-in-out, interfaz con `back` o `elastic` y cambios de estado breves (`--dur-micro`) con un ease-out suave (`--ease-estado`).
 3. **Animación que se repite en más de una escena o forma parte del vocabulario** (por ejemplo, «una ficha cae al recipiente»): regístrala como efecto en `motion.js`.
-   - Sus `defaults` se leen de las variables.
-   - Se nombra con un verbo en infinitivo (`aparecer`, `volarCamara`, `subirContador`).
+   - Sus valores por defecto se leen de las variables cada vez que se llama.
+   - Se nombra con un verbo en infinitivo (`aparecer`, `volarCamara`, `subirContador`) y lleva encima un comentario `/** … */` con su descripción.
+   - En modo estático (`?estatico` o `prefers-reduced-motion`) dura 0 y salta a su estado final.
 4. **Coreografía de una sola escena:** va en el fichero de la escena, como un timeline que encadena efectos y usa `s()`/`v()`. Ninguna duración ni curva literal; las distancias y posiciones sí pueden ir en px.
 5. **Reglas de movimiento:**
    - Primero llega la cámara, luego pasa `--pausa-tras-camara` y después anima la zona. La cámara nunca se mueve mientras algo se anima dentro de la zona.
    - Se respetan las pausas de lectura (`--pausa-lectura-corta`, `--pausa-lectura`).
    - Nada de partículas, brillos, destellos ni giros 3D decorativos.
-6. **Documenta en el mismo cambio, en `design/design-system.html`:**
-   - La variable nueva en la sección Movimiento (`EASES`, `DURS` o la tabla de escalonado y pausas).
-   - Si cambia cómo se anima un concepto, la columna «Movimiento» de la ficha técnica.
+6. **Documenta en el mismo cambio:**
+   - La variable nueva: su comentario en `design-system.css`. Aparece sola en la sección Movimiento de `design/design-system.html`.
+   - El efecto nuevo: su demo en `design/doc/documentacion.js`.
+   - Si cambia cómo se anima un concepto, la línea `movimiento:` de la cabecera de su componente en `componentes.css`.
+
+## Cómo ampliar el vocabulario
+
+1. Busca primero un componente existente en `componentes.css`: cada concepto tiene un único dibujo.
+2. Dibújalo una sola vez en `componentes.css`, solo con variables (de color, solo roles y semántica) y con su cabecera completa.
+   - Si necesita geometría SVG, va en `dibujos.js`.
+   - Si necesita medidas propias, van al grupo «Componentes · medidas» de `design-system.css`.
+   - Si una fuente no tiene un carácter (→, ↩, ✓, ✕), se usa su icono.
+3. Añade su muestra a una lámina de `design/doc/laminas.js` y comprueba en «Comprobaciones» que todo cuadra.
+4. Iconos nuevos: `npm run iconos -- nombre`. El color y el grosor van por CSS.
 
 ## Cambiar un valor existente
 
@@ -73,7 +92,7 @@ Declaradas en el repositorio: plugins en `.claude/settings.json` y MCP en `.mcp.
 
 - **GSAP** (`gsap-skills`): para escribir las animaciones y la cámara.
 - **Impeccable** (`/impeccable <comando>`): criterio de diseño y revisión. Sustituye a frontend-design, que no se usa en este proyecto.
-- **Playwright MCP**: para ver lo que se construye, con capturas y grabación de vídeo (`--caps=devtools`).
+- **Playwright MCP**: para ver lo que se construye, con capturas y grabación de vídeo (`--caps=devtools`). Bloquea `file://`: los ficheros exportados se prueban sirviéndolos con un servidor estático simple.
 
 ## Impeccable, siempre por debajo del design system
 

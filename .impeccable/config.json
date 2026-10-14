@@ -1,0 +1,53 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "cream-palette",
+        "value": "*",
+        "files": [
+          "design/design-system.html"
+        ],
+        "createdAt": "2026-10-14T18:08:20.556Z",
+        "reason": "Paleta del design system: el usuario eligió la dirección C (crema, navy y rojo) en la ronda 1; --color-old-lace #FFF9F4 sale de openbank.es. La renovación no puede cambiar decisiones de diseño (prompts/02)."
+      },
+      {
+        "rule": "flat-type-hierarchy",
+        "value": "*",
+        "files": [
+          "design/design-system.html"
+        ],
+        "createdAt": "2026-10-14T18:08:20.622Z",
+        "reason": "Falso positivo: los títulos usan el atajo font: (h1 60 px, h2 44 px, h3 22 px sobre texto de 17 px); el detector solo ve las declaraciones font-size de textos secundarios."
+      },
+      {
+        "rule": "repeating-stripes-gradient",
+        "value": "*",
+        "files": [
+          "design/design-system.html"
+        ],
+        "createdAt": "2026-10-14T19:14:46.570Z",
+        "reason": "Funcional, no decorativo: --patron-razonamiento distingue los tokens de razonamiento por textura (proyector lavado y daltonismo); decisión del design system."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "16px",
+        "files": [
+          "design/design-system.html"
+        ],
+        "createdAt": "2026-10-14T19:14:50.384Z",
+        "reason": "Radio de la página de documentación (variable doc-radio, decisión D7): no se proyecta."
+      },
+      {
+        "rule": "design-system-radius",
+        "value": "4px",
+        "files": [
+          "design/design-system.html"
+        ],
+        "createdAt": "2026-10-14T19:14:50.449Z",
+        "reason": "Radio de code en la página de documentación (variable doc-radio-s): no se proyecta."
+      }
+    ]
+  }
+}

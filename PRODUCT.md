@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-HTML, CSS y JavaScript sin framework, con Vite, GSAP y d3-interpolate (`d3.interpolateZoom` para los vuelos de cámara). Todo local: la presentación debe funcionar sin conexión el día de la charla.
+HTML, CSS y JavaScript sin framework, con Vite, GSAP y d3-interpolate (`d3.interpolateZoom` para los vuelos de cámara). Todo local: la presentación debe funcionar sin conexión el día de la charla. Se exporta a un único HTML autocontenido (`vite-plugin-singlefile`) que funciona con doble clic en otro equipo, sin servidor ni conexión.
 
 ## Users
 
@@ -36,6 +36,7 @@ No es un deck de diapositivas: es un único gran mapa por el que se mueve una c�
 - Todo el diseño y el movimiento salen de `design/` y de las reglas de `CLAUDE.md`.
 - Pendiente de decidir: si se incluye un caso práctico final.
 - Previsto: un modo de impresión de la presentación (fuera del esqueleto).
+- Exportable como un único HTML que se abre con doble clic (`file://`). Necesita un navegador de 2023 o posterior (Chrome o Edge 111+, Safari 16.2+, Firefox 113+) por `color-mix()`. Los vídeos, si los hubiera, irían en una carpeta junto al HTML.
 
 ## Brand Commitments
 

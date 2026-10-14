@@ -19,6 +19,8 @@ No hace falta leer el guion ni `research_notes/`.
 ## Stack (ya decidido)
 
 - Vite con JavaScript sin framework. GSAP y `d3-interpolate` desde npm. Nada por CDN: la presentación tiene que funcionar sin conexión.
+- Vite, GSAP y `vite-plugin-singlefile` ya están en `package.json` desde la renovación del design system, y `vite.config.js` ya tiene el modo `design`. Añade `d3-interpolate`, `index.html` y el script `build` de la presentación.
+- `npm run build` genera un único `dist/index.html` autocontenido (código, CSS, fuentes e imágenes dentro) que funciona con doble clic desde `file://`, en otro equipo, sin servidor ni conexión.
 - Las fuentes (Outfit y DM Mono) ya están alojadas en `design/assets/fonts/`; se hizo en la renovación del design system. Si `design/design-system.css` todavía las carga desde Google Fonts, para y avísame.
 
 ## Qué construir
@@ -54,7 +56,7 @@ No hace falta leer el guion ni `research_notes/`.
    - `O`: vista general del mapa, y volver.
    - `A`: saltar o mostrar los pasos [A].
    - `P`: abrir la vista de ponente.
-9. **Vista de ponente**: ventana aparte sincronizada con `BroadcastChannel`.
+9. **Vista de ponente**: ventana aparte que se abre desde la principal (tecla `P`) con `window.open` y se sincroniza con `postMessage`, que funciona desde `file://` (`BroadcastChannel` no es fiable ahí). Comprueba qué pasa si se recarga la principal; como mínimo, volver a pulsar `P` debe recuperar la conexión.
    - Muestra la escena y el paso actuales, el texto del paso siguiente, el mensaje de la escena, el progreso (paso X de N) y un cronómetro.
    - Desde ella también se puede avanzar.
 10. **Modo estático** (`?estatico`, y también cuando el sistema pide `prefers-reduced-motion`): cortes en lugar de vuelos.
@@ -75,7 +77,9 @@ No hace falta leer el guion ni `research_notes/`.
   - Graba a 1920×1080: pasa `size` a `browser_start_video` e iguala el viewport con `browser_resize`. El tamaño por defecto es 800×600.
   - Solo graba cuando la página repinta, así que las pausas sin movimiento casi no ocupan tiempo en el vídeo.
   - Si `browser_stop_video` responde «No videos were recorded», la grabación sigue abierta: vuelve a llamarlo antes de grabar otra vez.
-- `npm run build` y `npm run preview` deben funcionar sin conexión.
+- `npm run build` y `npm run preview` deben funcionar sin conexión, y `dist/index.html` debe funcionar con doble clic.
+  - El Playwright MCP bloquea `file://`: verifica sirviendo `dist/` con un servidor estático simple y comprobando que no hay ninguna petición aparte del propio HTML (así se comprobó `npm run build:design`).
+  - Pide al usuario que abra `dist/index.html` con doble clic, incluida la vista de ponente.
 - Pasa el `audit` de Impeccable sobre el esqueleto (accesibilidad, rendimiento, texto que se sale). Arregla lo que aplique y dime qué has descartado y por qué.
 
 ## Cómo trabajamos

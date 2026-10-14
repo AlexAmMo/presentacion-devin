@@ -1,0 +1,626 @@
+/* ==========================================================================
+   Componentes · Charla «Devin en el día a día» · Openbank
+   El vocabulario visual: cada concepto se dibuja una sola vez, aquí, y las
+   escenas lo reutilizan. Importa design-system.css antes que este fichero.
+
+   Reglas del fichero:
+   - Solo variables de design-system.css, y de color solo roles y semántica.
+   - Ningún tamaño de letra literal: la escala --tipo-* o las clases .tipo-*.
+   - La cabecera de cada componente es su fila en la ficha técnica de
+     design-system.html. Claves: clase, forma, color, medidas, icono,
+     movimiento (efectos de motion.js) y escenas. Si cambias el dibujo,
+     cambia la cabecera en el mismo cambio.
+   - Los componentes SVG toman su geometría de dibujos.js.
+   ========================================================================== */
+
+/* ── Utilidad · Estilos de texto ───────────────────────────────────────────
+   clase: .tipo-etiqueta · .tipo-texto-s · .tipo-texto · .tipo-entradilla · .tipo-titulo-s · .tipo-titulo · .tipo-titulo-xl · .tipo-cifra · .tipo-cifra-xl · .tipo-mono · .tipo-mono-s
+   uso: Un estilo por cada variable --tipo-*. Las escenas no escriben «font» a mano.
+   ─────────────────────────────────────────────────────────────────────── */
+.tipo-etiqueta { font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.tipo-texto-s { font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+.tipo-texto { font: var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
+.tipo-entradilla { font: var(--peso-texto) var(--tipo-entradilla)/var(--interlineado-texto) var(--fuente-texto); }
+.tipo-titulo-s { font: var(--peso-display) var(--tipo-titulo-s)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
+.tipo-titulo { font: var(--peso-display) var(--tipo-titulo)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
+.tipo-titulo-xl { font: var(--peso-display) var(--tipo-titulo-xl)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
+.tipo-cifra { font: var(--peso-display) var(--tipo-cifra)/var(--interlineado-cifra) var(--fuente-display); letter-spacing: var(--tracking-cifra); font-variant-numeric: var(--cifras); }
+.tipo-cifra-xl { font: var(--peso-display) var(--tipo-cifra-xl)/var(--interlineado-cifra) var(--fuente-display); letter-spacing: var(--tracking-cifra); font-variant-numeric: var(--cifras); }
+.tipo-mono { font: var(--peso-texto) var(--tipo-mono)/var(--interlineado-mono) var(--fuente-mono); }
+.tipo-mono-s { font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+
+/* ── Utilidad · Iconos ─────────────────────────────────────────────────────
+   clase: .icono
+   uso: SVG de Lucide pintado con icono() o pintarIconos() de iconos.js. 36 px por defecto; .icono--s (24) dentro de etiquetas; .icono--l (48) para el icono principal de una pieza grande.
+   ─────────────────────────────────────────────────────────────────────── */
+.icono { flex: none; width: var(--icono-m); height: var(--icono-m); fill: none; stroke: currentColor; stroke-width: var(--icono-trazo); stroke-linecap: round; stroke-linejoin: round; }
+.icono--s { width: var(--icono-s); height: var(--icono-s); }
+.icono--l { width: var(--icono-l); height: var(--icono-l); }
+
+/* ── Utilidad · Estado atenuado ────────────────────────────────────────────
+   clase: .atenuado
+   uso: Lo que no toca mirar ahora (E01, E09). Se anima con atenuar y avivar.
+   ─────────────────────────────────────────────────────────────────────── */
+.atenuado { opacity: var(--opacidad-atenuado); }
+
+/* ── Utilidad · Volteo ─────────────────────────────────────────────────────
+   clase: .volteo
+   uso: Dos caras (.volteo__cara y .volteo__dorso); el efecto voltear alterna la clase «volteado».
+   ─────────────────────────────────────────────────────────────────────── */
+.volteo:not(.volteado) .volteo__dorso,
+.volteo.volteado .volteo__cara { display: none; }
+
+/* ── Componente · Ficha de token ───────────────────────────────────────────
+   clase: .ficha · .fichas
+   forma: Píldora con el texto en DM Mono. Un espacio inicial se dibuja como «·» atenuado.
+   color: Entrada sólida (--color-entrada) · salida hueca con contorno (--color-salida, --color-salida-borde) · razonamiento rayado con contorno (--patron-razonamiento, --color-razonamiento-borde).
+   medidas: --ficha-alto · --ficha-alto-s · --tipo-mono · --tipo-mono-s · --esp-3
+   icono: —
+   movimiento: aparecer (la escena le pasa stagger --escalonado-tokens) · caerAlRecipiente
+   escenas: E19, E21, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.fichas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--esp-1); }
+.ficha {
+  display: inline-flex; align-items: center; height: var(--ficha-alto); padding: 0 var(--esp-3);
+  border-radius: var(--radio-pildora); white-space: pre;
+  font: var(--peso-texto) var(--tipo-mono)/var(--interlineado-mono) var(--fuente-mono);
+}
+.ficha--s { height: var(--ficha-alto-s); padding: 0 var(--esp-2); font-size: var(--tipo-mono-s); }
+.ficha__espacio { opacity: var(--opacidad-atenuado); }
+.ficha > .icono { margin: 0 var(--esp-1); }
+.ficha > .icono:first-child { margin-left: 0; }
+.ficha--entrada, .capa--entrada, .leyenda__muestra--entrada { background: var(--color-entrada); color: var(--color-sobre-entrada); }
+.ficha--salida, .capa--salida, .leyenda__muestra--salida {
+  background: var(--color-salida); color: var(--color-sobre-salida);
+  box-shadow: inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde);
+}
+.ficha--razonamiento, .capa--razonamiento, .leyenda__muestra--razonamiento {
+  background: var(--patron-razonamiento); color: var(--color-sobre-razonamiento);
+  box-shadow: inset 0 0 0 var(--trazo-contorno) var(--color-razonamiento-borde);
+}
+
+/* ── Componente · Capa ─────────────────────────────────────────────────────
+   clase: .capa
+   forma: Muchos tokens del mismo tipo forman una capa del recipiente; su alto es proporcional a los tokens.
+   color: El mismo relleno que la ficha (entrada, salida o razonamiento).
+   medidas: Alto proporcional · --radio-s · --esp-1 de holgura con las paredes del recipiente · --trazo-contorno entre capas · --tipo-etiqueta
+   icono: —
+   movimiento: apilarCapa (con --escalonado-capas)
+   escenas: E09, E11, E12, E21, E22, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.capa {
+  flex: none; display: flex; align-items: center; min-height: var(--trazo-contorno); padding: 0 var(--esp-3);
+  border-radius: var(--radio-s); overflow: hidden; white-space: nowrap;
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+
+/* ── Componente · Ventana de contexto ──────────────────────────────────────
+   clase: .recipiente · .escala · .nivel
+   forma: Recipiente vertical que se llena de abajo arriba, con la escala a la izquierda en mono y la línea de nivel.
+   color: Interior --color-superficie · contorno --color-contorno · nivel y su cifra en --color-acento.
+   medidas: --recipiente-ancho × --recipiente-alto · --radio-l · mini: --recipiente-mini-ancho × --recipiente-mini-alto · nivel --trazo-fuerte
+   icono: app-window (en etiquetas)
+   movimiento: apilarCapa · subirNivel
+   escenas: E09, E11, E12, E14, E17, E19, E21, E22, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.recipiente {
+  position: relative; flex: none; width: var(--recipiente-ancho); height: var(--recipiente-alto);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-l);
+  background: var(--color-superficie); overflow: hidden;
+}
+.recipiente__capas { position: absolute; inset: var(--esp-1); display: flex; flex-direction: column-reverse; gap: var(--trazo-contorno); }
+.recipiente--mini { width: var(--recipiente-mini-ancho); height: var(--recipiente-mini-alto); border-radius: var(--radio-m); }
+.escala { position: relative; color: var(--color-texto-3); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+.escala__marca { position: absolute; right: 0; display: flex; align-items: center; gap: var(--esp-2); transform: translateY(-50%); white-space: nowrap; }
+.escala__marca::after { content: ''; width: var(--esp-2); height: var(--trazo-fino); background: var(--color-texto-3); }
+.nivel { position: absolute; height: var(--trazo-fuerte); border-radius: var(--radio-pildora); background: var(--color-acento); }
+.nivel__cifra {
+  position: absolute; left: 100%; bottom: 0; margin-left: var(--esp-2); color: var(--color-acento); white-space: nowrap;
+  font: var(--peso-fuerte) var(--tipo-texto)/var(--interlineado-cifra) var(--fuente-texto); font-variant-numeric: var(--cifras);
+}
+
+/* ── Componente · Corchete de caché ────────────────────────────────────────
+   clase: .corchete · .corchete-etiqueta
+   forma: Corchete a la derecha de lo que cubre. Continuo con ✓ si acierta; discontinuo con ✕ si falla.
+   color: --color-cache-acierto · --color-cache-fallo (mismo tono: los separa el trazo y el icono).
+   medidas: --corchete-ancho · --trazo-fuerte · --radio-s
+   icono: check · x
+   movimiento: alargarCorchete · caducarCache
+   escenas: E21, E22, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.corchete {
+  width: var(--corchete-ancho); border: var(--trazo-fuerte) solid var(--color-cache-acierto); border-left: 0;
+  border-radius: 0 var(--radio-s) var(--radio-s) 0;
+}
+.corchete--fallo { border-style: dashed; border-color: var(--color-cache-fallo); }
+.corchete-etiqueta {
+  display: grid; grid-template-columns: auto 1fr; align-items: center; column-gap: var(--esp-1);
+  color: var(--color-texto-1); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.corchete-etiqueta .icono { color: var(--color-cache-acierto); }
+.corchete-etiqueta--fallo .icono { color: var(--color-cache-fallo); }
+.corchete-etiqueta__fallo, .corchete-etiqueta--fallo .corchete-etiqueta__acierto { display: none; }
+.corchete-etiqueta--fallo .corchete-etiqueta__fallo { display: block; }
+.corchete-etiqueta__detalle { grid-column: 2; color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); white-space: nowrap; }
+
+/* ── Componente · Contador ─────────────────────────────────────────────────
+   clase: .contador · .cifra
+   forma: Píldora con icono y cifra en mono (coste, llamadas, latencia), o cifra grande con etiqueta y unidad.
+   color: Genérico: --color-superficie con contorno · coste: --color-coste y --color-sobre-coste · cifra: --color-texto-1.
+   medidas: --contador-alto · --tipo-mono · cifra --tipo-cifra (o --tipo-cifra-xl)
+   icono: coins (coste) · repeat (llamadas) · hourglass (latencia)
+   movimiento: subirContador
+   escenas: E07, E08, E12, E17, E19, E20, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.contador {
+  display: inline-flex; align-items: center; gap: var(--esp-2); height: var(--contador-alto); padding: 0 var(--esp-4) 0 var(--esp-3);
+  border-radius: var(--radio-pildora); background: var(--color-superficie); color: var(--color-texto-1);
+  box-shadow: inset 0 0 0 var(--trazo-contorno) var(--color-contorno); white-space: nowrap;
+  font: var(--peso-enfasis) var(--tipo-mono)/var(--interlineado-mono) var(--fuente-mono); font-variant-numeric: var(--cifras);
+}
+.contador--coste { background: var(--color-coste); color: var(--color-sobre-coste); box-shadow: none; }
+.contador__unidad { font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.cifra { display: grid; justify-items: start; gap: var(--esp-1); color: var(--color-texto-1); }
+.cifra__etiqueta { display: flex; align-items: center; gap: var(--esp-2); color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.cifra__valor { font: var(--peso-display) var(--tipo-cifra)/var(--interlineado-cifra) var(--fuente-display); letter-spacing: var(--tracking-cifra); font-variant-numeric: var(--cifras); }
+.cifra__unidad { color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+
+/* ── Componente · Leyenda ──────────────────────────────────────────────────
+   clase: .leyenda
+   forma: Muestras pequeñas con su nombre, en fila: los mismos rellenos que fichas y capas, y el corchete.
+   color: Muestras con los rellenos de token · texto --color-texto-2.
+   medidas: Muestra --esp-5 × --esp-3 · --tipo-etiqueta
+   icono: —
+   movimiento: aparecer
+   escenas: E21, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.leyenda { display: flex; flex-wrap: wrap; align-items: center; gap: var(--esp-2) var(--esp-4); color: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.leyenda__elemento { display: flex; align-items: center; gap: var(--esp-2); }
+.leyenda__muestra { display: inline-block; width: var(--esp-5); height: var(--esp-3); border-radius: var(--radio-pildora); }
+.leyenda__muestra--corchete {
+  width: var(--esp-2); height: var(--esp-4); border: var(--trazo-fuerte) solid var(--color-cache-acierto); border-left: 0;
+  border-radius: 0 var(--radio-s) var(--radio-s) 0;
+}
+
+/* ── Componente · Agente ───────────────────────────────────────────────────
+   clase: .agente
+   forma: Tarjeta redondeada con el icono, el nombre y su configuración en mono.
+   color: --color-superficie-inversa sólido · texto --color-texto-inverso y --color-texto-inverso-2.
+   medidas: --agente-ancho × --agente-alto · --radio-m
+   icono: bot (--icono-l)
+   movimiento: entrarConMuelle
+   escenas: E04, E14, E17, E18, E19
+   ─────────────────────────────────────────────────────────────────────── */
+.agente {
+  display: flex; align-items: center; gap: var(--esp-3); width: var(--agente-ancho); height: var(--agente-alto); padding: 0 var(--esp-4);
+  border-radius: var(--radio-m); background: var(--color-superficie-inversa); color: var(--color-texto-inverso);
+}
+.agente__nombre { font: var(--peso-enfasis) var(--tipo-texto)/var(--interlineado-display) var(--fuente-texto); }
+.agente__detalle { margin-top: var(--esp-1); color: var(--color-texto-inverso-2); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+
+/* ── Componente · Subagente ────────────────────────────────────────────────
+   clase: .subagente
+   forma: La tarjeta del agente, más pequeña y hueca; siempre con su propia ventana (.recipiente--mini) al lado.
+   color: --color-superficie con --color-contorno · detalle --color-texto-3.
+   medidas: --subagente-ancho × --subagente-alto · --radio-m
+   icono: bot · corner-down-left (la ficha de resumen que devuelve)
+   movimiento: recorrerCamino (sale del agente por el camino de puntos) · caerAlRecipiente (vuelve la ficha de resumen)
+   escenas: E17
+   ─────────────────────────────────────────────────────────────────────── */
+.subagente {
+  display: flex; align-items: center; gap: var(--esp-2); width: var(--subagente-ancho); height: var(--subagente-alto); padding: 0 var(--esp-3);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m); background: var(--color-superficie); color: var(--color-texto-1);
+}
+.subagente__nombre { font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-display) var(--fuente-texto); }
+.subagente__detalle { margin-top: var(--esp-1); color: var(--color-texto-3); white-space: nowrap; font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+
+/* ── Componente · Hueco del hub ────────────────────────────────────────────
+   clase: .hueco
+   forma: Silueta punteada de una pieza que aún no está en el agente, con su icono y su nombre. Tiene la forma de la pieza que la ocupará.
+   color: Contorno punteado y texto --color-texto-3, sin relleno.
+   medidas: Las de la pieza · --trazo-contorno · --radio-m (círculo: --radio-pildora; recipiente: --radio-l; documento: --radio-s)
+   icono: El de la pieza (cpu, gauge, app-window, file-text, puzzle, wrench, plug, git-fork)
+   movimiento: desaparecer (cuando la pieza llega)
+   escenas: E04–E18 (hub)
+   ─────────────────────────────────────────────────────────────────────── */
+.hueco {
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--esp-1); text-align: center;
+  border: var(--trazo-contorno) dotted var(--color-texto-3); border-radius: var(--radio-m); color: var(--color-texto-3);
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.hueco--circulo { border-radius: var(--radio-pildora); }
+.hueco--recipiente { border-radius: var(--radio-l); }
+.hueco--documento { border-radius: var(--radio-s); }
+
+/* ── Componente · Bucle del agente ─────────────────────────────────────────
+   clase: .bucle
+   forma: Círculo con flechas en sentido horario alrededor del agente y sus herramientas; un punto lo recorre en cada llamada.
+   color: Pista y flechas --color-contorno · punto --color-texto-1 · etiquetas --color-texto-2.
+   medidas: --bucle-diametro · --trazo-contorno · --punto-diametro
+   icono: —
+   movimiento: trazar (aparece) · recorrerCamino (una vuelta por llamada)
+   escenas: E14, E19
+   ─────────────────────────────────────────────────────────────────────── */
+.bucle { overflow: visible; }
+.bucle__pista, .bucle__flecha { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-contorno); stroke-linecap: round; stroke-linejoin: round; }
+.bucle__punto { fill: var(--color-texto-1); }
+.bucle__etiqueta { fill: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta) var(--fuente-texto); }
+
+/* ── Componente · Documento ────────────────────────────────────────────────
+   clase: .documento
+   forma: Hoja con cabecera y nombre de fichero en mono; las líneas simulan texto. Va al fondo del recipiente.
+   color: --color-superficie con --color-contorno · cabecera --color-superficie-inversa · líneas --color-texto-simulado.
+   medidas: --documento-ancho × --documento-alto · --radio-s
+   icono: file-text (--icono-s)
+   movimiento: caerAlRecipiente
+   escenas: E12, E18
+   ─────────────────────────────────────────────────────────────────────── */
+.documento {
+  display: flex; flex-direction: column; width: var(--documento-ancho); height: var(--documento-alto); overflow: hidden;
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-s); background: var(--color-superficie);
+}
+.documento__cabecera {
+  display: flex; align-items: center; gap: var(--esp-1); padding: var(--esp-2) var(--esp-3);
+  background: var(--color-superficie-inversa); color: var(--color-texto-inverso);
+  font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono);
+}
+.documento__cuerpo { display: grid; gap: var(--esp-3); padding: var(--esp-4) var(--esp-3); }
+.documento__linea { height: var(--esp-2); border-radius: var(--radio-pildora); background: var(--color-texto-simulado); }
+
+/* ── Componente · Skill ────────────────────────────────────────────────────
+   clase: .skill
+   forma: Tarjeta-pieza con pestaña. Plegada solo muestra nombre y descripción; desplegada, su anatomía numerada (cuándo, qué necesita, pasos, resultado).
+   color: --color-superficie con --color-contorno · pestaña --color-superficie-inversa.
+   medidas: --skill-ancho × --skill-alto · pestaña --skill-pestana-ancho × --skill-pestana-alto · --radio-m
+   icono: puzzle (desplegada --icono-l; plegada, el tamaño por defecto)
+   movimiento: entrarConMuelle · desplegar (solo entra en la ventana cuando se usa)
+   escenas: E13, E18
+   ─────────────────────────────────────────────────────────────────────── */
+.skill { position: relative; width: var(--skill-ancho); padding-top: var(--skill-pestana-alto); }
+.skill::before {
+  content: ''; position: absolute; top: 0; left: var(--esp-4); width: var(--skill-pestana-ancho);
+  height: calc(var(--skill-pestana-alto) + var(--trazo-contorno));
+  border-radius: var(--radio-s) var(--radio-s) 0 0; background: var(--color-superficie-inversa);
+}
+.skill__cuerpo {
+  position: relative; display: flex; flex-direction: column; gap: var(--esp-2); padding: var(--esp-3) var(--esp-4);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m); background: var(--color-superficie); color: var(--color-texto-1);
+}
+.skill:not(.skill--plegada) .skill__cuerpo { min-height: calc(var(--skill-alto) - var(--skill-pestana-alto)); }
+.skill__titulo { display: flex; align-items: center; gap: var(--esp-2); font: var(--peso-enfasis) var(--tipo-texto)/var(--interlineado-display) var(--fuente-texto); }
+.skill__nombre { font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+.skill__descripcion { color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.skill__anatomia {
+  display: grid; grid-template-columns: repeat(2, auto); justify-content: start; gap: var(--esp-1) var(--esp-4);
+  margin: 0; padding: var(--esp-2) 0 0; list-style: none; border-top: var(--trazo-fino) solid var(--color-separador);
+  counter-reset: anatomia; font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.skill__anatomia li { counter-increment: anatomia; }
+.skill__anatomia li::before { content: counter(anatomia); margin-right: var(--esp-1); color: var(--color-texto-3); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+.skill--plegada .skill__anatomia { display: none; }
+
+/* ── Componente · Herramienta ──────────────────────────────────────────────
+   clase: .herramienta
+   forma: Círculo con el icono de la acción y su nombre en mono debajo. Su resultado entra en la ventana como ficha de entrada.
+   color: --color-superficie con --color-contorno · nombre --color-texto-1.
+   medidas: --herramienta-diametro · --tipo-mono-s
+   icono: file-text (leer) · pencil (editar) · search (buscar) · terminal (ejecutar) · wrench (propias)
+   movimiento: entrarConMuelle · pulsar (al usarse) · voltear (muestra su definición)
+   escenas: E14, E15, E16
+   ─────────────────────────────────────────────────────────────────────── */
+.herramienta { display: inline-flex; flex-direction: column; align-items: center; gap: var(--esp-2); color: var(--color-texto-1); }
+.herramienta__circulo {
+  display: grid; place-items: center; width: var(--herramienta-diametro); height: var(--herramienta-diametro);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-pildora); background: var(--color-superficie);
+}
+.herramienta__nombre { font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); white-space: nowrap; }
+
+/* ── Componente · Definición de herramienta ────────────────────────────────
+   clase: .definicion
+   forma: Lo que el agente lee de una herramienta: nombre, descripción y parámetros. La descripción, el disparador, se resalta.
+   color: --color-superficie con --color-contorno · cabecera --color-superficie-inversa · resaltado: anillo --color-acento, el mismo dibujo que el resaltado de la captura.
+   medidas: --definicion-ancho · --radio-s · resaltado --trazo-fuerte
+   icono: wrench (--icono-s)
+   movimiento: voltear (la herramienta se da la vuelta) · aparecer
+   escenas: E15
+   ─────────────────────────────────────────────────────────────────────── */
+.definicion {
+  width: var(--definicion-ancho); overflow: hidden; color: var(--color-texto-1);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-s); background: var(--color-superficie);
+}
+.definicion__cabecera {
+  display: flex; align-items: center; gap: var(--esp-2); padding: var(--esp-2) var(--esp-3);
+  background: var(--color-superficie-inversa); color: var(--color-texto-inverso);
+  font: var(--peso-texto) var(--tipo-mono)/var(--interlineado-mono) var(--fuente-mono);
+}
+.definicion__campo { display: grid; gap: var(--esp-1); padding: var(--esp-3); }
+.definicion__campo + .definicion__campo { border-top: var(--trazo-fino) solid var(--color-separador); }
+.definicion__campo--resaltado { box-shadow: inset 0 0 0 var(--trazo-fuerte) var(--color-acento); }
+.definicion__clave { color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.definicion__valor { font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+.definicion__valor--mono { font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+
+/* ── Componente · Conector MCP ─────────────────────────────────────────────
+   clase: .conector · .conector__cable · .servidor
+   forma: Nodo con el enchufe en el borde del agente; un cable continuo lo une a cada servidor.
+   color: Nodo --color-superficie-inversa · cable --color-contorno · servidor --color-superficie con --color-contorno.
+   medidas: --conector-diametro · cable --trazo-contorno · servidor --radio-m
+   icono: plug · laptop (servidor local) · cloud (servidor remoto)
+   movimiento: entrarConMuelle (nodo y servidores) · trazar (cable)
+   escenas: E16, E18
+   ─────────────────────────────────────────────────────────────────────── */
+.conector {
+  display: grid; place-items: center; width: var(--conector-diametro); height: var(--conector-diametro);
+  border-radius: var(--radio-pildora); background: var(--color-superficie-inversa); color: var(--color-texto-inverso);
+}
+.conector__cable { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-contorno); stroke-linecap: round; }
+.servidor {
+  display: inline-flex; align-items: center; gap: var(--esp-2); padding: var(--esp-2) var(--esp-4) var(--esp-2) var(--esp-3);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m); background: var(--color-superficie); color: var(--color-texto-1);
+}
+.servidor__nombre { font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-display) var(--fuente-texto); }
+.servidor__detalle { margin-top: var(--esp-1); color: var(--color-texto-3); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+
+/* ── Componente · Candado ──────────────────────────────────────────────────
+   clase: .candado
+   forma: Cuadrado de trazo grueso con el candado y la regla al lado: lo que no debe cruzar.
+   color: --color-superficie con --color-contorno · texto --color-texto-1.
+   medidas: --candado-lado · --trazo-fuerte · --radio-m · --tipo-texto-s
+   icono: lock (--icono-l)
+   movimiento: entrarConMuelle
+   escenas: E15, E16
+   ─────────────────────────────────────────────────────────────────────── */
+.candado { display: inline-flex; align-items: center; gap: var(--esp-3); color: var(--color-texto-1); }
+.candado__icono {
+  display: grid; place-items: center; flex: none; width: var(--candado-lado); height: var(--candado-lado);
+  border: var(--trazo-fuerte) solid var(--color-contorno); border-radius: var(--radio-m); background: var(--color-superficie);
+}
+.candado__texto { font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+
+/* ── Componente · Caja de plugin ───────────────────────────────────────────
+   clase: .plugin
+   forma: Caja de trazo grueso que envuelve las piezas que empaqueta, con su nombre en una pestaña sobre el borde.
+   color: Sin relleno · borde --color-contorno · pestaña --color-superficie con --color-contorno.
+   medidas: --trazo-fuerte · --radio-l · pestaña --tipo-etiqueta
+   icono: package (--icono-s)
+   movimiento: entrarConMuelle
+   escenas: E18
+   ─────────────────────────────────────────────────────────────────────── */
+.plugin { position: relative; padding: var(--esp-6) var(--esp-5) var(--esp-5); border: var(--trazo-fuerte) solid var(--color-contorno); border-radius: var(--radio-l); }
+.plugin__etiqueta {
+  position: absolute; top: 0; left: var(--esp-6); transform: translateY(-50%);
+  display: inline-flex; align-items: center; gap: var(--esp-1); padding: var(--esp-1) var(--esp-3);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-pildora);
+  background: var(--color-superficie); color: var(--color-texto-1);
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+
+/* ── Componente · Árbol de repositorio ─────────────────────────────────────
+   clase: .arbol
+   forma: Carpetas y ficheros en mono, con guías de sangría. Un AGENTS.md cargado se rellena como ficha de entrada.
+   color: Texto --color-texto-1 · iconos y guías --color-texto-3 · cargado --color-entrada y --color-sobre-entrada.
+   medidas: --tipo-mono-s · sangría --esp-4 · guía --trazo-fino
+   icono: folder · folder-open · file · file-text (AGENTS.md)
+   movimiento: aparecer (filas, con --escalonado)
+   escenas: E12
+   ─────────────────────────────────────────────────────────────────────── */
+.arbol, .arbol ul { margin: 0; padding: 0; list-style: none; }
+.arbol { color: var(--color-texto-1); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+.arbol ul { margin-left: var(--esp-3); padding-left: var(--esp-4); border-left: var(--trazo-fino) solid var(--color-texto-3); }
+.arbol__nodo { display: flex; align-items: center; gap: var(--esp-2); padding: var(--esp-1) 0; white-space: nowrap; }
+.arbol__nodo .icono { color: var(--color-texto-3); }
+.arbol__nodo--cargado .arbol__nombre { padding: 0 var(--esp-2); border-radius: var(--radio-pildora); background: var(--color-entrada); color: var(--color-sobre-entrada); }
+
+/* ── Componente · Isla ─────────────────────────────────────────────────────
+   clase: .isla
+   forma: Zona del mapa o agrupación de una escena (Local, Cloud): tarjeta muy redondeada con número, icono y nombre.
+   color: --color-superficie con --color-contorno · actual: --color-acento y --color-sobre-acento · atenuada: .atenuado.
+   medidas: Mínimo --isla-ancho × --isla-alto · --radio-l · número --tipo-titulo-s · nombre --tipo-texto-s
+   icono: El de la zona (laptop, cloud, cpu, gauge, app-window…) a --icono-m
+   movimiento: entrarConMuelle · atenuar · avivar
+   escenas: E01, E02, E30 (mapa)
+   ─────────────────────────────────────────────────────────────────────── */
+.isla {
+  display: flex; flex-direction: column; justify-content: space-between; gap: var(--esp-3);
+  min-width: var(--isla-ancho); min-height: var(--isla-alto); padding: var(--esp-3) var(--esp-4);
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-l);
+  background: var(--color-superficie); color: var(--color-texto-1);
+}
+.isla__cabecera { display: flex; justify-content: space-between; align-items: flex-start; gap: var(--esp-3); }
+.isla__numero { font: var(--peso-display) var(--tipo-titulo-s)/var(--interlineado-cifra) var(--fuente-display); font-variant-numeric: var(--cifras); }
+.isla__nombre { font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-display) var(--fuente-texto); }
+.isla--actual { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); }
+
+/* ── Componente · Etiqueta ─────────────────────────────────────────────────
+   clase: .etiqueta
+   forma: Píldora con texto y, opcionalmente, un icono. La variante ventaja (E02) es más grande, con ✓ y contorno completo.
+   color: --color-superficie con --color-contorno · texto --color-texto-1.
+   medidas: --tipo-etiqueta · --trazo-fino (ventaja: --tipo-texto-s y --trazo-contorno)
+   icono: check (ventaja) · Cualquiera, a --icono-s
+   movimiento: aparecer
+   escenas: E02, E03, E05, E13, E18, todas
+   ─────────────────────────────────────────────────────────────────────── */
+.etiqueta {
+  display: inline-flex; align-items: center; gap: var(--esp-1); padding: var(--esp-1) var(--esp-3); white-space: nowrap;
+  border: var(--trazo-fino) solid var(--color-contorno); border-radius: var(--radio-pildora);
+  background: var(--color-superficie); color: var(--color-texto-1);
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.etiqueta--ventaja { gap: var(--esp-2); padding: var(--esp-2) var(--esp-4) var(--esp-2) var(--esp-3); border-width: var(--trazo-contorno); font-size: var(--tipo-texto-s); }
+
+/* ── Componente · Marca «Cifras ficticias» ─────────────────────────────────
+   clase: .ficticio
+   forma: Píldora con el icono de información. Obligatoria en toda escena con cifras de ejemplo.
+   color: Contorno --color-texto-3 · texto --color-texto-2.
+   medidas: --tipo-etiqueta · --trazo-fino
+   icono: info (--icono-s)
+   movimiento: aparecer (con la primera cifra)
+   escenas: E07, E09, E19, E23 y toda escena con cifras de ejemplo
+   ─────────────────────────────────────────────────────────────────────── */
+.ficticio {
+  display: inline-flex; align-items: center; gap: var(--esp-1); padding: var(--esp-1) var(--esp-3); white-space: nowrap;
+  border: var(--trazo-fino) solid var(--color-texto-3); border-radius: var(--radio-pildora); color: var(--color-texto-2);
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+
+/* ── Componente · Nota de fuente ───────────────────────────────────────────
+   clase: .fuente
+   forma: «Fuente:» y la referencia en mono, bajo toda cifra real o gráfica.
+   color: --color-texto-3.
+   medidas: --tipo-etiqueta · --tipo-mono-s
+   icono: —
+   movimiento: aparecer (con la gráfica)
+   escenas: E06, E08, E10, E20
+   ─────────────────────────────────────────────────────────────────────── */
+.fuente { display: flex; align-items: baseline; gap: var(--esp-1); color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.fuente__referencia { font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+
+/* ── Componente · Captura con resaltado ────────────────────────────────────
+   clase: .captura · .resaltado
+   forma: Captura enmarcada; el control que se explica se rodea con un resaltado y una etiqueta unida por una guía. Sin captura real, un marcador «Captura pendiente» visible.
+   color: Marco --color-contorno · pendiente --color-superficie-2 · resaltado --color-acento.
+   medidas: --radio-s · resaltado --trazo-fuerte
+   icono: image (pendiente)
+   movimiento: entrarConMuelle (resaltado) · aparecer (etiqueta) · trazar (guía)
+   escenas: E03
+   ─────────────────────────────────────────────────────────────────────── */
+.captura {
+  position: relative; overflow: hidden; border: var(--trazo-contorno) solid var(--color-contorno);
+  border-radius: var(--radio-s); background: var(--color-superficie-2);
+}
+.captura > img { display: block; width: 100%; height: auto; }
+.captura__pendiente {
+  position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--esp-2);
+  color: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto);
+}
+.resaltado { position: absolute; border: var(--trazo-fuerte) solid var(--color-acento); border-radius: var(--radio-s); }
+
+/* ── Componente · Tarjeta de consejo ───────────────────────────────────────
+   clase: .consejo
+   forma: Tarjeta con la bombilla, el rótulo «Consejo» y una sola frase.
+   color: --color-superficie con --color-contorno · rótulo --color-texto-3 · frase --color-texto-1.
+   medidas: Ancho máximo --consejo-ancho · --radio-m · frase --tipo-texto
+   icono: lightbulb
+   movimiento: entrarConMuelle
+   escenas: E08, E11, E12, E15, E17
+   ─────────────────────────────────────────────────────────────────────── */
+.consejo {
+  display: grid; grid-template-columns: auto 1fr; column-gap: var(--esp-3); row-gap: var(--esp-1); max-width: var(--consejo-ancho);
+  padding: var(--esp-4); border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m);
+  background: var(--color-superficie); color: var(--color-texto-1);
+}
+.consejo > .icono { grid-row: span 2; }
+.consejo__rotulo { color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.consejo__texto { font: var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
+
+/* ── Componente · Tabla ────────────────────────────────────────────────────
+   clase: .tabla
+   forma: Tabla sin caja: cabecera en etiqueta con línea de contorno debajo y filas separadas por líneas finas.
+   color: Cabecera --color-texto-3 · texto --color-texto-1 · líneas --color-contorno y --color-separador.
+   medidas: --tipo-texto-s · cabecera --tipo-etiqueta · por celda --esp-2 arriba y abajo y --esp-5 a la derecha
+   icono: —
+   movimiento: aparecer (fila a fila, con --escalonado)
+   escenas: E05, E07, E11, E15, E21
+   ─────────────────────────────────────────────────────────────────────── */
+.tabla { border-collapse: collapse; color: var(--color-texto-1); font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+.tabla th {
+  padding: var(--esp-2) var(--esp-5) var(--esp-2) 0; text-align: left; color: var(--color-texto-3);
+  border-bottom: var(--trazo-contorno) solid var(--color-contorno);
+  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.tabla td { padding: var(--esp-2) var(--esp-5) var(--esp-2) 0; vertical-align: top; border-bottom: var(--trazo-fino) solid var(--color-separador); }
+.tabla th:last-child, .tabla td:last-child { padding-right: 0; }
+.tabla__mono { font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
+.tabla__cifra { text-align: right; font-variant-numeric: var(--cifras); }
+
+/* ── Componente · Camino de puntos y guía ──────────────────────────────────
+   clase: .camino
+   forma: Línea de puntos redondos: la ruta de la cámara en el mapa y el camino por el que sale un subagente; los puntos son siempre movimiento. La guía (.camino--guia) es una línea fina continua que une una etiqueta con lo que señala.
+   color: --color-contorno (guía: --color-texto-3).
+   medidas: --ruta-grosor · --ruta-hueco (guía: --trazo-fino, continua)
+   icono: —
+   movimiento: trazar
+   escenas: E01, E03, E17, E29, E30
+   ─────────────────────────────────────────────────────────────────────── */
+.camino { fill: none; stroke: var(--color-contorno); stroke-width: var(--ruta-grosor); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0 var(--ruta-hueco); }
+.camino--guia { stroke: var(--color-texto-3); stroke-width: var(--trazo-fino); stroke-dasharray: none; }
+
+/* ── Componente · Gráfica de líneas ────────────────────────────────────────
+   clase: .grafica · .fuente
+   forma: Ejes, rejilla y una línea por serie con su nombre al final (sin leyenda aparte). Las series se separan por luminosidad y trazo; solo la protagonista va en acento. Siempre con su nota de fuente.
+   color: Ejes --color-contorno · rejilla --color-separador · series --color-texto-1, --color-texto-2 (discontinua), --color-texto-3 y --color-texto-3 (de puntos) · protagonista --color-acento · franja --color-superficie-2.
+   medidas: Líneas --trazo-contorno (protagonista --trazo-fuerte) · --grafica-discontinua · --grafica-punteada · marcas --tipo-mono-s
+   icono: —
+   movimiento: trazar (las líneas, una a una) · aparecer (puntos y etiquetas)
+   escenas: E06, E08, E10, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.grafica { overflow: visible; }
+.grafica__eje { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-fino); }
+.grafica__rejilla { stroke: var(--color-separador); stroke-width: var(--trazo-fino); }
+.grafica__marca { fill: var(--color-texto-3); font: var(--peso-texto) var(--tipo-mono-s) var(--fuente-mono); }
+.grafica__titulo-eje, .grafica__nota { fill: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta) var(--fuente-texto); }
+.grafica__franja { fill: var(--color-superficie-2); }
+.grafica__franja-borde { fill: none; stroke: var(--color-texto-3); stroke-width: var(--trazo-fino); stroke-dasharray: var(--grafica-discontinua); }
+.grafica__serie { color: var(--color-texto-1); }
+.grafica__serie--2 { color: var(--color-texto-2); }
+.grafica__serie--3, .grafica__serie--4 { color: var(--color-texto-3); }
+.grafica__serie--acento { color: var(--color-acento); }
+.grafica__linea { fill: none; stroke: currentColor; stroke-width: var(--trazo-contorno); stroke-linecap: round; stroke-linejoin: round; }
+.grafica__serie--2 .grafica__linea { stroke-dasharray: var(--grafica-discontinua); }
+.grafica__serie--4 .grafica__linea { stroke-dasharray: var(--grafica-punteada); }
+.grafica__serie--acento .grafica__linea { stroke-width: var(--trazo-fuerte); }
+.grafica__punto { fill: var(--color-superficie); stroke: currentColor; stroke-width: var(--trazo-contorno); }
+.grafica__etiqueta { fill: currentColor; font: var(--peso-enfasis) var(--tipo-etiqueta) var(--fuente-texto); }
+
+/* ── Componente · Dial de effort ───────────────────────────────────────────
+   clase: .dial
+   forma: Semicírculo con una marca por nivel (Low, Medium, High, XHigh, Max) y una aguja que gira; el nivel actual se lee en --peso-fuerte.
+   color: Arco, marcas y aguja --color-contorno y --color-texto-1 · niveles --color-texto-3 · actual --color-texto-1.
+   medidas: --dial-radio · arco --trazo-contorno · aguja --trazo-fuerte · niveles --tipo-etiqueta
+   icono: gauge (en etiquetas)
+   movimiento: girarDial
+   escenas: E08
+   ─────────────────────────────────────────────────────────────────────── */
+.dial { overflow: visible; }
+.dial__arco, .dial__marca { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-contorno); stroke-linecap: round; }
+.dial__etiqueta { fill: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta) var(--fuente-texto); }
+.dial__etiqueta--actual { fill: var(--color-texto-1); font-weight: var(--peso-fuerte); }
+.dial__aguja { stroke: var(--color-texto-1); stroke-width: var(--trazo-fuerte); stroke-linecap: round; }
+.dial__eje { fill: var(--color-texto-1); }
+
+/* ── Componente · Temporizador ─────────────────────────────────────────────
+   clase: .temporizador
+   forma: Anillo que se vacía con el tiempo restante en mono en el centro. Al agotarse, el tiempo se apaga.
+   color: Pista --color-texto-3 · progreso --color-texto-1 · agotado --color-texto-3.
+   medidas: --temporizador-diametro · pista --trazo-fino · progreso --trazo-fuerte · tiempo --tipo-titulo-s
+   icono: timer
+   movimiento: agotarTemporizador
+   escenas: E22, E23
+   ─────────────────────────────────────────────────────────────────────── */
+.temporizador { position: relative; width: var(--temporizador-diametro); height: var(--temporizador-diametro); color: var(--color-texto-1); }
+.temporizador__anillo { position: absolute; inset: 0; transform: rotate(-90deg); }
+.temporizador__pista { fill: none; stroke: var(--color-texto-3); stroke-width: var(--trazo-fino); }
+.temporizador__progreso { fill: none; stroke: var(--color-texto-1); stroke-width: var(--trazo-fuerte); stroke-linecap: round; }
+.temporizador__centro { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--esp-1); }
+.temporizador__tiempo { font: var(--peso-texto) var(--tipo-titulo-s)/var(--interlineado-cifra) var(--fuente-mono); }
+.temporizador--agotado { color: var(--color-texto-3); }
+
+/* ── Componente · Circuito ─────────────────────────────────────────────────
+   clase: .circuito
+   forma: Circuito cerrado con una parada numerada por paso del método. La parada actual va en acento; al pasar a la siguiente, un punto recorre la pista entre las dos. Si el acento está en otra parte (el mapa con otra zona actual), va sin parada actual ni punto.
+   color: Pista --color-contorno · paradas --color-superficie (hechas: --color-entrada; actual y punto: --color-acento).
+   medidas: --circuito-parada · --punto-diametro · pista --trazo-contorno · nombres --tipo-etiqueta
+   icono: list-checks (en etiquetas)
+   movimiento: recorrerCamino (entre paradas)
+   escenas: E24–E29
+   ─────────────────────────────────────────────────────────────────────── */
+.circuito { overflow: visible; }
+.circuito__pista { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-contorno); }
+.circuito__parada circle { fill: var(--color-superficie); stroke: var(--color-contorno); stroke-width: var(--trazo-contorno); }
+.circuito__parada--hecha circle { fill: var(--color-entrada); }
+.circuito__numero { fill: var(--color-texto-1); font: var(--peso-texto) var(--tipo-mono-s) var(--fuente-mono); }
+.circuito__parada--hecha .circuito__numero { fill: var(--color-sobre-entrada); }
+.circuito__parada--actual circle { fill: var(--color-acento); stroke: var(--color-acento); }
+.circuito__parada--actual .circuito__numero { fill: var(--color-sobre-acento); }
+.circuito__nombre { fill: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta) var(--fuente-texto); }
+.circuito__punto { fill: var(--color-acento); }

@@ -1,154 +1,248 @@
 /* ==========================================================================
    Design system · Charla «Devin en el día a día» · Openbank
-   Dirección C · Crema, navy y rojo — v1 · 14-10-2026
-   Escena: 1920×1080. Ningún texto por debajo de 24 px.
+   Dirección C · Crema, navy y rojo — versión 2 · renovado el 14-10-2026
+   Escena: 1920×1080 (--escena-ancho × --escena-alto). Ningún texto por debajo de 24 px.
    Solo los colores de marca llevan hex; el resto se deriva con color-mix(),
    así que cambiar un color base actualiza también sus derivados.
    «Tokens» en este proyecto son las unidades de texto del modelo;
    las variables de diseño se llaman variables.
+
+   Este fichero es la fuente de verdad: design-system.html lo lee al cargarse.
+   - Cada grupo empieza con un comentario «── Nombre ──».
+   - Cada variable va en una sola línea, con su descripción en un comentario.
+   - Las curvas dicen con qué duración van («con --dur-…»).
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+/* ── Fuentes (alojadas en el proyecto · SIL Open Font License 1.1) ──────── */
+/* Outfit © 2021 The Outfit Project Authors · DM Mono © 2020 The DM Mono
+   Project Authors. Licencias en assets/fonts/OFL-*.txt. */
+@font-face {
+  font-family: 'Outfit';
+  src: url('./assets/fonts/Outfit-wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'DM Mono';
+  src: url('./assets/fonts/DMMono-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'DM Mono';
+  src: url('./assets/fonts/DMMono-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: block;
+}
 
 :root {
   /* ── Color · marca (openbank.es) ─────────────────────────────────────── */
-  --color-prussian: #002B45;      /* Prussian blue */
-  --color-bluewood: #2C4054;      /* Pickled bluewood */
-  --color-red-ribbon: #DF0049;    /* Red ribbon: acento sobre fondo claro */
-  --color-rojo-oscuro: #FF0049;   /* Rojo del logo para fondo oscuro */
-  --color-rojo-logo: #E9004C;     /* Rojo del logo para fondo claro: solo dentro del logo */
-  --color-pizarra: #546E7A;
-  --color-old-lace: #FFF9F4;
-  --color-cinderella: #FFF1E5;
-  --color-blanco: #FFFFFF;
+  --color-prussian: #002B45;      /* Prussian blue · la tinta: texto principal, contornos, tokens de entrada y coste */
+  --color-bluewood: #2C4054;      /* Pickled bluewood · texto secundario y corchete de caché */
+  --color-red-ribbon: #DF0049;    /* Red ribbon · el acento sobre fondo claro (botones de openbank.es) */
+  --color-rojo-oscuro: #FF0049;   /* Rojo del logo para fondo oscuro · el acento sobre navy */
+  --color-rojo-logo: #E9004C;     /* Rojo del logo para fondo claro · solo dentro del logo, nunca en la interfaz */
+  --color-pizarra: #546E7A;       /* Pizarra · texto 3: escalas y anotaciones */
+  --color-old-lace: #FFF9F4;      /* Old lace · fondo de escena */
+  --color-cinderella: #FFF1E5;    /* Cinderella · superficie 2: apoyos muy suaves */
+  --color-blanco: #FFFFFF;        /* Blanco · superficies: islas, recipiente y tarjetas */
 
   /* ── Color · roles ───────────────────────────────────────────────────── */
-  --color-fondo: var(--color-old-lace);
-  --color-superficie: var(--color-blanco);
-  --color-superficie-2: var(--color-cinderella);
-  --color-superficie-inversa: var(--color-prussian);
-  --color-texto-1: var(--color-prussian);
-  --color-texto-2: var(--color-bluewood);
-  --color-texto-3: var(--color-pizarra);
-  --color-texto-inverso: var(--color-blanco);
-  --color-texto-inverso-2: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));   /* = #CCD5DA, el gris claro de la marca */
-  --color-contorno: var(--color-prussian);
-  --color-separador: color-mix(in srgb, var(--color-prussian) 10%, var(--color-cinderella));    /* ≈ #E6DDD5 */
-  --color-acento: var(--color-red-ribbon);
-  --color-acento-sobre-oscuro: var(--color-rojo-oscuro);
-  --color-sobre-acento: var(--color-blanco);
+  --color-fondo: var(--color-old-lace);                 /* Fondo de la escena */
+  --color-superficie: var(--color-blanco);              /* Islas, recipiente, tarjetas y documentos */
+  --color-superficie-2: var(--color-cinderella);        /* Apoyos muy suaves: franjas de gráfica, capturas pendientes */
+  --color-superficie-inversa: var(--color-prussian);    /* Superficies navy: agente, cabeceras de documento */
+  --color-texto-1: var(--color-prussian);               /* Texto principal */
+  --color-texto-2: var(--color-bluewood);               /* Texto secundario */
+  --color-texto-3: var(--color-pizarra);                /* Escalas, anotaciones y etiquetas de apoyo */
+  --color-texto-inverso: var(--color-blanco);           /* Texto sobre superficie inversa */
+  --color-texto-inverso-2: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));   /* = #CCD5DA, el gris claro de la marca · texto secundario sobre navy */
+  --color-texto-simulado: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));    /* = #CCD5DA · líneas que simulan texto en un documento: no se leen */
+  --color-contorno: var(--color-prussian);              /* Contorno de toda superficie */
+  --color-separador: color-mix(in srgb, var(--color-prussian) 10%, var(--color-cinderella));    /* ≈ #E6DDD5 · líneas finas: separadores y rejillas */
+  --color-acento: var(--color-red-ribbon);              /* El único acento: lo que hay que mirar ahora */
+  --color-acento-sobre-oscuro: var(--color-rojo-oscuro);   /* El acento sobre navy */
+  --color-sobre-acento: var(--color-blanco);            /* Texto sobre el acento */
 
   /* ── Color · semántica (siempre derivada de navy) ────────────────────── */
-  --color-entrada: var(--color-prussian);           /* relleno sólido */
-  --color-sobre-entrada: var(--color-blanco);
-  --color-salida: var(--color-blanco);              /* hueca, con contorno */
-  --color-salida-borde: var(--color-prussian);
-  --color-sobre-salida: var(--color-prussian);
-  --color-razonamiento: color-mix(in srgb, var(--color-prussian) 40%, var(--color-blanco));         /* = #99AAB5 */
-  --color-razonamiento-rayado: color-mix(in srgb, var(--color-prussian) 27%, var(--color-blanco));  /* ≈ #BAC6CD */
-  --color-sobre-razonamiento: var(--color-prussian);
-  --patron-razonamiento: repeating-linear-gradient(135deg, var(--color-razonamiento) 0 10px, var(--color-razonamiento-rayado) 10px 20px);
-  --color-cache-acierto: var(--color-bluewood);     /* corchete continuo + ✓ */
-  --color-cache-fallo: var(--color-bluewood);       /* corchete discontinuo + ✕ */
-  --color-coste: var(--color-prussian);
-  --color-sobre-coste: var(--color-blanco);
+  --color-entrada: var(--color-prussian);           /* Tokens de entrada: relleno sólido */
+  --color-sobre-entrada: var(--color-blanco);       /* Texto sobre tokens de entrada */
+  --color-salida: var(--color-blanco);              /* Tokens de salida: huecos, con contorno */
+  --color-salida-borde: var(--color-prussian);      /* Contorno de los tokens de salida */
+  --color-sobre-salida: var(--color-prussian);      /* Texto sobre tokens de salida */
+  --color-razonamiento: color-mix(in srgb, var(--color-prussian) 40%, var(--color-blanco));         /* = #99AAB5 · tokens de razonamiento: rayado */
+  --color-razonamiento-rayado: color-mix(in srgb, var(--color-prussian) 27%, var(--color-blanco));  /* ≈ #BAC6CD · la raya clara del patrón */
+  --color-razonamiento-borde: var(--color-prussian);   /* Contorno del razonamiento: el rayado solo no llega a 3:1 sobre el fondo */
+  --color-sobre-razonamiento: var(--color-prussian);   /* Texto sobre tokens de razonamiento */
+  --patron-razonamiento: repeating-linear-gradient(135deg, var(--color-razonamiento) 0 10px, var(--color-razonamiento-rayado) 10px 20px);   /* Rayas de 10 px a 135° */
+  --color-cache-acierto: var(--color-bluewood);     /* Corchete continuo + ✓ */
+  --color-cache-fallo: var(--color-bluewood);       /* Corchete discontinuo + ✕: se distingue por el trazo, no por el tono */
+  --color-coste: var(--color-prussian);             /* Contador de coste: relleno */
+  --color-sobre-coste: var(--color-blanco);         /* Texto sobre el contador de coste */
 
-  /* ── Tipografía ──────────────────────────────────────────────────────── */
-  --fuente-display: 'Outfit', system-ui, sans-serif;
-  --fuente-texto: 'Outfit', system-ui, sans-serif;
-  --fuente-mono: 'DM Mono', ui-monospace, monospace;
-  --peso-display: 300;
-  --peso-texto: 400;
-  --peso-enfasis: 500;
-  --peso-fuerte: 600;
+  /* ── Tipografía · familias y pesos ───────────────────────────────────── */
+  --fuente-display: 'Outfit', system-ui, sans-serif;     /* Títulos y cifras */
+  --fuente-texto: 'Outfit', system-ui, sans-serif;       /* Texto y etiquetas */
+  --fuente-mono: 'DM Mono', ui-monospace, monospace;     /* Fichas de token, código y nombres de fichero */
+  --peso-display: 300;        /* Títulos y cifras */
+  --peso-texto: 400;          /* Texto corrido y mono */
+  --peso-enfasis: 500;        /* Etiquetas y nombres */
+  --peso-fuerte: 600;         /* La cifra del nivel y el énfasis puntual */
 
-  --tipo-etiqueta: 24px;      /* mínimo absoluto */
-  --tipo-texto-s: 28px;
-  --tipo-texto: 32px;
-  --tipo-entradilla: 40px;
-  --tipo-titulo-s: 56px;
-  --tipo-titulo: 80px;
-  --tipo-titulo-xl: 112px;
-  --tipo-cifra: 176px;
-  --tipo-cifra-xl: 240px;
-  --tipo-mono: 28px;
-  --tipo-mono-s: 24px;
+  /* ── Tipografía · escala ─────────────────────────────────────────────── */
+  --tipo-etiqueta: 24px;      /* Etiquetas, leyendas y escalas · mínimo absoluto */
+  --tipo-texto-s: 28px;       /* Nombres de zona y texto secundario */
+  --tipo-texto: 32px;         /* Frase principal de una zona */
+  --tipo-entradilla: 40px;    /* Ideas clave y citas */
+  --tipo-titulo-s: 56px;      /* Títulos secundarios y número de isla */
+  --tipo-titulo: 80px;        /* Título de zona */
+  --tipo-titulo-xl: 112px;    /* Portada y cierre */
+  --tipo-cifra: 176px;        /* Contadores de tokens y de coste */
+  --tipo-cifra-xl: 240px;     /* Una cifra protagonista sola */
+  --tipo-mono: 28px;          /* Fichas de token y código */
+  --tipo-mono-s: 24px;        /* Nombres de fichero, escalas y notas de fuente */
 
-  --interlineado-display: 1.04;
-  --interlineado-texto: 1.35;
-  --interlineado-mono: 1.3;
-  --tracking-display: -0.015em;
-  --tracking-cifra: -0.03em;
-  --cifras: tabular-nums;     /* Outfit tiene tnum: los contadores no bailan */
+  /* ── Tipografía · interlineado y espaciado de letras ─────────────────── */
+  --interlineado-display: 1.04;   /* Títulos */
+  --interlineado-texto: 1.35;     /* Texto y etiquetas */
+  --interlineado-mono: 1.3;       /* Código y fichas */
+  --interlineado-cifra: 1;        /* Cifras grandes */
+  --tracking-display: -0.015em;   /* Títulos */
+  --tracking-cifra: -0.03em;      /* Cifras grandes */
+  --cifras: tabular-nums;         /* Outfit tiene tnum: los contadores no bailan */
+
+  /* ── Escena ──────────────────────────────────────────────────────────── */
+  --escena-ancho: 1920px;     /* Ancho de diseño de cada escena: se proyecta a escala 1 */
+  --escena-alto: 1080px;      /* Alto de diseño de cada escena */
+  --margen-x: 120px;          /* Zona segura de la escena, en horizontal */
+  --margen-y: 96px;           /* Zona segura de la escena, en vertical */
 
   /* ── Espaciado (base 8) ──────────────────────────────────────────────── */
-  --esp-1: 8px;
-  --esp-2: 16px;
-  --esp-3: 24px;
-  --esp-4: 32px;
-  --esp-5: 48px;
-  --esp-6: 64px;
-  --esp-7: 96px;
-  --esp-8: 128px;
-  --margen-x: 120px;          /* zona segura de la escena */
-  --margen-y: 96px;
+  --esp-1: 8px;               /* Entre capas, entre un icono y su texto */
+  --esp-2: 16px;              /* Dentro de una etiqueta o una fila */
+  --esp-3: 24px;              /* Relleno de fichas y tarjetas pequeñas */
+  --esp-4: 32px;              /* Relleno de tarjetas */
+  --esp-5: 48px;              /* Entre bloques de una zona */
+  --esp-6: 64px;              /* Entre grupos */
+  --esp-7: 96px;              /* Entre secciones de una escena */
+  --esp-8: 128px;             /* Distancias de caída y grandes separaciones */
 
   /* ── Radios ──────────────────────────────────────────────────────────── */
-  --radio-s: 12px;            /* capas, código, documentos */
-  --radio-m: 24px;            /* tarjetas: agente, skill */
-  --radio-l: 48px;            /* islas del mapa, recipiente */
-  --radio-pildora: 999px;     /* fichas de token, etiquetas, contadores */
+  --radio-s: 12px;            /* Capas, código, documentos y capturas */
+  --radio-m: 24px;            /* Tarjetas: agente, skill y consejo */
+  --radio-l: 48px;            /* Islas del mapa, recipiente y caja de plugin */
+  --radio-pildora: 999px;     /* Fichas de token, etiquetas, contadores y círculos */
 
   /* ── Trazos ──────────────────────────────────────────────────────────── */
-  --trazo-fino: 2px;          /* separadores, marcas de escala */
-  --trazo-contorno: 3px;      /* contorno de toda superficie */
-  --trazo-fuerte: 6px;        /* corchete de caché, línea de nivel */
+  --trazo-fino: 2px;          /* Separadores, marcas de escala y ejes */
+  --trazo-contorno: 3px;      /* Contorno de toda superficie y líneas de gráfica */
+  --trazo-fuerte: 6px;        /* Corchete de caché, línea de nivel, resaltado y caja de plugin */
   --icono-trazo: 2;           /* stroke-width de Lucide (viewBox 24) */
-  --icono-s: 24px;            /* trazo efectivo 2 px */
-  --icono-m: 36px;            /* trazo efectivo 3 px = contorno */
-  --icono-l: 48px;            /* trazo efectivo 4 px */
-  --ruta-grosor: 10px;        /* camino de puntos del mapa */
-  --ruta-hueco: 24px;
+  --icono-s: 24px;            /* Iconos dentro de etiquetas · trazo efectivo 2 px */
+  --icono-m: 36px;            /* Tamaño por defecto · trazo efectivo 3 px = contorno */
+  --icono-l: 48px;            /* Icono principal de una pieza grande · trazo efectivo 4 px */
+  --ruta-grosor: 10px;        /* Camino de puntos: diámetro de cada punto */
+  --ruta-hueco: 24px;         /* Camino de puntos: distancia entre puntos */
 
   /* ── Elevación (mínima, sombra plana: el proyector no muestra difusas) ─ */
-  --elevacion-0: none;
-  --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent);
+  --elevacion-0: none;        /* Todo lo que está quieto en la escena */
+  --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent);   /* Lo que flota: una ficha que se arrastra o un documento encima de otro */
 
-  /* ── Movimiento (nombres de GSAP; leer con getComputedStyle) ─────────── */
-  --dur-micro: 0.2s;          /* estados, ticks, pulsaciones */
-  --dur-salida: 0.3s;
-  --dur-entrada: 0.5s;        /* aparición de elementos */
-  --dur-contador: 0.9s;       /* cifras que suben */
-  --dur-camara-corta: 0.8s;   /* zonas vecinas */
-  --dur-camara: 1.2s;         /* vuelo estándar */
-  --dur-camara-larga: 1.5s;   /* saltos largos y vista general */
+  /* ── Opacidad ────────────────────────────────────────────────────────── */
+  --opacidad-atenuado: 0.3;   /* Estado atenuado: lo que no toca mirar ahora (E01, E09) y el «·» de espacio en las fichas */
 
-  --ease-aparicion: power3.out;
-  --ease-salida: power2.in;
-  --ease-camara: power2.inOut;
-  --ease-camara-larga: sine.inOut;
-  --ease-interfaz: back.out(1.4);   /* efecto muelle */
-  --ease-caida: power2.in;          /* fichas que caen al recipiente */
-  --ease-asentado: back.out(1.2);   /* la capa se asienta */
-  --ease-contador: power1.out;
+  /* ── Componentes · medidas ───────────────────────────────────────────── */
+  --ficha-alto: 60px;                 /* Ficha de token */
+  --ficha-alto-s: 52px;               /* Ficha de token pequeña, con texto mono s */
+  --contador-alto: 64px;              /* Contador en píldora */
+  --recipiente-ancho: 440px;          /* Ventana de contexto */
+  --recipiente-alto: 760px;           /* Ventana de contexto */
+  --recipiente-mini-ancho: 64px;      /* Ventana del subagente */
+  --recipiente-mini-alto: 112px;      /* Ventana del subagente */
+  --corchete-ancho: 24px;             /* Corchete de caché */
+  --agente-ancho: 390px;              /* Tarjeta del agente */
+  --agente-alto: 150px;               /* Tarjeta del agente */
+  --subagente-ancho: 312px;           /* Tarjeta del subagente (≈ 80 % del agente) */
+  --subagente-alto: 112px;            /* Tarjeta del subagente */
+  --documento-ancho: 300px;           /* Documento (rules, AGENTS.md) */
+  --documento-alto: 340px;            /* Documento (rules, AGENTS.md) */
+  --skill-ancho: 390px;               /* Tarjeta de skill */
+  --skill-alto: 250px;                /* Tarjeta de skill desplegada, con la pestaña */
+  --skill-pestana-ancho: 150px;       /* Pestaña de la skill */
+  --skill-pestana-alto: 40px;         /* Pestaña de la skill */
+  --herramienta-diametro: 112px;      /* Círculo de herramienta */
+  --isla-ancho: 320px;                /* Isla: ancho mínimo */
+  --isla-alto: 190px;                 /* Isla: alto mínimo */
+  --definicion-ancho: 600px;          /* Tarjeta de definición de herramienta */
+  --conector-diametro: 88px;          /* Nodo del conector MCP */
+  --candado-lado: 96px;               /* Candado */
+  --consejo-ancho: 760px;             /* Tarjeta de consejo: ancho máximo */
+  --dial-radio: 200px;                /* Dial de effort */
+  --temporizador-diametro: 240px;     /* Temporizador */
+  --circuito-parada: 64px;            /* Diámetro de cada parada del circuito */
+  --punto-diametro: 28px;             /* Punto que recorre un camino */
+  --bucle-diametro: 480px;            /* Bucle del agente: rodea la tarjeta del agente */
+  --grafica-discontinua: 18px 12px;   /* Serie 2 de una gráfica y franja: trazo discontinuo */
+  --grafica-punteada: 0 14px;         /* Serie 4 de una gráfica: trazo de puntos */
 
-  --escalonado: 0.06s;              /* elementos de una lista */
-  --escalonado-tokens: 0.03s;       /* fichas de token */
-  --escalonado-capas: 0.12s;        /* capas del recipiente */
+  /* ── Movimiento · duraciones ─────────────────────────────────────────── */
+  --dur-micro: 0.2s;          /* Micro · estados, ticks y pulsaciones */
+  --dur-salida: 0.3s;         /* Micro · salidas */
+  --dur-entrada: 0.5s;        /* Entrada · aparición de elementos */
+  --dur-contador: 0.9s;       /* Progresión · cifras que suben */
+  --dur-trazado: 1.2s;        /* Progresión · líneas que se dibujan y puntos que recorren un camino */
+  --dur-camara-corta: 0.8s;   /* Cámara · zonas vecinas */
+  --dur-camara: 1.2s;         /* Cámara · vuelo estándar */
+  --dur-camara-larga: 1.5s;   /* Cámara · saltos largos y vista general */
+  --dur-temporizador: 3s;     /* Tiempo simulado · un temporizador se agota (cinco minutos comprimidos) */
 
-  --pausa-tras-camara: 0.3s;        /* la cámara llega, luego empieza la zona */
-  --pausa-lectura-corta: 1.5s;      /* una etiqueta o una cifra */
-  --pausa-lectura: 3s;              /* una frase */
-  --pausa-por-palabra: 0.3s;        /* pausa = max(corta, palabras × 0,3 s) */
+  /* ── Movimiento · curvas (nombres de GSAP) ───────────────────────────── */
+  --ease-aparicion: power3.out;       /* Apariciones · con --dur-entrada */
+  --ease-salida: power2.in;           /* Salidas · con --dur-salida */
+  --ease-camara: power2.inOut;        /* Cámara · con --dur-camara */
+  --ease-camara-larga: sine.inOut;    /* Cámara en saltos largos · con --dur-camara-larga */
+  --ease-interfaz: back.out(1.4);     /* Interfaz: efecto muelle · con --dur-entrada */
+  --ease-caida: power2.in;            /* Fichas que caen al recipiente · con --dur-entrada */
+  --ease-asentado: back.out(1.2);     /* La capa se asienta · con --dur-entrada */
+  --ease-estado: power1.out;          /* Cambios de estado breves: atenuar, avivar, pulsar, caducar · con --dur-micro */
+  --ease-contador: power1.out;        /* Cifras que suben · con --dur-contador */
+  --ease-trazado: power1.inOut;       /* Líneas que se dibujan y puntos que recorren · con --dur-trazado */
+  --ease-temporizador: none;          /* El tiempo corre a ritmo constante · con --dur-temporizador */
+
+  /* ── Movimiento · escalonado y pausas ────────────────────────────────── */
+  --escalonado: 0.06s;              /* Elementos de una lista, tarjetas y leyendas */
+  --escalonado-tokens: 0.03s;       /* Fichas de token: rápido, se leen como una frase */
+  --escalonado-capas: 0.12s;        /* Capas del recipiente: cada una debe verse entrar */
+  --pausa-tras-camara: 0.3s;        /* La cámara llega; después empieza la zona */
+  --pausa-lectura-corta: 1.5s;      /* Mínimo con una etiqueta o una cifra en pantalla */
+  --pausa-lectura: 3s;              /* Mínimo con una frase en pantalla */
+  --pausa-por-palabra: 0.3s;        /* Regla general: pausa = máx(--pausa-lectura-corta; palabras × 0,3 s) */
 }
 
-/* Superficie inversa (navy): para tarjetas de agente o zonas puntuales. */
+/* Superficie inversa (navy): tarjetas de agente o zonas puntuales. */
 .inverso {
-  --color-fondo: var(--color-prussian);
-  --color-superficie: var(--color-prussian);
-  --color-texto-1: var(--color-blanco);
-  --color-texto-2: var(--color-texto-inverso-2);
-  --color-texto-3: color-mix(in srgb, var(--color-prussian) 42%, var(--color-blanco));   /* ≈ #94A6B1 */
-  --color-contorno: var(--color-blanco);
-  --color-acento: var(--color-rojo-oscuro);
+  /* ── Color · inverso ─────────────────────────────────────────────────── */
+  --color-fondo: var(--color-prussian);           /* Fondo navy */
+  --color-superficie: var(--color-prussian);      /* Las superficies se funden con el fondo: las separa el contorno blanco */
+  --color-superficie-2: color-mix(in srgb, var(--color-blanco) 6%, var(--color-prussian));   /* ≈ #0F3850 · apoyos suaves sobre navy (con 10 % el texto 3 no llega a 4,5:1) */
+  --color-texto-1: var(--color-blanco);           /* Texto principal sobre navy */
+  --color-texto-2: var(--color-texto-inverso-2);  /* Texto secundario sobre navy */
+  --color-texto-3: color-mix(in srgb, var(--color-prussian) 42%, var(--color-blanco));   /* ≈ #94A6B1 · escalas y anotaciones sobre navy */
+  --color-texto-simulado: color-mix(in srgb, var(--color-blanco) 30%, var(--color-prussian));   /* ≈ #4D6B7D · líneas que simulan texto sobre navy */
+  --color-contorno: var(--color-blanco);          /* Contorno blanco */
+  --color-separador: color-mix(in srgb, var(--color-blanco) 20%, var(--color-prussian));   /* ≈ #33556A · líneas finas sobre navy */
+  --color-acento: var(--color-acento-sobre-oscuro);   /* El acento sobre navy */
+  --color-entrada: var(--color-blanco);           /* Tokens de entrada: sólidos y blancos */
+  --color-sobre-entrada: var(--color-prussian);   /* Texto sobre tokens de entrada */
+  --color-salida: var(--color-prussian);          /* Tokens de salida: huecos, del color del fondo */
+  --color-salida-borde: var(--color-blanco);      /* Contorno de los tokens de salida */
+  --color-sobre-salida: var(--color-blanco);      /* Texto sobre tokens de salida */
+  --color-razonamiento-borde: var(--color-blanco);   /* Contorno del razonamiento */
+  --color-cache-acierto: var(--color-texto-inverso-2);   /* Corchete continuo sobre navy */
+  --color-cache-fallo: var(--color-texto-inverso-2);     /* Corchete discontinuo sobre navy */
+  --color-coste: var(--color-blanco);             /* Contador de coste sobre navy */
+  --color-sobre-coste: var(--color-prussian);     /* Texto sobre el contador de coste */
 }
