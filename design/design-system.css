@@ -1,0 +1,154 @@
+/* ==========================================================================
+   Design system · Charla «Devin en el día a día» · Openbank
+   Dirección C · Crema, navy y rojo — v1 · 14-10-2026
+   Escena: 1920×1080. Ningún texto por debajo de 24 px.
+   Solo los colores de marca llevan hex; el resto se deriva con color-mix(),
+   así que cambiar un color base actualiza también sus derivados.
+   «Tokens» en este proyecto son las unidades de texto del modelo;
+   las variables de diseño se llaman variables.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Outfit:wght@300;400;500;600&display=swap');
+
+:root {
+  /* ── Color · marca (openbank.es) ─────────────────────────────────────── */
+  --color-prussian: #002B45;      /* Prussian blue */
+  --color-bluewood: #2C4054;      /* Pickled bluewood */
+  --color-red-ribbon: #DF0049;    /* Red ribbon: acento sobre fondo claro */
+  --color-rojo-oscuro: #FF0049;   /* Rojo del logo para fondo oscuro */
+  --color-rojo-logo: #E9004C;     /* Rojo del logo para fondo claro: solo dentro del logo */
+  --color-pizarra: #546E7A;
+  --color-old-lace: #FFF9F4;
+  --color-cinderella: #FFF1E5;
+  --color-blanco: #FFFFFF;
+
+  /* ── Color · roles ───────────────────────────────────────────────────── */
+  --color-fondo: var(--color-old-lace);
+  --color-superficie: var(--color-blanco);
+  --color-superficie-2: var(--color-cinderella);
+  --color-superficie-inversa: var(--color-prussian);
+  --color-texto-1: var(--color-prussian);
+  --color-texto-2: var(--color-bluewood);
+  --color-texto-3: var(--color-pizarra);
+  --color-texto-inverso: var(--color-blanco);
+  --color-texto-inverso-2: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));   /* = #CCD5DA, el gris claro de la marca */
+  --color-contorno: var(--color-prussian);
+  --color-separador: color-mix(in srgb, var(--color-prussian) 10%, var(--color-cinderella));    /* ≈ #E6DDD5 */
+  --color-acento: var(--color-red-ribbon);
+  --color-acento-sobre-oscuro: var(--color-rojo-oscuro);
+  --color-sobre-acento: var(--color-blanco);
+
+  /* ── Color · semántica (siempre derivada de navy) ────────────────────── */
+  --color-entrada: var(--color-prussian);           /* relleno sólido */
+  --color-sobre-entrada: var(--color-blanco);
+  --color-salida: var(--color-blanco);              /* hueca, con contorno */
+  --color-salida-borde: var(--color-prussian);
+  --color-sobre-salida: var(--color-prussian);
+  --color-razonamiento: color-mix(in srgb, var(--color-prussian) 40%, var(--color-blanco));         /* = #99AAB5 */
+  --color-razonamiento-rayado: color-mix(in srgb, var(--color-prussian) 27%, var(--color-blanco));  /* ≈ #BAC6CD */
+  --color-sobre-razonamiento: var(--color-prussian);
+  --patron-razonamiento: repeating-linear-gradient(135deg, var(--color-razonamiento) 0 10px, var(--color-razonamiento-rayado) 10px 20px);
+  --color-cache-acierto: var(--color-bluewood);     /* corchete continuo + ✓ */
+  --color-cache-fallo: var(--color-bluewood);       /* corchete discontinuo + ✕ */
+  --color-coste: var(--color-prussian);
+  --color-sobre-coste: var(--color-blanco);
+
+  /* ── Tipografía ──────────────────────────────────────────────────────── */
+  --fuente-display: 'Outfit', system-ui, sans-serif;
+  --fuente-texto: 'Outfit', system-ui, sans-serif;
+  --fuente-mono: 'DM Mono', ui-monospace, monospace;
+  --peso-display: 300;
+  --peso-texto: 400;
+  --peso-enfasis: 500;
+  --peso-fuerte: 600;
+
+  --tipo-etiqueta: 24px;      /* mínimo absoluto */
+  --tipo-texto-s: 28px;
+  --tipo-texto: 32px;
+  --tipo-entradilla: 40px;
+  --tipo-titulo-s: 56px;
+  --tipo-titulo: 80px;
+  --tipo-titulo-xl: 112px;
+  --tipo-cifra: 176px;
+  --tipo-cifra-xl: 240px;
+  --tipo-mono: 28px;
+  --tipo-mono-s: 24px;
+
+  --interlineado-display: 1.04;
+  --interlineado-texto: 1.35;
+  --interlineado-mono: 1.3;
+  --tracking-display: -0.015em;
+  --tracking-cifra: -0.03em;
+  --cifras: tabular-nums;     /* Outfit tiene tnum: los contadores no bailan */
+
+  /* ── Espaciado (base 8) ──────────────────────────────────────────────── */
+  --esp-1: 8px;
+  --esp-2: 16px;
+  --esp-3: 24px;
+  --esp-4: 32px;
+  --esp-5: 48px;
+  --esp-6: 64px;
+  --esp-7: 96px;
+  --esp-8: 128px;
+  --margen-x: 120px;          /* zona segura de la escena */
+  --margen-y: 96px;
+
+  /* ── Radios ──────────────────────────────────────────────────────────── */
+  --radio-s: 12px;            /* capas, código, documentos */
+  --radio-m: 24px;            /* tarjetas: agente, skill */
+  --radio-l: 48px;            /* islas del mapa, recipiente */
+  --radio-pildora: 999px;     /* fichas de token, etiquetas, contadores */
+
+  /* ── Trazos ──────────────────────────────────────────────────────────── */
+  --trazo-fino: 2px;          /* separadores, marcas de escala */
+  --trazo-contorno: 3px;      /* contorno de toda superficie */
+  --trazo-fuerte: 6px;        /* corchete de caché, línea de nivel */
+  --icono-trazo: 2;           /* stroke-width de Lucide (viewBox 24) */
+  --icono-s: 24px;            /* trazo efectivo 2 px */
+  --icono-m: 36px;            /* trazo efectivo 3 px = contorno */
+  --icono-l: 48px;            /* trazo efectivo 4 px */
+  --ruta-grosor: 10px;        /* camino de puntos del mapa */
+  --ruta-hueco: 24px;
+
+  /* ── Elevación (mínima, sombra plana: el proyector no muestra difusas) ─ */
+  --elevacion-0: none;
+  --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent);
+
+  /* ── Movimiento (nombres de GSAP; leer con getComputedStyle) ─────────── */
+  --dur-micro: 0.2s;          /* estados, ticks, pulsaciones */
+  --dur-salida: 0.3s;
+  --dur-entrada: 0.5s;        /* aparición de elementos */
+  --dur-contador: 0.9s;       /* cifras que suben */
+  --dur-camara-corta: 0.8s;   /* zonas vecinas */
+  --dur-camara: 1.2s;         /* vuelo estándar */
+  --dur-camara-larga: 1.5s;   /* saltos largos y vista general */
+
+  --ease-aparicion: power3.out;
+  --ease-salida: power2.in;
+  --ease-camara: power2.inOut;
+  --ease-camara-larga: sine.inOut;
+  --ease-interfaz: back.out(1.4);   /* efecto muelle */
+  --ease-caida: power2.in;          /* fichas que caen al recipiente */
+  --ease-asentado: back.out(1.2);   /* la capa se asienta */
+  --ease-contador: power1.out;
+
+  --escalonado: 0.06s;              /* elementos de una lista */
+  --escalonado-tokens: 0.03s;       /* fichas de token */
+  --escalonado-capas: 0.12s;        /* capas del recipiente */
+
+  --pausa-tras-camara: 0.3s;        /* la cámara llega, luego empieza la zona */
+  --pausa-lectura-corta: 1.5s;      /* una etiqueta o una cifra */
+  --pausa-lectura: 3s;              /* una frase */
+  --pausa-por-palabra: 0.3s;        /* pausa = max(corta, palabras × 0,3 s) */
+}
+
+/* Superficie inversa (navy): para tarjetas de agente o zonas puntuales. */
+.inverso {
+  --color-fondo: var(--color-prussian);
+  --color-superficie: var(--color-prussian);
+  --color-texto-1: var(--color-blanco);
+  --color-texto-2: var(--color-texto-inverso-2);
+  --color-texto-3: color-mix(in srgb, var(--color-prussian) 42%, var(--color-blanco));   /* ≈ #94A6B1 */
+  --color-contorno: var(--color-blanco);
+  --color-acento: var(--color-rojo-oscuro);
+}

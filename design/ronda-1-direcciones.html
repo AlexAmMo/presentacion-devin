@@ -1,0 +1,905 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Direcciones visuales · Ronda 1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=IBM+Plex+Mono:wght@400;600&family=JetBrains+Mono:wght@400;600&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<style>
+/* ============ Página de revisión (no se proyecta) ============ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--pg-bg:#ECEDEB;--pg-card:#FFFFFF;--pg-ink:#14212B;--pg-ink-2:#4F5D67;--pg-line:#D3D8DA}
+body{background:var(--pg-bg);color:var(--pg-ink);font:400 17px/1.55 'Outfit',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1480px;margin:0 auto;padding:0 40px}
+.kicker{font:600 13px/1.3 'Outfit',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--pg-ink-2)}
+.pg-head{padding:56px 0 28px}
+.pg-head h1{font:300 56px/1.05 'Outfit',sans-serif;letter-spacing:-.01em;margin:12px 0 16px}
+.lede{max-width:980px;font-size:19px;color:var(--pg-ink-2)}
+.lede b{color:var(--pg-ink);font-weight:500}
+code{font:400 .92em 'JetBrains Mono',monospace;background:rgba(20,33,43,.07);padding:1px 6px;border-radius:4px}
+
+.base-grid{display:grid;grid-template-columns:1fr 1fr 2fr;gap:16px;margin-top:28px}
+.card{background:var(--pg-card);border-radius:10px;padding:20px 22px;box-shadow:0 0 0 1px var(--pg-line)}
+.card .note{font-size:15px;color:var(--pg-ink-2);margin-top:12px}
+.logo-pair{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.lp{height:76px;border-radius:8px;display:grid;place-items:center;box-shadow:inset 0 0 0 1px var(--pg-line)}
+.lp img{height:28px}
+.lp.light{background:#fff}.lp.dark{background:#002B45}
+.font-demo{font:300 54px/1 'Outfit',sans-serif;margin-top:12px}
+.font-demo span{font-weight:400}.font-demo b{font-weight:600}
+.brand-sw{display:grid;grid-template-columns:repeat(auto-fill,minmax(108px,1fr));gap:10px;margin-top:14px}
+.bsw{font-size:13px;line-height:1.3}
+.bsw i{display:block;height:44px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08);margin-bottom:6px}
+.bsw code{background:none;padding:0;font-size:12px;color:var(--pg-ink-2)}
+
+.tabs{position:sticky;top:0;z-index:5;background:rgba(236,237,235,.92);backdrop-filter:blur(6px);border-bottom:1px solid var(--pg-line);margin-top:32px}
+.tabs .wrap{display:flex;gap:6px;padding-top:10px;padding-bottom:10px;align-items:center}
+.tabs button{font:500 16px 'Outfit',sans-serif;border:0;background:transparent;color:var(--pg-ink-2);padding:9px 16px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--pg-ink);color:#fff}
+.tabs .hint{margin-left:auto;font-size:14px;color:var(--pg-ink-2)}
+
+section.dir{padding:36px 0 80px}
+.dir-head{display:grid;grid-template-columns:1.25fr 1fr;gap:40px;align-items:start}
+.dir-head h2{font:300 48px/1.05 'Outfit',sans-serif;margin:8px 0 12px}
+.dir-head p.desc{font-size:18px;color:var(--pg-ink-2);max-width:720px}
+.facts{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:15px;background:var(--pg-card);border-radius:10px;padding:18px 20px;box-shadow:0 0 0 1px var(--pg-line)}
+.facts dt{color:var(--pg-ink-2)}.facts dd{font-weight:500}
+.swatches{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px;margin:24px 0 8px}
+.sw-item{font-size:13px;line-height:1.3}
+.sw-item i{display:block;height:48px;border-radius:6px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.1);margin-bottom:6px}
+.sw-item b{display:block;font-weight:500}
+.sw-item code{background:none;padding:0;font-size:12px;color:var(--pg-ink-2)}
+.sw-item em{font-style:normal;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--pg-ink-2)}
+.sw-item em.ext{color:#B4441B}
+h3.step{font:500 22px/1.3 'Outfit',sans-serif;margin:44px 0 14px}
+h3.step span{color:var(--pg-ink-2);font-weight:400}
+.bw figcaption{font-size:15px;color:var(--pg-ink-2);margin-top:8px}
+.bw figcaption b{color:var(--pg-ink);font-weight:500}
+.kf-grid,.cmp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.motion{margin-top:14px;font-size:16px;color:var(--pg-ink-2);max-width:1100px;background:var(--pg-card);padding:14px 18px;border-radius:10px;box-shadow:0 0 0 1px var(--pg-line)}
+.motion b{color:var(--pg-ink);font-weight:500}
+.procon{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px}
+.procon h4{font:600 13px 'Outfit',sans-serif;letter-spacing:.12em;text-transform:uppercase;color:var(--pg-ink-2);margin-bottom:8px}
+.procon ul{padding-left:18px}.procon li{margin:4px 0}
+table.cmp{width:100%;border-collapse:collapse;margin-top:36px;background:var(--pg-card);border-radius:10px;overflow:hidden;box-shadow:0 0 0 1px var(--pg-line);font-size:15px}
+table.cmp th,table.cmp td{padding:12px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--pg-line)}
+table.cmp thead th{font-weight:600;background:#F6F7F6}
+table.cmp tbody th{font-weight:500;color:var(--pg-ink-2);width:170px}
+.ask{margin-top:28px;font-size:18px}
+@media (max-width:1000px){.base-grid,.dir-head,.procon{grid-template-columns:1fr}.kf-grid,.cmp-grid{grid-template-columns:1fr}.wrap{padding:0 16px}.pg-head h1{font-size:40px}.tabs .hint{display:none}}
+
+/* Visor a pantalla completa */
+.ov{position:fixed;inset:0;z-index:50;background:#000}
+.ov[hidden]{display:none}
+.ov-stage{position:absolute;inset:0 0 56px 0;overflow:hidden;cursor:pointer}
+.ov-stage .board{transform-origin:0 0}
+.ov-bar{position:absolute;left:0;right:0;bottom:0;height:56px;display:flex;align-items:center;gap:10px;padding:0 16px;background:#111;color:#ddd;font-size:15px}
+.ov-bar .ov-title{font-weight:500;color:#fff}
+.ov-bar .ov-hint{margin-left:auto;color:#999}
+.ov-bar button{font:500 14px 'Outfit',sans-serif;background:#2a2a2a;color:#fff;border:0;border-radius:6px;padding:8px 12px;cursor:pointer}
+.ov:fullscreen .ov-bar{display:none}
+.ov:fullscreen .ov-stage{inset:0}
+
+/* ============ Láminas 1920×1080 ============ */
+.bf{position:relative;aspect-ratio:16/9;overflow:hidden;border-radius:8px;background:#ccc;box-shadow:0 0 0 1px rgba(20,33,43,.12),0 8px 24px -10px rgba(20,33,43,.35);cursor:zoom-in}
+.board{position:absolute;left:0;top:0;width:1920px;height:1080px;transform-origin:0 0;overflow:hidden;background:var(--fondo);color:var(--texto-1);font-family:var(--fuente-texto)}
+.board .abs{position:absolute}
+.board svg.lucide{flex:none}
+.ic-24{width:24px;height:24px}.ic-28{width:28px;height:28px}.ic-32{width:32px;height:32px}.ic-36{width:36px;height:36px}.ic-40{width:40px;height:40px}
+
+/* Variables por dirección (provisionales) */
+.dir-a{
+  --fondo:#F1F4F4;--superficie:#FFFFFF;--superficie-2:#E3E9E9;--linea:#B9C6CC;
+  --texto-1:#002B45;--texto-2:#2C4054;--texto-3:#546E7A;
+  --acento:#DF0049;--sobre-acento:#FFFFFF;
+  --entrada:#31C3DF;--sobre-entrada:#002B45;
+  --salida:#2566E8;--sobre-salida:#FFFFFF;
+  --razonamiento:#7A55F0;--sobre-razonamiento:#FFFFFF;
+  --cache-acierto:#14A83C;--cache-fallo:#F57A00;--coste:#FBB800;
+  --fuente-display:'Outfit',sans-serif;--fuente-texto:'Outfit',sans-serif;--fuente-mono:'JetBrains Mono',monospace;
+}
+.dir-b{
+  --fondo:#002B45;--superficie:#0B3B5A;--superficie-2:#144B6D;--linea:#2F6283;--celda-vacia:#235578;
+  --texto-1:#FFFFFF;--texto-2:#CCD5DA;--texto-3:#93A9B7;
+  --acento:#FF0049;--sobre-acento:#FFFFFF;
+  --entrada:#31C3DF;--sobre-entrada:#002B45;
+  --salida:#6E9BFF;--sobre-salida:#002B45;
+  --razonamiento:#B39BFF;--sobre-razonamiento:#002B45;
+  --cache-acierto:#2BE24E;--cache-fallo:#FF8A3D;--coste:#FBB800;
+  --fuente-display:'Outfit',sans-serif;--fuente-texto:'Outfit',sans-serif;--fuente-mono:'IBM Plex Mono',monospace;
+}
+.dir-c{
+  --fondo:#FFF9F4;--superficie:#FFF1E5;--superficie-2:#FEE6DA;--linea:#002B45;
+  --texto-1:#002B45;--texto-2:#2C4054;--texto-3:#546E7A;
+  --acento:#DF0049;--sobre-acento:#FFFFFF;
+  --entrada:#31C3DF;--sobre-entrada:#002B45;
+  --salida:#2566E8;--sobre-salida:#FFFFFF;
+  --razonamiento:#7A55F0;--sobre-razonamiento:#FFFFFF;
+  --cache-acierto:#14A83C;--cache-fallo:#F57A00;--coste:#FBB800;
+  --fuente-display:'Outfit',sans-serif;--fuente-texto:'Outfit',sans-serif;--fuente-mono:'DM Mono',monospace;
+}
+.t-entrada{background:var(--entrada);color:var(--sobre-entrada)}
+.t-salida{background:var(--salida);color:var(--sobre-salida)}
+.t-razonamiento{background:var(--razonamiento);color:var(--sobre-razonamiento)}
+
+/* Piezas compartidas dentro de las láminas */
+.board .chips{display:flex;align-items:center;flex-wrap:nowrap}
+.board .chip{display:inline-flex;align-items:center;white-space:pre;background:var(--entrada);color:var(--sobre-entrada);font-family:var(--fuente-mono)}
+.board .chip .sp{opacity:.45}
+.board .more{font:400 30px/1 var(--fuente-mono);color:var(--texto-3);margin-left:6px}
+.board .legend{display:flex;gap:36px;align-items:center;font:500 26px/1 var(--fuente-texto);color:var(--texto-2)}
+.board .legend span{display:flex;align-items:center;gap:12px}
+.board .legend i{display:inline-block;width:28px;height:28px;border-radius:6px}
+.board .legend i.sw-cache{background:none;border:5px solid var(--cache-acierto);border-bottom:0;height:16px;border-radius:5px 5px 0 0}
+.board .code-inline{font:400 28px/1 var(--fuente-mono);background:var(--superficie-2);color:var(--texto-1);padding:12px 16px;border-radius:6px}
+.board .tag-fict{display:inline-flex;align-items:center;gap:10px;font:500 24px/1 var(--fuente-texto);color:var(--texto-2);border:2px solid var(--texto-3);border-radius:999px;padding:10px 20px}
+.board .spec{left:120px;right:120px;display:grid;grid-template-columns:420px 1fr;border-top:2px solid var(--linea);padding-top:22px}
+.board .spec .ann b{display:block;font:600 26px/1.2 var(--fuente-texto);color:var(--texto-1)}
+.board .spec .ann span{display:block;margin-top:8px;font:400 24px/1.3 var(--fuente-mono);color:var(--texto-3)}
+
+/* ---- A · Porcelana ---- */
+.dir-a .a-label{font:600 24px/1.2 var(--fuente-texto);letter-spacing:.08em;text-transform:uppercase;color:var(--texto-3)}
+.dir-a .a-title{font:400 64px/1.05 var(--fuente-display);letter-spacing:-.01em;color:var(--texto-1)}
+.dir-a .a-body{font:400 32px/1.35 var(--fuente-texto);color:var(--texto-2);display:flex;gap:14px;align-items:center}
+.dir-a .a-big{font:300 128px/1 var(--fuente-display);font-variant-numeric:tabular-nums;letter-spacing:-.02em;color:var(--texto-1);margin-top:6px}
+.dir-a .a-sub{font:400 28px/1.2 var(--fuente-texto);color:var(--texto-2);margin-top:8px;font-variant-numeric:tabular-nums}
+.dir-a .a-lupa{background:var(--superficie);border:2px solid var(--linea);border-radius:12px;padding:24px 30px}
+.dir-a .a-lupa-head{display:flex;gap:18px;align-items:baseline}
+.dir-a .a-lupa-name{font:500 28px/1.2 var(--fuente-texto);color:var(--texto-1)}
+.dir-a .chips{gap:10px;margin-top:24px}
+.dir-a .chip{font-size:30px;line-height:1;height:66px;padding:0 18px;border-radius:6px}
+.dir-a .a-window{border:3px solid var(--texto-1);border-radius:12px;background:var(--superficie);overflow:hidden}
+.dir-a .a-seg{position:absolute;top:0;bottom:0;border-right:2px solid var(--superficie);padding:16px 14px;overflow:hidden;display:flex;flex-direction:column;justify-content:flex-end;gap:6px}
+.dir-a .a-seg b{font:500 24px/1.1 var(--fuente-texto);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dir-a .a-seg span{font:400 24px/1.1 var(--fuente-mono)}
+.dir-a .a-bracket{height:18px;border:6px solid var(--cache-acierto);border-bottom:0;border-radius:6px 6px 0 0}
+.dir-a .a-cache-lbl{font:500 26px/1 var(--fuente-texto);color:var(--texto-1);display:flex;gap:10px;align-items:center}
+.dir-a .a-cache-lbl svg{color:var(--cache-acierto)}
+.dir-a .a-cursor{width:6px;background:var(--acento);border-radius:3px}
+.dir-a .a-cursor-lbl{font:600 32px/1 var(--fuente-texto);color:var(--acento);font-variant-numeric:tabular-nums}
+.dir-a .a-tick{width:2px;height:14px;background:var(--texto-3)}
+.dir-a .a-tick-l{font:400 24px/1 var(--fuente-mono);color:var(--texto-3)}
+.dir-a .a-card{width:320px;height:160px;background:var(--superficie);border:2px solid var(--linea);border-radius:10px;padding:20px 24px;display:flex;flex-direction:column;justify-content:space-between}
+.dir-a .a-card.cur{border:3px solid var(--acento)}
+.dir-a .a-card-top{display:flex;justify-content:space-between;align-items:center;color:var(--texto-1)}
+.dir-a .a-card-top span{font:600 26px/1 var(--fuente-texto);color:var(--texto-3);font-variant-numeric:tabular-nums}
+.dir-a .a-card-nm{font:500 28px/1.15 var(--fuente-texto);color:var(--texto-1)}
+.dir-a .a-term{font:600 26px/1 var(--fuente-texto);color:var(--texto-1);transform:translateX(-50%)}
+.dir-a .a-maplegend{display:flex;gap:32px;font:500 24px/1 var(--fuente-texto);color:var(--texto-2)}
+.dir-a .a-maplegend span{display:flex;align-items:center;gap:12px}
+.dir-a .ml-line{display:inline-block;width:48px;height:10px;border-radius:5px;background:var(--texto-1)}
+.dir-a .ml-dot{display:inline-block;width:48px;height:6px;background:radial-gradient(circle,var(--texto-3) 3px,transparent 3.5px) 0 0/16px 6px repeat-x}
+
+/* ---- B · Prusia ---- */
+.dir-b .b-label{font:400 24px/1.2 var(--fuente-mono);color:var(--texto-3)}
+.dir-b .b-title{font:600 56px/1.08 var(--fuente-display);color:var(--texto-1)}
+.dir-b .b-body{font:400 30px/1.35 var(--fuente-texto);color:var(--texto-2);display:flex;gap:12px;align-items:center}
+.dir-b .b-panel{background:var(--superficie);border:2px solid var(--linea);border-radius:6px;overflow:hidden}
+.dir-b .b-bar{height:56px;background:var(--superficie-2);border-bottom:2px solid var(--linea);display:flex;align-items:center;justify-content:space-between;padding:0 24px;font:400 24px/1 var(--fuente-mono);color:var(--texto-2)}
+.dir-b .b-grid{position:absolute;left:28px;top:84px;display:grid;grid-template-columns:repeat(40,24px);grid-auto-rows:24px;gap:3px}
+.dir-b .b-grid span{border:2px solid var(--celda-vacia);border-radius:3px}
+.dir-b .b-grid span[class]{border-color:transparent}
+.dir-b .b-grid span.cur{background:var(--acento)}
+.dir-b .b-cachebar{position:absolute;left:10px;top:84px;width:6px;background:var(--cache-acierto);border-radius:3px}
+.dir-b .b-prompt{position:absolute;left:28px;right:28px;top:650px}
+.dir-b .b-prompt-l{font:400 24px/1 var(--fuente-mono);color:var(--texto-2)}
+.dir-b .chips{gap:8px;margin-top:20px}
+.dir-b .chip{font-size:26px;line-height:1;height:54px;padding:0 14px;border-radius:3px}
+.dir-b .more{font-size:26px}
+.dir-b .b-big{font:600 104px/1 var(--fuente-mono);color:var(--texto-1);letter-spacing:-.02em;margin-top:10px}
+.dir-b .b-sub{font:400 28px/1.2 var(--fuente-mono);color:var(--texto-2);margin-top:12px}
+.dir-b .b-log{font:400 24px/40px var(--fuente-mono);color:var(--texto-2)}
+.dir-b .b-log div{display:flex;gap:14px;align-items:center;white-space:pre}
+.dir-b .b-log i{display:inline-block;width:20px;height:20px;border-radius:3px}
+.dir-b .b-log .last{color:var(--texto-1);font-weight:600}
+.dir-b .b-log .muted{color:var(--texto-3)}
+.dir-b .b-cache{font:400 24px/1 var(--fuente-mono);color:var(--texto-1);display:flex;gap:12px;align-items:center}
+.dir-b .b-cache svg{color:var(--cache-acierto)}
+.dir-b .legend{display:grid;grid-template-columns:auto auto;gap:18px 32px;font:400 24px/1 var(--fuente-mono)}
+.dir-b .legend i{width:22px;height:22px;border-radius:3px}
+.dir-b .legend i.sw-cache{width:6px;height:28px;border:0;background:var(--cache-acierto);border-radius:3px}
+.dir-b .tag-fict{border-radius:4px;font-family:var(--fuente-mono)}
+.dir-b .b-mod{width:340px;height:170px;background:var(--superficie);border:2px solid var(--linea);border-radius:6px;overflow:hidden}
+.dir-b .b-mod.cur{border:3px solid var(--acento)}
+.dir-b .b-mod-bar{height:48px;background:var(--superficie-2);border-bottom:2px solid var(--linea);display:flex;align-items:center;gap:12px;padding:0 18px;font:400 24px/1 var(--fuente-mono);color:var(--texto-2)}
+.dir-b .b-mod.cur .b-mod-bar::before{content:'';width:14px;height:14px;background:var(--acento);border-radius:2px}
+.dir-b .b-mod-body{display:flex;gap:18px;align-items:center;padding:0 22px;height:116px;color:var(--texto-2)}
+.dir-b .b-mod-body b{font:500 28px/1.15 var(--fuente-texto);color:var(--texto-1)}
+.dir-b .b-pill{font:400 24px/1 var(--fuente-mono);color:var(--texto-1);border:2px solid var(--texto-3);background:var(--fondo);border-radius:4px;padding:14px 18px;display:flex;gap:10px;align-items:center}
+.dir-b .b-maplegend{display:flex;gap:32px;font:400 24px/1 var(--fuente-mono);color:var(--texto-2)}
+.dir-b .b-maplegend span{display:flex;align-items:center;gap:12px}
+.dir-b .board-grid{background-image:radial-gradient(circle at 2px 2px,#1A4A6B 2px,transparent 2.5px);background-size:48px 48px}
+
+/* ---- C · Crema ---- */
+.dir-c .c-pill{font:500 24px/1 var(--fuente-texto);background:var(--superficie-2);color:var(--texto-1);border-radius:999px;padding:12px 22px;display:inline-flex;gap:10px;align-items:center}
+.dir-c .c-title{font:300 80px/1.04 var(--fuente-display);letter-spacing:-.015em;color:var(--texto-1)}
+.dir-c .c-body{font:400 32px/1.35 var(--fuente-texto);color:var(--texto-2)}
+.dir-c .c-body svg{vertical-align:-4px;margin-right:10px;color:var(--texto-1)}
+.dir-c .c-lbl{font:500 24px/1 var(--fuente-texto);color:var(--texto-3)}
+.dir-c .c-big{font:300 176px/1 var(--fuente-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em;color:var(--texto-1)}
+.dir-c .c-sub{font:400 30px/1.2 var(--fuente-texto);color:var(--texto-2)}
+.dir-c .c-vessel{border:4px solid var(--texto-1);border-radius:44px;background:var(--superficie);overflow:hidden}
+.dir-c .c-layer{position:absolute;left:10px;right:10px;border-radius:12px;display:flex;align-items:center;padding:0 22px;font:500 24px/1 var(--fuente-texto);white-space:nowrap;overflow:hidden}
+.dir-c .chips{gap:10px}
+.dir-c .chip{font-size:28px;line-height:1;height:60px;padding:0 22px;border-radius:999px}
+.dir-c .more{font-size:28px}
+.dir-c .c-level{height:6px;background:var(--acento);border-radius:3px}
+.dir-c .c-level-lbl{font:600 34px/1 var(--fuente-texto);color:var(--acento);font-variant-numeric:tabular-nums}
+.dir-c .c-bracket{width:20px;border:6px solid var(--cache-acierto);border-left:0;border-radius:0 8px 8px 0}
+.dir-c .c-cache-lbl{font:500 24px/1.25 var(--fuente-texto);color:var(--texto-1)}
+.dir-c .c-cache-lbl svg{color:var(--cache-acierto);vertical-align:-5px;margin-right:8px}
+.dir-c .c-cache-lbl span{font:400 26px/1.4 var(--fuente-mono);color:var(--texto-2)}
+.dir-c .c-tick{height:2px;width:18px;background:var(--texto-3)}
+.dir-c .c-tick-l{font:400 24px/1 var(--fuente-mono);color:var(--texto-3);transform:translateY(-50%)}
+.dir-c .legend i{border-radius:999px}
+.dir-c .legend i.sw-cache{width:16px;height:28px;border:5px solid var(--cache-acierto);border-left:0;border-radius:0 6px 6px 0}
+.dir-c .c-isle{width:320px;height:190px;background:var(--superficie-2);border:3px solid var(--texto-1);border-radius:48px;padding:22px 30px;display:flex;flex-direction:column;justify-content:space-between;color:var(--texto-1)}
+.dir-c .c-isle.big{width:380px;height:220px}
+.dir-c .c-isle.cur{background:var(--acento);border-color:var(--acento);color:var(--sobre-acento)}
+.dir-c .c-isle-top{display:flex;justify-content:space-between;align-items:flex-start}
+.dir-c .c-isle .n{font:300 60px/1 var(--fuente-display);font-variant-numeric:tabular-nums}
+.dir-c .c-isle .nm{font:500 28px/1.15 var(--fuente-texto)}
+.dir-c .c-maplegend{display:flex;gap:14px;align-items:center;font:500 24px/1 var(--fuente-texto);color:var(--texto-2)}
+.dir-c .c-maplegend i{display:inline-block;width:64px;height:10px;background:radial-gradient(circle,var(--texto-1) 5px,transparent 5.5px) 0 0/22px 10px repeat-x}
+</style>
+</head>
+<body>
+
+<header class="pg-head">
+  <div class="wrap">
+    <p class="kicker">Design system · Charla «Devin en el día a día» · Ronda 1</p>
+    <h1>Tres direcciones visuales</h1>
+    <p class="lede">Cada dirección trae <b>el mapa visto desde lejos</b>, la zona <b>«la ventana de contexto se va llenando de tokens»</b> en tres fotogramas a 1920×1080 y <b>una muestra tipográfica</b>. Haz clic en cualquier lámina para verla grande: con ← → pasas de fotograma (así se intuye el movimiento) y con F la ves a pantalla completa, a 1:1 en un proyector de 1920×1080. Las tres parten de los mismos assets de Openbank; cambian el fondo, la metáfora del mapa y cómo se dibujan los tokens.</p>
+
+    <div class="base-grid">
+      <div class="card">
+        <p class="kicker">Logo oficial</p>
+        <div class="logo-pair">
+          <div class="lp light"><img src="assets/logos/openbank-logo-fondo-claro.svg" alt="Openbank, versión para fondo claro"></div>
+          <div class="lp dark"><img src="assets/logos/openbank-logo-fondo-oscuro.svg" alt="Openbank, versión para fondo oscuro"></div>
+        </div>
+        <p class="note">SVG de openbank.es (fondo claro y fondo oscuro), copiados en <code>design/assets/logos/</code>. Se usan tal cual, sin recolorear.</p>
+      </div>
+      <div class="card">
+        <p class="kicker">Tipografía de marca</p>
+        <p class="font-demo">Outfit <span>Aa</span> <b>Aa</b></p>
+        <p class="note">Es la que usa openbank.es (Light, Regular y Semibold). Está en Google Fonts y tiene cifras tabulares, así que los contadores no cambian de ancho al animarse. Openbank no define monoespaciada: cada dirección propone una.</p>
+      </div>
+      <div class="card">
+        <p class="kicker">Paleta de marca · CSS público de openbank.es (14-10-2026)</p>
+        <div class="brand-sw" id="brand-sw"></div>
+        <p class="note">Nombres tal como aparecen en su CSS. <b>Fuera de marca, solo por función:</b> violeta (razonamiento) y naranja (caché fallida). La paleta no tiene seis tonos distinguibles entre sí sin chocar con el rojo de acento. En las muestras de cada dirección se marca qué es de marca, qué está derivado (aclarado u oscurecido para el proyector) y qué está fuera de marca.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="tabs" aria-label="Direcciones">
+  <div class="wrap">
+    <button data-t="a">A · Porcelana</button>
+    <button data-t="b">B · Prusia</button>
+    <button data-t="c">C · Crema</button>
+    <button data-t="comparar">Comparar</button>
+    <span class="hint">Clic en una lámina → visor · ← → · F · Esc</span>
+  </div>
+</nav>
+
+<!-- ======================= A · PORCELANA ======================= -->
+<section class="dir" id="sec-a">
+  <div class="wrap">
+    <div class="dir-head">
+      <div>
+        <p class="kicker">Dirección A · fondo claro frío</p>
+        <h2>Porcelana</h2>
+        <p class="desc">Un plano técnico sobre el gris porcelana de la web de Openbank. El mapa es una línea de metro y la cámara viaja de parada en parada. La ventana de contexto es una regla horizontal que se llena de izquierda a derecha. Encima, una lupa enseña los tokens que acaban de entrar, con su texto.</p>
+      </div>
+      <dl class="facts">
+        <dt>Mapa</dt><dd>Línea de metro + relaciones punteadas</dd>
+        <dt>Ventana</dt><dd>Barra horizontal con regla de 0 a 200.000</dd>
+        <dt>Token</dt><dd>Ficha rectangular, radio 6, texto en mono</dd>
+        <dt>Caché</dt><dd>Corchete verde sobre los tokens que cubre</dd>
+        <dt>Acento</dt><dd>Zona actual / cursor de llenado</dd>
+        <dt>Display · mono</dt><dd>Outfit 400 · JetBrains Mono</dd>
+      </dl>
+    </div>
+    <div class="swatches" data-swatches="a"></div>
+
+    <h3 class="step">1 · Vista general del mapa</h3>
+    <figure class="bw" data-group="a">
+      <div class="bf">
+        <div class="board dir-a" data-kind="map" data-label="A · Porcelana · Mapa">
+          <div class="abs" style="left:120px;top:88px">
+            <div class="a-label">Mapa de la charla · vista general</div>
+            <div class="a-title" style="margin-top:12px">Devin en el día a día</div>
+          </div>
+          <img class="abs" src="assets/logos/openbank-logo-fondo-claro.svg" alt="Openbank" style="right:120px;top:96px;height:48px">
+          <div class="abs a-maplegend" style="right:120px;top:184px"><span><i class="ml-line"></i>Ruta de la cámara</span><span><i class="ml-dot"></i>Relación entre conceptos</span></div>
+          <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+            <g fill="none" style="stroke:var(--texto-3)" stroke-width="6" stroke-linecap="round" stroke-dasharray="0 16">
+              <path d="M1180 502 V770"/>
+              <path d="M1204 500 C1214 660 1522 610 1534 772"/>
+              <path d="M1156 500 C1146 660 838 610 826 772"/>
+            </g>
+            <path d="M180 470 H1700 A60 60 0 0 1 1760 530 V740 A60 60 0 0 1 1700 800 H180" fill="none" style="stroke:var(--texto-1)" stroke-width="14" stroke-linejoin="round"/>
+            <g style="fill:var(--superficie);stroke:var(--texto-1)" stroke-width="8">
+              <circle cx="460" cy="470" r="20"/><circle cx="820" cy="470" r="20"/><circle cx="1540" cy="470" r="20"/>
+              <circle cx="1540" cy="800" r="20"/><circle cx="1180" cy="800" r="20"/><circle cx="820" cy="800" r="20"/><circle cx="460" cy="800" r="20"/>
+            </g>
+            <circle cx="1180" cy="470" r="24" style="fill:var(--superficie);stroke:var(--acento)" stroke-width="10"/>
+            <circle cx="180" cy="470" r="22" style="fill:var(--texto-1)"/><circle cx="180" cy="800" r="22" style="fill:var(--texto-1)"/>
+          </svg>
+          <div class="abs a-term" style="left:180px;top:406px">Inicio</div>
+          <div class="abs a-term" style="left:180px;top:842px">Cierre</div>
+          <div class="abs a-card" style="left:300px;top:282px"><div class="a-card-top"><i data-lucide="monitor" class="ic-36"></i><span>01</span></div><div class="a-card-nm">Superficies: Cloud, Desktop y CLI</div></div>
+          <div class="abs a-card" style="left:660px;top:282px"><div class="a-card-top"><i data-lucide="gauge" class="ic-36"></i><span>02</span></div><div class="a-card-nm">Agente, modo y effort</div></div>
+          <div class="abs a-card cur" style="left:1020px;top:282px"><div class="a-card-top"><i data-lucide="app-window" class="ic-36"></i><span>03</span></div><div class="a-card-nm">Ventana de contexto</div></div>
+          <div class="abs a-card" style="left:1380px;top:282px"><div class="a-card-top"><i data-lucide="cpu" class="ic-36"></i><span>04</span></div><div class="a-card-nm">Modelos y coste</div></div>
+          <div class="abs a-card" style="left:1380px;top:828px"><div class="a-card-top"><i data-lucide="database" class="ic-36"></i><span>05</span></div><div class="a-card-nm">Tokens y caché</div></div>
+          <div class="abs a-card" style="left:1020px;top:828px"><div class="a-card-top"><i data-lucide="file-text" class="ic-36"></i><span>06</span></div><div class="a-card-nm">Rules, AGENTS.md y skills</div></div>
+          <div class="abs a-card" style="left:660px;top:828px"><div class="a-card-top"><i data-lucide="git-fork" class="ic-36"></i><span>07</span></div><div class="a-card-nm">Herramientas y subagentes</div></div>
+          <div class="abs a-card" style="left:300px;top:828px"><div class="a-card-top"><i data-lucide="list-checks" class="ic-36"></i><span>08</span></div><div class="a-card-nm">Método y caso práctico</div></div>
+        </div>
+      </div>
+      <figcaption><b>Mapa</b> · 8 zonas sobre una línea en U. Las relaciones punteadas salen de «Ventana de contexto», que es el concepto central. Zonas provisionales: el guion está en revisión.</figcaption>
+    </figure>
+
+    <h3 class="step">2 · Zona de ejemplo a 1920×1080 <span>· «La ventana de contexto se va llenando de tokens»</span></h3>
+    <div class="kf-grid" data-kf="a"></div>
+    <p class="motion"><b>Cómo se movería.</b> Las fichas aparecen en la lupa escalonadas, bajan y se funden en un segmento de la barra. El cursor rojo avanza hasta el nuevo final y el contador sube con cifras tabulares, sin saltos de ancho. Entre «Mitad» y «Final», el corchete verde de caché se alarga hasta el último segmento estable.</p>
+
+    <h3 class="step">3 · Muestra tipográfica</h3>
+    <figure class="bw" data-group="a">
+      <div class="bf">
+        <div class="board dir-a" data-kind="spec" data-label="A · Porcelana · Tipografía">
+          <div class="abs a-label" style="left:120px;top:64px">Muestra tipográfica · Porcelana</div>
+          <div class="abs spec" style="top:120px">
+            <div class="ann"><b>Título de zona</b><span>Outfit 400 · 96 px · −1 %</span></div>
+            <div style="font:400 96px/1.05 var(--fuente-display);letter-spacing:-.01em">Ventana de contexto</div>
+          </div>
+          <div class="abs spec" style="top:290px">
+            <div class="ann"><b>Texto</b><span>Outfit 400 · 32 px / 1,4</span></div>
+            <p style="font:400 32px/1.4 var(--fuente-texto);color:var(--texto-2);max-width:1120px">El contexto es la información que el modelo tiene disponible en una llamada. Tener una ventana grande no significa que debamos llenarla.</p>
+          </div>
+          <div class="abs spec" style="top:450px">
+            <div class="ann"><b>Etiqueta</b><span>Outfit 600 · 24 px · +8 %</span></div>
+            <div style="display:flex;gap:56px;align-items:center"><span class="a-label">03 · Ventana de contexto</span><span class="a-label">Tokens de entrada</span></div>
+          </div>
+          <div class="abs spec" style="top:572px">
+            <div class="ann"><b>Cifra grande</b><span>Outfit 300 · 200 px · cifras tabulares</span></div>
+            <div style="display:flex;align-items:baseline;gap:24px"><span style="font:300 200px/.92 var(--fuente-display);font-variant-numeric:tabular-nums;letter-spacing:-.02em">184.000</span><span style="font:400 32px var(--fuente-texto);color:var(--texto-2)">tokens</span></div>
+          </div>
+          <div class="abs spec" style="top:812px">
+            <div class="ann"><b>Monoespaciada</b><span>JetBrains Mono 400 · 30 px</span></div>
+            <div>
+              <div style="font:400 30px/1.3 var(--fuente-mono)"><span style="color:var(--texto-3)">const</span> [page, setPage] = useState(<span style="color:var(--texto-3)">1</span>);</div>
+              <div class="chips" style="margin-top:18px" data-chips="spec"></div>
+            </div>
+          </div>
+          <div class="abs" style="right:120px;top:996px"><span class="tag-fict"><i data-lucide="info" class="ic-24"></i>Cifras ficticias</span></div>
+        </div>
+      </div>
+      <figcaption><b>Tipografía</b> · títulos en Outfit Regular, como hace la web de Openbank; cifras grandes en Light con cifras tabulares.</figcaption>
+    </figure>
+
+    <div class="procon">
+      <div class="card"><h4>A favor</h4><ul><li>La más legible con luz en la sala.</li><li>La más fiel a la web de Openbank: porcelana, navy y rojo.</li><li>La barra deja comparar cantidades de un vistazo.</li></ul></div>
+      <div class="card"><h4>En contra</h4><ul><li>La más sobria: es la que menos espectáculo da.</li><li>En el proyector, porcelana y blanco se confunden, así que las superficies se separan con un borde de 2 px y no solo con el tono.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= B · PRUSIA ======================= -->
+<section class="dir" id="sec-b" hidden>
+  <div class="wrap">
+    <div class="dir-head">
+      <div>
+        <p class="kicker">Dirección B · fondo oscuro</p>
+        <h2>Prusia</h2>
+        <p class="desc">El azul Prussian de Openbank como fondo y lenguaje de terminal, pensado para un público dev. El mapa es un diagrama de arquitectura: módulos unidos por pistas ortogonales. La ventana de contexto es una rejilla de 800 celdas que se rellena como una memoria, y un cursor de bloque rojo marca por dónde va.</p>
+      </div>
+      <dl class="facts">
+        <dt>Mapa</dt><dd>Diagrama de módulos con pistas ortogonales</dd>
+        <dt>Ventana</dt><dd>Rejilla 40 × 20 · 1 celda = 250 tokens</dd>
+        <dt>Token</dt><dd>Celda cuadrada; en la lupa, ficha de radio 3</dd>
+        <dt>Caché</dt><dd>Barra verde junto a las filas cacheadas</dd>
+        <dt>Acento</dt><dd>Módulo actual / cursor de bloque</dd>
+        <dt>Display · mono</dt><dd>Outfit 600 · IBM Plex Mono</dd>
+      </dl>
+    </div>
+    <div class="swatches" data-swatches="b"></div>
+
+    <h3 class="step">1 · Vista general del mapa</h3>
+    <figure class="bw" data-group="b">
+      <div class="bf">
+        <div class="board dir-b board-grid" data-kind="map" data-label="B · Prusia · Mapa">
+          <div class="abs" style="left:96px;top:72px">
+            <div class="b-label">~/charla-devin/mapa</div>
+            <div class="b-title" style="margin-top:10px">Devin en el día a día</div>
+          </div>
+          <img class="abs" src="assets/logos/openbank-logo-fondo-oscuro.svg" alt="Openbank" style="right:96px;top:84px;height:46px">
+          <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+            <g fill="none" stroke="#5A86A6" stroke-width="3" stroke-dasharray="12 10">
+              <path d="M1210 430 V640"/>
+              <path d="M1290 430 V530 H1530 V640"/>
+              <path d="M1130 430 V560 H890 V640"/>
+            </g>
+            <g fill="#5A86A6"><rect x="1285" y="525" width="10" height="10"/><rect x="1525" y="525" width="10" height="10"/><rect x="1125" y="555" width="10" height="10"/><rect x="885" y="555" width="10" height="10"/></g>
+            <path d="M166 500 V345 H1830 V725 H166 V880" fill="none" style="stroke:var(--texto-3)" stroke-width="6" stroke-linejoin="round"/>
+          </svg>
+          <div class="abs b-pill" style="left:96px;top:500px"><i data-lucide="play" class="ic-24"></i>inicio</div>
+          <div class="abs b-pill" style="left:96px;top:880px"><i data-lucide="square" class="ic-24"></i>cierre</div>
+          <div class="abs b-mod" style="left:240px;top:260px"><div class="b-mod-bar">01_superficies</div><div class="b-mod-body"><i data-lucide="monitor" class="ic-40"></i><b>Cloud, Desktop y CLI</b></div></div>
+          <div class="abs b-mod" style="left:640px;top:260px"><div class="b-mod-bar">02_agente_effort</div><div class="b-mod-body"><i data-lucide="gauge" class="ic-40"></i><b>Agente, modo y effort</b></div></div>
+          <div class="abs b-mod cur" style="left:1040px;top:260px"><div class="b-mod-bar">03_contexto</div><div class="b-mod-body"><i data-lucide="app-window" class="ic-40"></i><b>Ventana de contexto</b></div></div>
+          <div class="abs b-mod" style="left:1440px;top:260px"><div class="b-mod-bar">04_modelos</div><div class="b-mod-body"><i data-lucide="cpu" class="ic-40"></i><b>Modelos y coste</b></div></div>
+          <div class="abs b-mod" style="left:1440px;top:640px"><div class="b-mod-bar">05_tokens_cache</div><div class="b-mod-body"><i data-lucide="database" class="ic-40"></i><b>Tokens y caché</b></div></div>
+          <div class="abs b-mod" style="left:1040px;top:640px"><div class="b-mod-bar">06_rules_skills</div><div class="b-mod-body"><i data-lucide="file-text" class="ic-40"></i><b>Rules, AGENTS.md y skills</b></div></div>
+          <div class="abs b-mod" style="left:640px;top:640px"><div class="b-mod-bar">07_tools_subagentes</div><div class="b-mod-body"><i data-lucide="git-fork" class="ic-40"></i><b>Herramientas y subagentes</b></div></div>
+          <div class="abs b-mod" style="left:240px;top:640px"><div class="b-mod-bar">08_metodo</div><div class="b-mod-body"><i data-lucide="list-checks" class="ic-40"></i><b>Método y caso práctico</b></div></div>
+          <div class="abs b-maplegend" style="right:96px;top:990px"><span><svg width="48" height="8"><line x1="0" y1="4" x2="48" y2="4" style="stroke:var(--texto-3)" stroke-width="6"/></svg>ruta de cámara</span><span><svg width="48" height="8"><line x1="0" y1="4" x2="48" y2="4" stroke="#5A86A6" stroke-width="3" stroke-dasharray="12 10"/></svg>relación</span></div>
+        </div>
+      </div>
+      <figcaption><b>Mapa</b> · módulos en dos filas, con la ruta de cámara por detrás. Las relaciones discontinuas parten de «03_contexto».</figcaption>
+    </figure>
+
+    <h3 class="step">2 · Zona de ejemplo a 1920×1080 <span>· «La ventana de contexto se va llenando de tokens»</span></h3>
+    <div class="kf-grid" data-kf="b"></div>
+    <p class="motion"><b>Cómo se movería.</b> Las celdas se rellenan en orden de lectura, fila a fila, con un escalonado muy corto. El cursor de bloque avanza con la última celda y el log de la derecha añade una línea por segmento. La barra verde de caché crece por la izquierda conforme el prefijo se vuelve estable.</p>
+
+    <h3 class="step">3 · Muestra tipográfica</h3>
+    <figure class="bw" data-group="b">
+      <div class="bf">
+        <div class="board dir-b" data-kind="spec" data-label="B · Prusia · Tipografía">
+          <div class="abs b-label" style="left:120px;top:64px">// muestra_tipografica · prusia</div>
+          <div class="abs spec" style="top:120px">
+            <div class="ann"><b>Título de zona</b><span>Outfit 600 · 88 px</span></div>
+            <div style="font:600 88px/1.08 var(--fuente-display)">Ventana de contexto</div>
+          </div>
+          <div class="abs spec" style="top:290px">
+            <div class="ann"><b>Texto</b><span>Outfit 400 · 32 px / 1,45</span></div>
+            <p style="font:400 32px/1.45 var(--fuente-texto);color:var(--texto-2);max-width:1120px">El contexto es la información que el modelo tiene disponible en una llamada. Tener una ventana grande no significa que debamos llenarla.</p>
+          </div>
+          <div class="abs spec" style="top:450px">
+            <div class="ann"><b>Etiqueta</b><span>IBM Plex Mono 400 · 24 px</span></div>
+            <div style="display:flex;gap:56px;align-items:center"><span class="b-label">03/ventana_de_contexto</span><span class="b-label">1 celda = 250 tokens</span></div>
+          </div>
+          <div class="abs spec" style="top:560px">
+            <div class="ann"><b>Cifra grande</b><span>IBM Plex Mono 600 · 180 px</span></div>
+            <div style="display:flex;align-items:baseline;gap:24px"><span style="font:600 180px/.95 var(--fuente-mono);letter-spacing:-.03em">184.000</span><span style="font:400 30px var(--fuente-mono);color:var(--texto-2)">tokens</span></div>
+          </div>
+          <div class="abs spec" style="top:812px">
+            <div class="ann"><b>Monoespaciada</b><span>IBM Plex Mono 400 · 30 px</span></div>
+            <div>
+              <div style="font:400 30px/1.3 var(--fuente-mono)"><span style="color:var(--texto-3)">const</span> [page, setPage] = useState(<span style="color:var(--texto-3)">1</span>);</div>
+              <div class="chips" style="margin-top:18px" data-chips="spec"></div>
+            </div>
+          </div>
+          <div class="abs" style="right:120px;top:996px"><span class="tag-fict"><i data-lucide="info" class="ic-24"></i>cifras ficticias</span></div>
+        </div>
+      </div>
+      <figcaption><b>Tipografía</b> · Outfit Semibold para títulos; la mono lleva etiquetas y cifras, como en una terminal.</figcaption>
+    </figure>
+
+    <div class="procon">
+      <div class="card"><h4>A favor</h4><ul><li>Los colores semánticos tienen el máximo contraste.</li><li>Estética de IDE, familiar para desarrolladores.</li><li>La rejilla hace visible la escala: cada celda son 250 tokens.</li></ul></div>
+      <div class="card"><h4>En contra</h4><ul><li>Con luz en la sala, el navy se lava hacia un gris azulado. Pide sala oscura o una buena pantalla.</li><li>La rejilla es densa: desde el fondo de la sala se ve como una mancha de color, no celda a celda.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= C · CREMA ======================= -->
+<section class="dir" id="sec-c" hidden>
+  <div class="wrap">
+    <div class="dir-head">
+      <div>
+        <p class="kicker">Dirección C · fondo claro cálido</p>
+        <h2>Crema</h2>
+        <p class="desc">Los tonos crema de la comunicación de Openbank, formas grandes y redondeadas y un tono más cercano. El mapa es un recorrido por islas unidas por un camino de puntos. La ventana de contexto es un recipiente que se llena de abajo arriba, así que la metáfora de «llenarse» es literal.</p>
+      </div>
+      <dl class="facts">
+        <dt>Mapa</dt><dd>Islas unidas por un camino de puntos</dd>
+        <dt>Ventana</dt><dd>Recipiente vertical con escala lateral</dd>
+        <dt>Token</dt><dd>Píldora (radio completo), texto en mono</dd>
+        <dt>Caché</dt><dd>Corchete verde a la derecha de las capas</dd>
+        <dt>Acento</dt><dd>Isla actual / línea de nivel</dd>
+        <dt>Display · mono</dt><dd>Outfit 300 · DM Mono</dd>
+      </dl>
+    </div>
+    <div class="swatches" data-swatches="c"></div>
+
+    <h3 class="step">1 · Vista general del mapa</h3>
+    <figure class="bw" data-group="c">
+      <div class="bf">
+        <div class="board dir-c" data-kind="map" data-label="C · Crema · Mapa">
+          <svg class="abs" style="left:0;top:0" width="1920" height="1080" viewBox="0 0 1920 1080">
+            <path class="c-trail" fill="none" style="stroke:var(--texto-1)" stroke-width="10" stroke-linecap="round" stroke-dasharray="0 24"/>
+          </svg>
+          <div class="abs" style="left:96px;top:110px;width:250px;height:90px;border:3px solid var(--texto-1);border-radius:999px;background:var(--fondo);display:grid;place-items:center"><img src="assets/logos/openbank-logo-fondo-claro.svg" alt="Openbank" style="height:34px"></div>
+          <div class="abs" style="left:560px;top:478px;width:800px;text-align:center">
+            <span class="c-pill">Mapa de la charla · 8 zonas</span>
+            <div style="font:300 72px/1.05 var(--fuente-display);letter-spacing:-.015em;margin-top:22px">Devin en el día a día</div>
+          </div>
+          <div class="abs c-isle" style="left:330px;top:250px"><div class="c-isle-top"><span class="n">01</span><i data-lucide="monitor" class="ic-40"></i></div><div class="nm">Superficies</div></div>
+          <div class="abs c-isle" style="left:760px;top:200px"><div class="c-isle-top"><span class="n">02</span><i data-lucide="gauge" class="ic-40"></i></div><div class="nm">Agente, modo y effort</div></div>
+          <div class="abs c-isle big cur" style="left:1190px;top:230px"><div class="c-isle-top"><span class="n">03</span><i data-lucide="app-window" class="ic-40"></i></div><div class="nm">Ventana de contexto</div></div>
+          <div class="abs c-isle" style="left:1500px;top:540px"><div class="c-isle-top"><span class="n">04</span><i data-lucide="cpu" class="ic-40"></i></div><div class="nm">Modelos y coste</div></div>
+          <div class="abs c-isle" style="left:1160px;top:750px"><div class="c-isle-top"><span class="n">05</span><i data-lucide="database" class="ic-40"></i></div><div class="nm">Tokens y caché</div></div>
+          <div class="abs c-isle" style="left:760px;top:780px"><div class="c-isle-top"><span class="n">06</span><i data-lucide="file-text" class="ic-40"></i></div><div class="nm">Rules, AGENTS.md y skills</div></div>
+          <div class="abs c-isle" style="left:360px;top:740px"><div class="c-isle-top"><span class="n">07</span><i data-lucide="git-fork" class="ic-40"></i></div><div class="nm">Herramientas y subagentes</div></div>
+          <div class="abs c-isle" style="left:96px;top:470px"><div class="c-isle-top"><span class="n">08</span><i data-lucide="list-checks" class="ic-40"></i></div><div class="nm">Método y caso práctico</div></div>
+          <div class="abs c-maplegend" style="right:96px;top:1000px"><i></i>Ruta de la cámara</div>
+        </div>
+      </div>
+      <figcaption><b>Mapa</b> · un bucle que empieza y acaba junto al logo, con el título en el centro. La isla actual se pinta entera en rojo.</figcaption>
+    </figure>
+
+    <h3 class="step">2 · Zona de ejemplo a 1920×1080 <span>· «La ventana de contexto se va llenando de tokens»</span></h3>
+    <div class="kf-grid" data-kf="c"></div>
+    <p class="motion"><b>Cómo se movería.</b> Las píldoras caen al recipiente, con una caída en ease-in y un asentado con muelle corto. Cada capa crece desde abajo y la línea roja de nivel sube con ease-out. El corchete de caché acompaña por la derecha a las capas que ya son estables.</p>
+
+    <h3 class="step">3 · Muestra tipográfica</h3>
+    <figure class="bw" data-group="c">
+      <div class="bf">
+        <div class="board dir-c" data-kind="spec" data-label="C · Crema · Tipografía">
+          <div class="abs" style="left:120px;top:52px"><span class="c-pill">Muestra tipográfica · Crema</span></div>
+          <div class="abs spec" style="top:120px;border-top-color:#E9CDBD">
+            <div class="ann"><b>Título de zona</b><span>Outfit 300 · 112 px · −1,5 %</span></div>
+            <div style="font:300 112px/1 var(--fuente-display);letter-spacing:-.015em">Ventana de contexto</div>
+          </div>
+          <div class="abs spec" style="top:300px;border-top-color:#E9CDBD">
+            <div class="ann"><b>Texto</b><span>Outfit 400 · 34 px / 1,4</span></div>
+            <p style="font:400 34px/1.4 var(--fuente-texto);color:var(--texto-2);max-width:1120px">El contexto es la información que el modelo tiene disponible en una llamada. Tener una ventana grande no significa que debamos llenarla.</p>
+          </div>
+          <div class="abs spec" style="top:468px;border-top-color:#E9CDBD">
+            <div class="ann"><b>Etiqueta en píldora</b><span>Outfit 500 · 24 px</span></div>
+            <div style="display:flex;gap:20px;align-items:center"><span class="c-pill">Zona 03 · Contexto</span><span class="c-pill">Tokens de entrada</span></div>
+          </div>
+          <div class="abs spec" style="top:572px;border-top-color:#E9CDBD">
+            <div class="ann"><b>Cifra grande</b><span>Outfit 300 · 220 px · cifras tabulares</span></div>
+            <div style="display:flex;align-items:baseline;gap:24px"><span style="font:300 220px/.9 var(--fuente-display);font-variant-numeric:tabular-nums;letter-spacing:-.03em">184.000</span><span style="font:400 34px var(--fuente-texto);color:var(--texto-2)">tokens</span></div>
+          </div>
+          <div class="abs spec" style="top:836px;border-top-color:#E9CDBD">
+            <div class="ann"><b>Monoespaciada</b><span>DM Mono 400 · 30 px</span></div>
+            <div>
+              <div style="font:400 30px/1.3 var(--fuente-mono)"><span style="color:var(--texto-3)">const</span> [page, setPage] = useState(<span style="color:var(--texto-3)">1</span>);</div>
+              <div class="chips" style="margin-top:16px" data-chips="spec"></div>
+            </div>
+          </div>
+          <div class="abs" style="right:120px;top:52px"><span class="tag-fict"><i data-lucide="info" class="ic-24"></i>Cifras ficticias</span></div>
+        </div>
+      </div>
+      <figcaption><b>Tipografía</b> · Outfit Light a tamaño grande, el registro más «de marca». La mono redondeada, DM Mono, casa con la geometría de Outfit.</figcaption>
+    </figure>
+
+    <div class="procon">
+      <div class="card"><h4>A favor</h4><ul><li>La metáfora más inmediata: se ve cómo se llena.</li><li>Muy amable para explicar conceptos abstractos.</li><li>La isla actual en rojo se ve desde el fondo de la sala.</li></ul></div>
+      <div class="card"><h4>En contra</h4><ul><li>En el proyector, las cremas son casi iguales entre sí y necesitan contornos navy de 3 px.</li><li>Es la menos «técnica» de las tres.</li></ul></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= COMPARAR ======================= -->
+<section class="dir" id="sec-comparar" hidden>
+  <div class="wrap">
+    <p class="kicker">Las tres a la vez</p>
+    <h3 class="step" style="margin-top:12px">Mapa</h3>
+    <div class="cmp-grid" data-cmp="map"></div>
+    <h3 class="step">Fotograma «Mitad» de la ventana de contexto</h3>
+    <div class="cmp-grid" data-cmp="mitad"></div>
+    <h3 class="step">Tipografía</h3>
+    <div class="cmp-grid" data-cmp="spec"></div>
+
+    <table class="cmp">
+      <thead><tr><th></th><th>A · Porcelana</th><th>B · Prusia</th><th>C · Crema</th></tr></thead>
+      <tbody>
+        <tr><th>Fondo</th><td>Claro frío · #F1F4F4</td><td>Oscuro · #002B45</td><td>Claro cálido · #FFF9F4</td></tr>
+        <tr><th>Sensación</th><td>Plano técnico, sobrio</td><td>Terminal / IDE</td><td>Cercana, ilustrativa</td></tr>
+        <tr><th>Mapa</th><td>Línea de metro</td><td>Diagrama de módulos</td><td>Islas y camino</td></tr>
+        <tr><th>Ventana de contexto</th><td>Barra horizontal + lupa</td><td>Rejilla de celdas</td><td>Recipiente vertical</td></tr>
+        <tr><th>Token</th><td>Ficha rectangular</td><td>Celda / ficha cuadrada</td><td>Píldora</td></tr>
+        <tr><th>Display · mono</th><td>Outfit 400 · JetBrains Mono</td><td>Outfit 600 · IBM Plex Mono</td><td>Outfit 300 · DM Mono</td></tr>
+        <tr><th>Sala ideal</th><td>Cualquiera, también con luz</td><td>Oscura</td><td>Cualquiera, mejor con poca luz</td></tr>
+        <tr><th>Riesgo principal</th><td>Poco espectáculo</td><td>Se lava con luz ambiente</td><td>Cremas indistinguibles sin contorno</td></tr>
+      </tbody>
+    </table>
+    <p class="ask">¿Con cuál seguimos? Vale también una mezcla, por ejemplo el mapa de A con el recipiente de C.</p>
+  </div>
+</section>
+
+<div class="ov" hidden>
+  <div class="ov-stage" title="Clic: siguiente"></div>
+  <div class="ov-bar">
+    <span class="ov-title"></span>
+    <span class="ov-hint">← → fotograma · F pantalla completa · Esc cerrar</span>
+    <button data-act="prev" aria-label="Anterior">←</button>
+    <button data-act="next" aria-label="Siguiente">→</button>
+    <button data-act="fs">Pantalla completa</button>
+    <button data-act="close">Cerrar</button>
+  </div>
+</div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const fmt = n => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+const sum = a => a.reduce((t, s) => t + s[2], 0);
+const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;');
+
+/* ---------- Datos de la escena (cifras ficticias) ---------- */
+const CAP = 200000;
+const SEGS = { inicio: [], mitad: [
+  ['Instrucciones y rules', 'entrada', 12000], ['AGENTS.md', 'entrada', 2400], ['Tu mensaje', 'entrada', 46],
+  ['Razonamiento', 'razonamiento', 3100], ['Respuesta', 'salida', 900],
+  ['TablaClientes.tsx', 'entrada', 18000], ['Razonamiento', 'razonamiento', 4200], ['Respuesta', 'salida', 1300],
+  ['Tests', 'entrada', 22000], ['Razonamiento', 'razonamiento', 5000], ['Respuesta', 'salida', 1054],
+  ['useFilters.ts', 'entrada', 26000]
+]};
+SEGS.final = SEGS.mitad.concat([
+  ['Razonamiento', 'razonamiento', 6000], ['Respuesta', 'salida', 2000], ['Tests (2.ª vez)', 'entrada', 22000],
+  ['Razonamiento', 'razonamiento', 12000], ['Respuesta', 'salida', 8000], ['Logs sin filtrar', 'entrada', 38000]
+]);
+const CACHED = { inicio: 0, mitad: 70000, final: 146000 };
+const CHIPS = {
+  inicio: ['Arre', 'gla', ' la', ' pagin', 'ación', '.'],
+  mitad: ['const', ' [', 'page', ',', ' set', 'Page', ']', ' =', ' use', 'State', '(', '1', ');'],
+  final: ['2026', '-10', '-14', 'T09', ':12', ' WARN', ' [', 'pool', '-3', ']', ' retry'],
+};
+const FT = {
+  inicio: { name: 'Inicio', body: 'Cada llamada al modelo envía todo lo que hay dentro.', what: 'Tu mensaje', tok: 6, cap: '0 tokens · llega el primer mensaje' },
+  mitad: { name: 'Mitad', body: 'Instrucciones, archivos, resultados y respuestas: todo ocupa sitio.', what: 'Lectura de useFilters.ts', tok: 26000, cap: '96.000 tokens · 48 %' },
+  final: { name: 'Final', body: 'Más tokens no significa más información relevante.', what: 'Logs pegados sin filtrar', tok: 38000, cap: '184.000 tokens · 92 %' },
+};
+const chip = t => `<span class="chip">${t.startsWith(' ') ? '<span class="sp">·</span>' : ''}${esc(t.trim())}</span>`;
+const legend = () => `<div class="legend"><span><i class="t-entrada"></i>Entrada</span><span><i class="t-salida"></i>Salida</span><span><i class="t-razonamiento"></i>Razonamiento</span><span><i class="sw-cache"></i>Caché acertada</span></div>`;
+const tag = (txt = 'Cifras ficticias') => `<span class="tag-fict"><i data-lucide="info" class="ic-24"></i>${txt}</span>`;
+const warn = f => f === 'final' ? '<i data-lucide="triangle-alert" class="ic-32"></i>' : '';
+
+/* ---------- A · Porcelana: barra horizontal + lupa ---------- */
+function buildA(f) {
+  const segs = SEGS[f], tot = sum(segs), cached = CACHED[f], pct = Math.round(tot / CAP * 100), t = FT[f];
+  const IW = 1674, X0 = 123, fillX = X0 + tot / CAP * IW;
+  let x = 0, segHTML = '';
+  for (const [n, ty, k] of segs) {
+    const w = k / CAP * IW;
+    segHTML += `<div class="a-seg t-${ty}" style="left:${x.toFixed(1)}px;width:${w.toFixed(1)}px">${w >= 130 ? `<b>${n}</b><span>${fmt(k)}</span>` : ''}</div>`;
+    x += w;
+  }
+  const ticks = [0, .25, .5, .75, 1].map(p => {
+    const tx = X0 + p * IW, tr = p === 0 ? '0' : p === 1 ? '-100%' : '-50%';
+    return `<div class="abs a-tick" style="left:${tx - 1}px;top:784px"></div><div class="abs a-tick-l" style="left:${tx}px;top:808px;transform:translateX(${tr})">${fmt(p * CAP)}</div>`;
+  }).join('');
+  const bracket = cached ? `<div class="abs a-cache-lbl" style="left:${X0}px;top:550px"><i data-lucide="check" class="ic-28"></i>Caché acertada · ${fmt(cached)}</div><div class="abs a-bracket" style="left:${X0}px;top:594px;width:${(cached / CAP * IW).toFixed(1)}px"></div>` : '';
+  const lblPos = pct > 50 ? `left:${fillX - 16}px;transform:translateX(-100%)` : `left:${fillX + 16}px`;
+  return `<div class="board dir-a" data-kind="${f}" data-label="A · Porcelana · ${t.name}">
+    <div class="abs" style="left:120px;top:96px;width:1240px">
+      <div class="a-label">03 · Ventana de contexto</div>
+      <div class="a-title" style="margin-top:14px">La ventana de contexto se va llenando</div>
+      <p class="a-body" style="margin-top:18px">${warn(f)}${t.body}</p>
+    </div>
+    <div class="abs" style="right:120px;top:96px;text-align:right">
+      <div class="a-label">Tokens en contexto</div>
+      <div class="a-big">${fmt(tot)}</div>
+      <div class="a-sub">de 200.000</div>
+    </div>
+    <div class="abs a-lupa" style="left:120px;top:330px;width:1680px;height:190px">
+      <div class="a-lupa-head"><span class="a-label">Entra ahora</span><span class="a-lupa-name">${t.what} · ${fmt(t.tok)} tokens</span></div>
+      <div class="chips">${CHIPS[f].map(chip).join('')}${f !== 'inicio' ? '<span class="more">…</span>' : ''}</div>
+    </div>
+    ${bracket}
+    <div class="abs a-window" style="left:120px;top:620px;width:1680px;height:160px">${segHTML}</div>
+    <div class="abs a-cursor" style="left:${(fillX - 3).toFixed(1)}px;top:602px;height:196px"></div>
+    <div class="abs a-cursor-lbl" style="${lblPos};top:550px">${pct} %</div>
+    ${ticks}
+    <div class="abs" style="left:120px;top:910px">${legend()}</div>
+    <div class="abs" style="right:120px;top:904px">${tag()}</div>
+  </div>`;
+}
+
+/* ---------- B · Prusia: rejilla de celdas ---------- */
+function buildB(f) {
+  const segs = SEGS[f], tot = sum(segs), cached = CACHED[f], pct = Math.round(tot / CAP * 100), t = FT[f];
+  const cur = Math.floor(tot / 250), bounds = [];
+  let c = 0; for (const s of segs) { c += s[2]; bounds.push(c); }
+  let cells = '', si = 0;
+  for (let i = 0; i < 800; i++) {
+    let cls = '';
+    if (i < cur) { const mid = (i + .5) * 250; while (si < bounds.length - 1 && mid > bounds[si]) si++; cls = 't-' + segs[si][1]; }
+    else if (i === cur) cls = 'cur';
+    cells += cls ? `<span class="${cls}"></span>` : '<span></span>';
+  }
+  const cacheH = cached ? (cached / 250 / 40) * 27 - 3 : 0;
+  const show = segs.slice(-5), hidden = segs.length - show.length;
+  const log = segs.length
+    ? (hidden ? `<div class="muted">… ${hidden} segmentos anteriores</div>` : '') + show.map((s, i) => `<div class="${i === show.length - 1 ? 'last' : ''}"><i class="t-${s[1]}"></i>${('+' + fmt(s[2])).padStart(7)}  ${esc(s[0])}</div>`).join('')
+    : '<div class="muted">— sin tokens todavía —</div>';
+  return `<div class="board dir-b" data-kind="${f}" data-label="B · Prusia · ${t.name}">
+    <div class="abs" style="left:96px;top:64px">
+      <div class="b-label">03/ventana_de_contexto</div>
+      <div class="b-title" style="margin-top:10px">La ventana de contexto se va llenando</div>
+    </div>
+    <div class="abs b-panel" style="left:96px;top:210px;width:1140px;height:790px">
+      <div class="b-bar"><span>context_window · 200.000 tokens</span><span>1 celda = 250 tokens</span></div>
+      ${cached ? `<div class="b-cachebar" style="height:${cacheH.toFixed(1)}px"></div>` : ''}
+      <div class="b-grid">${cells}</div>
+      <div class="b-prompt">
+        <div class="b-prompt-l">❯ entra ahora · ${t.what[0].toLowerCase() + t.what.slice(1)} · ${fmt(t.tok)} tokens</div>
+        <div class="chips">${CHIPS[f].map(chip).join('')}</div>
+      </div>
+    </div>
+    <div class="abs" style="left:1290px;top:210px;width:534px">
+      <div class="b-label">tokens en contexto</div>
+      <div class="b-big">${fmt(tot)}</div>
+      <div class="b-sub">/ 200.000 · ${pct} %</div>
+      <p class="b-body" style="margin-top:26px">${warn(f)}${t.body}</p>
+      <div class="b-log" style="margin-top:22px">${log}</div>
+    </div>
+    ${cached ? `<div class="abs b-cache" style="left:1290px;top:788px"><i data-lucide="check" class="ic-28"></i>caché acertada · ${fmt(cached)}</div>` : ''}
+    <div class="abs" style="left:1290px;top:846px">${legend()}</div>
+    <div class="abs" style="right:96px;top:950px">${tag('cifras ficticias')}</div>
+  </div>`;
+}
+
+/* ---------- C · Crema: recipiente vertical ---------- */
+function buildC(f) {
+  const segs = SEGS[f], tot = sum(segs), cached = CACHED[f], pct = Math.round(tot / CAP * 100), t = FT[f];
+  const VX = 1000, VY = 230, VW = 440, VH = 760, BORDER = 4, PAD = 10;
+  const IH = VH - 2 * BORDER, H = IH - 2 * PAD;            // 752 · 732
+  const yOf = v => VY + BORDER + IH - PAD - v / CAP * H;      // posición en la lámina
+  let y = 0, layers = '';
+  for (const [n, ty, k] of segs) {
+    const h = k / CAP * H, top = IH - PAD - (y + h) + 3;
+    layers += `<div class="c-layer t-${ty}" style="top:${top.toFixed(1)}px;height:${Math.max(3, h - 3).toFixed(1)}px">${h >= 40 ? `${esc(n)} · ${fmt(k)}` : ''}</div>`;
+    y += h;
+  }
+  const ticks = [0, 50000, 100000, 150000, 200000].map(v => `<div class="abs c-tick" style="left:976px;top:${yOf(v) - 1}px"></div><div class="abs c-tick-l" style="right:${1920 - 964}px;top:${yOf(v)}px">${fmt(v)}</div>`).join('');
+  const levelY = yOf(tot);
+  const cacheTop = yOf(cached), cacheBot = yOf(0);
+  const chipsC = CHIPS[f].slice(0, 7);
+  return `<div class="board dir-c" data-kind="${f}" data-label="C · Crema · ${t.name}">
+    <div class="abs" style="left:120px;top:96px"><span class="c-pill"><i data-lucide="app-window" class="ic-28"></i>Zona 03 · Ventana de contexto</span></div>
+    <div class="abs c-title" style="left:120px;top:170px;width:780px">La ventana de contexto se va llenando</div>
+    <p class="abs c-body" style="left:120px;top:444px;width:740px">${warn(f)}${t.body}</p>
+    <div class="abs" style="left:120px;top:604px">
+      <div class="c-lbl">Tokens en contexto</div>
+      <div class="c-big" style="margin-top:8px">${fmt(tot)}</div>
+      <div class="c-sub" style="margin-top:6px">de 200.000</div>
+    </div>
+    <div class="abs" style="left:120px;top:930px">${legend()}</div>
+    <div class="abs chips" style="left:1220px;top:104px;transform:translateX(-50%)">${chipsC.map(chip).join('')}${CHIPS[f].length > chipsC.length ? '<span class="more">…</span>' : ''}</div>
+    <div class="abs" style="left:1200px;top:176px;color:var(--texto-3)"><i data-lucide="arrow-down" class="ic-40"></i></div>
+    <div class="abs c-vessel" style="left:${VX}px;top:${VY}px;width:${VW}px;height:${VH}px">${layers}</div>
+    ${ticks}
+    ${cached ? `<div class="abs c-bracket" style="left:${VX + VW + 14}px;top:${cacheTop.toFixed(1)}px;height:${(cacheBot - cacheTop).toFixed(1)}px"></div>
+    <div class="abs c-cache-lbl" style="left:${VX + VW + 50}px;top:${((cacheTop + cacheBot) / 2).toFixed(1)}px;transform:translateY(-50%)"><i data-lucide="check" class="ic-28"></i>Caché acertada<br><span>${fmt(cached)} tokens</span></div>` : ''}
+    <div class="abs c-level" style="left:${VX - 12}px;top:${(levelY - 3).toFixed(1)}px;width:${VW + 24}px"></div>
+    <div class="abs c-level-lbl" style="left:${VX + VW + 26}px;top:${levelY.toFixed(1)}px;transform:translateY(-50%)">${pct} %</div>
+    <div class="abs" style="right:96px;top:1000px">${tag()}</div>
+  </div>`;
+}
+
+/* ---------- Montaje ---------- */
+const BUILD = { a: buildA, b: buildB, c: buildC };
+for (const d of ['a', 'b', 'c']) {
+  $(`[data-kf="${d}"]`).innerHTML = ['inicio', 'mitad', 'final'].map(f =>
+    `<figure class="bw" data-group="${d}"><div class="bf">${BUILD[d](f)}</div><figcaption><b>${FT[f].name}</b> · ${FT[f].cap}</figcaption></figure>`).join('');
+}
+// Fichas de la muestra tipográfica: tokens + nombres de fichero/comando
+$$('[data-chips="spec"]').forEach(el => {
+  el.innerHTML = CHIPS.inicio.map(chip).join('') + '<span style="width:28px"></span><span class="code-inline">AGENTS.md</span><span style="width:12px"></span><span class="code-inline">/compact</span>';
+  el.style.gap = el.closest('.dir-a') ? '10px' : el.closest('.dir-b') ? '8px' : '10px';
+});
+// Camino de puntos del mapa C (Catmull-Rom → Bézier)
+function crPath(p) {
+  let d = `M${p[0][0]} ${p[0][1]}`;
+  for (let i = 0; i < p.length - 1; i++) {
+    const p0 = p[i - 1] || p[i], p1 = p[i], p2 = p[i + 1], p3 = p[i + 2] || p2;
+    d += ` C${(p1[0] + (p2[0] - p0[0]) / 6).toFixed(1)} ${(p1[1] + (p2[1] - p0[1]) / 6).toFixed(1)} ${(p2[0] - (p3[0] - p1[0]) / 6).toFixed(1)} ${(p2[1] - (p3[1] - p1[1]) / 6).toFixed(1)} ${p2[0]} ${p2[1]}`;
+  }
+  return d;
+}
+$$('.c-trail').forEach(p => p.setAttribute('d', crPath([[221, 155], [490, 345], [920, 295], [1380, 340], [1660, 635], [1320, 845], [920, 875], [520, 835], [256, 565]])));
+
+if (window.lucide) lucide.createIcons();
+
+// Comparar: copias de las láminas de cada dirección
+for (const kind of ['map', 'mitad', 'spec']) {
+  $(`[data-cmp="${kind}"]`).innerHTML = ['a', 'b', 'c'].map(d => {
+    const b = $(`#sec-${d} .board[data-kind="${kind}"]`).cloneNode(true);
+    b.style.transform = '';
+    return `<figure class="bw" data-group="cmp-${kind}"><div class="bf">${b.outerHTML}</div><figcaption><b>${b.dataset.label.split(' · ').slice(0, 2).join(' · ')}</b></figcaption></figure>`;
+  }).join('');
+}
+
+// Escalado de las láminas a su contenedor
+const ro = new ResizeObserver(es => es.forEach(e => {
+  const b = e.target.querySelector('.board');
+  if (b) b.style.transform = `scale(${e.contentRect.width / 1920})`;
+}));
+$$('.bf').forEach(f => ro.observe(f));
+
+/* ---------- Muestras de color ---------- */
+const BRAND = [
+  ['Prussian blue', '#002B45'], ['Red ribbon', '#DF0049'], ['Rojo logo · oscuro', '#FF0049'], ['Rojo logo · claro', '#E9004C'],
+  ['Pickled bluewood', '#2C4054'], ['Pizarra', '#546E7A'], ['Porcelain', '#E3E9E9'], ['Porcelain light', '#F1F4F4'],
+  ['Old lace', '#FFF9F4'], ['Cinderella', '#FFF1E5'], ['Serenade', '#FEE6DA'], ['Dodger blue', '#31C3DF'],
+  ['Azul', '#2566E8'], ['Malachite', '#2BE24E'], ['Selective yellow', '#FBB800'], ['Gris claro', '#CCD5DA']
+];
+$('#brand-sw').innerHTML = BRAND.map(([n, h]) => `<div class="bsw"><i style="background:${h}"></i>${n}<br><code>${h}</code></div>`).join('');
+const BRAND_HEX = new Set(BRAND.map(b => b[1]).concat(['#FFFFFF']));
+const OFF_BRAND = new Set(['#7A55F0', '#B39BFF', '#F57A00', '#FF8A3D']);
+const VARS = [['fondo', 'Fondo'], ['superficie', 'Superficie'], ['superficie-2', 'Superficie 2'], ['texto-1', 'Texto 1'], ['texto-2', 'Texto 2'], ['texto-3', 'Texto 3'], ['acento', 'Acento'],
+  ['entrada', 'Entrada'], ['salida', 'Salida'], ['razonamiento', 'Razonamiento'], ['cache-acierto', 'Caché acertada'], ['cache-fallo', 'Caché fallida'], ['coste', 'Coste']];
+for (const d of ['a', 'b', 'c']) {
+  const probe = document.createElement('div'); probe.className = 'dir-' + d; document.body.appendChild(probe);
+  const cs = getComputedStyle(probe);
+  $(`[data-swatches="${d}"]`).innerHTML = VARS.map(([v, l]) => {
+    const h = cs.getPropertyValue('--' + v).trim().toUpperCase();
+    const src = BRAND_HEX.has(h) ? '<em>marca</em>' : OFF_BRAND.has(h) ? '<em class="ext">fuera de marca</em>' : '<em>derivado</em>';
+    return `<div class="sw-item"><i style="background:${h}"></i><b>${l}</b><code>--${v} ${h}</code><br>${src}</div>`;
+  }).join('');
+  probe.remove();
+}
+
+/* ---------- Pestañas ---------- */
+const IDS = ['a', 'b', 'c', 'comparar'];
+function show(id) {
+  $$('section.dir').forEach(s => s.hidden = s.id !== 'sec-' + id);
+  $$('.tabs button').forEach(b => b.setAttribute('aria-selected', b.dataset.t === id));
+  try { history.replaceState(null, '', '#' + id); } catch (e) {}
+}
+$$('.tabs button').forEach(b => b.addEventListener('click', () => { show(b.dataset.t); scrollTo({ top: $('.tabs').offsetTop, behavior: 'smooth' }); }));
+show(IDS.includes(location.hash.slice(1)) ? location.hash.slice(1) : 'a');
+
+/* ---------- Visor ---------- */
+const ov = $('.ov'), stage = $('.ov-stage');
+let group = [], idx = 0;
+function fit() {
+  const b = stage.firstElementChild; if (!b) return;
+  const W = stage.clientWidth, H = stage.clientHeight, s = Math.min(W / 1920, H / 1080);
+  b.style.transform = `translate(${(W - 1920 * s) / 2}px, ${(H - 1080 * s) / 2}px) scale(${s})`;
+}
+function render() {
+  const fig = group[idx], b = fig.querySelector('.board').cloneNode(true);
+  stage.replaceChildren(b);
+  $('.ov-title').textContent = `${b.dataset.label}  (${idx + 1}/${group.length})`;
+  fit();
+}
+function openFig(fig) {
+  group = $$(`.bw[data-group="${fig.dataset.group}"]`); idx = group.indexOf(fig);
+  ov.hidden = false; document.body.style.overflow = 'hidden'; render();
+}
+function close() { if (document.fullscreenElement) document.exitFullscreen(); ov.hidden = true; document.body.style.overflow = ''; }
+const step = n => { idx = (idx + n + group.length) % group.length; render(); };
+document.addEventListener('click', e => { const bf = e.target.closest('.bf'); if (bf && !ov.contains(bf)) openFig(bf.closest('.bw')); });
+stage.addEventListener('click', () => step(1));
+$('.ov-bar').addEventListener('click', e => {
+  const a = e.target.closest('button')?.dataset.act;
+  if (a === 'prev') step(-1); else if (a === 'next') step(1); else if (a === 'close') close();
+  else if (a === 'fs') ov.requestFullscreen?.();
+});
+document.addEventListener('keydown', e => {
+  if (ov.hidden) return;
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); step(1); }
+  else if (e.key === 'ArrowLeft') step(-1);
+  else if (e.key === 'Escape' && !document.fullscreenElement) close();
+  else if (e.key === 'f' || e.key === 'F') document.fullscreenElement ? document.exitFullscreen() : ov.requestFullscreen?.();
+});
+addEventListener('resize', fit);
+document.addEventListener('fullscreenchange', () => requestAnimationFrame(fit));
+
+/* ---------- ?lamina=b-mitad → una sola lámina a 1:1 (para capturas y proyector) ---------- */
+const solo = new URLSearchParams(location.search).get('lamina');
+if (solo) {
+  const [d, k] = solo.split('-');
+  const src = $(`#sec-${d} .board[data-kind="${k}"]`);
+  if (src) {
+    const b = src.cloneNode(true); b.style.transform = 'none';
+    document.body.replaceChildren(b); document.body.style.overflow = 'hidden';
+  }
+}
+</script>
+</body>
+</html>
