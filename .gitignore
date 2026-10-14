@@ -2,3 +2,5 @@
 node_modules/
 dist/
 *.local.json
+.playwright-mcp/
+.impeccable/*.cache.json

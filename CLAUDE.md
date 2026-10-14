@@ -60,3 +60,25 @@ Si `componentes.css` o `motion.js` todavía no existen, créalos en esa ruta la 
 ## Cambiar un valor existente
 
 Cambia la variable en `design-system.css`; nunca la sobrescribas dentro de una escena. Si una sola escena necesita un valor distinto, crea una variable con nombre propio siguiendo los pasos anteriores. Lo mismo vale para tipografía, espaciado, radios y trazos.
+
+## Herramientas del agente
+
+Declaradas en el repositorio: plugins en `.claude/settings.json` y MCP en `.mcp.json`.
+
+- **GSAP** (`gsap-skills`): para escribir las animaciones y la cámara.
+- **Impeccable** (`/impeccable <comando>`): criterio de diseño y revisión. Sustituye a frontend-design, que no se usa en este proyecto.
+- **Playwright MCP**: para ver lo que se construye, con capturas y grabación de vídeo (`--caps=devtools`).
+
+## Impeccable, siempre por debajo del design system
+
+- **Prioridad:** este `CLAUDE.md` y `design/` mandan sobre `PRODUCT.md`, y los dos sobre cualquier propuesta de Impeccable. Si sugiere otra fuente, otro color, otra curva o más decoración, gana el design system.
+- **`PRODUCT.md`** es el contexto de producto que lee Impeccable: público, propósito y restricciones. Se actualiza con `/impeccable init` y nunca contradice este fichero.
+- **`DESIGN.md`**, si existe, es un derivado: se genera con `/impeccable document` a partir de `design/` y nunca se edita a mano. Cada vez que cambie `design/`, regenéralo (o ejecuta `/impeccable doctor`). La fuente de verdad sigue siendo `design/`.
+- **Comandos de revisión**, para usar sobre cada escena al terminarla: `critique`, `audit`, `polish`, `layout`, `clarify` y `optimize`. Corrigen sin cambiar la identidad visual.
+- **Comandos que cambian el lenguaje visual** (`bolder`, `quieter`, `colorize`, `typeset`, `animate`, `distill`): solo para proponer. Si se acepta un cambio, se aplica en `design/` (variables, `componentes.css` o `motion.js`) siguiendo las reglas de arriba, nunca dentro de una escena.
+- **`delight` y `overdrive`**: no se usan salvo petición expresa; chocan con la regla de «nada decorativo».
+- **El hook de diseño** revisa cada edición de CSS, JS o HTML y señala problemas.
+  - Si el problema es real, se arregla.
+  - Si es una excepción justificada, se suprime de la forma más estrecha posible (`/impeccable hooks ignore-value <regla> "*" --file <ruta>`) y se explica en la respuesta.
+  - Nunca se silencia una regla para saltarse el design system.
+  - `/impeccable hooks off` lo desactiva en el proyecto.
