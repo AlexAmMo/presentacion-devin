@@ -1,7 +1,7 @@
 // E02 · Devin Desktop, CLI y Cloud. Comparte pantalla con E03.
 // Arriba, las dos preguntas, centradas juntas, y debajo, en la misma animación, dos islas: Local
 // (a la izquierda sus ventajas y a la derecha sus dos interfaces, Desktop y CLI, separadas por una
-// línea fina) y Cloud (una tarea que se entrega y se ejecuta sola, la misma tarea cada semana y su
+// línea fina) y Cloud (una tarea que se entrega y se ejecuta sola, automatizar tareas repetitivas y su
 // ventaja, en cascada). Primero se explica Local entero y después Cloud. Al final, un cable une las
 // tres opciones: pueden combinarse.
 // Las viñetas de cada columna se centran juntas en la altura de su isla; las de Cloud, también
@@ -56,8 +56,8 @@ export default function ({ escena, raiz }) {
       const cloud = `<div style="flex:1;display:flex;justify-content:center">` +
         columna(
           vineta(icono('message-square'), 'Una tarea con objetivo claro', 'Se entrega y se ejecuta sola', ` data-opcion${paso(4, { efecto: 'entrarEnVentana' })}`) +
-          vineta(repeticion('calendar-clock'), 'Cada semana', 'La misma tarea, sin intervención', paso(4, { orden: 1 })) +
-          vineta(icono('check'), 'Trabajar con múltiples repositorios', '', paso(4, { orden: 2 })), ' vinetas--anillo') +
+          vineta(repeticion('calendar-clock'), 'Automatizar tareas repetitivas', 'La misma tarea, sin intervención', paso(4, { orden: 1 })) +
+          vineta(icono('folders'), 'Trabajar con múltiples repositorios', '', paso(4, { orden: 2 })), ' vinetas--anillo') +
         '</div>';
 
       raiz.innerHTML =

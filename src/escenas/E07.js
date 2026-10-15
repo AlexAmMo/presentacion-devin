@@ -3,14 +3,17 @@
 // resolver la misma tarea: un modelo barato que necesita tres intentos y uno bueno que acierta a
 // la primera; el barato acaba costando más (cifras ficticias, sin rótulo).
 // La tabla lleva una tercera columna con el modelo recomendado: GPT-6 Luna para lo sencillo y
-// GPT-6.1 Sol para lo complejo (o SWE-2, mientras esté en promoción). Las tareas van agrupadas por
-// modelo, primero las sencillas, y el modelo de cada grupo, una sola vez, centrado en su altura.
+// GPT-6.1 Sol para lo complejo o, apilado debajo tras una «o», SWE-2, mientras esté en promoción.
+// Las tareas van agrupadas por modelo, primero las sencillas, y el modelo de cada grupo, una sola
+// vez, centrado en su celda (en alto y en ancho, como el rótulo de su columna).
 // Pasos: 1 la tabla, fila a fila · 2 los intentos y sus totales.
 import { icono } from '../../design/iconos.js';
 import { en, cabecera, decimal, escenaPorPasos } from './comun.js';
 
 const SENCILLA = 'GPT-6 Luna';
-const COMPLEJA = 'GPT-6.1 Sol<br><span style="color:var(--color-texto-2);font-weight:var(--peso-texto)">/ SWE-2 en promoción</span>';
+// Las dos opciones para lo complejo, apiladas, con una «o» entre ellas; SWE-2, con su condición.
+const suave = (texto, color = 'texto-2') => `<span style="color:var(--color-${color});font-weight:var(--peso-texto)">${texto}</span>`;
+const COMPLEJA = `GPT-6.1 Sol<br>${suave('o', 'texto-3')}<br>SWE-2 ${suave('en promoción')}`;
 const GRUPOS = [
   [SENCILLA, [
     ['Localizar código o explicar una función sencilla', 'Opción rápida, con esfuerzo contenido'],
@@ -32,24 +35,24 @@ const OPCIONES = [
 export default function ({ escena, raiz }) {
   const intento = ([coste, bien]) =>
     `<span class="contador" data-paso="2" data-orden="1">${icono(bien ? 'check' : 'x', 'icono--s')}${decimal(coste, 2)}</span>`;
-  const fila = ({ nombre, intentos }, i) => {
+  // Las dos filas, en una rejilla: los totales (y sus «=») quedan en la misma columna, y el único
+  // intento del modelo bueno, centrado bajo los tres del barato.
+  const fila = ({ nombre, intentos }) => {
     const total = intentos.reduce((a, [c]) => a + c, 0);
-    return en(120, 816 + i * 96, `<div style="display:flex;align-items:center;gap:var(--esp-2)">
-        <span class="tipo-texto" style="width:300px;font-weight:var(--peso-enfasis)">${nombre}</span>
-        ${intentos.map(intento).join('')}
+    return `<span class="tipo-texto" style="font-weight:var(--peso-enfasis)">${nombre}</span>
+        <div style="display:flex;justify-content:center;gap:var(--esp-2)">${intentos.map(intento).join('')}</div>
         <span class="tipo-texto-s" data-paso="2" data-orden="2" style="color:var(--color-texto-3)">=</span>
-        <span class="contador contador--coste" data-paso="2" data-orden="2">${icono('coins')}${decimal(total, 2)}<span class="contador__unidad">ACUs · ${intentos.length} ${intentos.length > 1 ? 'intentos' : 'intento'}</span></span>
-      </div>`, { paso: 2 });
+        <span class="contador contador--coste" data-paso="2" data-orden="2" style="justify-self:start">${icono('coins')}${decimal(total, 2)}<span class="contador__unidad">ACUs · ${intentos.length} ${intentos.length > 1 ? 'intentos' : 'intento'}</span></span>`;
   };
   return escenaPorPasos({
     raiz,
     montar: () =>
       cabecera(escena, 1680) +
-      en(120, 268, `<table class="tabla" style="width:1680px"><colgroup><col style="width:638px"><col><col style="width:300px"></colgroup><thead data-paso="1"><tr><th>Tipo de tarea</th><th>Estrategia inicial</th><th>Modelo recomendado</th></tr></thead><tbody>
+      en(120, 268, `<table class="tabla" style="width:1680px"><colgroup><col style="width:638px"><col><col style="width:300px"></colgroup><thead data-paso="1"><tr><th>Tipo de tarea</th><th>Estrategia inicial</th><th style="text-align:center">Modelo recomendado</th></tr></thead><tbody>
         ${GRUPOS.flatMap(([modelo, tareas]) => tareas.map(([t, e], i) => `<tr data-paso="1"><td>${t}</td><td style="color:var(--color-texto-2)">${e}</td>${i ? '' :
-          `<td rowspan="${tareas.length}" style="font-weight:var(--peso-enfasis);vertical-align:middle">${modelo}</td>`}</tr>`)).join('')}</tbody></table>`) +
-      OPCIONES.map(fila).join('') +
-      en(1500, 824, '<p class="tipo-texto" style="margin:0;font-weight:var(--peso-enfasis)">El barato acaba costando más</p>',
-        { paso: 2, orden: 3, estilo: 'width:300px' }),
+          `<td rowspan="${tareas.length}" style="font-weight:var(--peso-enfasis);vertical-align:middle;text-align:center">${modelo}</td>`}</tr>`)).join('')}</tbody></table>`) +
+      // La conclusión, a la derecha, en la misma rejilla: ocupa las dos filas y queda centrada en su alto.
+      en(120, 816, `<div style="width:1680px;display:grid;grid-template-columns:300px auto auto auto 1fr;align-items:center;gap:var(--esp-4) var(--esp-2)">${OPCIONES.map(fila).join('')}
+          <p class="tipo-texto" data-paso="2" data-orden="3" style="grid-column:5;grid-row:1 / span 2;justify-self:end;width:300px;margin:0;font-weight:var(--peso-enfasis)">El barato acaba costando más</p></div>`, { paso: 2 }),
   });
 }

@@ -1,6 +1,6 @@
 // Las tapas: una por bloque del mapa (región), con su título, que es el de su parte en
 // escenas.md, y el icono de su zona. La del centro lleva en su lugar el logo de Devin y, debajo,
-// su nombre y, discretos, el resto del título de la charla y el logo de Openbank, centrados en
+// su nombre y, discretos, el subtítulo de la charla y el logo de Openbank, centrados en
 // ella, sobre el hub (centrado en su pantalla, en el centro del bloque): la portada (E01/1)
 // encuadra ese conjunto.
 // Tapan su bloque hasta que se entra en él por primera vez. Su estado sale del paso,

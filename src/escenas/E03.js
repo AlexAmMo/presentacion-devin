@@ -34,7 +34,9 @@ const ESTADOS = [[conModelo, 3, 5], [conModo, 5, 6], [conContexto, 6, 7]];
 const CONTROLES = [
   ['message-square', 'Cuadro de mensajes', [960, 710, 1634, 896], 'derecha'],
   ['cpu', 'Modelo', [1086, 820, 1266, 876], 'abajo'],
-  ['gauge', 'Effort', [510, 382, 1056, 510], 'derecha', 420],
+  // Effort: el modelo de la captura no lo admite; si lo admite, sale a la derecha de su nombre y
+  // su contexto, en la cabecera de su ficha. El resaltado marca ese hueco.
+  ['gauge', 'Effort', [728, 254, 982, 348], 'derecha', 301],
   ['code-xml', 'Modo', [1030, 820, 1090, 876], 'abajo'],
   ['app-window', 'Contexto', [1388, 821, 1442, 875], 'abajo'],
 ];

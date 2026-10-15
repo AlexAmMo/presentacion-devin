@@ -19,21 +19,20 @@ import iconoPullRequest from '../../design/assets/logos/github-pull-request.svg'
 // El ejemplo de la fase 1 y lo que el agente lee de él.
 const EJEMPLO = ['create_pull_request', 'Abre un pull request con los cambios de una rama. Úsala para proponer cambios a revisión.', 'branch: texto · title: texto · body: texto'];
 const ELEMENTOS = ['Nombre', 'Descripción', 'Parámetros'];
-// Guion 2.6, «¿Tool o skill?», con los textos del usuario (Cambios.md).
+// Guion 2.6, «¿Tool o skill?», con los textos del usuario (Cambios.md); sin las filas de credenciales,
+// reutilización y coste de crearla.
 const COMPARACION = [
   ['Qué aporta', 'Actuar sobre un sistema o consultar sus datos', 'Conocimiento: cómo y cuándo hacer algo'],
   ['Cómo se ejecuta', 'Código propio determinista', 'El modelo sigue instrucciones en texto'],
   ['Entradas y salidas', 'Estructura definida', 'Texto libre'],
-  ['Credenciales y permisos', 'No entran al contexto', 'Las que existan en el contexto'],
   ['Qué entra en el contexto', 'Solo la llamada y el resultado', 'Todo el procedimiento y lo que ejecute'],
-  ['Reutilización', 'Cualquier agente o IDE compatible', 'Devin y otros agentes del mismo estándar'],
-  ['Coste de crearla', 'Desarrollarla, alojarla y mantenerla', 'Un archivo Markdown en el repositorio'],
 ];
 // Grupos (data-orden) de la fase 2: así no se mezclan con los de la fase anterior, que sale antes.
 const F2 = 10;
 // La etiqueta y el título de la fase 2.
 const ETIQUETA_F2 = 'Tools vs Skills', TITULO_F2 = 'Una **tool** «da manos» al LLM, una **skill** «da conocimiento»';
-const ARRIBA = 330;
+// La banda de la fase 2: desde bajo el título hasta el borde de la zona segura.
+const BANDA_Y = 260;
 // El esquema (paso 2), centrado en la banda de contenido; en el paso 1, la herramienta y la ficha,
 // centradas como pareja y más grandes.
 // Huecos entre las piezas del esquema: el último, el pasillo de las flechas hasta la ficha.
@@ -78,10 +77,10 @@ export default function ({ escena, raiz }) {
         // Fase 1.
         fila +
         '<svg data-flechas style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible"></svg>' +
-        // Fase 2. Las tablas no tienen paso: lo tienen su cabecera y sus filas.
-        en(120, ARRIBA, comparacion) +
-        en(120, 924, `<p class="tipo-texto" style="margin:0;display:flex;align-items:center;gap:var(--esp-2)">${icono('wrench')}+${icono('puzzle')}<b style="font-weight:var(--peso-enfasis);margin-left:var(--esp-2)">No compiten:</b> lo habitual es una herramienta con una skill que explica cuándo y cómo usarla.</p>`,
-          { paso: 3, orden: F2 });
+        // Fase 2. Las tablas no tienen paso: lo tienen su cabecera y sus filas. La tabla y su pie, juntos
+        // y centrados en el alto que queda bajo el título (hasta el borde de la zona segura).
+        en(120, BANDA_Y, `<div style="height:${px('--escena-alto') - px('--margen-y') - BANDA_Y}px;display:flex;flex-direction:column;justify-content:center;gap:var(--esp-6)">${comparacion}
+          <p class="tipo-texto" data-paso="3" data-orden="${F2}" style="margin:0;display:flex;align-items:center;gap:var(--esp-2)">${icono('wrench')}+${icono('puzzle')}<b style="font-weight:var(--peso-enfasis);margin-left:var(--esp-2)">No compiten:</b> lo habitual es una herramienta con una skill que explica cuándo y cómo usarla.</p></div>`);
 
       // La etiqueta y el título cambian con la fase: en la comparación, los suyos.
       const etiqueta = raiz.querySelector('.etiqueta').parentElement, titulo = raiz.querySelector('h2').parentElement;

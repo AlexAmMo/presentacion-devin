@@ -62,6 +62,7 @@ const G = { x: 120, y: 262, ancho: 1120, alto: 306 };
 // pausa. La etiqueta del corchete, en una línea, para que quepa todo bajo la gráfica.
 const SIN = { y: 590 }, CON = { y: 760 }, BAJO = 52;
 const DX = 1340;                               // columna derecha
+const ROTULOS = 180;                           // ancho de los rótulos de los desgloses
 
 export default function ({ escena, raiz }) {
   let pasos = null;
@@ -88,9 +89,10 @@ export default function ({ escena, raiz }) {
   };
   const leidoEn = (variante, n) => (n ? tokens(variante, n).read : 0);
   const fallaEn = (variante, n) => variante === 'pausa' && n === PAUSA;
-  // Si una capa del lado «Con caché» se lee de caché en la llamada n: lo de las anteriores, salvo
-  // si la caché caduca. Las de salida conservan su dibujo (contorno y relleno blanco).
-  const cacheadaEn = (variante, n, el) => n >= 2 && !fallaEn(variante, n) && +el.dataset.k < n && !el.classList.contains('capa--salida');
+  // Si una capa del lado «Con caché» se lee de caché en la llamada n: lo que entró en las anteriores,
+  // salvo si la caché caduca. También las de salida: el output de la llamada k entra en la k + 1
+  // como input nuevo (se escribe en caché) y desde la k + 2 se lee de caché, como lo demás.
+  const cacheadaEn = (variante, n, el) => n >= 2 && !fallaEn(variante, n) && +el.dataset.k < n;
   const capasCon = () => $$('[data-lado="con"] .capa[data-k]');
 
   // ── Estado instantáneo ──────────────────────────────────────────────────────
@@ -119,7 +121,6 @@ export default function ({ escena, raiz }) {
     gsap.set(corchete, { width: tramo(falla ? contexto(n - 1) : leido) });
     corchete.classList.toggle('corchete--fallo', falla);
     etiqueta.classList.toggle('corchete-etiqueta--fallo', falla);
-    $('[data-leido]').textContent = `${miles(leido)} tokens`;
   }
   // La serie de una variante, recortada hasta la llamada n (y desde la que se ve).
   const recorte = (desde, n) => {
@@ -185,7 +186,6 @@ export default function ({ escena, raiz }) {
     // El corchete: lo que se lee de caché en esta llamada (o, si caducó, discontinuo con ✕).
     const corchete = $('.corchete'), etiqueta = $('.corchete-etiqueta'), leido = leidoEn(con, k);
     const falla = fallaEn(con, k), antes = corchete.classList.contains('corchete--fallo');
-    tl.set($('[data-leido]'), { textContent: `${miles(leido)} tokens` }, pos);
     // Lo que se lee de caché, en su color; si caduca, todo se vuelve a escribir y deja de estarlo.
     recolorear(tl, el => cacheadaEn(con, k - 1, el), el => cacheadaEn(con, k, el), pos);
     if (falla) {
@@ -215,7 +215,6 @@ export default function ({ escena, raiz }) {
       .vaciarVentana(capas, {}, pos)
       .set(capas, { autoAlpha: 0 })
       .to($('.corchete'), { width: tramo(leido), duration: durVuelta(), ease: v('--ease-salida') }, pos)
-      .set($('[data-leido]'), { textContent: `${miles(leido)} tokens` }, pos)
       .subirContador($('[data-llamadas]'), { desde: k, hasta: k - 1, duration: s('--dur-micro') }, pos);
     recolorear(tl, el => cacheadaEn('con', k, el), el => cacheadaEn('con', k - 1, el), pos, durVuelta());
     subirLado(tl, 'con', desglose('con', k), desglose('con', k - 1), pos, durVuelta());
@@ -233,7 +232,9 @@ export default function ({ escena, raiz }) {
 
   return {
     montar() {
-      const desgloses = (lado, filas) => `<div style="display:grid;grid-template-columns:auto auto;justify-content:start;gap:var(--esp-1) var(--esp-5);align-items:baseline">
+      // Los dos desgloses, con la columna de los rótulos al mismo ancho (el del más largo, «Input sin
+      // caché»): así sus precios quedan alineados, uno sobre otro.
+      const desgloses = (lado, filas) => `<div style="display:grid;grid-template-columns:${ROTULOS}px auto;justify-content:start;gap:var(--esp-1) var(--esp-5);align-items:baseline">
         ${filas.map(([t, clave, atrs = '']) => `<span class="tipo-etiqueta" style="color:var(--color-texto-2)"${atrs}>${t}</span><span class="tipo-mono" style="text-align:right;font-variant-numeric:var(--cifras)"${atrs}><span data-d="${lado}-${clave}">0,000</span> $</span>`).join('')}
         <span class="tipo-texto-s" style="font-weight:var(--peso-enfasis)">Total</span><span class="tipo-mono" style="text-align:right;font-weight:var(--peso-enfasis);font-variant-numeric:var(--cifras)"><span data-d="${lado}-total">0,000</span> $</span></div>`;
       const g = grafica({
@@ -247,7 +248,8 @@ export default function ({ escena, raiz }) {
         })),
       });
       const rotulo = (y, texto, opciones) => en(120, y, `<p class="tipo-texto-s" style="margin:0;font-weight:var(--peso-enfasis)">${texto}</p>`, opciones);
-      const resultado = (paso, hasta, cifra, apoyo, extra = {}) => en(DX, 330, `<div class="tipo-titulo" style="color:var(--color-acento);white-space:nowrap">${cifra}</div>
+      // El resultado de cada paso, bajo el contador de llamadas, con aire entre los dos.
+      const resultado = (paso, hasta, cifra, apoyo, extra = {}) => en(DX, 362, `<div class="tipo-titulo" style="color:var(--color-acento);white-space:nowrap">${cifra}</div>
           <p class="tipo-etiqueta" style="margin:var(--esp-1) 0 0;color:var(--color-texto-3)">${apoyo}</p>`, { paso, hasta, orden: 20, estilo: 'width:460px', ...extra });
       const [sinN, conN, pausaN] = ['sin', 'con', 'pausa'].map(x => acumulado(x, LLAMADAS));
       // Todas las cifras de la escena, con tres decimales: las de la llamada 1 los necesitan, y los
@@ -289,8 +291,7 @@ export default function ({ escena, raiz }) {
         en(120 + borde(), CON.y + BAJO + px('--ventana-alto') + px('--esp-1'), '<div class="corchete" style="width:0"></div>') +
         en(120 + borde(), CON.y + BAJO + px('--ventana-alto') + px('--esp-1') + px('--corchete-ancho') + px('--esp-1'),
           `<div class="corchete-etiqueta corchete-etiqueta--linea">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}
-            <span class="corchete-etiqueta__acierto">Cache read</span><span class="corchete-etiqueta__fallo">Caché caducada: se vuelve a escribir</span>
-            <span class="corchete-etiqueta__detalle corchete-etiqueta__acierto" data-leido>0 tokens</span></div>`) +
+            <span class="corchete-etiqueta__acierto">Cache read</span><span class="corchete-etiqueta__fallo">Caché caducada: se vuelve a escribir</span></div>`) +
         en(DX, CON.y, desgloses('con', [['Cache write', 'write'], ['Cache read', 'read'], ['Output', 'output']]),
           { paso: 1, hasta: 5 });
       pasos = crearPasos(raiz);

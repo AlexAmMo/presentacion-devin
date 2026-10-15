@@ -396,6 +396,88 @@ E30:
 - Elimina el logo de openbank de esta diapositiva
 
 
+E01: 
+
+- Disminuye el espacio vacio entre el logo de devin y su texto
+- Cambien el pie de pagina a "Conceptos basicos y como aprovecharlo mejor"
+
+E02:
+
+- Cambia el segundo punto de devin cloud a "Automatizar tareas repetitivas" y dale un poco mas de espacio a la flecha que gira al rededor del icono
+- Cambia el "tick" por un icono que represente mejor "Multiples repositorios" con algun tipo de icono estilo elementos "stacked"
+
+E03:
+
+- La flecha a effort en /4 es incorrecta, el effort no se muestra porque ese modelo concreto no tiene la opcion disponible, pero normalmente se mostraria en la seccion justo superior donde pone "swe 1.6" y debajo "slow. En el hueco libre que queda la la derecha de esos 2 campos
+
+- Cada vez que vayamos a cambiar de seccion, por ejemplo entre "primeros pasos" y "Devin" me gustaria que hubiera un paso intermedio. Tras pulsar click en la ultima diapositiva de cada seccion quiero que haya una animacion igual a la que tenemos al pulsar "o". Y tenes una "vista de pajaro", despues la animacion será igual a la que hace actualmente el sistema si pulsas "click" desde esta vista de pajaro para entrar a la siguiente seccion
+
+
+E05:
+
+- Entre /2 y /3, en vez de eliminar los 3 pequeños arcos, dejalos y crea solo un arco mas externo, el que indica el salto grande x100 entre la familia mas barata y la mas cara. centra el x100 en altura respecto de su arco
+- Acelera la animacion en /2 para que los 3 arcos aparezcan a la vez, en vez de secuencialmente
+- haz el arco de x100 mas redondo aunque no salga de los mismo inicios y fin que ahora.
+- Cambia el texto del titulo por: "la efectividad de un modelo depende de su: Familia, Generacion y Effort. Ajustalo para que entre en una sola linea. 
+- Haz que el arco de x100 se cargue sin hacer un click mas despues de los 3 pequeños arcos
+- En /3, cambia el texto por "El nombre de la familia no basta: es necesario tener en cuanta la generacion"
+
+E06:
+
+- Cambia el titulo a "Comparativa Efectividad - Coste" 
+
+E07:
+
+- Centra los modelos "luna" y "sol/swe" dentro de su columna de "modelo recomendado"
+- Cambia el "/" entre sol y swe por "o" y pon la o entre ambos modelos, apilandolos verticalmente
+- En /2 alinea las pills del coste final y centra la pill del unico intento del modelo caro respecto de las pills de los 3 intentos
+- Centra en altura "el barato acaba costando mas" en su hueco disponible
+
+E08:
+
+- Cambal el titulo por "El Effort o Esfuerzo...."
+- Elimina /4 
+- En /3, en los ejemplos de mejora "+19" y "-2", incluye un signo "%" para entender mejor el dato
+
+E10:
+
+- Cambia el titulo de grafico de "acierto" a "efectividad"
+
+E14:
+
+- Elimina "Esto es un agente"
+
+E15:
+
+- Elimina de la tabla las filas: "Credenciales y permisos", "Reutilizacion" y "coste de crearla". Despues ajusta en altura la tabla y el pie de pagina final para que esten contiguos y centrados en altura
+
+E16:
+
+- Centra dentro de sus pills los distintos tipos de agentes y servicios
+
+E23: 
+
+- Alinea correctamente la columna de precios entre la version con cache y sin cache
+- Aumenta el espacio superior entre la pill de "N llamadas" y el % que aumenta o disminuye el coste total
+- Revisa si los tokens de "output" de una llamada deberian convertirse en "cacheados" en la siguiente llamada o no. En caso afirmativo, colorealos del mismo azul que el resto de tokens cacheados.
+- Elimina el total de tokens cacheados a pie de pill "con cache" para evitar mostrar un numero medio inventando
+
+E25:
+
+- en /3 oscure o cambia el color del archivo completo con logs para mostrar que es erroneo al igual que en E24/4 con la peticion inicial
+- Alinea a la izquierda el texto final y pon "El resto de contexto completo puede estar disponible para consultarlo"
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

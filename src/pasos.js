@@ -7,6 +7,9 @@
 //   final); la siguiente avanza. Así un doble toque del mando no se salta una animación.
 // - Retroceder, saltar y recargar no animan: ponen al instante el estado del paso. En modo
 //   estático (?estatico o prefers-reduced-motion), avanzar tampoco: va por esa misma vía.
+// - Al pasar de un bloque a otro avanzando, hay un paso intermedio: la última pulsación de un bloque
+//   lleva a la vista general (como la tecla O) y la siguiente entra desde ella en el bloque nuevo.
+//   Retroceder desde esa vista vuelve al paso en que se estaba.
 // - Ir al final (tecla Fin, por si falta tiempo) anima como avanzar: vuela hasta las preguntas.
 // - Cada paso tiene su URL (#E05/3).
 // - Los pasos [A] se pueden saltar (tecla A); la preferencia dura la sesión.
@@ -38,6 +41,8 @@ const abiertasHasta = i => new Set([...ENTRADAS].filter(([, en]) => en <= i).map
 const POR_ZONA = new Map();
 ESCENAS.forEach(e => { if (e.x != null) POR_ZONA.set(e.zona, [...(POR_ZONA.get(e.zona) ?? []), e]); });
 const PREFERENCIA = 'devin-sin-avanzados';
+// Del paso a al b se cambia de bloque (desde la apertura, que ya es la vista general, no cuenta).
+const cambiaDeBloque = (a, b) => PASOS[a].escena.region !== 'general' && PASOS[a].escena.region !== PASOS[b].escena.region;
 const LIMPIAR = { clearProps: 'opacity,visibility,transform' };
 
 export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
@@ -198,6 +203,11 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
     get general() { return general; },
     get conAvanzados() { return conAvanzados; },
     get animando() { return Boolean(animacion && animacion.duration() > 0 && animacion.progress() < 1); },
+    /** La próxima pulsación lleva a la vista general: es el último paso de un bloque. */
+    get haciaGeneral() {
+      const i = buscar(actual, 1);
+      return i != null && !general && cambiaDeBloque(actual, i);
+    },
 
     avanzar() {
       // Si el paso aún se anima, esta pulsación solo lo termina; la siguiente avanza.
@@ -206,9 +216,14 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
         return void alCambiar();
       }
       const i = buscar(actual, 1);
-      if (i != null) ir(i, { animar: true });
+      if (i == null) return;
+      // Último paso de un bloque: primero, la vista general; desde ella, la siguiente pulsación entra en el nuevo.
+      if (nav.haciaGeneral) return void nav.alternarGeneral();
+      ir(i, { animar: true });
     },
     retroceder() {
+      // Desde la vista general se vuelve, sin animar, al paso en que se estaba.
+      if (general) return void ir(actual);
       const i = buscar(actual, -1);
       if (i != null) ir(i);
     },

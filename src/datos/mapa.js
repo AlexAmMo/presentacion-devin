@@ -75,8 +75,8 @@ export const ENCUADRES = {
  * lleva el logo de Devin y, debajo, su nombre en lugar del título de la parte; su logo va encima
  * del centro del hub, no en el centro de la tapa, y su holgura es la que necesita la portada,
  * que encuadra ese logo y ese nombre, para quedar dentro.
- * - tituloCentro y lemaCentro: el nombre bajo el logo de Devin y, debajo, discreto, el resto del
- *   título de la charla (el de «Guion Devin.md»), sobre el logo de Openbank.
+ * - tituloCentro y lemaCentro: el nombre bajo el logo de Devin y, debajo, discreto, el subtítulo
+ *   de la charla, sobre el logo de Openbank.
  * - portada: lo que ocupan el logo, el nombre y ese pie del alto de la portada (encuadre
  *   'portada'); así el encuadre queda dentro de la tapa, sin que asomen sus esquinas.
  * - fundido: en qué punto del vuelo que entra en un bloque empieza a fundirse su tapa (0,5 = a
@@ -85,7 +85,7 @@ export const ENCUADRES = {
  * - fundidoContenido: en qué punto del vuelo empiezan a fundirse su icono (o logo) y su título;
  *   terminan cuando empieza la tapa. Así no cruzan, enormes, el título de la escena.
  */
-export const TAPAS = { holgura: [440, 380], holguraFuera: [360, 420], tituloCentro: 'Devin', lemaCentro: 'en el día a día: cómo aprovecharlo mejor y controlar el consumo', portada: 0.8, fundido: 0.5, fundidoContenido: 0.25 };
+export const TAPAS = { holgura: [440, 380], holguraFuera: [360, 420], tituloCentro: 'Devin', lemaCentro: 'Conceptos básicos y cómo aprovecharlo mejor', portada: 0.8, fundido: 0.5, fundidoContenido: 0.25 };
 
 /**
  * El hub: el agente (un círculo, con Devin) en el centro, sus herramientas de serie pegadas a él

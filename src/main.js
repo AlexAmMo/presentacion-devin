@@ -39,7 +39,7 @@ async function iniciarPresentacion() {
     return {
       escena: { id: e.id, titulo: e.titulo, bloque: e.bloque, mensaje: e.mensaje, minutos: e.minutos, guion: e.guion, notas: e.notas },
       paso: resumen(p), siguiente: resumen(sig), progreso: nav.progreso(),
-      general: nav.general, conAvanzados: nav.conAvanzados,
+      general: nav.general, haciaGeneral: nav.haciaGeneral, conAvanzados: nav.conAvanzados,
       minutos: { hastaAqui: minutosHasta(p.ie), total: minutosHasta(ESCENAS.length - 1) },
     };
   };

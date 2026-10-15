@@ -14,7 +14,7 @@
    ========================================================================== */
 
 /* ── Utilidad · Estilos de texto ───────────────────────────────────────────
-   clase: .tipo-etiqueta · .tipo-texto-s · .tipo-texto · .tipo-entradilla · .tipo-titulo-s · .tipo-titulo · .tipo-titulo-xl · .tipo-cifra · .tipo-cifra-xl · .tipo-mono · .tipo-mono-s
+   clase: .tipo-etiqueta · .tipo-texto-s · .tipo-texto · .tipo-entradilla · .tipo-titulo-s · .tipo-titulo-ajustado · .tipo-titulo · .tipo-titulo-xl · .tipo-cifra · .tipo-cifra-xl · .tipo-mono · .tipo-mono-s
    uso: Un estilo por cada variable --tipo-*. Las escenas no escriben «font» a mano.
    ─────────────────────────────────────────────────────────────────────── */
 .tipo-etiqueta { font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
@@ -22,6 +22,7 @@
 .tipo-texto { font: var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
 .tipo-entradilla { font: var(--peso-texto) var(--tipo-entradilla)/var(--interlineado-texto) var(--fuente-texto); }
 .tipo-titulo-s { font: var(--peso-display) var(--tipo-titulo-s)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
+.tipo-titulo-ajustado { font: var(--peso-display) var(--tipo-titulo-ajustado)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
 .tipo-titulo { font: var(--peso-display) var(--tipo-titulo)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
 .tipo-titulo-xl { font: var(--peso-display) var(--tipo-titulo-xl)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
 .tipo-cifra { font: var(--peso-display) var(--tipo-cifra)/var(--interlineado-cifra) var(--fuente-display); letter-spacing: var(--tracking-cifra); font-variant-numeric: var(--cifras); }
@@ -120,14 +121,14 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
 
 /* ── Componente · Tokens leídos de caché ───────────────────────────────────
    clase: .capa--cacheada · .leyenda__muestra--cacheada
-   forma: Lo que una llamada relee de la caché: las capas del principio de su ventana, bajo el corchete (las de salida conservan su dibujo: contorno y relleno blanco). Cuando la ventana se pesa por coste, su ancho se multiplica por lo que cuesta un token leído de caché respecto a uno de entrada (un 10 % en Anthropic): así se ve lo poco que pesa.
+   forma: Lo que una llamada relee de la caché: las capas del principio de su ventana, bajo el corchete. También el output de las llamadas anteriores: entra en la siguiente como input nuevo (se escribe en caché) y desde la de después se lee de caché; entonces pierde su contorno de salida y toma el mismo color que lo demás. Cuando la ventana se pesa por coste, su ancho se multiplica por lo que cuesta un token leído de caché respecto a uno de entrada (un 10 % en Anthropic): así se ve lo poco que pesa.
    color: --color-cacheado con texto --color-sobre-cacheado: el mismo en todas las pantallas del coste, para reconocerlo de un vistazo.
    medidas: Las de la capa · su ancho, el de sus tokens o, pesado por coste, multiplicado por el coeficiente (como mínimo --trazo-contorno)
    icono: —
    movimiento: cachearCapas (toman el color y se encogen hasta su coste; al caducar la caché, vuelven a ser de entrada y a su ancho; en E23, solo el color, al ritmo de cada llamada)
    escenas: E21, E22, E23
    ─────────────────────────────────────────────────────────────────────── */
-.capa--cacheada, .leyenda__muestra--cacheada { background: var(--color-cacheado); color: var(--color-sobre-cacheado); }
+.capa--cacheada, .leyenda__muestra--cacheada { background: var(--color-cacheado); color: var(--color-sobre-cacheado); box-shadow: none; }
 .traspaso { fill: none; stroke: var(--color-acento); stroke-width: var(--trazo-contorno); stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── Componente · Ventana de contexto ──────────────────────────────────────
@@ -527,9 +528,9 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
 
 /* ── Componente · Tapa de bloque ───────────────────────────────────────────
    clase: .tapa · .tapa__contenido · .tapa__icono · .tapa__titulo · .tapa--centro · .tapa__logo · .tapa__pie · .tapa__lema · .tapa__marca
-   forma: La isla de un bloque del mapa, dibujada ×--tapa-escala: lo cubre entero en la apertura con el icono de su zona y, debajo, su título, para que desde la vista general se lean los cinco bloques. La del centro lleva el logo de Devin y, debajo, su nombre, más grande, y, discretos, el resto del título de la charla y el logo de Openbank: la portada encuadra ese conjunto.
+   forma: La isla de un bloque del mapa, dibujada ×--tapa-escala: lo cubre entero en la apertura con el icono de su zona y, debajo, su título, para que desde la vista general se lean los cinco bloques. La del centro lleva el logo de Devin y, debajo, su nombre, más grande, y, discretos, el subtítulo de la charla y el logo de Openbank: la portada encuadra ese conjunto.
    color: --color-superficie con --color-contorno · icono y título --color-texto-1 · el logo, tal cual, y su nombre --color-devin, el negro del logo · el subtítulo, --color-texto-2 · el logo de Openbank, tal cual.
-   medidas: Las del bloque · ×--tapa-escala: --trazo-contorno, --radio-l, relleno --esp-4, icono --tapa-icono, --esp-3 entre icono y título y título --tipo-entradilla (en la del centro, logo --tapa-logo y nombre --tipo-titulo en --fuente-devin y --peso-enfasis, como en su logotipo; subtítulo --tapa-lema y logo de Openbank --tapa-marca de alto, a --esp-2 uno de otro y a --esp-1 del nombre)
+   medidas: Las del bloque · ×--tapa-escala: --trazo-contorno, --radio-l, relleno --esp-4, icono --tapa-icono, --esp-3 entre icono y título y título --tipo-entradilla (en la del centro, logo --tapa-logo y nombre --tipo-titulo en --fuente-devin y --peso-enfasis, como en su logotipo, subido --esp-5 para que quede pegado al logo; subtítulo --tapa-lema y logo de Openbank --tapa-marca de alto, a --esp-2 uno de otro y a --esp-1 del nombre)
    icono: footprints · coins · route · message-circle-question (el de su zona) · La del centro, los logos oficiales de Devin (assets/logos/devin-avatar-fondo-claro.svg) y de Openbank (assets/logos/openbank-logo-fondo-claro.svg)
    movimiento: aparecer (los títulos de fuera, al llegar a la vista general, mientras su icono sube a su sitio) · desaparecer (se levanta la primera vez que se entra en su bloque: antes, su contenido, desde TAPAS.fundidoContenido del vuelo; después, la tapa, en la segunda mitad del vuelo, con --ease-camara, y ha desaparecido cuando llega la cámara)
    escenas: E01 (portada y vista general) y la primera de cada bloque (E02, E04, E20, E24, E30)
@@ -546,7 +547,9 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
   margin: 0; text-align: center;
   font: var(--peso-display) calc(var(--tipo-entradilla) * var(--tapa-escala))/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display);
 }
+/* El nombre, pegado a su logo: el SVG trae su propio margen blanco, así que se sube --esp-5 (el hueco de --esp-3 y parte de ese margen). */
 .tapa--centro .tapa__titulo {
+  margin-top: calc(var(--esp-5) * var(--tapa-escala) * -1);
   font: var(--peso-enfasis) calc(var(--tipo-titulo) * var(--tapa-escala))/var(--interlineado-display) var(--fuente-devin); letter-spacing: normal;
   color: var(--color-devin);
 }
@@ -600,7 +603,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    clase: .repeticion · .repeticion__anillo
    forma: Anillo abierto con una flecha alrededor de un icono: lo que se repite solo, como una tarea programada. El anillo no ocupa sitio: en una lista de viñetas, la lista es .vinetas--anillo y todos los iconos se alinean en el centro del anillo.
    color: Anillo --color-contorno · icono --color-texto-1.
-   medidas: --repeticion-diametro · --trazo-contorno · icono --icono-s (con el anillo ceñido, ocupa poco más que un icono de --icono-m)
+   medidas: --repeticion-diametro · --trazo-contorno · icono --icono-s (con aire entre el icono y el anillo, para que la flecha se lea al girar)
    icono: El de lo que se repite (calendar-clock)
    movimiento: girar (el anillo, sin parar, a ritmo constante)
    escenas: E02
@@ -669,7 +672,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Ancho máximo --consejo-ancho · --radio-m · frase --tipo-texto
    icono: lightbulb
    movimiento: entrarConMuelle
-   escenas: E08, E11, E12, E15, E17
+   escenas: E11, E12, E15, E17
    ─────────────────────────────────────────────────────────────────────── */
 .consejo {
   display: grid; grid-template-columns: auto 1fr; column-gap: var(--esp-3); row-gap: var(--esp-1); max-width: var(--consejo-ancho);
@@ -784,11 +787,11 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
 
 /* ── Componente · Salto de precio ──────────────────────────────────────────
    clase: .salto · .salto__arco · .salto__cifra · .salto--acento
-   forma: Arco que une dos filas de una tabla por su derecha, con la punta en la fila más cara; cuántas veces cuesta más (×20) va pegado al arco, a la altura de su vértice (entre dos filas vecinas, la línea que las separa), o, si los saltos se anidan, en la fila más cara, en una columna a la derecha de todos los arcos. Los saltos desde una misma fila se anidan: cuanto mayor el salto, más abierto el arco.
+   forma: Arco que une dos filas de una tabla por su derecha, con la punta en la fila más cara; cuántas veces cuesta más (×20) va pegado al arco, a la altura de su vértice (entre dos filas vecinas, la línea que las separa), o, si los saltos se anidan, en la fila más cara, en una columna a la derecha de todos los arcos. Los saltos desde una misma fila se anidan: cuanto mayor el salto, más abierto el arco. El que rodea por fuera a los saltos vecinos es un semicírculo (redondo en saltos()), con sus extremos algo apartados de la tabla para no pisar sus cifras.
    color: Arco y cifra --color-texto-1 · el salto protagonista, --color-acento.
    medidas: --trazo-contorno · punta --esp-1 · cifra --tipo-texto-s, pegada a --esp-1 del vértice
    icono: —
-   movimiento: trazar (el arco, con su punta al final) · aparecer (la cifra) · desaparecer (los saltos que dejan su sitio a otra comparación)
+   movimiento: trazar (el arco, con su punta al final; los saltos vecinos, a la vez) · aparecer (la cifra)
    escenas: E05
    ─────────────────────────────────────────────────────────────────────── */
 .salto { color: var(--color-texto-1); }

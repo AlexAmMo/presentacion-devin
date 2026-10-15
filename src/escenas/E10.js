@@ -1,7 +1,7 @@
 // E10 · Contexto: degradación. Comparte pantalla con E09 y E11.
 // A la izquierda, la gráfica de Context Arena con dos franjas: el inicio de la degradación
 // (64K–256K) y donde la degradación es alta (256K–512K). A la derecha, los mismos datos
-// en una tabla, con su título centrado sobre ella: el acierto de cada modelo con la ventana
+// en una tabla, con su título centrado sobre ella: la efectividad de cada modelo con la ventana
 // casi vacía, al 25 % y al 50 %.
 // Las tres ventanas son de 1M (max_context_length de Context Arena: 1.000.000 para los
 // dos Claude y 1.050.000 para GPT-5.6 Sol), así que 256K ≈ 25 % y 512K ≈ 50 %.
@@ -30,7 +30,7 @@ export default function ({ escena, raiz }) {
       const svg = grafica({
         ancho: 1040, alto: 600, margenDerecho: 88,
         x: { min: 8e3, max: 1e6, log: true, marcas: [...TRAMOS, 1e6], formato: k, titulo: 'Tokens de contexto' },
-        y: { min: 0, max: 100, marcas: [0, 25, 50, 75, 100], formato: v => `${v} %`, titulo: 'Acierto' },
+        y: { min: 0, max: 100, marcas: [0, 25, 50, 75, 100], formato: v => `${v} %`, titulo: 'Efectividad' },
         series: SERIES.map(s => ({ nombre: s.nombre, estilo: s.estilo, puntos: TRAMOS.map((t, i) => [t, s.valores[i]]) })),
         franja: [
           { desde: 64e3, hasta: 256e3, texto: 'Inicio de\ndegradación' },
@@ -51,7 +51,7 @@ export default function ({ escena, raiz }) {
         // El título, centrado sobre la tabla; la tabla entra entera: con los bordes colapsados, una
         // fila oculta seguiría dibujando su línea.
         en(1252, 268, `<div style="display:flex;flex-direction:column;align-items:center;width:max-content">
-          <div data-paso="2" style="text-align:center"><p class="tipo-texto-s" style="margin:0;font-weight:var(--peso-enfasis)">Acierto según la ventana usada</p>
+          <div data-paso="2" style="text-align:center"><p class="tipo-texto-s" style="margin:0;font-weight:var(--peso-enfasis)">Efectividad según la ventana usada</p>
             <p class="tipo-etiqueta" style="margin:0;color:var(--color-texto-3)">Misma prueba · ventanas de 1M</p></div>
           <table class="tabla" data-paso="2" data-orden="1" style="margin-top:var(--esp-5)"><thead><tr><th>Modelo</th>${cabeza}</tr></thead><tbody>${filas}</tbody></table></div>`);
 

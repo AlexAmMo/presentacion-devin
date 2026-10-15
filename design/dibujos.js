@@ -164,17 +164,25 @@ export function codo(puntos, radio = medida('--radio-s')) {
  * abre «curva» px hacia la derecha de x. Su texto (×20) va en la fila de destino, en la columna
  * xCifras, a la derecha de todos los arcos: así no se pisan aunque se aniden. Con pegada: true, va
  * junto al arco, a la altura de su vértice (entre dos filas vecinas, la línea que las separa). Con
- * acento: true, es el protagonista. Devuelve los grupos (.salto, con data-salto) para un SVG que
- * cubra la pantalla.
+ * redondo: true, el arco es un semicírculo (su radio, la mitad de la distancia entre las filas) y
+ * sus extremos se apartan «aparte» px de x: así rodea por fuera los saltos anidados sin pisar sus
+ * cifras. Con acento: true, es el protagonista. Devuelve los grupos (.salto, con data-salto) para
+ * un SVG que cubra la pantalla.
  */
 export function saltos({ x, xCifras, saltos: lista }) {
   const f = medida('--esp-1');
   return lista.map((sa, k) => {
     const { desde, hasta, curva, texto } = sa;
-    // El vértice del arco (una curva con los dos puntos de control en x + curva) está a 3/4 de curva.
-    const [cx, cy] = sa.pegada ? [x + (curva * 3) / 4 + f, (desde + hasta) / 2] : [xCifras, hasta];
+    const xa = x + (sa.redondo ? sa.aparte ?? 0 : 0), radio = Math.abs(desde - hasta) / 2;
+    // El vértice del arco: el del semicírculo, a un radio de sus extremos; el de la curva (con los dos
+    // puntos de control en x + curva), a 3/4 de curva.
+    const vertice = sa.redondo ? xa + radio : x + (curva * 3) / 4;
+    const [cx, cy] = sa.pegada ? [vertice + f, (desde + hasta) / 2] : [xCifras, hasta];
+    const arco = sa.redondo
+      ? `A${r1(radio)} ${r1(radio)} 0 0 ${desde > hasta ? 0 : 1} ${r1(xa)} ${r1(hasta)}`
+      : `C${r1(x + curva)} ${r1(desde)} ${r1(x + curva)} ${r1(hasta)} ${r1(x)} ${r1(hasta)}`;
     // Un solo trazo (la punta se repasa): al trazarse, la punta sale al final.
-    const d = `M${r1(x)} ${r1(desde)}C${r1(x + curva)} ${r1(desde)} ${r1(x + curva)} ${r1(hasta)} ${r1(x)} ${r1(hasta)}L${r1(x + f)} ${r1(hasta - f)}L${r1(x)} ${r1(hasta)}L${r1(x + f)} ${r1(hasta + f)}`;
+    const d = `M${r1(xa)} ${r1(desde)}${arco}L${r1(xa + f)} ${r1(hasta - f)}L${r1(xa)} ${r1(hasta)}L${r1(xa + f)} ${r1(hasta + f)}`;
     return `<g class="salto${sa.acento ? ' salto--acento' : ''}" data-salto="${k}"><path class="salto__arco" d="${d}"/>` +
       `<text class="salto__cifra" x="${r1(cx)}" y="${r1(cy)}" dominant-baseline="central">${esc(texto)}</text></g>`;
   }).join('');

@@ -384,3 +384,46 @@ Crítica de diseño 28/40 y auditoría técnica 16/20 (instantánea en `.impecca
 - `--fuente-devin` apunta a `Inter-Devin-wght.woff2`.
 - Cabeceras al día: gráfica (estilo fijo por modelo), tapa y moneda.
 - Comprobaciones: 22/22.
+
+## Revisión con `Cambios.md` (15 y 16-10-2026 · tercera ronda, notas por diapositiva)
+
+Las notas se aplican según se escriben (monitor sobre `Cambios.md`). Pasos: de 92 a 90 (E05 y E08 pierden uno; E14 pierde su pausa final).
+
+### Supuestos que conviene confirmar
+
+- E08: el título de la nota («El Effort o Esfuerzo….») parece incompleto; sigue «El effort regula cuánto «piensa» el modelo antes de responder».
+- E01: el subtítulo de la portada cambia («Conceptos básicos y cómo aprovecharlo mejor»), pero el `<title>` y el h1 para lectores de pantalla siguen siendo el título del guion.
+- E02: se mantiene el detalle «La misma tarea, sin intervención» bajo «Automatizar tareas repetitivas».
+- E03/4: «SWE-1.6 Slow» no admite effort; la etiqueta podría añadir «si el modelo lo admite».
+- E07: el rótulo «Modelo recomendado» se centra con su columna.
+- E08: «+19 %» y «−2 %» son puntos de efectividad; podrían escribirse «+19 pp».
+- E10: la tabla pasa a «Efectividad según la ventana usada», como el eje.
+- E25: «Alinea a la izquierda el texto final» se lee como llevarlo a la columna izquierda, bajo la hipótesis (ya estaba alineado a la izquierda bajo el fragmento). El texto, tal cual la nota: «El resto de contexto completo…».
+
+### Decisiones
+
+- Paso intermedio entre bloques: en el último paso de un bloque, avanzar lleva a la vista general y la siguiente pulsación entra en el bloque nuevo (`cambiaDeBloque` y `nav.haciaGeneral` en `src/pasos.js`); retroceder desde esa vista vuelve al paso. La vista de ponente lo anuncia («Siguiente · vista general y, después, …»). Desde E01/2 no hay paso intermedio, y Fin salta directo.
+- E01: el nombre, más pegado al logo; subtítulo «Conceptos básicos y cómo aprovecharlo mejor» (`TAPAS.lemaCentro`).
+- E02: «Automatizar tareas repetitivas»; el bucle de repetición, de 52 a 64 px; «Trabajar con múltiples repositorios» con el icono `folders`.
+- E03/4: el resaltado de Effort, en el hueco a la derecha de «SWE-1.6 Slow / 200K context» (caja `[728, 254, 982, 348]`, guía a y = 301).
+- E05: tres pasos (familias · tabla y saltos · generaciones). Los tres arcos pequeños entran a la vez y, sin clic extra, el ×100 como semicírculo con su cifra pegada; desaparece el ×40. Título en una línea: «La efectividad de un modelo depende de su: **Familia**, **Generación** y **Effort**» (`.tipo-titulo-ajustado`, 53 px). Frase final: «El nombre de la familia no basta: **es necesario tener en cuenta la generación**.»
+- E06: título «Comparativa Efectividad – Coste».
+- E07: la columna del modelo, centrada; «GPT-6.1 Sol / o / SWE-2 en promoción», apilados; las dos filas de intentos en una rejilla (totales alineados, el intento del modelo bueno centrado bajo los tres del barato) y «El barato acaba costando más» centrado en su alto.
+- E08: sin el paso 4 (la tercera columna «El esfuerzo no sustituye al contexto»); queda en tres pasos y sale de la tarjeta de consejo.
+- E10: eje «Efectividad».
+- E14: sin «Esto es un agente» ni su pausa final.
+- E15/3: cuatro filas (fuera «Credenciales y permisos», «Reutilización» y «Coste de crearla»); la tabla y su pie, centrados en la banda libre.
+- E16: agentes y píldoras de servidor centrados.
+- E23: rótulos del desglose en una columna de 180 px (precios alineados); el resultado baja a y = 362; las salidas también se marcan cacheadas cuando se leen de la caché (se escriben en k + 1 y se leen desde k + 2); fuera «225.000 tokens» bajo el corchete.
+- E25/3: el log entero se atenúa a la vez que llega el fragmento, como la petición inicial de E24 (las líneas que no son el fragmento, más aún); el texto final, «El resto de contexto completo puede estar disponible para consultarlo», a la izquierda, bajo la hipótesis.
+
+### Nuevo en `design/`
+
+- `--tipo-titulo-ajustado` (53 px) y `.tipo-titulo-ajustado`; `cabecera()` admite una clase para el título.
+- `--repeticion-diametro`, de 52 a 64 px.
+- `.tapa--centro .tapa__titulo`, con margen superior negativo.
+- `saltos()` (`dibujos.js`): opción `redondo` y `aparte` para el salto grande en semicírculo.
+- `.capa--cacheada`, sin sombra; también en las salidas.
+- Icono `folders` (59 iconos).
+- Cabeceras al día (salto, capa, repetición); `DESIGN.md` regenerado.
+- Comprobaciones: 22/22. `dist/index.html`: 1,12 MB, sin peticiones externas ni errores.

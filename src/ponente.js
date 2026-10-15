@@ -97,7 +97,7 @@ export function iniciarPonente() {
   };
 
   const pintar = () => {
-    const { escena: e, paso, siguiente, progreso, general, conAvanzados, minutos: m } = estado;
+    const { escena: e, paso, siguiente, progreso, general, haciaGeneral, conAvanzados, minutos: m } = estado;
     $('[data-lugar]').textContent = `${e.bloque} · ${e.id}${e.minutos != null ? ` · ~${minutos(e.minutos)}` : ''}`;
     $('[data-titulo]').innerHTML = enLinea(e.titulo);
     $('[data-mensaje]').innerHTML = enLinea(e.mensaje);
@@ -116,8 +116,9 @@ export function iniciarPonente() {
     // Lo que se ve en el paso, sin las acotaciones técnicas; del siguiente, solo su primera frase.
     const texto = p => `<p>${enLinea(sinTecnica(p.texto))}</p>${p.detalle?.length ? `<ul>${p.detalle.map(d => `<li>${enLinea(sinTecnica(d))}</li>`).join('')}</ul>` : ''}`;
     $('[data-actual]').innerHTML = texto(paso);
+    // Al final de un bloque, la próxima pulsación lleva a la vista general; la de después, a lo que se anuncia.
     $('[data-rotulo-siguiente]').textContent = siguiente
-      ? `Siguiente · ${siguiente.escena === e.id ? `paso ${siguiente.n}` : `${siguiente.escena} · ${siguiente.titulo}, paso ${siguiente.n}`}${siguiente.avanzado ? ' · avanzado' : ''}`
+      ? `Siguiente · ${haciaGeneral ? 'vista general y, después, ' : ''}${siguiente.escena === e.id ? `paso ${siguiente.n}` : `${siguiente.escena} · ${siguiente.titulo}, paso ${siguiente.n}`}${siguiente.avanzado ? ' · avanzado' : ''}`
       : 'Siguiente · fin de la presentación';
     $('[data-siguiente]').innerHTML = siguiente ? enLinea(primeraFrase(siguiente.texto)) : '';
     $('[data-progreso]').textContent = `Paso ${progreso.n} de ${progreso.total} · previsto hasta el final de esta escena: ~${minutos(m.hastaAqui)} de ~${minutos(m.total)}`;

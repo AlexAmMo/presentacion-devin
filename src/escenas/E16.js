@@ -38,7 +38,7 @@ const DISPONIBLES = [
 ];
 
 const servidor = ([logo, nombre, clase = ''], atrs = '') =>
-  `<div class="servidor" style="width:${SANCHO}px;box-sizing:border-box"${atrs}><img class="servidor__logo${clase}" src="${logo}" alt=""><span class="servidor__nombre">${nombre}</span></div>`;
+  `<div class="servidor" style="width:${SANCHO}px;box-sizing:border-box;justify-content:center"${atrs}><img class="servidor__logo${clase}" src="${logo}" alt=""><span class="servidor__nombre">${nombre}</span></div>`;
 const cable = (d, opciones) => `<path class="conector__cable" d="${d}" data-efecto="trazar"${opciones}/>`;
 // Un cable que sale y llega en vertical (fase 1) o en horizontal (fase 2).
 const vertical = ([x0, y0], [x1, y1]) => `M${x0} ${y0}C${x0} ${(y0 + y1) / 2} ${x1} ${(y0 + y1) / 2} ${x1} ${y1}`;
@@ -65,7 +65,7 @@ export default function ({ escena, raiz }) {
       // Fase 1. Los nueve cables (paso 1) y los seis del conector (paso 2) se dibujan al medir.
       const fase1 =
         AGENTES.map((nombre, i) => en(COLUMNAS[i] - agenteAncho / 2, FILA_AGENTES,
-          `<div class="agente">${icono('bot', 'icono--l')}<div class="agente__nombre">${nombre}</div></div>`,
+          `<div class="agente" style="justify-content:center">${icono('bot', 'icono--l')}<div class="agente__nombre">${nombre}</div></div>`,
           { paso: 1, hasta: 3, efecto: 'entrarConMuelle' })).join('') +
         SERVICIOS.map((sv, i) => en(COLUMNAS[i] - SANCHO / 2, FILA_SERVICIOS, servidor(sv, ' data-servicio'),
           { paso: 1, hasta: 3, orden: 1, efecto: 'entrarConMuelle' })).join('') +

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-15T20:40:42+02:00",
+  "generatedAt": "2026-10-16T00:08:16+02:00",
   "title": "Design System: Devin en el día a día",
   "extensions": {
     "colorMeta": {
@@ -422,6 +422,10 @@
       "titulo-s": {
         "displayName": "Título S",
         "purpose": "Títulos secundarios y número de isla."
+      },
+      "titulo-ajustado": {
+        "displayName": "Título ajustado",
+        "purpose": "Título de escena largo que tiene que caber en una línea (E05); un 5 % menor que el título S."
       },
       "entradilla": {
         "displayName": "Entradilla",

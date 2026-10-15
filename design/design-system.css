@@ -131,6 +131,7 @@
   --tipo-texto: 32px;         /* Frase principal de una zona */
   --tipo-entradilla: 40px;    /* Ideas clave y citas */
   --tipo-titulo-s: 56px;      /* Títulos secundarios y número de isla */
+  --tipo-titulo-ajustado: 53px;   /* Título de escena largo que debe caber en una línea (E05): un 5 % menor que --tipo-titulo-s, sin que se note el cambio */
   --tipo-titulo: 80px;        /* Título de zona */
   --tipo-titulo-xl: 112px;    /* Portada y cierre */
   --tipo-cifra: 176px;        /* Contadores de tokens y de coste */
@@ -221,7 +222,7 @@
   --temporizador-diametro: 240px;     /* Temporizador */
   --circuito-parada: 64px;            /* Diámetro de cada parada del circuito */
   --punto-diametro: 28px;             /* Punto que recorre un camino */
-  --repeticion-diametro: 52px;        /* Anillo de repetición: ceñido a un icono de --icono-s, para que, con el anillo, su viñeta no parezca mayor que las demás (--icono-m); en una lista de viñetas, ancho de la columna de iconos */
+  --repeticion-diametro: 64px;        /* Anillo de repetición: alrededor de un icono de --icono-s, con aire entre los dos para que la flecha se lea al girar; en una lista de viñetas, ancho de la columna de iconos */
   --moneda-diametro: 400px;          /* Moneda de las preguntas (E31): protagonista sola en el centro de la pantalla */
   --moneda-grosor: 40px;             /* Grosor del canto de la moneda: se ve al girar */
   --moneda-signo-grosor: 88px;       /* Grosor del signo de la moneda: más que ella, sobresale 24 px por cada cara */
@@ -230,7 +231,7 @@
   --tapa-escala: 8;                   /* Tapa de bloque: se dibuja ×8, porque la vista general se ve a ≈ 1:8 y desde allí se lee como una isla a escala 1 */
   --tapa-logo: 180px;                 /* Logo de Devin en la tapa del centro, a escala 1 (se dibuja ×--tapa-escala): en la vista general, ≈ 210 px con su margen blanco */
   --tapa-icono: 60px;                 /* Icono de una tapa de fuera, a escala 1 (se dibuja ×--tapa-escala): en la vista general, ≈ 70 px */
-  --tapa-lema: 16px;                  /* Subtítulo de la tapa del centro (el resto del título de la charla), a escala 1 (×--tapa-escala): en la portada, ≈ 36 px */
+  --tapa-lema: 16px;                  /* Subtítulo de la tapa del centro, bajo «Devin», a escala 1 (×--tapa-escala): en la portada, ≈ 36 px */
   --tapa-marca: 20px;                 /* Alto del logo de Openbank en la tapa del centro, a escala 1 (×--tapa-escala): en la portada, ≈ 46 px, como en el cierre */
   --grafica-discontinua: 18px 12px;   /* Serie 2 de una gráfica y franja: trazo discontinuo */
   --grafica-punteada: 0 14px;         /* Serie 4 de una gráfica: trazo de puntos */
