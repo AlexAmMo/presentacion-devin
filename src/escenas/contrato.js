@@ -3,7 +3,7 @@
 // Cada escena real vive en src/escenas/EXX.js (EXX es su id en escenas.md) y exporta
 // por defecto una función que recibe { escena, raiz } y devuelve su controlador:
 //
-//   export default function ({ escena, raiz }) {
+//   export default function ({ escena, raiz, hub }) {
 //     return {
 //       montar() { … },
 //       irA(paso, { animar, tl }) { … },
@@ -12,6 +12,9 @@
 //   }
 //
 // - escena: sus datos de src/datos/escenas.js (id, título, mensaje, pasos…).
+// - hub: solo en las escenas del hub (E04, E14, E18), el hub de src/hub.js, que está debajo
+//   de su raíz. Pueden recorrer su bucle y pulsar sus herramientas (movimientos que vuelven a
+//   su sitio); sus piezas las pone el esqueleto.
 // - raiz: un elemento de --escena-ancho × --escena-alto ya colocado en el mundo. La escena
 //   dibuja dentro con posiciones en px de 1920×1080 y nunca toca nada de fuera. Si varias
 //   escenas comparten pantalla (un tema con varias escenas), sus raíces están en el mismo

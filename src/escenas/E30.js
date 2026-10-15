@@ -1,0 +1,46 @@
+// E30 · Antes de pulsar Enter. Comparte pantalla con E31.
+// Las cinco preguntas, una a una, cada una con la etiqueta del bloque (o la parada) donde se
+// explica. Abajo, el mensaje final y el logo de Openbank.
+// Pasos: 1 las cinco preguntas · 2 el mensaje final.
+import { icono } from '../../design/iconos.js';
+import logo from '../../design/assets/logos/openbank-logo-fondo-claro.svg';
+import { en, cabecera, crearPasos, pausa } from './comun.js';
+
+// Guion, «Cierre»: cada pregunta, con dónde se explica.
+const PREGUNTAS = [
+  ['¿Está claro el resultado que necesito?', [['list-checks', 'Buenas prácticas']]],
+  ['¿He elegido una configuración proporcionada?', [['map-pin', 'Primeros pasos'], ['bot', 'Principales herramientas']]],
+  ['¿He aportado contexto relevante, y solo el relevante?', [['app-window', 'Contexto']]],
+  ['¿Existe una herramienta o procedimiento del equipo que deba utilizar?', [['wrench', 'Tools'], ['package', 'Plugins']]],
+  ['¿Cómo sabré que el trabajo está terminado?', [['list-checks', 'Verificar']]],
+];
+
+export default function ({ escena, raiz }) {
+  let pasos = null;
+  return {
+    montar() {
+      const fila = ([pregunta, bloques], i) => en(120, 332 + i * 92, `<div style="display:grid;grid-template-columns:48px 1010px 1fr;align-items:center">
+          <span class="tabla__mono" style="color:var(--color-texto-3)">${i + 1}</span>
+          <p class="tipo-texto" style="margin:0">${pregunta}</p>
+          <div style="display:flex;gap:var(--esp-2)">${bloques.map(([ic, nombre]) => `<span class="etiqueta">${icono(ic, 'icono--s')}${nombre}</span>`).join('')}</div></div>`,
+        { paso: 1, orden: i, estilo: 'width:1680px' });
+      raiz.innerHTML =
+        cabecera(escena, 1680) +
+        PREGUNTAS.map(fila).join('') +
+        en(120, 840, '<p class="tipo-entradilla" style="margin:0">Tareas correctas, verificables y fáciles de revisar, con menos trabajo innecesario.</p>',
+          { paso: 2, estilo: 'width:1300px' }) +
+        en(1560, 900, `<img src="${logo}" alt="Openbank" style="display:block;height:48px">`, { paso: 2, orden: 1 });
+      pasos = crearPasos(raiz);
+      pasos.poner(0);
+    },
+
+    irA(paso, { animar = false, tl } = {}) {
+      if (!animar || !tl) return pasos.poner(paso);
+      if (paso !== 1) return void pasos.animar(paso, tl);
+      // Una a una, con su pausa de lectura.
+      pasos.ordenes(1).forEach((o, i) => { if (i) pausa(tl); pasos.animar(1, tl, { orden: o }); });
+    },
+
+    desmontar() { raiz.innerHTML = ''; },
+  };
+}

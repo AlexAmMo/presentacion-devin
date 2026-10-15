@@ -17,7 +17,7 @@ async function iniciarPresentacion() {
     if (x.ctrl.ajustar?.() === false) console.warn(`${x.datos.id}: la lista de pasos no cabe ni a --tipo-etiqueta; se recorta.`);
   }
 
-  const camara = crearCamara({ mundo: mundo.mundo });
+  const camara = crearCamara({ mundo: mundo.mundo, portada: mundo.tapas.portada });
   const ajustar = () => {
     const [W, H] = [px('--escena-ancho'), px('--escena-alto')];
     const k = Math.min(innerWidth / W, innerHeight / H);

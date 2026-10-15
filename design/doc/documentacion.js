@@ -5,7 +5,7 @@
 import { gsap } from 'gsap';
 import { v, s, px, esEstatico } from '../motion.js';
 import { ICONOS, icono, pintarIconos } from '../iconos.js';
-import { grafica, dial, temporizador, circuito } from '../dibujos.js';
+import { grafica, dial, temporizador, circuito, repeticion } from '../dibujos.js';
 import cssSistema from '../design-system.css?raw';
 import cssComponentes from '../componentes.css?raw';
 import jsMotion from '../motion.js?raw';
@@ -89,7 +89,7 @@ const SEMANTICA = () => `
   <div class="fichas">${['entrada', 'salida', 'razonamiento'].map(t => `<span class="ficha ficha--${t}">${t}</span>`).join('')}</div>
   <div style="display:flex;gap:var(--esp-4);align-items:center;flex-wrap:wrap">
     <span class="contador contador--coste">${icono('coins')}0,050<span class="contador__unidad">u.</span></span>
-    <div style="display:flex;gap:var(--esp-2);align-items:center"><div class="corchete" style="height:64px"></div><div class="corchete corchete--fallo" style="height:64px"></div></div>
+    <div style="display:grid;gap:var(--esp-2)"><div class="corchete" style="width:120px"></div><div class="corchete corchete--fallo" style="width:120px"></div></div>
     <span class="etiqueta">${icono('map-pin', 'icono--s')}Etiqueta</span>
   </div>`;
 
@@ -106,6 +106,14 @@ function pares(dentro) {
   lista.push(['--color-acento', '--color-fondo', 3], ['--color-acento', '--color-superficie', 3], ['--color-contorno', '--color-fondo', 3],
     ['--color-cache-acierto', '--color-superficie', 3], ['--color-texto-inverso', '--color-superficie-inversa', 4.5],
     ['--color-texto-inverso-2', '--color-superficie-inversa', 4.5], ['--color-acento-sobre-oscuro', '--color-superficie-inversa', 3]);
+  // Las gráficas solo van sobre fondo claro: sus series, sobre el fondo y sobre las dos franjas.
+  if (dentro === document.body) {
+    for (const serie of ['--color-serie-1', '--color-serie-2', '--color-serie-3'])
+      for (const f of ['--color-fondo', '--color-superficie-2', '--color-franja-critica']) lista.push([serie, f, 3]);
+    lista.push(['--color-texto-2', '--color-franja-critica', 4.5]);
+    // Los iconos de las marcas de un plugin, sobre la etiqueta.
+    for (const marca of ['--color-obligatorio', '--color-opcional', '--color-prohibido']) lista.push([marca, '--color-superficie', 3]);
+  }
   return lista.map(([a, b, minimo]) => {
     const r = contraste(hex(a, dentro), hex(b, dentro));
     return { texto: `${sufijo(a)} sobre ${sufijo(b)}`, a, b, minimo, r, ok: r >= minimo };
@@ -255,12 +263,17 @@ function vocabulario() {
 
 const fichasDemo = () => `<div class="fichas">${['Arre', 'gla', ' la', ' pagin', 'ación', '.'].map(t =>
   `<span class="ficha ficha--entrada">${t.startsWith(' ') ? '<span class="ficha__espacio">·</span>' : ''}${t.trim()}</span>`).join('')}</div>`;
-const capasDemo = (n = 4) => ['entrada', 'razonamiento', 'salida', 'entrada'].slice(0, n).map((t, i) => `<div class="capa capa--${t}" style="height:${[48, 28, 20, 36][i]}px"></div>`).join('');
-const recipienteDemo = (extra = '') => `<div style="position:relative"><div class="recipiente" style="width:200px;height:200px"><div class="recipiente__capas">${capasDemo()}</div></div>${extra}</div>`;
-const pilaDemo = clase => `<div style="display:flex;gap:var(--esp-2);align-items:flex-end">
-  <div style="width:120px;display:flex;flex-direction:column-reverse;gap:3px">${capasDemo(3)}</div>
-  <div class="corchete" style="height:102px"></div>
-  <div class="corchete-etiqueta${clase}" style="align-self:center">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}Caché<span class="corchete-etiqueta__detalle">5 min</span></div></div>`;
+// Ventana de 480 px con cuatro capas (anchos de composición); la holgura es contorno + --esp-1.
+const ANCHOS_DEMO = [120, 64, 48, 88];
+const holguraDemo = () => px('--trazo-contorno') + px('--esp-1');
+const capasDemo = (n = 4) => ['entrada', 'razonamiento', 'salida', 'entrada'].slice(0, n).map((t, i) => `<div class="capa capa--${t}" style="width:${ANCHOS_DEMO[i]}px"></div>`).join('');
+const ventanaDemo = (extra = '', n = 4) => `<div style="position:relative"><div class="ventana" style="width:480px"><div class="ventana__relleno">${capasDemo(n)}</div><span class="ventana__capacidad">256K</span></div>${extra}</div>`;
+// Lo ocupado por las n primeras capas, desde el borde exterior de la ventana.
+const ocupadoDemo = n => holguraDemo() + ANCHOS_DEMO.slice(0, n).reduce((a, w) => a + w + px('--trazo-contorno'), 0) - px('--trazo-contorno');
+const pilaDemo = clase => `<div style="display:grid;gap:var(--esp-1);justify-items:start">
+  ${ventanaDemo('', 3)}
+  <div class="corchete" style="width:${ocupadoDemo(2) - holguraDemo()}px;margin-left:${holguraDemo()}px"></div>
+  <div class="corchete-etiqueta${clase}" style="margin-left:${holguraDemo()}px">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}Caché<span class="corchete-etiqueta__detalle">5 min</span></div></div>`;
 const etiquetasDemo = clase => ['Modelos', 'Effort', 'Contexto'].map((t, i) => `<span class="etiqueta${i && clase ? ' ' + clase : ''}">${t}</span>`).join('');
 const herramientaDemo = `<div class="herramienta"><div class="herramienta__circulo">${icono('wrench', 'icono--l')}</div><span class="herramienta__nombre">incidencias</span></div>`;
 const paradasDemo = ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(24 + i), nombre }));
@@ -269,6 +282,10 @@ let posicionDial = 0;
 const PANTALLA_DEMO = [640, 360];
 const VISTAS_DEMO = [[960, 540, 1920], [3360, 540, 1920], [2160, 2100, 1920], [2160, 1320, 5600]];
 let vistaDemo = 0;
+// La demo de ampliarCaptura alterna entre la captura entera y su esquina del resaltado.
+let capturaAmpliada = false;
+// La demo de transformar alterna entre el círculo de Contexto y su ventana.
+let contextoVentana = false;
 
 const DEMOS = {
   aparecer: { html: fichasDemo, play: e => gsap.effects.aparecer($$('.ficha', e), { stagger: s('--escalonado-tokens') }) },
@@ -276,14 +293,49 @@ const DEMOS = {
   entrarConMuelle: { html: () => `<span class="contador contador--coste">${icono('coins')}0,050<span class="contador__unidad">u.</span></span>`, play: e => gsap.effects.entrarConMuelle($('.contador', e)) },
   atenuar: { html: () => `<div style="display:flex;gap:var(--esp-2)">${etiquetasDemo()}</div>`, play: e => gsap.effects.atenuar($$('.etiqueta', e).slice(1)) },
   avivar: { html: () => `<div style="display:flex;gap:var(--esp-2)">${etiquetasDemo('atenuado')}</div>`, play: e => gsap.effects.avivar($$('.atenuado', e)) },
-  caerAlRecipiente: { html: () => `<span class="ficha ficha--entrada">AGENTS.md</span>`, play: e => gsap.effects.caerAlRecipiente($('.ficha', e)) },
-  apilarCapa: { html: () => recipienteDemo(), play: e => gsap.effects.apilarCapa($$('.capa', e)) },
-  subirNivel: {
-    html: () => recipienteDemo(`<div class="nivel" style="left:-8px;width:216px;top:186px"><span class="nivel__cifra">68 %</span></div>`),
-    play: e => gsap.effects.subirNivel($('.nivel', e), { y: -150 }),
+  entrarEnVentana: {
+    html: () => `<div style="display:grid;gap:var(--esp-2);justify-items:start"><span class="ficha ficha--entrada">AGENTS.md</span>${ventanaDemo('', 1)}</div>`,
+    play: e => gsap.effects.entrarEnVentana($('.ficha', e)),
+  },
+  llenarVentana: { html: () => ventanaDemo(), play: e => gsap.effects.llenarVentana($$('.capa', e)) },
+  vaciarVentana: { html: () => ventanaDemo(), play: e => gsap.effects.vaciarVentana($$('.capa', e).slice(1)) },
+  releerVentana: {
+    html: () => ventanaDemo('').replace('<span class="ventana__capacidad">', '<div class="ventana__lectura" style="visibility:hidden"></div><span class="ventana__capacidad">'),
+    play: e => gsap.effects.releerVentana($('.ventana__lectura', e), { hasta: ocupadoDemo(4) - holguraDemo() - px('--trazo-fuerte') }),
+  },
+  moverNivel: {
+    // Dibujada al final de lo ocupado; la demo la lleva desde el principio de la ventana hasta allí.
+    html: () => ventanaDemo(`<div class="nivel" style="left:${ocupadoDemo(4) - px('--trazo-fuerte') / 2}px;top:${-px('--esp-3') / 2}px"><span class="nivel__cifra">68 %</span></div>`),
+    play: e => {
+      gsap.set($('.nivel', e), { x: holguraDemo() - ocupadoDemo(4) });
+      return gsap.effects.moverNivel($('.nivel', e), { x: 0 });
+    },
+  },
+  ajustarVentana: {
+    // La línea de nivel se dibuja al principio del relleno y se desplaza hasta lo ocupado.
+    html: () => ventanaDemo(`<div class="nivel" style="left:${holguraDemo() - px('--trazo-fuerte') / 2}px;top:${-px('--esp-3') / 2}px;transform:translateX(${ocupadoDemo(4) - holguraDemo()}px)"><span class="nivel__cifra">68 %</span></div>`),
+    play: e => gsap.effects.ajustarVentana($('.ventana__relleno', e), {
+      de: ocupadoDemo(4) - holguraDemo(), a: ocupadoDemo(1) - holguraDemo(), nivel: $('.nivel', e), cifra: $('.nivel__cifra', e), desde: 68, hasta: 16,
+    }),
   },
   alargarCorchete: { html: () => pilaDemo(''), play: e => gsap.effects.alargarCorchete($('.corchete', e)) },
   caducarCache: { html: () => pilaDemo(''), play: e => gsap.effects.caducarCache([$('.corchete', e), $('.corchete-etiqueta', e)]) },
+  cachearCapas: {
+    // Las dos capas de entrada bajo el corchete se releen de caché: se encogen a un 10 % (y el
+    // corchete con ellas); tras una pausa, la caché caduca y vuelven a su ancho.
+    html: () => pilaDemo('').replace('capa--razonamiento', 'capa--entrada'),
+    play: e => {
+      const capas = $$('.capa', e).slice(0, 2), corchete = $('.corchete', e);
+      const ancho = factor => i => Math.max(px('--trazo-contorno'), ANCHOS_DEMO[i] * factor);
+      const corcheteA = factor => ancho(factor)(0) + px('--trazo-contorno') + ancho(factor)(1);
+      const ajuste = { duration: s('--dur-ajustar'), ease: v('--ease-ajustar') };
+      return gsap.timeline()
+        .cachearCapas(capas, { ancho: ancho(0.1) })
+        .to(corchete, { width: corcheteA(0.1), ...ajuste }, '<')
+        .cachearCapas(capas, { cacheadas: false, ancho: ancho(1) }, `+=${s('--pausa-lectura-corta')}`)
+        .to(corchete, { width: corcheteA(1), ...ajuste }, '<');
+    },
+  },
   subirContador: {
     html: () => `<span class="contador contador--coste">${icono('coins')}<span data-valor>0,00</span><span class="contador__unidad">u.</span></span>`,
     play: e => gsap.effects.subirContador($('[data-valor]', e), { desde: 0, hasta: 0.43, decimales: 2 }),
@@ -329,6 +381,39 @@ const DEMOS = {
     conservar: true,
   },
   agotarTemporizador: { html: () => temporizador({ segundos: 300 }), play: e => gsap.effects.agotarTemporizador($('.temporizador', e)) },
+  ampliarCaptura: {
+    html: () => {
+      capturaAmpliada = false;
+      return `<div class="captura" style="width:480px;height:270px"><div class="captura__lienzo" style="width:480px;height:270px">
+        <div class="captura__pendiente">${icono('image', 'icono--l')}Captura pendiente</div>
+        <div class="resaltado" style="left:320px;top:200px;width:120px;height:40px"></div></div></div>`;
+    },
+    play: e => {
+      capturaAmpliada = !capturaAmpliada;
+      return gsap.effects.ampliarCaptura($('.captura__lienzo', e), capturaAmpliada ? { escala: 2, x: -480, y: -270 } : {});
+    },
+    conservar: true,
+  },
+  // Cada clic, de círculo a ventana o de ventana a círculo.
+  transformar: {
+    html: () => {
+      contextoVentana = false;
+      return `<div style="position:relative;width:420px;height:${px('--hub-pieza-diametro')}px"><div class="hueco hueco--pieza hueco--lleno">${icono('app-window')}<span>Contexto</span></div></div>`;
+    },
+    play: e => {
+      contextoVentana = !contextoVentana;
+      const D = px('--hub-pieza-diametro'), alto = px('--ventana-alto');
+      return contextoVentana
+        ? gsap.effects.transformar($('.hueco', e), { caja: { x: 0, y: (D - alto) / 2, width: 420, height: alto }, fondo: v('--color-superficie'), borde: v('--color-contorno') })
+        : gsap.effects.transformar($('.hueco', e), { caja: { x: 0, y: 0, width: D, height: D }, fondo: v('--color-superficie-inversa'), borde: v('--color-superficie-inversa'), contenido: true });
+    },
+    conservar: true,
+  },
+  // En escena gira sin parar; la demo da una vuelta.
+  girar: {
+    html: () => `<div class="vinetas vinetas--anillo"><div class="vineta">${repeticion('calendar-clock')}<span class="vineta__titulo">Cada semana</span><span class="vineta__detalle">La misma tarea, sin intervención</span></div></div>`,
+    play: e => gsap.effects.girar($('.repeticion__anillo', e), { repeat: 0 }),
+  },
   volarCamara: {
     ancha: true,
     html: () => {

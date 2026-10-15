@@ -4,8 +4,13 @@
 // tipografía y movimiento salen siempre de las variables.
 import { icono } from '../iconos.js';
 import { px } from '../motion.js';
-import { grafica, dial, temporizador, circuito, bucle } from '../dibujos.js';
+import { grafica, dial, temporizador, circuito, bucle, repeticion, codo, saltos, abanico, traspaso, llave } from '../dibujos.js';
 import logoClaro from '../assets/logos/openbank-logo-fondo-claro.svg';
+import logoOpenai from '../assets/logos/openai.svg';
+import logoAnthropic from '../assets/logos/anthropic.svg';
+import logoDevin from '../assets/logos/devin-avatar-fondo-claro.svg';
+import logoGithub from '../assets/logos/github.svg';
+import logoLlave from '../assets/logos/openbank-llave.svg';
 
 const en = (x, y, html, estilo = '') => `<div class="abs" style="left:${x}px;top:${y}px;${estilo}">${html}</div>`;
 const lamina = (id, etiqueta, contenido) =>
@@ -24,58 +29,69 @@ const apoyo = (texto, estilo = '') => `<div class="tipo-etiqueta" style="color:v
 const ficha = (tipo, texto, clase = '') =>
   `<span class="ficha ficha--${tipo}${clase}">${texto.startsWith(' ') ? '<span class="ficha__espacio">·</span>' : ''}${texto.trim()}</span>`;
 const fichas = (tipo, partes) => `<div class="fichas">${partes.map(t => ficha(tipo, t)).join('')}</div>`;
-const capa = (tipo, alto, texto = '', clase = '') => `<div class="capa capa--${tipo}${clase}" style="height:${alto}px">${texto}</div>`;
 const herramienta = (ic, nombre) =>
   `<div class="herramienta"><div class="herramienta__circulo">${icono(ic, 'icono--l')}</div><span class="herramienta__nombre">${nombre}</span></div>`;
 const agente = (nombre = 'Agente', detalle = 'modelo · effort') =>
   `<div class="agente">${icono('bot', 'icono--l')}<div><div class="agente__nombre">${nombre}</div><div class="agente__detalle">${detalle}</div></div></div>`;
-const hueco = (ic, texto, ancho, alto, variante = '', claseIcono = '') =>
-  `<div class="hueco${variante ? ` hueco--${variante}` : ''}" style="width:${ancho}px;height:${alto}px">${icono(ic, claseIcono)}${texto}</div>`;
 const isla = (numero, ic, nombre, clase = '', extra = '') =>
   `<div class="isla${clase}"><div class="isla__cabecera"><span class="isla__numero">${numero}</span>${icono(ic)}</div><div class="isla__nombre">${nombre}</div>${extra}</div>`;
 const servidor = (ic, nombre, detalle) =>
   `<div class="servidor">${icono(ic)}<div><div class="servidor__nombre">${nombre}</div><div class="servidor__detalle">${detalle}</div></div></div>`;
-// Distancia del borde exterior del recipiente a sus capas: contorno + --esp-1 (.recipiente__capas).
+// Distancia del borde exterior de la ventana a sus capas: contorno + --esp-1 (.ventana__relleno).
 const holgura = () => px('--trazo-contorno') + px('--esp-1');
+/**
+ * Ventana de contexto horizontal: capas [tipo, ancho, texto], su capacidad dentro, a la derecha, y
+ * opcionalmente la línea de nivel donde acaban las capas. Los hijos absolutos se miden desde el
+ * borde interior (dentro del contorno): de ahí el contorno que se resta en el nivel.
+ */
+const ventana = (ancho, capas, capacidad = '', { clase = '', nivel = '' } = {}) => {
+  const g = px('--trazo-contorno');
+  const ocupado = capas.reduce((a, [, w]) => a + w + g, 0) - g;
+  const linea = nivel ? `<div class="nivel" style="left:${px('--esp-1') + ocupado + g / 2 - px('--trazo-fuerte') / 2}px;top:${-px('--esp-3') / 2 - g}px"><span class="nivel__cifra">${nivel}</span></div>` : '';
+  const relleno = capas.length ? `<div class="ventana__relleno">${capas.map(([tipo, w, texto = '']) => `<div class="capa capa--${tipo}" style="width:${w}px">${texto}</div>`).join('')}</div>` : '';
+  return `<div class="ventana${clase}" style="width:${ancho}px">${relleno}${capacidad ? `<span class="ventana__capacidad">${capacidad}</span>` : ''}${linea}</div>`;
+};
+/** Corchete de caché bajo el principio de una ventana (desde su primera capa), con su etiqueta debajo. */
+const corcheteBajo = (ancho, fallo = false, texto = fallo ? 'Fallo' : 'Acierto', detalle = fallo ? 'se reprocesa' : 'se reutiliza') =>
+  `<div style="display:grid;gap:var(--esp-1);margin-left:${holgura()}px">
+    <div class="corchete${fallo ? ' corchete--fallo' : ''}" style="width:${ancho}px"></div>
+    <div class="corchete-etiqueta${fallo ? ' corchete-etiqueta--fallo' : ''}">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}${texto}<span class="corchete-etiqueta__detalle">${detalle}</span></div>
+  </div>`;
 const lienzo = () => `width="${px('--escena-ancho')}" height="${px('--escena-alto')}"`;
 const formato = (n, decimales) => n.toLocaleString('es-ES', { minimumFractionDigits: decimales, maximumFractionDigits: decimales, useGrouping: 'always' });
 
 // ── Vocabulario ───────────────────────────────────────────────────────────
 
 function v1(n) {
-  const alto = 540, k = holgura();
-  const marcas = [[k, '200k'], [alto / 2, '100k'], [alto - k, '0']].map(([y, t]) => `<span class="escala__marca" style="top:${y}px">${t}</span>`).join('');
-  const pila = (fallo = false) => `<div style="display:flex;gap:var(--esp-2);align-items:flex-end;height:184px">
-      <div style="width:140px;display:flex;flex-direction:column-reverse;gap:3px">${capa('entrada', 80)}${capa('razonamiento', 30)}${capa('entrada', 60)}</div>
-      <div class="corchete${fallo ? ' corchete--fallo' : ''}" style="height:176px"></div>
-      <div class="corchete-etiqueta${fallo ? ' corchete-etiqueta--fallo' : ''}" style="align-self:center">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}${fallo ? 'Fallo' : 'Acierto'}<span class="corchete-etiqueta__detalle">${fallo ? 'se reprocesa' : 'se reutiliza'}</span></div>
+  const bloque = (titulo, cuerpo) => `<div style="display:grid;gap:var(--esp-2);justify-items:start">${vet(titulo)}${cuerpo}</div>`;
+  // Tres capacidades superpuestas, cada una a la escala de la mayor (1M = 820 px).
+  const capacidades = `<div style="position:relative;width:820px;height:var(--ventana-alto)">
+      ${[[820, '1M'], [420, '512K'], [210, '256K']].map(([w, c], i) => `<div class="abs" style="left:0;top:0">${ventana(w, [], c, { clase: i ? ' ventana--menor' : '' })}</div>`).join('')}
     </div>`;
+  // Si acierta, lo que cubre se relee de caché: en su color.
+  const cache = fallo => `<div style="display:grid;gap:var(--esp-1)">${ventana(400, [[fallo ? 'entrada' : 'cacheada', 120], [fallo ? 'entrada' : 'cacheada', 72], ['salida', 40]])}${corcheteBajo(120 + 3 + 72, fallo)}</div>`;
   return lamina('vocabulario-1', `Vocabulario ${n} · Tokens y contexto`,
     cabecera(`Vocabulario · ${n} · Tokens y contexto`, true) +
     columna(120, 'Ficha de token',
       vet('Entrada') + fichas('entrada', ['Arre', 'gla', ' la']) +
       vet('Salida') + fichas('salida', ['Cam', 'bio', ' el']) +
       vet('Razonamiento') + fichas('razonamiento', ['Rev', 'iso', ' use']) +
-      vet('Pequeña') + `<span class="ficha ficha--s ficha--entrada">${icono('corner-down-left', 'icono--s')}resumen + evidencias</span>`,
-      'Píldora en DM Mono. Un espacio inicial se dibuja como «·» atenuado.') +
-    columna(550, 'Ventana y capas',
-      `<div style="position:relative;width:390px;height:${alto}px">
-        <div class="escala" style="position:absolute;left:0;top:0;width:80px;height:${alto}px">${marcas}</div>
-        <div class="recipiente" style="position:absolute;left:96px;top:0;width:220px;height:${alto}px"><div class="recipiente__capas">
-          ${capa('entrada', 110, 'Entrada')}${capa('razonamiento', 44)}${capa('salida', 28)}${capa('entrada', 58)}
-        </div></div>
-        <div class="nivel" style="left:84px;width:244px;top:277px"><span class="nivel__cifra">48 %</span></div>
-      </div>`,
-      'Muchos tokens del mismo tipo forman una capa. El recipiente se llena de abajo arriba; la línea roja marca el nivel.') +
-    columna(980, 'Corchete de caché',
-      pila() + pila(true) +
-      `<div class="leyenda" style="width:390px">
+      vet('Pequeña') + `<span class="ficha ficha--s ficha--entrada">${icono('corner-down-left', 'icono--s')}resumen + evidencias</span>` +
+      `<div class="leyenda" style="width:390px;margin-top:var(--esp-2)">
         <span class="leyenda__elemento"><i class="leyenda__muestra leyenda__muestra--entrada"></i>Entrada</span>
         <span class="leyenda__elemento"><i class="leyenda__muestra leyenda__muestra--salida"></i>Salida</span>
         <span class="leyenda__elemento"><i class="leyenda__muestra leyenda__muestra--razonamiento"></i>Razonamiento</span>
+        <span class="leyenda__elemento"><i class="leyenda__muestra leyenda__muestra--cacheada"></i>Leído de caché</span>
         <span class="leyenda__elemento"><i class="leyenda__muestra leyenda__muestra--corchete"></i>Caché</span>
       </div>`,
-      `Corchete a la derecha de lo que cubre: continuo con ${icono('check', 'icono--s')} si acierta, discontinuo con ${icono('x', 'icono--s')} si falla. Debajo, la leyenda.`) +
+      'Píldora en DM Mono. Un espacio inicial se dibuja como «·» atenuado. Debajo, la leyenda.') +
+    columna(550, 'Ventana de contexto, capas y caché',
+      bloque('Se llena de izquierda a derecha; el nivel marca lo ocupado',
+        ventana(820, [['entrada', 230, 'Instrucciones'], ['razonamiento', 70], ['salida', 56], ['entrada', 120]], '256K', { nivel: '61 %' })) +
+      bloque('Capacidades comparadas, a la misma escala', capacidades) +
+      bloque('Caché: el corchete cubre el principio, que se repite', `<div style="display:flex;gap:var(--esp-3)">${cache(false)}${cache(true)}</div>`),
+      'Muchos tokens del mismo tipo forman una capa; su ancho es proporcional a los tokens. El corchete va bajo lo que cubre, desde la izquierda: continuo con ' +
+      `${icono('check', 'icono--s')} si acierta (lo que cubre se relee de caché, en su color), discontinuo con ${icono('x', 'icono--s')} si falla.`, 820) +
     columna(1410, 'Contador',
       `<span class="contador contador--coste">${icono('coins')}0,050<span class="contador__unidad">u.</span></span>
        <span class="contador">${icono('repeat')}12<span class="contador__unidad">llamadas</span></span>
@@ -94,12 +110,13 @@ function v2(n) {
     columna(120, 'Agente y subagente',
       agente() +
       `<svg width="40" height="56" style="margin:-8px 0 -8px 52px"><path class="camino" d="M20 6V54"/></svg>
-       <div style="display:flex;gap:var(--esp-2);align-items:flex-end">
+       <div style="display:grid;gap:var(--esp-2)">
          <div class="subagente">${icono('bot')}<div><div class="subagente__nombre">Subagente</div><div class="subagente__detalle">contexto propio</div></div></div>
-         <div class="recipiente recipiente--mini"><div class="recipiente__capas">${capa('entrada', 36)}</div></div>
+         ${ventana(312, [['entrada', 200], ['resultado', 24]], '', { clase: ' ventana--mini' })}
        </div>
-       <span class="ficha ficha--s ficha--entrada">${icono('corner-down-left', 'icono--s')}resumen + evidencias</span>`,
-      'El subagente es el mismo símbolo, más pequeño y hueco, y siempre lleva su propia ventana.') +
+       <svg width="312" height="40" style="overflow:visible;margin:calc(var(--esp-1) * -1) 0">${traspaso([[223, 0], [223, 20], [143, 20], [143, 40]])}</svg>
+       ${ventana(312, [['entrada', 120], ['resultado', 24]], '', { clase: ' ventana--mini' })}`,
+      'El subagente es el mismo símbolo, más pequeño y hueco, con su propia ventana debajo. Solo devuelve su resultado: una capa en rojo y su flecha.') +
     columna(550, 'Documento y árbol',
       `<div style="position:relative;width:390px;height:280px">
         <div class="documento" style="position:absolute;left:72px;top:0;height:220px"><div class="documento__cabecera">${icono('file-text', 'icono--s')}rules/*.md</div></div>
@@ -130,22 +147,28 @@ function v3(n) {
   return lamina('vocabulario-3', `Vocabulario ${n} · El hub`,
     cabecera(`Vocabulario · ${n} · El hub`) +
     en(120, 150, '<div class="vh">Bucle del agente</div>') +
-    en(24, 200, bucle({ etiquetas: ['el modelo decide', 'usa una herramienta', 'lee el resultado'] })) +
-    en(325, 429, agente()) +
+    // El bucle y la tarjeta, con el mismo centro; las cuatro herramientas de serie, sobre el bucle.
+    en(560 - (px('--bucle-diametro') / 2 + 2 * px('--esp-8')), 494 - (px('--bucle-diametro') / 2 + px('--esp-6')),
+      bucle({ etiquetas: ['el modelo decide', 'usa una herramienta', 'lee el resultado'] })) +
+    en(560, 494, `<div class="agente agente--circulo">${icono('bot', 'icono--l')}<div class="agente__nombre">Devin</div></div>`, 'transform:translate(-50%,-50%)') +
+    [['search', 45], ['file-text', 135], ['pencil', 225], ['terminal', 315]].map(([ic, a]) => {
+      const r = px('--bucle-diametro') / 2, rad = (a * Math.PI) / 180;
+      return en(560 + r * Math.sin(rad), 494 - r * Math.cos(rad), `<div class="herramienta__circulo">${icono(ic, 'icono--l')}</div>`, 'transform:translate(-50%,-50%)');
+    }).join('') +
     en(120, 860, '<div class="vregla" style="width:780px">Una vuelta por llamada: decide, usa una herramienta y lee su resultado. Un punto recorre el círculo.</div>') +
     en(1100, 150, '<div class="vh">Hueco del hub</div>') +
-    en(1100, 210, `<div style="position:relative;width:700px;height:400px">
-        ${en(0, 0, hueco('cpu', 'Modelo', 220, 96, 'lleno'))}
-        ${en(240, 0, hueco('gauge', 'Effort', 220, 96))}
-        ${en(480, 0, hueco('wrench', 'Tools', 112, 112, 'circulo'))}
-        ${en(612, 12, hueco('plug', 'MCP', 88, 88, 'circulo', 'icono--s'))}
-        ${en(0, 136, hueco('app-window', 'Contexto', 150, 240, 'recipiente'))}
-        ${en(170, 136, hueco('file-text', 'AGENTS.md', 170, 200, 'documento'))}
-        ${en(360, 136, hueco('puzzle', 'Skills', 220, 110))}
-        ${en(360, 266, hueco('git-fork', 'Subagente', 300, 96))}
+    en(1100, 210, `<div style="display:flex;align-items:center;gap:var(--esp-4)">
+        <div class="hueco hueco--pieza hueco--lleno">${icono('cpu')}<span>Modelo</span></div>
+        <div class="hueco hueco--pieza">${icono('wrench')}<span>Tools propias</span></div>
+        <div class="hueco hueco--circulo" style="width:${px('--herramienta-diametro')}px;height:${px('--herramienta-diametro')}px">${icono('search')}</div>
       </div>`) +
-    en(1100, 640, '<div class="vh">Caja de plugin</div>') +
-    en(1100, 720, `<div class="plugin"><span class="plugin__etiqueta">${icono('package', 'icono--s')}plugin · equipo-datos</span>
+    en(1100, 400, '<div class="vregla" style="width:700px">Todas las piezas, círculos iguales: puesta (sólido) o por llegar (punteado). Las herramientas de serie, en círculo de herramienta. Contexto se transforma en la ventana cuando se anima el contexto.</div>') +
+    en(1100, 576, '<div class="vh">Caja de plugin y sus marcas</div>') +
+    en(1100, 632, `<div style="display:flex;gap:var(--esp-2)">
+        <span class="etiqueta etiqueta--compacta etiqueta--obligatorio">${icono('lock', 'icono--s')}Obligatorio</span>
+        <span class="etiqueta etiqueta--compacta etiqueta--opcional">${icono('circle-check', 'icono--s')}Opcional</span>
+        <span class="etiqueta etiqueta--compacta etiqueta--prohibido">${icono('ban', 'icono--s')}Prohibido</span></div>`) +
+    en(1100, 748, `<div class="plugin"><span class="plugin__etiqueta">${icono('package', 'icono--s')}plugin · equipo-datos</span>
         <div style="display:flex;gap:var(--esp-5);align-items:flex-start">${herramienta('wrench', 'docs')}${herramienta('wrench', 'incidencias')}
           <div style="display:grid;justify-items:center;gap:var(--esp-2);padding-top:12px"><div class="conector">${icono('plug')}</div><span class="tipo-mono-s" style="padding-top:12px">mcp · jira</span></div></div>
       </div>`));
@@ -156,21 +179,24 @@ function v4(n) {
     cabecera(`Vocabulario · ${n} · Herramientas propias y MCP`) +
     en(120, 150, '<div class="vh">Definición de herramienta</div>') +
     en(120, 230, herramienta('wrench', 'incidencias')) +
-    en(290, 264, `<div style="color:var(--color-texto-3)">${icono('arrow-right')}</div>`) +
-    en(350, 230, `<div class="definicion">
+    en(181, 396, `<div style="color:var(--color-texto-3)">${icono('arrow-down')}</div>`) +
+    en(120, 448, `<div class="definicion">
         <div class="definicion__cabecera">${icono('wrench', 'icono--s')}buscar_incidencias</div>
         <div class="definicion__campo definicion__campo--resaltado"><span class="definicion__clave">Descripción</span><span class="definicion__valor">Busca incidencias abiertas de un servicio. Úsala cuando pregunten por errores en producción.</span></div>
         <div class="definicion__campo"><span class="definicion__clave">Parámetros</span><span class="definicion__valor definicion__valor--mono">servicio: texto · desde: fecha</span></div>
       </div>`) +
     en(120, 860, '<div class="vregla" style="width:780px">Lo que el agente lee: nombre, descripción y parámetros. La descripción es el disparador y se resalta.</div>') +
     en(1000, 150, '<div class="vh">Conector MCP</div>') +
-    en(1000, 230, agente('Agente', 'conectado por MCP')) +
+    en(1000, 230, agente('Agente', 'Devin')) +
     `<svg class="abs" style="left:0;top:0" ${lienzo()}><path class="conector__cable" d="M1434 305C1470 305 1462 252 1500 252"/><path class="conector__cable" d="M1434 305C1470 305 1462 392 1500 392"/></svg>` +
     en(1346, 261, `<div class="conector">${icono('plug')}</div>`) +
-    en(1500, 202, servidor('laptop', 'Local', 'devin mcp add'), 'display:grid;width:300px') +
-    en(1500, 342, servidor('cloud', 'Remoto', 'Cloud · MCPs'), 'display:grid;width:300px') +
-    en(1000, 560, '<div class="vh">Candado</div>') +
-    en(1000, 620, `<div class="candado"><div class="candado__icono">${icono('lock', 'icono--l')}</div><span class="candado__texto">Credenciales nunca en el repositorio</span></div>`) +
+    en(1500, 202, servidor('laptop', 'Local', 'stdio'), 'display:grid;width:300px') +
+    en(1500, 342, servidor('cloud', 'Remoto', 'HTTP'), 'display:grid;width:300px') +
+    en(1000, 490, '<div class="vh">Servidor real, con su logo</div>') +
+    en(1000, 550, `<div style="display:flex;gap:var(--esp-3)"><div class="servidor"><img class="servidor__logo" src="${logoGithub}" alt=""><div class="servidor__nombre">GitHub</div></div>
+      <div class="servidor"><img class="servidor__logo servidor__logo--apaisado" src="${logoLlave}" alt=""><div class="servidor__nombre">DS-Workspace</div></div></div>`) +
+    en(1000, 664, '<div class="vh">Candado</div>') +
+    en(1000, 724, `<div class="candado"><div class="candado__icono">${icono('lock', 'icono--l')}</div><span class="candado__texto">Credenciales nunca en el repositorio</span></div>`) +
     en(1000, 860, '<div class="vregla" style="width:800px">El cable, continuo y navy, une piezas. Los puntos son siempre un recorrido (cámara, subagente); la guía, fina y gris, une una etiqueta con lo que señala.</div>'));
 }
 
@@ -188,20 +214,26 @@ function v5(n) {
         { nombre: 'Modelo A', estilo: 1, puntos: [[0.15, 46], [0.5, 53], [2, 56], [10, 57]] },
         { nombre: 'Modelo B', estilo: 2, puntos: [[0.3, 48], [1, 57], [3, 62], [10, 63]] },
         { nombre: 'Modelo C', estilo: 4, puntos: [[0.8, 50], [2.5, 63], [5, 67], [10, 69]] },
-        { nombre: 'Modelo D', estilo: 'acento', puntos: [[0.3, 60], [0.8, 68], [2, 73], [10, 76]] },
+        { nombre: 'Modelo D', estilo: 'acento', puntos: [[0.3, 60], [0.8, 68], [2, 73], [10, 76]], resaltar: [1], notas: [[1, 'Medium', 'arriba']] },
       ],
+      flechas: [{ desde: [10, 69], hasta: [0.8, 68], texto: 'Lo mismo por 1/12', lado: 'abajo' }],
     })) +
     en(120, 700, '<div class="fuente">Fuente:<span class="fuente__referencia">ejemplo del design system · cifras ficticias</span></div>') +
-    en(120, 780, '<div class="vh">Tabla</div>') +
-    en(120, 836, `<table class="tabla"><thead><tr><th>Tarea</th><th>Estrategia inicial</th></tr></thead><tbody>
+    en(120, 780, '<div class="vh">Tabla y salto de precio</div>') +
+    en(120, 836, `<table class="tabla" data-tabla-muestra><thead><tr><th>Tarea</th><th>Estrategia inicial</th></tr></thead><tbody>
         <tr><td>Cambio pequeño y claro</td><td>Modelo medio, effort bajo</td></tr>
         <tr><td>Bug difícil de reproducir</td><td>Modelo alto, effort medio</td></tr>
       </tbody></table>`) +
+    // El salto, a la derecha de la tabla: de la segunda fila a la primera (centros de sus filas).
+    `<svg class="abs" style="left:0;top:0;overflow:visible" ${lienzo()}>${saltos({ x: 900, xCifras: 980, saltos: [{ desde: 986, hasta: 928, curva: 64, texto: '×20' }] })}</svg>` +
     en(1160, 150, '<div class="vh">Dial de effort</div>') +
     en(1144, 196, dial({ actual: 2 })) +
     en(1160, 580, '<div class="vh">Temporizador</div>') +
     en(1160, 640, temporizador({ segundos: 300 })) +
-    en(1440, 690, '<div class="vregla" style="width:360px;border:0;padding:0">Cinco minutos de caché. Al agotarse, el corchete pasa a discontinuo.</div>'));
+    en(1440, 690, '<div class="vregla" style="width:360px;border:0;padding:0">Cinco minutos de caché. Al agotarse, el corchete pasa a discontinuo.</div>') +
+    en(1160, 860, '<div class="vh">Proveedor de modelos</div>') +
+    en(1160, 916, `<div style="display:flex;flex-wrap:wrap;gap:var(--esp-2) var(--esp-5);width:640px">${[[logoOpenai, 'GPT', 'OpenAI'], [logoAnthropic, 'Claude', 'Anthropic'], [logoDevin, 'SWE', 'Cognition', ' proveedor--devin']].map(([logo, familia, nombre, clase = '']) =>
+      `<span class="proveedor${clase}"><img class="proveedor__logo" src="${logo}" alt="">${familia}<span class="proveedor__nombre">${nombre}</span></span>`).join('')}</div>`));
 }
 
 const PARADAS = [['24', 'Definir'], ['25', 'Contexto'], ['26', 'Planificar'], ['27', 'Intervenir'], ['28', 'Verificar'], ['29', 'Hábitos']].map(([id, nombre]) => ({ id, nombre }));
@@ -214,24 +246,35 @@ function v6(n) {
     en(120, 210, isla('01', 'laptop', 'Local')) +
     en(480, 210, isla('02', 'cloud', 'Cloud', ' isla--actual')) +
     en(840, 210, isla('03', 'gauge', 'Effort', ' atenuado')) +
-    en(1240, 150, '<div class="vh">Etiqueta, ventaja y marcas</div>') +
-    en(1240, 210, `<div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--esp-2);width:560px">
+    en(1240, 150, '<div class="vh">Etiqueta, marcas y viñetas</div>') +
+    en(1240, 200, `<div style="display:flex;flex-wrap:wrap;align-items:center;gap:var(--esp-2);width:560px">
         <span class="etiqueta">${icono('map-pin', 'icono--s')}Parte 2 · Modelos</span>
         <span class="ficticio">${icono('info', 'icono--s')}Cifras ficticias</span>
-        <span class="etiqueta etiqueta--ventaja">${icono('check', 'icono--s')}Acceso a lo local</span>
         <div class="fuente">Fuente:<span class="fuente__referencia">Context Arena · 14-10-2026</span></div>
+      </div>`) +
+    en(1240, 320, `<div class="vinetas vinetas--anillo" style="gap:var(--esp-3);width:560px">
+        <div class="vineta">${icono('check')}<span class="vineta__titulo">Acceso a lo local</span></div>
+        <div class="vineta">${repeticion('calendar-clock')}<span class="vineta__titulo">Cada semana</span><span class="vineta__detalle">La misma tarea, sin intervención</span></div>
       </div>`) +
     en(120, 470, '<div class="vh">Tarjeta de consejo</div>') +
     en(120, 530, `<div class="consejo">${icono('lightbulb')}<span class="consejo__rotulo">Consejo</span><span class="consejo__texto">Empieza por un nivel medio; sube cuando lo justifique la tarea.</span></div>`) +
     en(960, 470, '<div class="vh">Circuito · sin parada actual</div>') +
     en(960, 530, circuito({ ancho: 840, alto: 250, actual: null, hechas: 2, paradas: PARADAS })) +
-    en(120, 860, '<div class="vregla" style="width:1680px">Un solo acento por pantalla: aquí lo lleva la isla actual, así que el circuito va sin parada actual (las hechas, en sólido). Con parada actual, en acento y con su punto, en el mapa de «Aplicado».</div>'));
+    en(120, 748, '<div class="vh">Abanico</div>') +
+    en(120, 868, '<div style="transform:translateY(-50%)"><div class="tipo-texto-s" style="font-weight:var(--peso-enfasis)">Cuándo crear una</div><div class="tipo-etiqueta" style="color:var(--color-texto-2)">Procedimientos propios</div></div>') +
+    `<svg class="abs" style="left:0;top:0;overflow:visible" ${lienzo()}>${abanico({ desde: [440, 868], hasta: [816, 851, 886, 921].map(y => [560, y]) })}</svg>` +
+    ['Cuándo', 'Qué necesita', 'Pasos', 'Resultado'].map((t, i) => en(576, 816 + i * 35, `<span class="tipo-etiqueta" style="display:block;transform:translateY(-50%)">${t}</span>`)).join('') +
+    en(960, 812, '<div class="vh">Llave</div>') +
+    `<svg class="abs" style="left:0;top:0;overflow:visible" ${lienzo()}>${llave({ x0: 1140, x1: 1780, y: 830 })}</svg>` +
+    en(120, 952, '<div class="vregla" style="width:1680px">Un solo acento por pantalla: aquí lo lleva la isla actual, así que el circuito va sin parada actual (las hechas, en sólido). Con parada actual, en acento y con su punto, en el mapa de «Aplicado».</div>'));
 }
 
 function v7(n) {
   const [x, y, ancho, alto] = [120, 210, 1120, 630];
   const resaltado = { left: 760, top: 520, width: 280, height: 72 };
-  const [gx, gy] = [x + resaltado.left + resaltado.width + px('--trazo-fuerte'), y + resaltado.top + resaltado.height / 2];
+  // La guía sale del borde del resaltado y llega, en codo, al borde de su etiqueta.
+  const [gx, gy] = [x + resaltado.left + resaltado.width + px('--trazo-fuerte') * 1.5, y + resaltado.top + resaltado.height / 2 + px('--trazo-fuerte')];
+  const ey = 456;
   const muestra = (texto, clase) => `<div style="display:grid;gap:var(--esp-2)">${vet(texto)}<svg width="480" height="16"><path class="${clase}" d="M8 8H472"/></svg></div>`;
   return lamina('vocabulario-7', `Vocabulario ${n} · Captura, guía y tapa`,
     cabecera(`Vocabulario · ${n} · Captura, guía y tapa`) +
@@ -240,15 +283,15 @@ function v7(n) {
         <div class="captura__pendiente">${icono('image', 'icono--l')}Captura pendiente · Devin Desktop</div>
         <div class="resaltado" style="left:${resaltado.left}px;top:${resaltado.top}px;width:${resaltado.width}px;height:${resaltado.height}px"></div>
       </div>`) +
-    `<svg class="abs" style="left:0;top:0" ${lienzo()}><path class="camino camino--guia" d="M${gx} ${gy}H1300"/></svg>` +
-    en(1316, gy - 24, `<span class="etiqueta">${icono('gauge', 'icono--s')}Effort</span>`) +
+    `<svg class="abs" style="left:0;top:0" ${lienzo()}><path class="resaltado__guia" d="${codo([[gx, gy], [1272, gy], [1272, ey], [1316, ey]])}"/></svg>` +
+    en(1316, ey - 27, `<span class="etiqueta">${icono('gauge', 'icono--s')}Effort</span>`) +
     en(1320, 150, '<div class="vh">Ruta y guía</div>') +
     en(1320, 230, `<div style="display:grid;gap:var(--esp-5)">${muestra('Ruta · puntos: recorrido de la cámara o del subagente', 'camino')}${muestra('Guía · línea fina: une una etiqueta con lo que señala', 'camino camino--guia')}</div>`) +
-    en(1320, 430, '<div class="vh">Tapa de bloque</div>') +
+    en(1320, 510, '<div class="vh">Tapa de bloque</div>') +
     // En el mapa se dibuja ×--tapa-escala; aquí, a escala 1: así se ve desde la vista general.
-    en(1320, 490, '<div class="tapa" style="--tapa-escala:1;width:280px;height:175px"><h2 class="tapa__titulo">Primeros pasos</h2></div>') +
-    en(1624, 500, vet('En el mapa, ×8: así se ve desde la vista general'), 'width:200px') +
-    en(x, 870, '<div class="vregla" style="width:1680px">Sin captura real, el marcador «Captura pendiente» queda a la vista. El resaltado rodea el control que se explica y una guía lo une a su etiqueta.</div>'));
+    en(1320, 560, `<div class="tapa" style="--tapa-escala:1;width:330px;height:240px"><div class="tapa__contenido">${icono('footprints', 'tapa__icono')}<h2 class="tapa__titulo">Primeros pasos</h2></div></div>`) +
+    en(1320, 815, vet('En el mapa, ×8: así se ve desde la vista general. Hasta llegar a ella, solo el icono, centrado'), 'width:480px') +
+    en(x, 910, '<div class="vregla" style="width:1680px">Sin captura real, el marcador «Captura pendiente» queda a la vista. El resaltado rodea el control que se explica y una guía en rojo, en codo, lo une a su etiqueta.</div>'));
 }
 
 /** Cada lámina recibe su número («1 de 7») al montarse. */
@@ -276,8 +319,8 @@ export function mapa(duraciones) {
     en(120, 830, `<div class="leyenda" style="flex-direction:column;align-items:flex-start;gap:var(--esp-1)">${rotulo('Ruta de la cámara', 'margin-bottom:var(--esp-1);color:var(--color-texto-1)')}${leyenda}</div>`) +
     bloque(cx - 160, 96, '1', 'map-pin', 'Primeros pasos', 'E02 E03') +
     temas +
-    en(cx - 195, cy - 75, agente('2 · Devin', 'E04 E14 E18 E19')) +
-    bloque(1540, 452, '3', 'coins', 'Coste', 'E19–E23') +
+    en(cx - 195, cy - 75, agente('2 · Devin', 'E04 E14 E18')) +
+    bloque(1540, 452, '3', 'coins', 'Coste', 'E20–E23') +
     bloque(180, 452, '5', 'map-pin', 'Preguntas', 'E30 E31') +
     en(cx - 410, 800, circuito({
       ancho: 820, alto: 240, actual: 0,
@@ -297,89 +340,95 @@ export function e23() {
   const acumulado = f => llamadas.reduce((a, k) => [...a, (a.at(-1) ?? 0) + f(k)], []);
   const [totalSin, totalCon] = [acumulado(sin).at(-1), acumulado(con).at(-1)];
   const write = (24000 + 11 * 5000) * 2.5e-6, read = llamadas.slice(1).reduce((a, k) => a + contexto(k - 1), 0) * 0.2e-6, output = 12 * 1000 * 10e-6;
-  const c2 = n => formato(n, 2);
-  // Bajo el título de cada lado, cuatro contadores y el total (escenas.md, E23).
-  const contadores = (filas, total) => `<div style="display:flex;flex-direction:column;align-items:flex-start;gap:var(--esp-2)">
-    ${filas.map(([t, n]) => `<span class="contador">${c2(n)}<span class="contador__unidad">${t}</span></span>`).join('')}
-    <span class="contador contador--coste">${icono('coins')}${c2(total)}<span class="contador__unidad">total</span></span></div>`;
-  // Capas de la llamada 12: 20.000 fijos, 4.000 de la llamada 1 y 5.000 por cada llamada siguiente.
-  // Recipiente de 300×500 para 100.000 tokens; entre capas, el contorno.
-  const [y0, ancho, alto] = [500, 300, 500];
-  const k = holgura(), gap = px('--trazo-contorno'), util = alto - 2 * k;
-  const tokens = [20000, 4000, ...Array(11).fill(5000)];
-  const altoCapa = n => Math.round((n / 100000) * util) - gap;
-  const capas = tokens.map((n, i) => capa('entrada', altoCapa(n), i === 0 ? 'Fijo · 20.000' : '')).join('');
-  const recipiente = x => en(x, y0, `<div class="recipiente" style="width:${ancho}px;height:${alto}px"><div class="recipiente__capas">${capas}</div></div>`);
-  // El corchete cubre lo leído de caché: las 12 primeras capas (74.000 tokens).
-  const fondo = y0 + alto - k;
-  const corcheteAlto = tokens.slice(0, 12).reduce((a, n) => a + altoCapa(n) + gap, 0) - gap;
-  const xd = 960;
+  const c3 = n => formato(n, 3);
+  // A la derecha de cada ventana, su coste por tipo de token y el total.
+  const desglose = (filas, total) => `<div style="display:grid;grid-template-columns:auto auto;justify-content:start;gap:var(--esp-1) var(--esp-5);align-items:baseline">
+    ${filas.map(([t, n]) => `<span class="tipo-etiqueta" style="color:var(--color-texto-2)">${t}</span><span class="tipo-mono" style="text-align:right;font-variant-numeric:var(--cifras)">${c3(n)}</span>`).join('')}
+    <span class="tipo-texto" style="font-weight:var(--peso-enfasis)">Total</span><span class="tipo-mono" style="text-align:right;font-weight:var(--peso-enfasis);font-variant-numeric:var(--cifras)">${c3(total)}</span></div>`;
+  // La ventana de la llamada 12, a escala de 100.000 tokens: 20.000 fijos, y por llamada 4.000 de
+  // entrada y, desde la segunda, los 1.000 de salida de la anterior. Entre capas, el contorno.
+  const ancho = 1120, gap = px('--trazo-contorno'), porToken = (ancho - 2 * holgura()) / 100000;
+  const tokens = [['entrada', 20000, 'Fijo · 20.000'], ['entrada', 4000], ...llamadas.slice(1).flatMap(() => [['salida', 1000], ['entrada', 4000]])];
+  const capas = tokens.map(([tipo, n, texto]) => [tipo, Math.round(n * porToken) - gap, texto]);
+  // El corchete cubre lo leído de caché en la llamada 12: el contexto de la 11 (74.000 tokens).
+  const leido = Math.round(74000 * porToken) - gap;
   return lamina('e23', 'E23 · Fotograma de la llamada 12',
     cabecera('E23 · Una conversación, paso a paso · llamada 12 de 12', true) +
-    en(540, 120, grafica({
-      ancho: 900, alto: 320, margenDerecho: 220,
+    en(120, 150, grafica({
+      ancho, alto: 300, margenDerecho: 260,
       x: { min: 1, max: 12, marcas: [1, 4, 8, 12], titulo: 'Llamada' },
       y: { min: 0, max: 1.4, marcas: [0, 0.7, 1.4], formato: n => formato(n, 1), titulo: 'Coste acumulado' },
       series: [
-        { nombre: `Sin caché · ${c2(totalSin)}`, estilo: 2, marcar: false, puntos: acumulado(sin).map((c, i) => [i + 1, c]) },
-        { nombre: `Con caché · ${c2(totalCon)}`, estilo: 1, marcar: false, puntos: acumulado(con).map((c, i) => [i + 1, c]) },
+        { nombre: `Sin caché · ${c3(totalSin)}`, estilo: 2, marcar: false, puntos: acumulado(sin).map((c, i) => [i + 1, c]) },
+        { nombre: `Con caché · ${c3(totalCon)}`, estilo: 1, marcar: false, puntos: acumulado(con).map((c, i) => [i + 1, c]) },
       ],
     })) +
-    en(120, 440, rotulo('Sin caché')) +
-    recipiente(120) +
-    en(120 + ancho + 40, y0, contadores([['input', totalSin - output], ['cache write', 0], ['cache read', 0], ['output', output]], totalSin)) +
-    en(xd, 440, rotulo('Con caché')) +
-    recipiente(xd) +
-    en(xd + ancho + 12, fondo - corcheteAlto, `<div class="corchete" style="height:${corcheteAlto}px"></div>`) +
-    en(xd + ancho + 52, fondo - corcheteAlto / 2 - 36, `<div class="corchete-etiqueta">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}Cache read<span class="corchete-etiqueta__detalle">74.000</span></div>`) +
-    en(xd + ancho + 52, fondo - corcheteAlto - 70, apoyo('Cache write<br><span class="tipo-mono-s">5.000</span>')) +
-    en(1520, y0, contadores([['input', 0], ['cache write', write], ['cache read', read], ['output', output]], totalCon)) +
+    en(1340, 170, `<span class="contador">${icono('repeat')}12<span class="contador__unidad">llamadas</span></span>`) +
     // Sobre los totales sin redondear (1,356 y 0,4253), como el guion: −69 %. Con los redondeados saldría −68 %.
-    en(1530, 150, `<div class="tipo-titulo" style="color:var(--color-acento)">−${Math.round((1 - totalCon / totalSin) * 100)} %</div>${apoyo('frente a sin caché')}`));
+    en(1340, 270, `<div class="tipo-titulo" style="color:var(--color-acento)">−${Math.round((1 - totalCon / totalSin) * 100)} %</div>${apoyo('con caché, frente a sin caché')}`) +
+    en(120, 500, rotulo('Sin caché')) +
+    en(120, 548, ventana(ancho, capas, '100K')) +
+    en(1340, 500, desglose([['Input sin caché', totalSin - output], ['Output', output]], totalSin)) +
+    en(120, 700, rotulo('Con caché')) +
+    en(120, 748, `<div style="display:grid;gap:var(--esp-1)">${ventana(ancho, capas, '100K')}${corcheteBajo(leido, false, 'Cache read', '74.000 tokens')}</div>`) +
+    en(1340, 700, desglose([['Cache write', write], ['Cache read', read], ['Output', output]], totalCon)));
 }
 
-/** E09 · el contexto, por pasos. Devuelve la lámina y sus pasos animados con los efectos de motion.js. */
+/** E09 · el contexto, por pasos (la escena real, src/escenas/E09.js, con su composición). Devuelve la lámina y sus pasos animados con los efectos de motion.js. */
 export function e09() {
-  // Recipiente con sus medidas de componente; las capas ocupan su alto menos la holgura arriba y abajo.
-  const [x, y] = [1180, 200];
-  const k = holgura(), util = px('--recipiente-alto') - 2 * k, sobra = px('--esp-3') / 2;
-  const fill = util / 200000;
-  const capas = [['Instrucciones', 12000], ['Conversación', 30000], ['Código leído', 40000], ['Resultados de herramientas', 14000]];
-  const usado = capas.reduce((a, [, n]) => a + n, 0);
-  const marcas = [0, 50000, 100000, 150000, 200000].map(n =>
-    `<span class="escala__marca" style="top:${Math.round(k + util - n * fill)}px">${formato(n, 0)}</span>`).join('');
-  const alturaUsada = Math.round(usado * fill);
+  // Una fila por concepto; cada una, con su ventana a todo el ancho. Miles de tokens, cifras ficticias.
+  const [X, ANCHO, VENTANA] = [120, 1680, 256];
+  const capasDe = [['Instrucciones', 28], ['Reglas', 18], ['Conversación', 28], ['Código leído', 38], ['Resultados de herramientas', 54]];
+  const g = px('--trazo-contorno'), porMil = (ANCHO - 2 * holgura()) / VENTANA;
+  const usado = capasDe.reduce((a, [, n]) => a + n, 0);
+  const ancho = n => Math.round(n * porMil) - g;
+  const utilizadas = capasDe.map(([t, n]) => ['entrada', ancho(n), t]);
+  // Relevante: todo atenuado salvo 16K del código leído (12K atenuados antes).
+  const relevantes = capasDe.flatMap(([t, n]) => t !== 'Código leído' ? [['entrada', ancho(n), '', ' atenuado']] :
+    [['entrada', ancho(12), '', ' atenuado'], ['entrada', ancho(16), ''], ['entrada', ancho(n - 28), '', ' atenuado']]);
+  const conClase = capas => capas.map(([tipo, w, texto, clase = '']) => `<div class="capa capa--${tipo}${clase}" style="width:${w}px">${texto}</div>`).join('');
+  const barra = (ancho, contenido, capacidad, clase = '') =>
+    `<div class="ventana${clase}" style="width:${ancho}px">${contenido ? `<div class="ventana__relleno">${contenido}</div>` : ''}<span class="ventana__capacidad">${capacidad}</span></div>`;
+  const FILAS = [240, 450, 660];
+  const y = i => FILAS[i] + 59;
+  const nivelX = X + holgura() + usado * porMil - g / 2 - px('--trazo-fuerte') / 2;
+  const enPaso = (x, yy, html, estilo, paso) => en(x, yy, html, estilo).replace('class="abs"', `class="abs" data-e09-paso="${paso}"`);
+  const concepto = (i, nombre, texto) => enPaso(X, FILAS[i],
+    `<p class="tipo-texto" style="margin:0;display:flex;gap:var(--esp-3)"><span style="font-weight:var(--peso-enfasis)">${nombre}</span><span style="color:var(--color-texto-2)">${texto}</span></p>`, '', i + 1);
   const html = lamina('e09', 'E09 · Contexto: qué es',
     cabecera('E09 · Contexto: qué es', true) +
-    en(120, 150, '<div class="tipo-titulo" style="width:800px">El contexto es todo lo que el modelo lee en cada llamada</div>') +
-    en(120, 560, '<p class="tipo-texto" data-e09="texto" style="width:760px;color:var(--color-texto-2)"></p>') +
-    en(x, 132, `<span class="etiqueta" data-e09="capacidad">${icono('app-window', 'icono--s')}Capacidad · 200.000 tokens</span>`) +
-    en(x - 180, y, `<div class="escala" style="width:160px;height:var(--recipiente-alto)">${marcas}</div>`) +
-    en(x, y, `<div class="recipiente"><div class="recipiente__capas">${capas.map(([t, n]) => capa('entrada', Math.round(n * fill) - px('--trazo-contorno'), `${t} · ${formato(n, 0)}`)).join('')}</div></div>`) +
-    en(x - sobra, y + k + util - px('--trazo-fuerte') / 2, `<div class="nivel" data-e09="nivel" style="width:${px('--recipiente-ancho') + 2 * sobra}px"><span class="nivel__cifra">${Math.round((usado / 200000) * 100)} %</span></div>`) +
-    en(790, y + k + util - Math.round((12000 + 30000 + 20000) * fill) - 26, `<span class="etiqueta" data-e09="relevante">${icono('search', 'icono--s')}Relevante</span>`));
+    en(120, 136, '<div class="tipo-titulo-s">El contexto es todo lo que el modelo lee en cada llamada</div>') +
+    concepto(0, 'Capacidad', 'Cuánto puede admitir el modelo') +
+    [[1000, '1M tokens'], [512, '512K tokens'], [256, '256K tokens']].map(([n, c], i) =>
+      enPaso(X, y(0), barra(Math.round((ANCHO * n) / 1000), '', c, i ? ' ventana--menor' : ''), '', 1)).join('') +
+    concepto(1, 'Utilizado', 'Cuánto se está ocupando') +
+    enPaso(X, y(1), barra(ANCHO, conClase(utilizadas), '256K tokens'), '', 2) +
+    enPaso(nivelX, y(1) - px('--esp-3') / 2, `<div class="nivel" data-e09="nivel" style="position:static"><span class="nivel__cifra">${Math.round((usado / VENTANA) * 100)} %</span></div>`, '', 2) +
+    concepto(2, 'Relevante', 'Qué parte ayuda realmente a resolver la tarea') +
+    enPaso(X, y(2), barra(ANCHO, conClase(relevantes), '256K tokens'), '', 3) +
+    en(120, 960, '<p class="tipo-etiqueta" data-e09="texto" style="margin:0;color:var(--color-texto-3)"></p>'));
+  const enFila = (b, paso) => b.querySelectorAll(`[data-e09-paso="${paso}"]`);
   const pasos = [
-    { texto: 'El recipiente vacío: aquí entra todo lo que el modelo lee.' },
+    { texto: 'Antes del primer paso: solo el mensaje.' },
+    { texto: 'Capacidad: tres ventanas superpuestas, de 256K, 512K y 1M tokens. Depende del modelo.', animar: (tl, b) => tl.aparecer(enFila(b, 1)) },
     {
-      texto: 'Entran las capas, de abajo arriba: instrucciones, conversación, código leído y resultados de herramientas.',
-      animar: (tl, b) => tl.apilarCapa(b.querySelectorAll('.capa')),
+      texto: 'Utilizado: la ventana de 256K se llena de izquierda a derecha y el nivel marca el 65 %.',
+      animar: (tl, b) => {
+        const nivel = b.querySelector('[data-e09=nivel]');
+        const [fila, barraUsada, envoltura] = enFila(b, 2);
+        // La ventana se llena capa a capa y, donde acaba, aparece el nivel con su cifra subiendo.
+        const cifra = nivel.querySelector('.nivel__cifra');
+        tl.aparecer([fila, barraUsada])
+          .llenarVentana(barraUsada.querySelectorAll('.capa'))
+          .aparecer(envoltura)
+          .subirContador(cifra, { desde: 0, hasta: Math.round((usado / VENTANA) * 100), sufijo: ' %' }, '<');
+      },
     },
     {
-      texto: 'Capacidad: lo máximo que cabe en la ventana.',
-      animar: (tl, b) => tl.aparecer(b.querySelectorAll('.escala__marca')).entrarConMuelle(b.querySelector('[data-e09=capacidad]'), {}, '<'),
-    },
-    {
-      texto: `Utilizado: ${formato(usado, 0)} tokens, la línea de nivel.`,
-      animar: (tl, b) => tl.set(b.querySelector('[data-e09=nivel]'), { autoAlpha: 1 }).subirNivel(b.querySelector('[data-e09=nivel]'), { y: -alturaUsada }),
-    },
-    {
-      texto: 'Relevante: solo una parte sirve para esta tarea; el resto se atenúa.',
-      animar: (tl, b) => tl.atenuar([...b.querySelectorAll('.capa')].filter((_, i) => i !== 2)).aparecer(b.querySelector('[data-e09=relevante]'), {}, '<'),
+      texto: 'Relevante: el mismo relleno, atenuado salvo el trozo del código leído que ayuda de verdad.',
+      animar: (tl, b) => tl.aparecer(enFila(b, 3)),
     },
   ];
-  const preparar = (gsap, b) => {
-    gsap.set(b.querySelectorAll('.capa'), { scaleY: 0, transformOrigin: '50% 100%' });
-    gsap.set([...b.querySelectorAll('.escala__marca'), ...b.querySelectorAll('[data-e09=capacidad],[data-e09=nivel],[data-e09=relevante]')], { autoAlpha: 0 });
-  };
+  const preparar = (gsap, b) => gsap.set(b.querySelectorAll('[data-e09-paso]'), { autoAlpha: 0 });
   return { html, pasos, preparar };
 }

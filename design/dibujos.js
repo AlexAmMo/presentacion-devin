@@ -1,5 +1,5 @@
 // Geometría de los componentes SVG del vocabulario: gráfica de líneas, dial de
-// effort, temporizador, circuito, bucle del agente y camino de puntos.
+// effort, temporizador, guía en codo, saltos de precio, circuito, repetición, bucle del agente y camino de puntos.
 // Devuelven marcado con las clases de componentes.css: color, trazos y tipografía
 // van siempre por CSS, nunca en atributos. Las medidas salen de design-system.css.
 import { icono } from './iconos.js';
@@ -20,11 +20,19 @@ export function curva(puntos, cerrada = false) {
 }
 
 /**
- * Gráfica de líneas con ejes, rejilla, franja opcional y etiquetas al final de cada línea.
- * series: [{ nombre, estilo: 1 | 2 | 3 | 4 | 'acento', puntos: [[x, y], …], dy, marcar: false (sin puntos) }]
+ * Gráfica de líneas con ejes, rejilla, franjas opcionales y etiquetas al final de cada línea.
+ * series: [{ nombre, estilo: 1 | 2 | 3 | 4 | 'acento', puntos: [[x, y], …], dy, marcar: false (sin puntos),
+ *   notas: [[índice, texto, lado: 'arriba' | 'abajo' | 'izquierda' | 'derecha']] (el nombre de un punto, p. ej. su esfuerzo),
+ *   resaltar: [índices] (puntos con un anillo más grueso) }]
+ * franja: { desde, hasta, texto, critica } o una lista de ellas. El texto va encima de la gráfica, centrado
+ *   sobre su franja; «\n» parte la línea (la última, a --esp-2 del borde superior).
+ * flechas: [{ desde: [x, y], hasta: [x, y], texto, lado: 'arriba' | 'abajo', discontinua }]: una lectura entre
+ *   dos puntos, con su texto junto al centro; la discontinua no lleva punta (une dos puntos a la misma altura).
  * x, y: { min, max, log, marcas: [valores], formato: v => texto, titulo }
+ * Cada serie lleva data-serie (su índice); cada punto, data-punto; cada anillo, data-resalta; cada nota, data-nota;
+ * cada flecha y su texto, data-flecha: así una escena puede animar sus partes por separado.
  */
-export function grafica({ ancho, alto, x, y, series, franja, margenDerecho = medida('--esp-8') * 1.5 }) {
+export function grafica({ ancho, alto, x, y, series, franja, flechas = [], margenDerecho = medida('--esp-8') * 1.5 }) {
   const m = { izq: medida('--esp-8'), der: margenDerecho, arr: medida('--esp-6'), abj: medida('--esp-7') };
   const escala = (eje, desde, hasta) => {
     const f = eje.log ? Math.log10 : n => n;
@@ -35,11 +43,15 @@ export function grafica({ ancho, alto, x, y, series, franja, margenDerecho = med
   const fx = x.formato ?? String, fy = y.formato ?? String;
   const etiqueta = medida('--tipo-etiqueta');
   let svg = '';
-  if (franja) {
-    const [a, b] = [X(franja.desde), X(franja.hasta)];
-    svg += `<rect class="grafica__franja" x="${r1(a)}" y="${m.arr}" width="${r1(b - a)}" height="${r1(alto - m.abj - m.arr)}"/>`;
+  for (const f of [franja ?? []].flat()) {
+    const [a, b] = [X(f.desde), X(f.hasta)];
+    svg += `<rect class="grafica__franja${f.critica ? ' grafica__franja--critica' : ''}" x="${r1(a)}" y="${m.arr}" width="${r1(b - a)}" height="${r1(alto - m.abj - m.arr)}"/>`;
     svg += `<path class="grafica__franja-borde" d="M${r1(a)} ${m.arr}V${alto - m.abj}M${r1(b)} ${m.arr}V${alto - m.abj}"/>`;
-    if (franja.texto) svg += `<text class="grafica__nota" x="${r1((a + b) / 2)}" y="${alto - m.abj - etiqueta * 0.8}" text-anchor="middle">${esc(franja.texto)}</text>`;
+    if (f.texto) {
+      const lineas = String(f.texto).split('\n'), alturaLinea = etiqueta * 1.2, base = m.arr - medida('--esp-2');
+      svg += `<text class="grafica__nota" text-anchor="middle">${lineas.map((t, i) =>
+        `<tspan x="${r1((a + b) / 2)}" y="${r1(base - (lineas.length - 1 - i) * alturaLinea)}">${esc(t)}</tspan>`).join('')}</text>`;
+    }
   }
   for (const valor of y.marcas) {
     svg += `<path class="grafica__rejilla" d="M${m.izq} ${r1(Y(valor))}H${ancho - m.der}"/>`;
@@ -51,15 +63,43 @@ export function grafica({ ancho, alto, x, y, series, franja, margenDerecho = med
   svg += `<path class="grafica__eje" d="M${m.izq} ${m.arr - medida('--esp-2')}V${alto - m.abj}H${ancho - m.der + medida('--esp-2')}"/>`;
   if (y.titulo) svg += `<text class="grafica__titulo-eje" x="${m.izq}" y="${m.arr - medida('--esp-4')}">${esc(y.titulo)}</text>`;
   if (x.titulo) svg += `<text class="grafica__titulo-eje" x="${ancho - m.der}" y="${alto - medida('--esp-2')}" text-anchor="end">${esc(x.titulo)}</text>`;
-  for (const serie of series) {
+  const separacion = medida('--esp-3');
+  series.forEach((serie, s) => {
     const pts = serie.puntos.map(([a, b]) => [r1(X(a)), r1(Y(b))]);
     const [ux, uy] = pts.at(-1);
-    svg += `<g class="grafica__serie grafica__serie--${serie.estilo}">`;
+    const resaltados = new Set(serie.resaltar ?? []);
+    svg += `<g class="grafica__serie grafica__serie--${serie.estilo}" data-serie="${s}">`;
     svg += `<path class="grafica__linea" d="M${pts.map(p => p.join(' ')).join('L')}"/>`;
-    if (serie.marcar !== false) svg += pts.map(([a, b]) => `<circle class="grafica__punto" cx="${a}" cy="${b}" r="${medida('--esp-1')}"/>`).join('');
+    if (serie.marcar !== false) svg += pts.map(([a, b], i) => `<circle class="grafica__punto" data-punto="${i}" cx="${a}" cy="${b}" r="${medida('--esp-1')}"/>`).join('');
+    // El resaltado es un anillo encima del punto: así puede aparecer en su paso.
+    svg += [...resaltados].map(i => `<circle class="grafica__punto grafica__punto--resaltado" data-resalta="${i}" cx="${pts[i][0]}" cy="${pts[i][1]}" r="${medida('--esp-2')}"/>`).join('');
     svg += `<text class="grafica__etiqueta" x="${r1(ux + medida('--esp-3'))}" y="${r1(uy + (serie.dy ?? 0))}" dominant-baseline="central">${esc(serie.nombre)}</text>`;
+    for (const [i, texto, lado = 'arriba'] of serie.notas ?? []) {
+      const [a, b] = pts[i];
+      const sitio = { arriba: [a, b - separacion, 'middle', 'auto'], abajo: [a, b + separacion, 'middle', 'hanging'],
+        izquierda: [a - separacion, b, 'end', 'central'], derecha: [a + separacion, b, 'start', 'central'] }[lado];
+      svg += `<text class="grafica__etiqueta" data-nota="${i}" x="${r1(sitio[0])}" y="${r1(sitio[1])}" text-anchor="${sitio[2]}" dominant-baseline="${sitio[3]}">${esc(texto)}</text>`;
+    }
     svg += '</g>';
-  }
+  });
+  flechas.forEach((f, k) => {
+    const [ax, ay, bx, by] = [X(f.desde[0]), Y(f.desde[1]), X(f.hasta[0]), Y(f.hasta[1])];
+    // Sin pisar los puntos: la flecha empieza y acaba a --esp-3 de ellos.
+    const largo = Math.hypot(bx - ax, by - ay), ux = (bx - ax) / largo, uy = (by - ay) / largo;
+    const [x1, y1, x2, y2] = [ax + ux * separacion, ay + uy * separacion, bx - ux * separacion, by - uy * separacion];
+    const punta = medida('--esp-2'), [px1, py1] = [x2 - ux * punta - uy * punta * 0.6, y2 - uy * punta + ux * punta * 0.6], [px2, py2] = [x2 - ux * punta + uy * punta * 0.6, y2 - uy * punta - ux * punta * 0.6];
+    // Un solo trazo (la punta se repasa): al trazarse, la punta sale al final.
+    const d = `M${r1(x1)} ${r1(y1)}L${r1(x2)} ${r1(y2)}` + (f.discontinua ? '' : `L${r1(px1)} ${r1(py1)}L${r1(x2)} ${r1(y2)}L${r1(px2)} ${r1(py2)}`);
+    svg += `<path class="grafica__flecha${f.discontinua ? ' grafica__flecha--discontinua' : ''}" data-flecha="${k}" d="${d}"/>`;
+    if (f.texto) {
+      const lineas = String(f.texto).split('\n'), alturaLinea = etiqueta * 1.2;
+      const [mx, my] = [(x1 + x2) / 2, (y1 + y2) / 2];
+      const arriba = (f.lado ?? 'arriba') === 'arriba';
+      const base = arriba ? my - separacion - (lineas.length - 1) * alturaLinea : my + separacion + etiqueta;
+      svg += `<text class="grafica__nota" data-flecha="${k}" text-anchor="middle">${lineas.map((l, i) =>
+        `<tspan x="${r1(mx)}" y="${r1(base + i * alturaLinea)}">${esc(l)}</tspan>`).join('')}</text>`;
+    }
+  });
   return `<svg class="grafica" viewBox="0 0 ${ancho} ${alto}" width="${ancho}" height="${alto}">${svg}</svg>`;
 }
 
@@ -102,6 +142,84 @@ export function temporizador({ segundos = 300 } = {}) {
 }
 
 /**
+ * Línea en ángulo recto que pasa por los puntos [[x, y], …], con las esquinas redondeadas
+ * (radio --radio-s, o menos si un tramo es corto): la guía que une un resaltado con su etiqueta.
+ */
+export function codo(puntos, radio = medida('--radio-s')) {
+  let d = `M${r1(puntos[0][0])} ${r1(puntos[0][1])}`;
+  for (let i = 1; i < puntos.length - 1; i++) {
+    const [a, b, c] = [puntos[i - 1], puntos[i], puntos[i + 1]];
+    const r = Math.min(radio, Math.hypot(b[0] - a[0], b[1] - a[1]) / 2, Math.hypot(c[0] - b[0], c[1] - b[1]) / 2);
+    const hacia = (p, q, k) => [p[0] + Math.sign(q[0] - p[0]) * k, p[1] + Math.sign(q[1] - p[1]) * k];
+    const [e, f] = [hacia(b, a, r), hacia(b, c, r)];
+    d += `L${r1(e[0])} ${r1(e[1])}Q${r1(b[0])} ${r1(b[1])} ${r1(f[0])} ${r1(f[1])}`;
+  }
+  const z = puntos[puntos.length - 1];
+  return `${d}L${r1(z[0])} ${r1(z[1])}`;
+}
+
+/**
+ * Saltos de precio: arcos que unen filas de una tabla por su derecha, en px de la pantalla. Cada
+ * salto va de la fila «desde» a la fila «hasta» (sus centros, en y), con la punta en «hasta», y se
+ * abre «curva» px hacia la derecha de x. Su texto (×20) va en la fila de destino, en la columna
+ * xCifras, a la derecha de todos los arcos: así no se pisan aunque se aniden. Con acento: true, es
+ * el protagonista. Devuelve los grupos (.salto, con data-salto) para un SVG que cubra la pantalla.
+ */
+export function saltos({ x, xCifras, saltos: lista }) {
+  const f = medida('--esp-1');
+  return lista.map((sa, k) => {
+    const { desde, hasta, curva, texto } = sa;
+    // Un solo trazo (la punta se repasa): al trazarse, la punta sale al final.
+    const d = `M${r1(x)} ${r1(desde)}C${r1(x + curva)} ${r1(desde)} ${r1(x + curva)} ${r1(hasta)} ${r1(x)} ${r1(hasta)}L${r1(x + f)} ${r1(hasta - f)}L${r1(x)} ${r1(hasta)}L${r1(x + f)} ${r1(hasta + f)}`;
+    return `<g class="salto${sa.acento ? ' salto--acento' : ''}" data-salto="${k}"><path class="salto__arco" d="${d}"/>` +
+      `<text class="salto__cifra" x="${r1(xCifras)}" y="${r1(hasta)}" dominant-baseline="central">${esc(texto)}</text></g>`;
+  }).join('');
+}
+
+/**
+ * Abanico: flechas curvas que salen de un mismo punto (un concepto) hacia varios destinos (sus
+ * partes, en lista), o cada una de su origen (desde, una lista de puntos: cada etiqueta con su
+ * parte). Cada una sale y llega en horizontal, con su punta al final; con vertical: true, sale y
+ * llega en vertical, hacia abajo (el concepto arriba y sus partes debajo, en fila).
+ */
+export function abanico({ desde, hasta, vertical = false }) {
+  const f = medida('--esp-1');
+  return hasta.map(([x, y], k) => {
+    const [x0, y0] = Array.isArray(desde[0]) ? desde[k] : desde;
+    // Un solo trazo (la punta se repasa): al trazarse, la punta sale al final.
+    const curva = vertical
+      ? `C${r1(x0)} ${r1((y0 + y) / 2)} ${r1(x)} ${r1((y0 + y) / 2)} ${r1(x)} ${r1(y)}L${r1(x - f)} ${r1(y - f)}L${r1(x)} ${r1(y)}L${r1(x + f)} ${r1(y - f)}`
+      : `C${r1((x0 + x) / 2)} ${r1(y0)} ${r1((x0 + x) / 2)} ${r1(y)} ${r1(x)} ${r1(y)}L${r1(x - f)} ${r1(y - f)}L${r1(x)} ${r1(y)}L${r1(x - f)} ${r1(y + f)}`;
+    return `<path class="abanico__flecha" data-flecha="${k}" d="M${r1(x0)} ${r1(y0)}${curva}"/>`;
+  }).join('');
+}
+
+/**
+ * Llave horizontal que abarca lo que hay debajo, de x0 a x1: su pico, arriba en el centro (y),
+ * señala lo que lo resume, encima; sus brazos bajan en los extremos hasta y + alto. Devuelve dos
+ * trazos, del pico a cada extremo, para trazarlos a la vez.
+ */
+export function llave({ x0, x1, y, alto = medida('--esp-6') }) {
+  const xm = (x0 + x1) / 2, r = alto / 2, ym = y + r;
+  const brazo = (xe, s) =>
+    `<path class="llave" d="M${r1(xm)} ${r1(y)}Q${r1(xm)} ${r1(ym)} ${r1(xm + s * r)} ${r1(ym)}L${r1(xe - s * r)} ${r1(ym)}Q${r1(xe)} ${r1(ym)} ${r1(xe)} ${r1(y + alto)}"/>`;
+  return brazo(x0, -1) + brazo(x1, 1);
+}
+
+/**
+ * Traspaso: la flecha que lleva el resultado de un subagente hasta la ventana del agente. Un codo
+ * por los puntos [[x, y], …] (esquinas --radio-s) con su punta al final, en la dirección del último
+ * tramo. Un solo trazo (la punta se repasa): al trazarse, la punta sale al final.
+ */
+export function traspaso(puntos) {
+  const f = medida('--esp-1');
+  const [[ax, ay], [bx, by]] = puntos.slice(-2);
+  const [ux, uy] = [Math.sign(bx - ax), Math.sign(by - ay)];
+  const ala = lado => `${r1(bx - ux * f + lado * uy * f)} ${r1(by - uy * f + lado * ux * f)}`;
+  return `<path class="traspaso" d="${codo(puntos)}L${ala(1)}L${r1(bx)} ${r1(by)}L${ala(-1)}"/>`;
+}
+
+/**
  * Circuito cerrado (estadio) con paradas numeradas: arriba de izquierda a derecha y
  * abajo de derecha a izquierda. La parada «actual» va en acento; el punto queda debajo
  * de las paradas y solo se ve mientras recorre la pista. data-fracciones da la posición
@@ -135,6 +253,22 @@ export function circuito({ paradas, ancho, alto, actual = 0, hechas = 0 }) {
     svg += `<text class="circuito__nombre" x="${r1(x)}" y="${r1(ly)}" text-anchor="middle">${esc(p.nombre)}</text></g>`;
   });
   return `<svg class="circuito" viewBox="0 0 ${ancho} ${alto}" width="${ancho}" height="${alto}" data-fracciones="${lugares.map(l => l.f.toFixed(4)).join(',')}">${svg}</svg>`;
+}
+
+/**
+ * Repetición: un icono con un anillo abierto y una flecha alrededor (sentido horario). El anillo
+ * no ocupa sitio en la fila: sale del icono hasta --repeticion-diametro. Gira con el efecto girar.
+ */
+export function repeticion(nombreIcono) {
+  // El radio deja sitio a la punta de la flecha: todo cabe en --repeticion-diametro.
+  const D = medida('--repeticion-diametro'), c = D / 2, f = medida('--esp-1'), r = c - f;
+  const punto = grados => [c + r * Math.cos((grados * Math.PI) / 180), c + r * Math.sin((grados * Math.PI) / 180)];
+  // De arriba (−90°) a 210°: 300° de anillo; la flecha, en el extremo, apunta en el sentido del giro.
+  const [x0, y0] = punto(-90), [x1, y1] = punto(210);
+  const t = [-Math.sin((210 * Math.PI) / 180), Math.cos((210 * Math.PI) / 180)], n = [Math.cos((210 * Math.PI) / 180), Math.sin((210 * Math.PI) / 180)];
+  const punta = (s1, s2) => `${r1(x1 - f * t[0] + s1 * f * n[0])} ${r1(y1 - f * t[1] + s2 * f * n[1])}`;
+  const svg = `<path d="M${r1(x0)} ${r1(y0)}A${r} ${r} 0 1 1 ${r1(x1)} ${r1(y1)}"/><path d="M${punta(1, 1)}L${r1(x1)} ${r1(y1)}L${punta(-1, -1)}"/>`;
+  return `<span class="repeticion">${icono(nombreIcono)}<svg class="repeticion__anillo" viewBox="0 0 ${D} ${D}" width="${D}" height="${D}">${svg}</svg></span>`;
 }
 
 /** Bucle del agente: círculo con flechas en sentido horario, un punto y cuatro etiquetas (arriba, derecha, abajo, izquierda). */

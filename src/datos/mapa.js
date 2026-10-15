@@ -25,7 +25,7 @@
  */
 export const ZONAS = {
   general: { nombre: 'Vista general', region: 'general', icono: 'map-pin' },
-  parte1: { nombre: 'Primeros pasos', region: 'parte1', icono: 'map-pin', x: 0, y: -3280 },
+  parte1: { nombre: 'Primeros pasos', region: 'parte1', icono: 'footprints', x: 0, y: -3280 },
   hub: { nombre: 'Devin', region: 'centro', icono: 'bot', x: 0, y: 0 },
   modelos: { nombre: 'Modelos', region: 'centro', icono: 'cpu', x: 0, y: -1240 },
   effort: { nombre: 'Effort', region: 'centro', icono: 'gauge', x: 2080, y: -1240 },
@@ -36,8 +36,8 @@ export const ZONAS = {
   mcp: { nombre: 'MCP', region: 'centro', icono: 'plug', x: -2080, y: 0 },
   subagentes: { nombre: 'Subagentes', region: 'centro', icono: 'git-fork', x: -2080, y: -1240 },
   parte3: { nombre: 'Coste', region: 'parte3', icono: 'coins', x: 4960, y: 0 },
-  parte4: { nombre: 'Buenas prácticas', region: 'parte4', icono: 'list-checks', x: 0, y: 3280 },
-  cierre: { nombre: 'Preguntas', region: 'cierre', icono: 'map-pin', x: -4960, y: 0 },
+  parte4: { nombre: 'Buenas prácticas', region: 'parte4', icono: 'route', x: 0, y: 3280 },
+  cierre: { nombre: 'Preguntas', region: 'cierre', icono: 'message-circle-question', x: -4960, y: 0 },
 };
 
 /** La zona de cada escena. Las de «general» se ven desde la vista general y no tienen pantalla propia. */
@@ -55,7 +55,6 @@ export const ZONA_DE = {
   E16: 'mcp',
   E17: 'subagentes',
   E18: 'hub',
-  E19: 'hub',
   E20: 'parte3', E21: 'parte3', E22: 'parte3', E23: 'parte3',
   E24: 'parte4', E25: 'parte4', E26: 'parte4', E27: 'parte4', E28: 'parte4', E29: 'parte4',
   E30: 'cierre', E31: 'cierre',
@@ -63,39 +62,76 @@ export const ZONA_DE = {
 
 /**
  * Pasos con un encuadre distinto del de su escena: el id de otra escena (se encuadra su
- * pantalla) o 'general'.
+ * pantalla), 'general', 'portada' (el logo y el nombre de la tapa del centro, src/tapas.js) o
+ * 'diagrama' (la pantalla del hub con su diagrama en el centro, sin el panel de la derecha).
  */
 export const ENCUADRES = {
-  'E01/1': 'E04',   // Portada: la pantalla de Devin, aún con la tapa del centro (su logo)
+  'E01/1': 'portada',   // Portada: el logo de Devin y su nombre, en la tapa del centro
+  'E04/1': 'diagrama',  // El hub solo, centrado: aún no hay panel a la derecha
 };
 
 /**
- * El hub: la tarjeta del agente en el centro y un hueco por pieza, en la misma
- * dirección que su pantalla en la cuadrícula (Modelo arriba, Contexto a la derecha…).
- * Medidas en px dentro de la pantalla del hub.
+ * Las tapas de los bloques (src/tapas.js). Cubren su bloque con una holgura en px del mundo,
+ * para que el borde no asome al encuadrar una de sus pantallas: [x, y]. Las de fuera son más
+ * holgadas, porque llevan su icono (el de su zona, en ZONAS) encima del título. La del centro
+ * lleva el logo de Devin y, debajo, su nombre en lugar del título de la parte.
+ * - portada: lo que ocupan el logo y el nombre del alto de la portada (encuadre 'portada'); así
+ *   el encuadre queda dentro de la tapa, sin que asomen sus esquinas.
+ * - enVuelo: los bloques cuya tapa se levanta durante el último tercio del vuelo que entra en
+ *   ellos, no al llegar: la del centro, porque a escala 1 su logo llenaría la pantalla.
+ */
+export const TAPAS = { holgura: [160, 160], holguraFuera: [360, 420], tituloCentro: 'Devin', portada: 0.7, enVuelo: ['centro'] };
+
+/**
+ * El hub: el agente (un círculo, con Devin) en el centro, sus herramientas de serie pegadas a él
+ * sobre el bucle y, alrededor, un anillo con una pieza por tema: todas, círculos iguales con su
+ * icono y su nombre, cada una en la dirección de su pantalla en la cuadrícula (Modelo arriba,
+ * Effort arriba a la derecha, Contexto a la derecha…), a 45° unas de otras.
+ * Ocupa la izquierda de su pantalla; a la derecha queda el panel de las escenas del hub (E04,
+ * E14 y E18), con su cabecera y su contenido. Medidas en px dentro de la pantalla del hub.
+ * - centro: el del agente, el del bucle y el del anillo. anillo: el radio del anillo de piezas.
  * - llega: cuándo entra la pieza.
  *   · Una escena ('E07'): al terminarla, sin animación; el hub no está a la vista, y al
  *     volver a Devin ya la tiene.
  *   · Un paso de una escena del hub ('E14/1'): entra animada, con el hub a la vista.
- * - forma: la del hueco (circulo, recipiente, documento o la tarjeta por defecto).
- *   bucle y plugin no tienen hueco: el bucle rodea al agente (centrado en su tarjeta)
- *   y el plugin lo envuelve todo.
- * - Las herramientas de serie quedan sobre el bucle, que pasa por ellas.
+ * - angulo: su sitio en el anillo, en grados desde arriba y en sentido horario.
+ * - forma: herramientas (las cuatro de serie, sobre el bucle, a 45°, 135°, 225° y 315°), bucle
+ *   (rodea al agente) y plugin (la caja que lo envuelve todo, x, y, ancho y alto) no van en el anillo.
+ * - aparece: el paso en que entra el hub (Devin, sus herramientas y los huecos de las piezas,
+ *   uno tras otro); antes no se ve.
+ * - Contexto se transforma en la ventana de contexto en los pasos en que se anima el contexto
+ *   (contextoComoVentana); allí, ventana es su sitio y ventanaCapas, lo que cada pieza deja en
+ *   ella (ancho en px): así se ve que todo acaba en el contexto. Las escenas del hub dibujan
+ *   encima lo que añade la sesión.
  */
 export const HUB = {
-  agente: { x: 383, y: 445 },
-  panel: { x: 1160, y: 96, ancho: 640, alto: 888 },
+  centro: { x: 670, y: 540 },
+  anillo: 319,
+  panel: { x: 1240, y: 96, ancho: 560, alto: 888 },
   piezas: [
-    { id: 'modelo', nombre: 'Modelo', icono: 'cpu', llega: 'E07', x: 500, y: 160, ancho: 220, alto: 96 },
-    { id: 'effort', nombre: 'Effort', icono: 'gauge', llega: 'E08', x: 740, y: 160, ancho: 220, alto: 96 },
-    { id: 'contexto', nombre: 'Contexto', icono: 'app-window', llega: 'E11', forma: 'recipiente', x: 910, y: 300, ancho: 150, alto: 240 },
-    { id: 'rules', nombre: 'AGENTS.md', icono: 'file-text', llega: 'E12', forma: 'documento', x: 910, y: 560, ancho: 150, alto: 200 },
-    { id: 'skills', nombre: 'Skills', icono: 'puzzle', llega: 'E13', x: 690, y: 840, ancho: 220, alto: 110 },
-    { id: 'herramientas', nombre: 'Herramientas', icono: 'terminal', llega: 'E14/1', forma: 'circulo', x: 480, y: 716, ancho: 260, alto: 88 },
+    { id: 'modelo', nombre: 'Modelo', icono: 'cpu', llega: 'E07', angulo: 0 },
+    { id: 'effort', nombre: 'Effort', icono: 'gauge', llega: 'E08', angulo: 45 },
+    { id: 'contexto', nombre: 'Contexto', icono: 'app-window', llega: 'E11', angulo: 90, ventana: { x: 850, y: 492, ancho: 310, alto: 96 } },
+    { id: 'rules', nombre: 'AGENTS.md', icono: 'file-text', llega: 'E12', angulo: 135 },
+    { id: 'skills', nombre: 'Skills', icono: 'puzzle', llega: 'E13', angulo: 180 },
+    { id: 'herramientas', nombre: 'Herramientas', icono: 'terminal', llega: 'E14/1', forma: 'herramientas' },
     { id: 'bucle', nombre: 'Bucle', llega: 'E14/2', forma: 'bucle' },
-    { id: 'propias', nombre: 'Tools propias', icono: 'wrench', llega: 'E15', forma: 'circulo', x: 290, y: 840, ancho: 240, alto: 96 },
-    { id: 'mcp', nombre: 'MCP', icono: 'plug', llega: 'E16', forma: 'circulo', x: 250, y: 476, ancho: 88, alto: 88 },
-    { id: 'subagente', nombre: 'Subagente', icono: 'git-fork', llega: 'E17', x: 160, y: 160, ancho: 280, alto: 96 },
-    { id: 'plugin', nombre: 'Plugin', icono: 'package', llega: 'E18/1', forma: 'plugin', x: 120, y: 120, ancho: 980, alto: 864 },
+    { id: 'propias', nombre: 'Tools propias', icono: 'wrench', llega: 'E15', angulo: 225 },
+    { id: 'mcp', nombre: 'MCP', icono: 'plug', llega: 'E16', angulo: 270 },
+    { id: 'subagente', nombre: 'Subagente', icono: 'git-fork', llega: 'E17', angulo: 315 },
+    { id: 'plugin', nombre: 'Plugin', icono: 'package', llega: 'E18/1', forma: 'plugin', x: 160, y: 123, ancho: 1020, alto: 834 },
   ],
+  ventanaCapas: [['contexto', 32, 'Instrucciones'], ['rules', 24, 'AGENTS.md'], ['skills', 8, 'Skills: descripciones'], ['herramientas', 12, 'Herramientas: definiciones'], ['propias', 8, 'Tools propias: definiciones']],
+  contextoComoVentana: ['E14/2'],
+  aparece: 'E04/1',
+};
+
+/**
+ * El circuito de Buenas prácticas: fijo arriba a la derecha de su pantalla mientras sus escenas
+ * se relevan; una parada por escena, con su nombre. La de la escena en curso va en acento y,
+ * al pasar a la siguiente, el punto recorre la pista hasta ella. Medidas en px dentro de la pantalla.
+ */
+export const CIRCUITO = {
+  zona: 'parte4', x: 1180, y: 84, ancho: 620, alto: 280,
+  paradas: { E24: 'Definir', E25: 'Contexto', E26: 'Planificar', E27: 'Intervenir', E28: 'Verificar', E29: 'Hábitos' },
 };

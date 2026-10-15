@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-15T12:00:00+02:00",
+  "generatedAt": "2026-10-15T03:38:59+02:00",
   "title": "Design System: Devin en el día a día",
   "extensions": {
     "colorMeta": {
@@ -139,6 +139,36 @@
           "#EEEEEE"
         ]
       },
+      "royal-blue": {
+        "role": "secondary",
+        "displayName": "Royal blue · serie 2 de las gráficas",
+        "canonical": "oklch(55.0% 0.208 262.1)",
+        "tonalRamp": [
+          "#000729",
+          "#011E61",
+          "#083A9D",
+          "#1859DA",
+          "#4683F8",
+          "#83ADFC",
+          "#BAD2FD",
+          "#E6EFFE"
+        ]
+      },
+      "malachite": {
+        "role": "secondary",
+        "displayName": "Malachite · solo oscurecido, base de la serie 3",
+        "canonical": "oklch(79.8% 0.236 145.3)",
+        "tonalRamp": [
+          "#011002",
+          "#013008",
+          "#0D5419",
+          "#0B7C24",
+          "#12A533",
+          "#35CF4E",
+          "#4CF764",
+          "#CCFECD"
+        ]
+      },
       "gris-marca": {
         "role": "neutral",
         "displayName": "Gris claro de marca · texto 2 sobre navy y texto simulado",
@@ -167,6 +197,36 @@
           "#A59D95",
           "#CBC2BB",
           "#F6EDE5"
+        ]
+      },
+      "franja-critica": {
+        "role": "primary",
+        "displayName": "Franja crítica · tinte del acento para tramos degradados",
+        "canonical": "oklch(91.9% 0.036 9.3)",
+        "tonalRamp": [
+          "#170508",
+          "#361F23",
+          "#563D41",
+          "#795E62",
+          "#9D8184",
+          "#C3A5A9",
+          "#E7C8CC",
+          "#FEE8EB"
+        ]
+      },
+      "serie-3": {
+        "role": "secondary",
+        "displayName": "Verde oscurecido · serie 3 de las gráficas",
+        "canonical": "oklch(57.2% 0.144 151.6)",
+        "tonalRamp": [
+          "#001004",
+          "#022F14",
+          "#0F532A",
+          "#107A3E",
+          "#33A15B",
+          "#5EC77F",
+          "#83ECA1",
+          "#C9FED5"
         ]
       },
       "razonamiento": {
@@ -345,6 +405,16 @@
         "purpose": "Progresión · líneas que se dibujan y puntos que recorren un camino"
       },
       {
+        "name": "dur-vuelta",
+        "value": "1.5s",
+        "purpose": "Progresión · media vuelta lenta del bucle del agente: una llamada, explicada paso a paso"
+      },
+      {
+        "name": "dur-vuelta-rapida",
+        "value": "0.8s",
+        "purpose": "Progresión · una vuelta rápida del bucle: llamadas que se suceden"
+      },
+      {
         "name": "dur-camara-corta",
         "value": "0.8s",
         "purpose": "Cámara · entre pantallas de un mismo bloque (las casillas del centro), en línea recta"
@@ -377,7 +447,7 @@
       {
         "name": "ease-camara",
         "value": "power2.inOut",
-        "purpose": "Cámara · con --dur-camara"
+        "purpose": "Cámara, también en los vuelos cortos (--dur-camara-corta) · con --dur-camara"
       },
       {
         "name": "ease-camara-larga",
@@ -392,12 +462,12 @@
       {
         "name": "ease-caida",
         "value": "power2.in",
-        "purpose": "Fichas que caen al recipiente · con --dur-entrada"
+        "purpose": "Fichas y documentos que entran en la ventana desde arriba · con --dur-entrada"
       },
       {
-        "name": "ease-asentado",
-        "value": "back.out(1.2)",
-        "purpose": "La capa se asienta · con --dur-entrada"
+        "name": "ease-llenado",
+        "value": "power2.out",
+        "purpose": "La ventana se llena: cada capa entra desde la izquierda y frena al llegar · con --dur-entrada"
       },
       {
         "name": "ease-estado",
@@ -432,7 +502,7 @@
       {
         "name": "escalonado-capas",
         "value": "0.12s",
-        "purpose": "Capas del recipiente: cada una debe verse entrar"
+        "purpose": "Capas de la ventana: cada una debe verse entrar"
       },
       {
         "name": "pausa-tras-camara",
@@ -457,7 +527,7 @@
       {
         "name": "efecto · aparecer",
         "value": "--dur-entrada · --ease-aparicion · --escalonado · --esp-3",
-        "purpose": "Entra desde abajo y se hace visible. Fichas: stagger s('--escalonado-tokens')."
+        "purpose": "Valor de una variable, en texto: v('--ease-aparicion') → 'power3.out'. */\nexport const v = (nombre, el = raiz) => getComputedStyle(el).getPropertyValue(nombre).trim();\n\n/** Variable de tiempo en segundos: s('--dur-entrada') → 0.5. */\nexport const s = (nombre, el = raiz) => {\n  const texto = v(nombre, el);\n  return texto.endsWith('ms') ? parseFloat(texto) / 1000 : parseFloat(texto);\n};\n\n/** Variable de distancia en px, como número: px('--esp-3') → 24. */\nexport const px = (nombre, el = raiz) => parseFloat(v(nombre, el));\n\n/** Modo estático: cortes en lugar de animaciones. */\nexport const esEstatico = () =>\n  raiz.dataset.movimiento === 'estatico' ||\n  new URLSearchParams(location.search).has('estatico') ||\n  matchMedia('(prefers-reduced-motion: reduce)').matches;\n\n// Los cambios de clase van con tl.set(…, { attr: { class } }): así un timeline se puede\n// rebobinar o saltar hacia atrás sin dejar estados colgados.\nconst conClase = (el, clase, poner) =>\n  [...(el.getAttribute('class') ?? '').split(/\\s+/).filter(x => x && x !== clase), ...(poner ? [clase] : [])].join(' ');\n\n// Opciones de tiempo que se anulan en modo estático (repeat también: sin bucles).\nconst TIEMPO = /^(duration|stagger|delay|repeat|dur[A-Z]\\w*)$/;\n\nfunction registrar(name, efecto, porDefecto) {\n  gsap.registerEffect({\n    name,\n    extendTimeline: true,\n    effect: (targets, opciones) => {\n      const c = { ...porDefecto(), ...opciones };\n      if (esEstatico()) for (const k of Object.keys(c)) if (TIEMPO.test(k)) c[k] = 0;\n      return efecto(targets, c);\n    },\n  });\n}\n\n// ── Aparecer y desaparecer ────────────────────────────────────────────────\n\n/** Entra desde abajo y se hace visible. Fichas: stagger s('--escalonado-tokens')."
       },
       {
         "name": "efecto · desaparecer",
@@ -480,24 +550,34 @@
         "purpose": "Vuelve a primer plano lo atenuado."
       },
       {
-        "name": "efecto · caerAlRecipiente",
+        "name": "efecto · entrarEnVentana",
         "value": "--dur-entrada · --ease-caida · --escalonado-tokens · --esp-8",
-        "purpose": "Una ficha o un documento cae al recipiente."
+        "purpose": "Una ficha o un documento entra en la ventana de contexto: cae desde arriba hasta su sitio."
       },
       {
-        "name": "efecto · apilarCapa",
-        "value": "--dur-entrada · --ease-asentado · --escalonado-capas",
-        "purpose": "Las capas crecen desde el fondo del recipiente, una tras otra, y se asientan con un rebote corto."
+        "name": "efecto · llenarVentana",
+        "value": "--dur-entrada · --ease-llenado · --escalonado-capas",
+        "purpose": "La ventana se llena: sus capas aparecen de izquierda a derecha, una tras otra, sin deformar su texto."
       },
       {
-        "name": "efecto · subirNivel",
+        "name": "efecto · vaciarVentana",
+        "value": "--dur-salida · --ease-salida · --escalonado-capas",
+        "purpose": "La ventana se vacía: sus capas se recogen hacia la izquierda, de la última a la primera (compactar, empezar de nuevo)."
+      },
+      {
+        "name": "efecto · moverNivel",
         "value": "--dur-entrada · --ease-aparicion",
-        "purpose": "La línea de nivel sube (o baja) hasta y px."
+        "purpose": "La línea de nivel de la ventana se desplaza en horizontal hasta x px (relativos a su sitio en el dibujo)."
+      },
+      {
+        "name": "efecto · releerVentana",
+        "value": "--dur-trazado · --ease-trazado · --dur-salida · --ease-salida",
+        "purpose": "El modelo relee el contexto: la línea de lectura recorre lo ocupado de la ventana hasta x px y se apaga."
       },
       {
         "name": "efecto · alargarCorchete",
         "value": "--dur-entrada · --ease-aparicion",
-        "purpose": "El corchete de caché se alarga desde abajo sobre lo que cubre."
+        "purpose": "El corchete de caché se alarga desde la izquierda bajo (o sobre) el principio de la ventana que cubre."
       },
       {
         "name": "efecto · caducarCache",
@@ -516,7 +596,7 @@
       },
       {
         "name": "efecto · voltear",
-        "value": "--dur-entrada · --dur-salida · --ease-aparicion",
+        "value": "--ease-salida · --dur-entrada · --dur-salida · --ease-aparicion",
         "purpose": "Se da la vuelta en plano (sin 3D): se encoge, alterna la clase «volteado» y se abre."
       },
       {
@@ -563,18 +643,18 @@
     {
       "name": "Ventana de contexto",
       "kind": "custom",
-      "refersTo": "recipiente",
-      "description": "Recipiente que se llena de abajo arriba con capas por tipo de token y la línea de nivel en acento.",
-      "html": "<div class=\"ds-recipiente\"><div class=\"ds-capas\"><div class=\"ds-capa ds-entrada\">rules · AGENTS.md</div><div class=\"ds-capa ds-entrada\" style=\"height:120px\">conversación</div><div class=\"ds-capa ds-razonamiento\">razonamiento</div><div class=\"ds-capa ds-salida\">salida</div></div><div class=\"ds-nivel\"><span class=\"ds-nivel-cifra\">62 %</span></div></div>",
-      "css": ".ds-recipiente{position:relative;width:var(--recipiente-ancho);height:calc(var(--recipiente-alto) / 1.6);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-l);background:var(--color-superficie);overflow:visible}.ds-capas{position:absolute;inset:var(--esp-1);display:flex;flex-direction:column-reverse;gap:var(--trazo-contorno);overflow:hidden;border-radius:calc(var(--radio-l) - var(--esp-1))}.ds-capa{flex:none;display:flex;align-items:center;height:64px;padding:0 var(--esp-3);border-radius:var(--radio-s);white-space:nowrap;font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-razonamiento-borde)}.ds-nivel{position:absolute;left:calc(var(--esp-3) * -1);right:calc(var(--esp-3) * -1);top:32%;height:var(--trazo-fuerte);border-radius:var(--radio-pildora);background:var(--color-acento)}.ds-nivel-cifra{position:absolute;left:100%;bottom:0;margin-left:var(--esp-2);color:var(--color-acento);white-space:nowrap;font:var(--peso-fuerte) var(--tipo-texto)/var(--interlineado-cifra) var(--fuente-texto);font-variant-numeric:var(--cifras)}"
+      "refersTo": "ventana",
+      "description": "Barra horizontal en píldora que se llena de izquierda a derecha con capas por tipo de token, con su capacidad a la derecha y la línea de nivel vertical en acento donde acaba lo ocupado. La pequeña, sin texto, es la del subagente y la del hub.",
+      "html": "<div class=\"ds-vs\"><div class=\"ds-ventana\" style=\"width:880px\"><div class=\"ds-relleno\" style=\"right:auto;width:560px\"><div class=\"ds-capa ds-entrada\" style=\"width:180px\">rules</div><div class=\"ds-capa ds-entrada\" style=\"width:200px\">conversación</div><div class=\"ds-capa ds-razonamiento\" style=\"width:100px\"></div><div class=\"ds-capa ds-salida\" style=\"width:68px\"></div></div><span class=\"ds-capacidad\">200.000</span><div class=\"ds-nivel\" style=\"left:568px\"><span class=\"ds-nivel-cifra\">62 %</span></div></div><div class=\"ds-ventana ds-mini\" style=\"width:320px\"><div class=\"ds-relleno\" style=\"right:auto;width:120px\"><div class=\"ds-capa ds-entrada\" style=\"width:120px\"></div></div></div></div>",
+      "css": ".ds-vs{display:grid;gap:var(--esp-6);padding:var(--esp-4) var(--esp-8) var(--esp-4) 0}.ds-ventana{position:relative;box-sizing:border-box;height:var(--ventana-alto);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-pildora);background:var(--color-superficie)}.ds-mini{height:var(--ventana-mini-alto)}.ds-relleno{position:absolute;inset:var(--esp-1);display:flex;gap:var(--trazo-contorno);border-radius:var(--radio-pildora);overflow:hidden}.ds-capa{flex:none;box-sizing:border-box;display:flex;align-items:center;justify-content:center;height:100%;padding:0 var(--esp-2);border-radius:var(--radio-s);overflow:hidden;white-space:nowrap;font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-capa:empty{padding:0}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-razonamiento-borde)}.ds-capacidad{position:absolute;right:var(--esp-4);top:50%;transform:translateY(-50%);color:var(--color-texto-2);font:var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto)}.ds-nivel{position:absolute;top:calc(var(--esp-3) / -2 - var(--trazo-contorno));width:var(--trazo-fuerte);height:calc(var(--ventana-alto) + var(--esp-3));border-radius:var(--radio-pildora);background:var(--color-acento)}.ds-nivel-cifra{position:absolute;left:100%;bottom:calc(100% - var(--esp-3));margin-left:var(--esp-2);color:var(--color-acento);white-space:nowrap;font:var(--peso-fuerte) var(--tipo-texto)/var(--interlineado-cifra) var(--fuente-texto);font-variant-numeric:var(--cifras)}"
     },
     {
       "name": "Corchete de caché",
       "kind": "custom",
       "refersTo": "corchete",
-      "description": "Corchete a la derecha de lo que cubre: continuo con ✓ si acierta, discontinuo con ✕ si falla. Mismo tono; los separan el trazo y el icono.",
-      "html": "<div class=\"ds-cache\"><div class=\"ds-fila\"><span class=\"ds-corchete\"></span><span class=\"ds-cet\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Acierto</span></div><div class=\"ds-fila\"><span class=\"ds-corchete ds-fallo\"></span><span class=\"ds-cet\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg>Fallo</span></div></div>",
-      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-cache{display:grid;gap:var(--esp-4)}.ds-fila{display:flex;align-items:center;gap:var(--esp-2)}.ds-corchete{display:block;width:var(--corchete-ancho);height:96px;border:var(--trazo-fuerte) solid var(--color-cache-acierto);border-left:0;border-radius:0 var(--radio-s) var(--radio-s) 0}.ds-fallo{border-style:dashed;border-color:var(--color-cache-fallo)}.ds-cet{display:inline-flex;align-items:center;gap:var(--esp-1);color:var(--color-texto-1);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-cet .ds-icono{color:var(--color-cache-acierto)}"
+      "description": "Corchete bajo (o sobre) el tramo de la ventana que cubre, siempre desde la izquierda: continuo con ✓ si acierta, discontinuo con ✕ si falla. Mismo tono; los separan el trazo y el icono.",
+      "html": "<div class=\"ds-cache\"><div class=\"ds-ventana\"><div class=\"ds-relleno\"><div class=\"ds-capa ds-entrada\" style=\"width:300px\">prefijo</div><div class=\"ds-capa ds-salida\" style=\"width:160px\"></div></div></div><span class=\"ds-corchete\" style=\"width:316px\"></span><span class=\"ds-cet\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg>Acierto</span><span class=\"ds-corchete ds-fallo\" style=\"width:316px\"></span><span class=\"ds-cet ds-cet--fallo\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg>Fallo</span></div>",
+      "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-cache{display:grid;justify-items:start;gap:var(--esp-2)}.ds-ventana{position:relative;box-sizing:border-box;width:640px;height:var(--ventana-alto);border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-pildora);background:var(--color-superficie)}.ds-relleno{position:absolute;inset:var(--esp-1);display:flex;gap:var(--trazo-contorno);border-radius:var(--radio-pildora);overflow:hidden}.ds-capa{flex:none;box-sizing:border-box;display:flex;align-items:center;justify-content:center;height:100%;border-radius:var(--radio-s);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-entrada{background:var(--color-entrada);color:var(--color-sobre-entrada)}.ds-salida{background:var(--color-salida);color:var(--color-sobre-salida);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-salida-borde)}.ds-razonamiento{background:var(--patron-razonamiento);color:var(--color-sobre-razonamiento);box-shadow:inset 0 0 0 var(--trazo-contorno) var(--color-razonamiento-borde)}.ds-corchete{display:block;box-sizing:border-box;margin-left:var(--esp-1);height:var(--corchete-ancho);border:var(--trazo-fuerte) solid var(--color-cache-acierto);border-top:0;border-radius:0 0 var(--radio-s) var(--radio-s)}.ds-fallo{border-style:dashed;border-color:var(--color-cache-fallo)}.ds-cet{display:inline-flex;align-items:center;gap:var(--esp-1);margin-left:var(--esp-1);color:var(--color-texto-1);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-cet .ds-icono{width:var(--icono-s);height:var(--icono-s);color:var(--color-cache-acierto)}.ds-cet--fallo .ds-icono{color:var(--color-cache-fallo)}"
     },
     {
       "name": "Agente",
@@ -612,7 +692,7 @@
       "name": "Documento",
       "kind": "card",
       "refersTo": "documento",
-      "description": "Hoja con cabecera navy y nombre de fichero en mono; las líneas simulan texto. Va al fondo del recipiente.",
+      "description": "Hoja con cabecera navy y nombre de fichero en mono; las líneas simulan texto. Es lo primero que entra en la ventana.",
       "html": "<div class=\"ds-doc\"><div class=\"ds-doc-cab\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" style=\"width:var(--icono-s);height:var(--icono-s)\" aria-hidden=\"true\"><path d=\"M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z\"/><path d=\"M14 2v5a1 1 0 0 0 1 1h5\"/><path d=\"M10 9H8\"/><path d=\"M16 13H8\"/><path d=\"M16 17H8\"/></svg>AGENTS.md</div><div class=\"ds-doc-cuerpo\"><i></i><i></i><i style=\"width:70%\"></i><i></i><i style=\"width:55%\"></i></div></div>",
       "css": ".ds-icono{flex:none;fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-doc{display:flex;flex-direction:column;width:var(--documento-ancho);height:var(--documento-alto);overflow:hidden;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-s);background:var(--color-superficie);transition:box-shadow var(--dur-micro)}.ds-doc:hover{box-shadow:var(--elevacion-1)}.ds-doc-cab{display:flex;align-items:center;gap:var(--esp-1);padding:var(--esp-2) var(--esp-3);background:var(--color-superficie-inversa);color:var(--color-texto-inverso);font:var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono)}.ds-doc-cuerpo{display:grid;gap:var(--esp-3);padding:var(--esp-4) var(--esp-3)}.ds-doc-cuerpo i{display:block;height:var(--esp-2);border-radius:var(--radio-pildora);background:var(--color-texto-simulado)}"
     },
@@ -635,15 +715,259 @@
   ],
   "narrative": {
     "northStar": "Usted está aquí",
-    "overview": "**Creative North Star: \"Usted está aquí\"**\n\nLa charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, recipientes, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de navy. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de treinta y un componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados (el rayado del razonamiento es de franjas duras, no un degradado), las sombras difusas y los giros 3D decorativos: hasta el volteo de una tarjeta es plano.",
+    "overview": "La charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, ventanas de contexto, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende solo del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de él con `color-mix()`. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de treinta y un componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas, con una sola elevación sin difuminado. Quedan fuera las partículas, los brillos, los destellos, los degradados (el rayado del razonamiento es de franjas duras, no un degradado), las sombras difusas y los giros 3D decorativos: hasta el volteo de una tarjeta es plano.",
     "keyCharacteristics": [
       "Tinta navy sobre crema, con superficies blancas siempre contorneadas a 3 px.",
       "Un único acento rojo por pantalla; los tres rojos de la marca cuentan como uno.",
-      "Conceptos distinguidos por luminosidad y forma, no por tono.",
+      "Conceptos distinguidos por luminosidad y forma, no solo por tono; el tono solo se suma en las series de una gráfica.",
+      "La ventana de contexto es siempre una barra horizontal que se llena de izquierda a derecha.",
       "Escala tipográfica que empieza en 24 px; Outfit ligera en grande y DM Mono para tokens y código, ambas alojadas en el proyecto.",
       "Plano: una sola elevación, también plana.",
       "Cámara que llega, espera `--pausa-tras-camara` y después anima la zona.",
-      "Todo funciona sin conexión: fuentes, iconos y logos van dentro y la presentación se exporta a un único HTML."
+      "Todo funciona sin conexión: fuentes, iconos y logos van dentro y la presentación se exporta a un único HTML.",
+      "",
+      " Colors",
+      "",
+      "nco colores de marca de openbank.es hacen casi todo el trabajo: navy para el contenido, rojo para el foco, cremas de suelo y blanco para separar superficies. Otros dos colores del CSS de openbank.es, un azul y un verde, existen solo para las series de las gráficas. El resto se deriva con `color-mix()`.",
+      "",
+      "# Primary",
+      "**Red ribbon** (`--color-red-ribbon`): el acento sobre fondo claro (`--color-acento`). Zona actual del mapa, línea de nivel de la ventana y su cifra, línea de lectura, parada actual del circuito, serie protagonista de una gráfica, resaltado de una captura o de una definición. El blanco encima da 4,96:1 y sobre Old Lace da 4,75:1.",
+      "**Rojo del logo para fondo oscuro** (`--color-rojo-oscuro`): el mismo acento sobre superficies navy (`--color-acento-sobre-oscuro`, y `--color-acento` dentro de `.inverso`). Sobre Prussian da 3,74:1: solo texto de 24 px o más y gráficos.",
+      "**Rojo del logo para fondo claro** (`--color-rojo-logo`): solo existe dentro del logo. No se usa en interfaz.",
+      "**Franja crítica** (`--color-franja-critica`, red ribbon al 12 % sobre Old Lace): fondo de la franja de una gráfica donde el resultado se degrada mucho, más oscuro que la superficie 2, y de la columna de tabla que se enlaza con esa franja. Es un fondo de apoyo, nunca texto ni línea.",
+      "",
+      "# Secondary",
+      "**Royal blue** (`--color-royal-blue`): azul del CSS de openbank.es. Solo como `--color-serie-2`, la serie discontinua de una gráfica.",
+      "**Malachite** (`--color-malachite`): verde del CSS de openbank.es. Nunca se usa tal cual: solo oscurecido con Prussian (`--color-serie-3`, malachite al 55 %) para llegar a 3:1 sobre las franjas, en la serie 3 de una gráfica.",
+      "",
+      "# Neutral",
+      "**Prussian blue** (`--color-prussian`): la tinta. Texto 1, contornos, fichas y capas de entrada, contorno de salida y de razonamiento, agente, conector MCP, cabeceras de documento y de definición, pestaña de skill, contador de coste, serie 1 de una gráfica y superficie inversa. Sobre Old Lace, 14,05:1.",
+      "**Pickled bluewood** (`--color-bluewood`): texto 2 (también la capacidad de una ventana) y corchete de caché, tanto acierto como fallo. Sobre Old Lace, 10,22:1.",
+      "**Pizarra** (`--color-pizarra`): texto 3 para escalas, anotaciones, rótulos de apoyo, guías del árbol, pista del temporizador, siluetas del hub, serie 4 de una gráfica y su flecha discontinua, y el borde de la marca «Cifras ficticias». 5,17:1 sobre fondo, 5,40:1 sobre blanco y 4,88:1 sobre Cinderella.",
+      "**Old lace** (`--color-old-lace`): fondo de escena (`--color-fondo`). Es un color de marca de openbank.es, no un crema por defecto.",
+      "**Blanco** (`--color-blanco`): superficies (islas, ventana de contexto, tarjetas, fichas de salida) y texto sobre navy y sobre rojo. Contra Old Lace solo da 1,04:1, de ahí el contorno obligatorio.",
+      "**Cinderella** (`--color-cinderella`): superficie 2, para apoyos muy suaves: la franja de una gráfica, la columna de tabla que se enlaza con ella, el interior de las ventanas menores de una comparación y el marcador de captura pendiente.",
+      "**Gris claro de marca** (navy al 20 % sobre blanco): `--color-texto-inverso-2`, texto 2 sobre navy (9,85:1); y `--color-texto-simulado`, las líneas que simulan texto dentro de un documento, que no se leen.",
+      "**Separador** (`--color-separador`, navy al 10 % sobre Cinderella): líneas finas de tablas, rejillas y campos. Contra el fondo da 1,28:1, así que solo separa; nunca lleva significado.",
+      "**Razonamiento** y **razonamiento rayado** (`--color-razonamiento`, navy al 40 %; `--color-razonamiento-rayado`, navy al 27 %): las dos franjas del patrón de razonamiento. Texto navy encima, 6,13:1. El rayado solo no llega a 3:1 sobre el fondo, así que lleva siempre su contorno (`--color-razonamiento-borde`, Prussian).",
+      "**Valores sobre navy** (solo dentro de `.inverso`): superficie 2 inversa (blanco al 6 % sobre Prussian; con un 10 % el texto 3 no llegaría a 4,5:1), texto 3 inverso (navy al 42 % sobre blanco, 5,83:1 sobre Prussian), texto simulado inverso (blanco al 30 % sobre Prussian) y separador inverso (blanco al 20 % sobre Prussian).",
+      "",
+      "# Roles",
+      " código nunca usa las variables de marca: usa los roles.",
+      "**Superficies:** `--color-fondo` (Old Lace), `--color-superficie` (blanco), `--color-superficie-2` (Cinderella), `--color-franja-critica`, `--color-superficie-inversa` (Prussian).",
+      "**Texto:** `--color-texto-1` (Prussian), `--color-texto-2` (Bluewood), `--color-texto-3` (Pizarra), `--color-texto-inverso` (blanco), `--color-texto-inverso-2` y `--color-texto-simulado` (gris claro de marca).",
+      "**Líneas y foco:** `--color-contorno` (Prussian), `--color-separador`, `--color-acento`, `--color-acento-sobre-oscuro`, `--color-sobre-acento` (blanco).",
+      "**Semántica del vocabulario:** `--color-entrada` (relleno sólido Prussian) con `--color-sobre-entrada` (blanco); `--color-salida` (blanco hueco) con `--color-salida-borde` y `--color-sobre-salida` (Prussian); `--patron-razonamiento` (rayas a 135°, 10 px cada una) con `--color-razonamiento-borde` y `--color-sobre-razonamiento` (Prussian); `--color-cache-acierto` y `--color-cache-fallo` (Bluewood); `--color-serie-1` (Prussian), `--color-serie-2` (Royal blue) y `--color-serie-3` (verde oscurecido); `--color-coste` (Prussian) con `--color-sobre-coste` (blanco).",
+      "**`.inverso`:** sobre navy, el fondo y la superficie pasan a Prussian (las separa el contorno blanco), el texto 1 y el contorno a blanco, el texto 2 al gris claro de marca, el texto 3, el texto simulado, la superficie 2 y el separador a sus valores sobre navy, y el acento al rojo del logo para fondo oscuro. La semántica se invierte: la entrada pasa a sólido blanco con texto Prussian, la salida a hueca del color del fondo con contorno blanco, el contorno del razonamiento a blanco, el corchete al gris claro de marca y el coste a blanco con texto Prussian. Las series y la franja crítica no tienen valor sobre navy: las gráficas van sobre claro.",
+      "",
+      "# Named Rules",
+      "La regla del único acento.** El rojo marca lo que hay que mirar ahora. Nunca hay dos elementos rojos a la vez en pantalla, ni en escena ni en una lámina de referencia.",
+      "",
+      "La regla del rojo según el fondo.** Red ribbon sobre claro, el rojo del logo para fondo oscuro sobre navy y el rojo del logo para fondo claro solo dentro del logo, que nunca se recolorea.",
+      "",
+      "La regla de luminosidad y forma.** Un concepto se distingue por luminosidad (oscuro, medio, hueco) y por forma, no solo por tono. Acierto y fallo de caché comparten color: los separa el trazo, continuo o discontinuo, y el icono ✓ o ✕. El tono solo se suma en las series de una gráfica, y siempre junto con el trazo: Prussian continua, azul discontinua, verde continua y texto 3 de puntos.",
+      "",
+      "La regla del hex de marca.** Solo los colores de marca de openbank.es llevan hex, en `design-system.css`. Todo lo demás es `color-mix()` de una variable de marca, y el código usa siempre `var(--color-<rol>)`.",
+      "",
+      " Typography",
+      "",
+      "Display Font:** Outfit variable (con system-ui, sans-serif), en peso 300",
+      "Body Font:** Outfit, en pesos 400, 500 y 600",
+      "Label/Mono Font:** DM Mono (con ui-monospace, monospace), en pesos 400 y 500",
+      "",
+      "Character:** Outfit es la tipografía de openbank.es: geométrica, y ligera en los tamaños grandes para que los títulos respiren. DM Mono da un tono técnico a tokens, código y nombres de fichero, y deja claro que eso es texto del modelo. Las dos van alojadas en `design/assets/fonts/` en woff2, con su licencia OFL, y se cargan con `font-display: block`; no hay Google Fonts ni ninguna fuente por CDN.",
+      "",
+      "# Hierarchy",
+      "da estilo tiene su clase `.tipo-*` en `componentes.css`; las escenas no escriben `font` a mano.",
+      "**Cifra XL** (300, 240 px, 1, −3 %, dígitos tabulares): una cifra protagonista sola.",
+      "**Cifra** (300, 176 px, 1, −3 %, dígitos tabulares): contadores de tokens y coste.",
+      "**Título XL** (300, 112 px, 1,04, −1,5 %): portada y cierre.",
+      "**Título** (300, 80 px, 1,04, −1,5 %): título de zona.",
+      "**Título S** (300, 56 px, 1,04, −1,5 %): títulos secundarios; también el número de isla (con interlineado 1 y dígitos tabulares) y, en DM Mono 400, el tiempo del temporizador.",
+      "**Entradilla** (400, 40 px, 1,35): ideas clave y citas.",
+      "**Texto** (400, 32 px, 1,35): la frase principal de una zona y la de una tarjeta de consejo. A 500 y con interlineado 1,04, el nombre del agente y el título de la skill; a 600, interlineado 1 y dígitos tabulares, la cifra del nivel de la ventana.",
+      "**Texto S** (400, 28 px, 1,35): texto secundario, celdas de tabla y valores de una definición. A 500, la capacidad de una ventana y, con interlineado 1,04, los nombres de isla, subagente y servidor.",
+      "**Etiqueta** (500, 24 px, 1,35): etiquetas, leyendas, escalas, rótulos, nombres de capa, notas y nombres en gráficas y circuitos. Es el mínimo absoluto.",
+      "**Mono** (DM Mono 400, 28 px, 1,3): fichas de token y código. A 500, la cifra de un contador en píldora.",
+      "**Mono S** (DM Mono 400, 24 px, 1,3): nombres de fichero y de herramienta, escalas, marcas de eje y notas de fuente.",
+      "",
+      "# Named Rules",
+      "La regla de los 24 px.** Nada se escribe por debajo de 24 px a 1920×1080, ni siquiera una escala o una nota.",
+      "",
+      "La regla de las cifras quietas.** Toda cifra que se anima o se compara usa dígitos tabulares (`--cifras: tabular-nums`) para que no baile al contar.",
+      "",
+      " Layout",
+      "",
+      "da escena mide `--escena-ancho` × `--escena-alto` (1920×1080) y se diseña para verse a escala 1, que es la escala de proyección. La zona segura deja `--margen-x` a los lados y `--margen-y` arriba y abajo. Las escenas no van en una tarjeta: dibujan directamente sobre el fondo, dentro de la zona segura. El espaciado sigue una base de 8 px (`--esp-1` a `--esp-8`): 8 entre capas, entre un icono y su texto y entre la ventana y su relleno, 16 dentro de una etiqueta o una fila, 24 de relleno en fichas y tarjetas pequeñas, 32 en tarjetas, 48 entre bloques, 64 entre grupos, 96 entre secciones y 128 para distancias de caída y grandes separaciones.",
+      "",
+      " hay diseño adaptable: la presentación se proyecta a 1920×1080. Todas las escenas viven en un único mundo, el mapa (una cruz de cinco bloques; cada zona es una pantalla), y una cámara (`volarCamara`) las encuadra transformando ese mundo. El esqueleto de la presentación (`index.html` y `src/`) compone este vocabulario; este documento describe `design/`, no `src/`. La ruta de la cámara se dibuja como un camino de puntos navy de 10 px con huecos de 24 px (`--ruta-grosor`, `--ruta-hueco`).",
+      "",
+      "s medidas de cada pieza viven en el grupo «Componentes · medidas» de `design-system.css`: ficha 60 px y 52 px la pequeña, contador 64 px, ventana de contexto de 96 px de alto y 48 px la pequeña (su ancho lo da la escena, a escala de su capacidad), patas del corchete de 24 px, agente 390×150, subagente 312×112, documento 300×340, skill 390×250 con pestaña de 150×40, herramienta 112 px, isla 320×190 como mínimo, definición 600 px, conector 88 px, candado 96 px, consejo 760 px como máximo, dial de 200 px de radio, temporizador de 240 px, parada de circuito de 64 px, punto de 28 px, bucle de 560 px (rodea con holgura la tarjeta del agente y sus herramientas van sobre él), y la tapa de bloque, dibujada ×8 (`--tapa-escala`) con el logo de Devin a 640 px (`--tapa-logo`). La geometría SVG (gráfica, dial, temporizador, circuito, bucle y curvas para caminos) sale de `dibujos.js`, que lee esas mismas variables y no lleva colores.",
+      "",
+      "# Cámara y movimiento",
+      "lo `motion.js` lee las variables de movimiento; las escenas encadenan sus efectos con `s()` y `v()` y nunca escriben una duración ni una curva literal. Las duraciones van por categoría:",
+      "**Micro** (≤ 0,3 s): `--dur-micro` (0,2 s) para estados, ticks y pulsaciones; `--dur-salida` (0,3 s) para salidas.",
+      "**Entrada** (0,4–0,6 s): `--dur-entrada` (0,5 s) para la aparición de elementos.",
+      "**Progresión** (0,8–1,5 s): `--dur-contador` (0,9 s) para cifras que suben; `--dur-trazado` (1,2 s) para líneas que se dibujan y puntos que recorren un camino; `--dur-vuelta` (1,5 s) para la media vuelta lenta del bucle del agente, una llamada explicada paso a paso; y `--dur-vuelta-rapida` (0,8 s) para una vuelta rápida, llamadas que se suceden.",
+      "**Cámara** (0,8–1,5 s): `--dur-camara-corta` (0,8 s) entre pantallas de un mismo bloque (las casillas del centro), en línea recta; `--dur-camara` (1,2 s) como vuelo estándar, entre bloques del mapa, «alejar, viajar, acercar»; y `--dur-camara-larga` (1,5 s) para los saltos largos: hacia o desde la vista general.",
+      "**Tiempo simulado** (2–5 s, siempre lineal): `--dur-temporizador` (3 s), cinco minutos comprimidos. Es el paso del tiempo dentro de la escena y no se usa para transiciones.",
+      "",
+      "s curvas van por propósito: apariciones con `--ease-aparicion` (`power3.out`), salidas con `--ease-salida` (`power2.in`), cámara con `--ease-camara` (`power2.inOut`) y `--ease-camara-larga` (`sine.inOut`, para los saltos largos y la vista general), interfaz con `--ease-interfaz` (`back.out(1.4)`), cambios de estado breves con `--dur-micro` (atenuar, avivar, pulsar, caducar) con un ease-out suave, `--ease-estado` (`power1.out`), fichas y documentos que entran en la ventana desde arriba con `--ease-caida` (`power2.in`), el llenado de la ventana con `--ease-llenado` (`power2.out`: cada capa entra desde la izquierda y frena al llegar), cifras con `--ease-contador` (`power1.out`), trazados y recorridos con `--ease-trazado` (`power1.inOut`) y el temporizador con `--ease-temporizador` (`none`). Los escalonados son de 0,06 s para listas, tarjetas y leyendas (`--escalonado`), 0,03 s para fichas de token (`--escalonado-tokens`) y 0,12 s para capas de la ventana (`--escalonado-capas`).",
+      "",
+      " llegar, la cámara espera `--pausa-tras-camara` (0,3 s) y después anima la zona. Hay que dejar tiempo de lectura: un mínimo de 1,5 s con una etiqueta o una cifra (`--pausa-lectura-corta`) y de 3 s con una frase (`--pausa-lectura`). En general, la pausa es el máximo entre 1,5 s y el número de palabras × 0,3 s (`--pausa-por-palabra`).",
+      "",
+      " vocabulario de movimiento son los 21 efectos registrados en `motion.js`: `aparecer`, `desaparecer`, `entrarConMuelle`, `atenuar` y `avivar`; `entrarEnVentana`, `llenarVentana`, `vaciarVentana`, `moverNivel`, `releerVentana`, `alargarCorchete`, `caducarCache` y `subirContador`; `pulsar`, `voltear` (plano, sin 3D) y `desplegar`; `trazar`, `recorrerCamino`, `girarDial` y `agotarTemporizador`; y `volarCamara`. Ningún efecto mueve la cámara salvo `volarCamara`, que es la cámara: vuela el mundo entre dos vistas (centro x, centro y y ancho visible) y, por defecto, con `--dur-camara` y `--ease-camara`. Entre zonas sigue la trayectoria «alejar, viajar, acercar» (`d3.interpolateZoom`); dentro de una zona, línea recta, con el ancho cambiando en escala logarítmica. Redondea la traslación y solo pone `will-change` mientras vuela, para que el texto llegue nítido. Lo que crece de izquierda a derecha (las capas al llenar la ventana, el corchete, las líneas discontinuas al trazarse) se descubre con un recorte, sin deformar su texto ni su trazo, y el recorte se limpia al acabar. Todos son reversibles: los cambios de clase (`caducarCache`, `voltear`, `girarDial`, `agotarTemporizador`, `desplegar`) van dentro del timeline como un `set` de atributo, nunca en un callback, así que la escena se puede rebobinar paso a paso. En modo estático (`?estatico`, `prefers-reduced-motion` o `data-movimiento=\"estatico\"`) duran 0 y saltan a su estado final.",
+      "",
+      "# Named Rules",
+      "La regla de la cámara quieta.** La cámara nunca se mueve mientras algo se anima dentro de la zona: primero llega, luego espera y después anima.",
+      "",
+      " Elevation & Depth",
+      "",
+      " sistema es plano. La profundidad la dan el contorno de 3 px y el contraste entre superficie blanca y suelo crema, no las sombras. Existe una única elevación, plana y sin difuminado, porque el proyector se come las sombras difusas. Los anillos interiores de las fichas de salida, el contador y el resaltado de una definición son contornos, no elevación.",
+      "",
+      "# Shadow Vocabulary",
+      "**Elevación 0** (`--elevacion-0`: `none`): todo lo que está quieto en la escena.",
+      "**Elevación 1** (`--elevacion-1`: `0 6px 0` con navy al 14 %): solo para lo que flota, como una ficha que se arrastra o el documento que queda delante en una pila.",
+      "",
+      "# Named Rules",
+      "La regla del contorno.** Toda superficie clara lleva un contorno de 3 px en `--color-contorno` (`--trazo-contorno`): navy sobre crema, blanco dentro de `.inverso`. Las piezas sólidas navy (agente, conector, entrada, coste) son tinta y no lo necesitan. El tono por sí solo no separa nada.",
+      "",
+      "La regla de la sombra plana.** Una sola sombra, sin difuminado. Lo demás queda a `--elevacion-0`.",
+      "",
+      " Shapes",
+      "",
+      "rmas redondeadas con cuatro radios: 12 px (`--radio-s`) para capas, documentos, definiciones, capturas, resaltados y las esquinas del corchete; 24 px (`--radio-m`) para tarjetas (agente, subagente, skill, consejo, servidor, candado) y siluetas del hub; 48 px (`--radio-l`) para islas del mapa y la caja de plugin; y píldora (`--radio-pildora`) para fichas de token, la ventana de contexto y su relleno, etiquetas, contadores, la línea de nivel y la de lectura, las líneas de un documento y los círculos (herramienta, conector, paradas).",
+      "",
+      "y tres trazos: 2 px (`--trazo-fino`) para separadores, ejes, rejillas, el borde de las franjas de una gráfica, marcas de escala, guías del árbol, la guía que une una etiqueta con lo que señala, la pista del temporizador y el borde de las etiquetas; 3 px (`--trazo-contorno`) para el contorno de toda superficie, la separación entre capas, las líneas y flechas de gráfica, los cables, el bucle y el circuito; y 6 px (`--trazo-fuerte`) para el corchete de caché, la línea de nivel, la línea de lectura, los resaltados (también el de un punto de gráfica), la caja de plugin, el candado, la aguja del dial, el progreso del temporizador y la serie protagonista. El trazo también lleva significado: continuo, discontinuo (`--grafica-discontinua`, 18/12 px) o de puntos (`--grafica-punteada`), y punteado para lo que aún no está (el hueco del hub). Los puntos redondos del camino son siempre movimiento: la ruta de la cámara y la salida del subagente.",
+      "",
+      "s iconos son de Lucide v1.57.0, en línea en `design/iconos.js` (se generan con `npm run iconos -- nombre`; hoy son 44, entre ellos `thumbs-up`, `ban`, `user`, `message-square` y `equal-not`), con `stroke-width 2` sobre una caja de 24 y el color por `currentColor`. A 36 px (`--icono-m`) el trazo real es de 3 px, igual que el contorno, y ese es el tamaño por defecto. A 24 px (`--icono-s`) van dentro de etiquetas, cabeceras y fichas; a 48 px (`--icono-l`), solo el icono principal de una pieza grande (agente, skill desplegada, candado). Si una fuente no tiene un carácter (→, ↩, ✓, ✕, ≥, ≈, ≠), se usa su icono.",
+      "",
+      "# Named Rules",
+      "La regla del icono a 36.** Un icono suelto en escena va a 36 px, para que su trazo coincida con el contorno; 24 dentro de una etiqueta y 48 solo para el icono principal de una pieza grande.",
+      "",
+      " Components",
+      "",
+      " vocabulario visual: treinta y un componentes en `componentes.css`, cada uno con su cabecera (clase, forma, color, medidas, icono, movimiento y escenas). Cada concepto tiene un único dibujo y se reconoce igual en todas las zonas. Si una zona necesita algo nuevo, primero se añade al design system. Cuatro utilidades los acompañan: los estilos de texto `.tipo-*`, el icono `.icono` (36, 24 o 48), el estado atenuado (opacidad 0,3, con `atenuar` y `avivar`) y el volteo de dos caras.",
+      "",
+      "# Tokens y contexto",
+      "",
+      "Ficha de token.** Una píldora en DM Mono que se lee como un trozo de texto del modelo.",
+      "**Forma:** píldora de 60 px de alto (52 px la pequeña, en Mono S y con 16 px de relleno), DM Mono 400 a 28 px y 24 px de relleno lateral. Un espacio inicial se dibuja como un punto medio «·» atenuado.",
+      "**Color:** entrada en sólido Prussian con texto blanco; salida hueca, blanca, con contorno interior Prussian de 3 px; razonamiento con el patrón rayado y contorno Prussian.",
+      "**Movimiento:** `aparecer` con `--escalonado-tokens`, y `entrarEnVentana` (cae desde 128 px por encima hasta su sitio, con `--ease-caida`).",
+      "",
+      "Capa.** Muchos tokens del mismo tipo forman una capa de la ventana.",
+      "**Forma:** ancho proporcional a sus tokens y alto el de la ventana menos la holgura de 8 px; radio de 12 px y, si cabe, su nombre dentro en Outfit 500 a 24 px con 16 px de relleno. Las capas se separan 3 px entre sí.",
+      "**Color:** el mismo relleno que su ficha (entrada, salida o razonamiento).",
+      "**Movimiento:** `llenarVentana`: cada capa se descubre de izquierda a derecha, sin deformar su texto, con `--ease-llenado` y `--escalonado-capas`; y `vaciarVentana`: se recogen hacia la izquierda, de la última a la primera, con `--dur-salida` y `--ease-salida` (compactar, empezar de nuevo).",
+      "",
+      "Ventana de contexto.** Una barra horizontal que se llena de izquierda a derecha, en toda la presentación.",
+      "**Forma:** barra en píldora de 96 px de alto con contorno de 3 px y su relleno a 8 px del contorno. Su ancho es proporcional a su capacidad: varias ventanas superpuestas, cada una a la escala de la mayor, comparan capacidades, y las menores llevan el interior en superficie 2. La capacidad va en el extremo derecho, a 32 px del borde, en Outfit 500 a 28 px y texto 2.",
+      "**Nivel:** una línea vertical de 6 px en píldora y en acento, 24 px más alta que la barra, donde acaba lo ocupado, con su cifra a la derecha en Outfit 600 a 32 px, dígitos tabulares y acento.",
+      "**Lectura:** cuando el modelo relee el contexto, una línea de 6 px en acento recorre lo ocupado por dentro de la barra y se apaga.",
+      "**Pequeña:** de 48 px de alto y sin texto dentro; es la del subagente y la del hub.",
+      "**Icono:** `app-window`, en etiquetas.",
+      "**Movimiento:** `llenarVentana` y `vaciarVentana` (las capas), `moverNivel` (la línea de nivel se desplaza en horizontal, con `--ease-aparicion`), `entrarEnVentana` (lo que entra desde fuera) y `releerVentana` (la línea de lectura, con `--dur-trazado` y `--ease-trazado`, y luego se apaga con una salida).",
+      "",
+      "Corchete de caché.**",
+      "**Forma:** corchete bajo el tramo de la ventana que cubre (o sobre él, en la variante de arriba), siempre desde la izquierda: el principio del contexto, que se repite en cada llamada. Su ancho es el del tramo, sus patas miden 24 px, el trazo es de 6 px y las esquinas, de 12 px; queda abierto hacia la ventana. En Bluewood.",
+      "**Acierto y fallo:** se distinguen por trazo e icono, no por tono. Acierto: trazo continuo e icono `check`. Fallo: trazo discontinuo e icono `x`. Debajo va una etiqueta en Outfit 500 a 24 px con el detalle en Mono S y texto 2.",
+      "**Movimiento:** `alargarCorchete` (se alarga desde la izquierda, descubierto con un recorte que se limpia al acabar) y `caducarCache` (se desvanece, pasa a su variante de fallo y vuelve, con `--ease-estado`).",
+      "",
+      "Leyenda.** Muestras en fila con su nombre en etiqueta y texto 2: píldoras de 48×24 px con los rellenos de token, y un corchete pequeño. Entra con `aparecer`.",
+      "",
+      "# Piezas del agente",
+      "",
+      "Agente.** Tarjeta navy sólida de 390×150 con radio de 24 px y texto blanco. Lleva el icono `bot` a 48 px, el nombre en Outfit 500 a 32 px y una línea de configuración en Mono S en gris claro de marca. Entra con `entrarConMuelle`.",
+      "",
+      "Subagente.** La tarjeta del agente, más pequeña (312×112, ≈ 80 %) y hueca: blanca con contorno de 3 px, nombre en Outfit 500 a 28 px y detalle en Mono S y texto 3. Lleva el icono `bot` y siempre tiene debajo su propia ventana pequeña: no hereda la del agente. Sale del agente por el camino de puntos (`recorrerCamino`) y devuelve una ficha de resumen con el icono `corner-down-left` (`entrarEnVentana`).",
+      "",
+      "Bucle del agente.** Círculo de 560 px con flechas en sentido horario alrededor del agente y sus herramientas, en trazo de 3 px del color de contorno, con cuatro etiquetas en texto 2. Un punto de 28 px en texto 1 lo recorre en cada llamada: media vuelta lenta (`--dur-vuelta`) cuando una llamada se explica paso a paso, vuelta rápida (`--dur-vuelta-rapida`) cuando las llamadas se suceden. Aparece con `trazar` y da vueltas con `recorrerCamino`.",
+      "",
+      "Documento** (rules y AGENTS.md). Hoja blanca de 300×340 con radio de 12 px y contorno de 3 px, una cabecera navy con el icono `file-text` a 24 px y el nombre de fichero en Mono S en blanco, y líneas en píldora de 16 px de alto en el color de texto simulado. Es lo primero que entra en la ventana (`entrarEnVentana`). En una pila, el de delante lleva `--elevacion-1`.",
+      "",
+      "Skill.** Tarjeta-pieza blanca de 390 px de ancho, con radio de 24 px, contorno de 3 px y una pestaña navy de 150×40 encima a la izquierda. Plegada solo muestra el título (icono `puzzle` a 36 px y nombre en Outfit 500 a 32 px), el identificador en Mono S y la descripción en etiqueta y texto 2. Desplegada mide 250 px de alto, el icono pasa a 48 px y añade su anatomía numerada (cuándo, qué necesita, pasos, resultado) sobre un separador de 2 px. Entra con `entrarConMuelle` y se abre con `desplegar`, que recibe la skill, le quita la variante plegada y hace crecer su anatomía, y se puede rebobinar; solo entra en la ventana cuando se usa.",
+      "",
+      "Árbol de repositorio.** Carpetas y ficheros en Mono S y texto 1, con iconos (`folder`, `folder-open`, `file`, `file-text`) y guías de sangría de 2 px en texto 3. Un AGENTS.md cargado se rellena como ficha de entrada. Las filas entran con `aparecer` y `--escalonado`.",
+      "",
+      "# Hub",
+      "",
+      "Hueco del hub.** La silueta punteada (3 px, texto 3, sin relleno) de una pieza que aún no está en el agente, con su icono (`cpu`, `gauge`, `app-window`, `file-text`, `puzzle`, `terminal`, `wrench`, `plug` o `git-fork`) y su nombre en etiqueta. Toma la forma de la pieza que la ocupará: 24 px de radio por defecto, píldora para el círculo y para la ventana, y el radio del documento.",
+      "**Lleno:** la misma silueta en sólido, superficie inversa con texto inverso y trazo continuo. Ocupa el hueco mientras la pieza no tenga su dibujo propio en el hub.",
+      "**Movimiento:** `entrarConMuelle` cuando se llena con el hub a la vista (herramientas, E14); los demás huecos se llenan fuera de cámara, sin animación, mientras se explica su tema. Cuando llegue la pieza con su dibujo, el hueco se va con `desaparecer`.",
+      "",
+      "# Herramientas y MCP",
+      "",
+      "Herramienta.** Círculo blanco de 112 px con contorno de 3 px, el icono de la acción (`file-text`, `pencil`, `search`, `terminal` o `wrench`) y el nombre debajo en Mono S. Entra con `entrarConMuelle`, da un pulso con `pulsar` (`--ease-estado`) al usarse y se da la vuelta con `voltear` para mostrar su definición. Su resultado entra en la ventana como ficha de entrada.",
+      "",
+      "Definición de herramienta.** Lo que el agente lee de una herramienta: tarjeta de 600 px con radio de 12 px y contorno de 3 px, cabecera navy con `wrench` a 24 px y el nombre en Mono, y campos (clave en etiqueta y texto 3; valor en Texto S o Mono S) separados por líneas finas. La descripción, el disparador, se resalta con un anillo interior de 6 px en acento, el mismo dibujo que el resaltado de una captura. Aparece con `voltear` o `aparecer`.",
+      "",
+      "Conector MCP.** Un nodo navy de 88 px con el icono `plug` en el borde del agente y un cable continuo de 3 px hasta cada servidor: una tarjeta blanca con radio de 24 px y contorno de 3 px, icono `laptop` (local) o `cloud` (remoto), nombre en Outfit 500 a 28 px y detalle en Mono S y texto 3. Nodo y servidores entran con `entrarConMuelle`; el cable, con `trazar`.",
+      "",
+      "Candado.** Cuadrado blanco de 96 px con trazo de 6 px y radio de 24 px, con `lock` a 48 px y la regla al lado en Outfit 500 a 28 px: lo que no debe cruzar. Entra con `entrarConMuelle`.",
+      "",
+      "Caja de plugin.** Caja sin relleno con trazo de 6 px y radio de 48 px que envuelve las piezas que empaqueta, con su nombre en una pestaña en píldora blanca (contorno de 3 px, icono `package` a 24 px) sobre el borde. Entra con `entrarConMuelle`.",
+      "",
+      "# Datos y tiempo",
+      "",
+      "Contador.** Píldora de 64 px de alto con icono y cifra en DM Mono 500 a 28 px con dígitos tabulares y la unidad en etiqueta: blanca con contorno de 3 px para llamadas (`repeat`) o latencia (`hourglass`), y navy sólida sin contorno para el coste (`coins`). La variante grande es una cifra en `--tipo-cifra` (o `--tipo-cifra-xl`) con su etiqueta en texto 3 encima y la unidad en Texto S y texto 2. Siempre lleva su unidad. Sube con `subirContador`.",
+      "",
+      "Tabla.** Sin caja: cabecera en etiqueta y texto 3 con una línea de contorno de 3 px debajo, filas en Texto S separadas por líneas finas y celdas con 16 px arriba y abajo y 48 px a la derecha. Los bordes van separados, no colapsados: cada línea es de su fila, así que una fila oculta no deja su línea. Las cifras van a la derecha y con dígitos tabulares. Una columna puede llevar el tono de una franja de gráfica (superficie 2 o franja crítica, con 16 px a cada lado) para enlazar sus cifras con ese tramo. Entra fila a fila con `aparecer`.",
+      "",
+      "Gráfica de líneas.** Ejes de 2 px en el color de contorno, rejilla en separador, marcas en Mono S y texto 3, y una línea de 3 px por serie con su nombre al final, sin leyenda aparte. Las series se separan por color, luminosidad y trazo: serie 1 en Prussian continua, serie 2 en azul discontinua, serie 3 en verde oscurecido continua y serie 4 en texto 3 de puntos; solo la protagonista va en acento, a 6 px. Los puntos son círculos de 8 px de radio, rellenos de superficie, con el trazo de su serie. Franjas opcionales marcan tramos del eje x: la normal en superficie 2 y la crítica (donde el resultado se degrada mucho) en franja crítica, las dos con bordes discontinuos de 2 px en texto 3 y su texto encima, centrado. Anotaciones opcionales para una lectura: notas (el nombre de un punto, como su esfuerzo, del color de su serie), puntos resaltados (un anillo de 16 px de radio y 6 px de trazo encima del punto) y flechas entre dos puntos con su texto (3 px en texto 1 y punta de 16 px; discontinua, sin punta y en texto 3 si une dos puntos a la misma altura). Siempre lleva su nota de fuente. Las líneas y las flechas se dibujan una a una con `trazar`; los puntos, etiquetas y notas entran con `aparecer`, y las series que no toca mirar se atenúan con `atenuar` y `avivar`.",
+      "",
+      "Dial de effort.** Semicírculo de 200 px de radio con una marca por nivel (Low, Medium, High, XHigh, Max) en etiqueta y texto 3, y una aguja de 6 px en texto 1. El nivel actual pasa a texto 1 y peso 600. Icono `gauge` en etiquetas. Gira con `girarDial`.",
+      "",
+      "Temporizador.** Anillo de 240 px que se vacía (pista de 2 px en texto 3, progreso de 6 px en texto 1), con el tiempo restante en DM Mono a 56 px en el centro e icono `timer`. Al agotarse, todo pasa a texto 3. Corre con `agotarTemporizador`, en tiempo simulado y con curva lineal.",
+      "",
+      "# Mapa y apoyo",
+      "",
+      "Isla del mapa.** Zona del mapa o agrupación de una escena: tarjeta blanca de 320×190 como mínimo, con radio de 48 px, contorno de 3 px y 24×32 px de relleno. Arriba, el número en Outfit 300 a 56 px con dígitos tabulares y el icono de la zona a 36 px; abajo, el nombre en Outfit 500 a 28 px. La actual va en relleno y contorno de acento con texto blanco: es el «usted está aquí» del mapa. Las demás pueden atenuarse. Entra con `entrarConMuelle` y cambia de foco con `atenuar` y `avivar`.",
+      "",
+      "Tapa de bloque.** La isla de un bloque del mapa dibujada ×8 (`--tapa-escala`), porque la vista general se ve a ≈ 1:8 y desde allí se lee como una isla a escala 1. En la apertura cubre el bloque entero con su título, para que desde la vista general se lean los cinco bloques. Superficie blanca con contorno, radio y relleno de la isla multiplicados por la escala (`--trazo-contorno`, `--radio-l`, `--esp-4`) y el título centrado en Outfit 300 a ×8 de la entradilla, en texto 1. No lleva icono: la del centro lleva el logo oficial de Devin (`devin-avatar-fondo-claro.svg`) a 640 px (`--tapa-logo`), tal cual, y la portada es esa tapa vista de cerca. Se levanta con `desaparecer` la primera vez que se entra en su bloque, cuando la cámara ya ha llegado.",
+      "",
+      "Camino de puntos y guía.** El camino es la ruta de la cámara en el mapa y el camino por el que sale un subagente: puntos redondos de 10 px cada 24 px en el color de contorno. Los puntos son siempre movimiento. La guía es otra cosa: una línea fina continua de 2 px en texto 3 que une una etiqueta con lo que señala. Los dos se dibujan con `trazar`.",
+      "",
+      "Circuito.** Circuito cerrado de 3 px con una parada numerada de 64 px por paso del método: pendientes en blanco con contorno, hechas en sólido de entrada y la actual en acento; los nombres en etiqueta y texto 2 y los números en Mono S. Al pasar a la siguiente, un punto de 28 px en acento recorre la pista con `recorrerCamino`. Cuando el acento está en otra parte (el mapa con otra zona actual), el circuito va sin parada actual ni punto. Icono `list-checks` en etiquetas.",
+      "",
+      "Etiqueta.** Píldora blanca con borde de 2 px en el color de contorno, en Outfit 500 a 24 px, con 8×24 px de relleno y un icono opcional a 24 px. La variante ventaja es más grande (Texto S, contorno de 3 px, icono `check`). Entra con `aparecer`.",
+      "",
+      "Marca «Cifras ficticias».** La misma píldora sin relleno, con borde de 2 px en texto 3, texto 2 y el icono `info` a 24 px. Es obligatoria en toda escena con cifras de ejemplo y aparece con la primera cifra.",
+      "",
+      "Nota de fuente.** «Fuente:» en etiqueta y la referencia en Mono S, todo en texto 3, bajo toda cifra real o gráfica. Aparece con la gráfica.",
+      "",
+      "Captura con resaltado.** Captura enmarcada con contorno de 3 px y radio de 12 px. El control que se explica se rodea con un resaltado de 6 px en acento y una etiqueta unida a él por la guía fina continua. Sin captura real, un marcador «Captura pendiente» visible sobre superficie 2, con el icono `image`. El resaltado entra con `entrarConMuelle`, la etiqueta con `aparecer` y la guía con `trazar`.",
+      "",
+      "Tarjeta de consejo.** Tarjeta blanca de hasta 760 px con radio de 24 px, contorno de 3 px y 32 px de relleno: la bombilla (`lightbulb`) a la izquierda, el rótulo «Consejo» en etiqueta y texto 3, y una sola frase en Texto y texto 1. Entra con `entrarConMuelle`.",
+      "",
+      " Do's and Don'ts",
+      "",
+      "# Do:",
+      "**Do** usar las variables de rol y de semántica (`--color-texto-1`, `--color-acento`, `--color-entrada`…) en componentes y escenas; en SVG, el color va por CSS y en GSAP se lee con `v()`.",
+      "**Do** contornear cada superficie clara con 3 px de `--color-contorno`, porque el proyector iguala crema y blanco.",
+      "**Do** reservar el rojo para una sola cosa por pantalla, y también por lámina de referencia: la zona actual, el nivel, la parada actual o la cifra protagonista.",
+      "**Do** mantener el texto en 24 px o más, con contraste de al menos 4,5:1; el mínimo de 3:1 solo vale para texto de 24 px o más y para gráficos.",
+      "**Do** usar las clases `.tipo-*` y la escala `--tipo-*` para todo texto.",
+      "**Do** dibujar la ventana de contexto como la barra horizontal, con su ancho a escala de su capacidad, y comparar capacidades superponiendo ventanas a la escala de la mayor.",
+      "**Do** separar las series de una gráfica por trazo y luminosidad además de por color, con `--color-serie-1` a `--color-serie-3` y texto 3.",
+      "**Do** marcar «Cifras ficticias» en toda escena con cifras de ejemplo, y poner la nota de fuente bajo toda cifra real o gráfica.",
+      "**Do** usar iconos Lucide de `design/iconos.js` a 36 px con `stroke-width 2` (24 dentro de etiquetas, 48 para el icono principal de una pieza grande), y el icono cuando la fuente no tenga el carácter.",
+      "**Do** encadenar cámara, `--pausa-tras-camara` y animación de zona, y dejar las pausas de lectura (1,5 s con una etiqueta o una cifra, 3 s con una frase).",
+      "**Do** animar con los efectos de `motion.js` y, en una coreografía de escena, con `s()` y `v()`; el tiempo simulado, siempre con curva lineal.",
+      "**Do** unir una etiqueta con lo que señala mediante la guía fina continua; los puntos redondos quedan para el movimiento (ruta de la cámara y salida del subagente).",
+      "**Do** usar los logos oficiales de `design/assets/logos/` tal cual: los de Openbank y el de Devin (procedencia en `design/assets/licencias/devin-marca.txt`).",
+      "",
+      "# Don't:",
+      "**Don't** escribir un color a mano (hex, `rgb()`, `hsl()` o nombres como `red`) en el código de la presentación, ni en atributos SVG ni en una animación.",
+      "**Don't** poner dos elementos rojos a la vez ni introducir tonos rojizos que compitan con el acento.",
+      "**Don't** usar el azul y el verde de las series fuera de una gráfica, ni el verde sin oscurecer.",
+      "**Don't** usar partículas, brillos, destellos, degradados, sombras difusas ni giros 3D decorativos.",
+      "**Don't** mover la cámara mientras algo se anima dentro de la zona.",
+      "**Don't** dibujar un concepto de otra forma: un token es siempre una píldora en DM Mono, la ventana de contexto siempre una barra horizontal y la caché, siempre un corchete.",
+      "**Don't** sobrescribir una variable dentro de una escena, ni poner una medida suelta a un componente cuando existe su variable; si una escena necesita otro valor, se crea una variable con nombre propio en `design-system.css`.",
+      "**Don't** escribir duraciones ni curvas literales, ni usar el tiempo simulado para transiciones.",
+      "**Don't** cargar fuentes, iconos ni librerías por CDN: todo va dentro del proyecto y funciona sin conexión.",
+      "**Don't** recolorear los logos."
     ],
     "rules": [
       {
@@ -658,12 +982,12 @@
       },
       {
         "name": "La regla de luminosidad y forma",
-        "body": "Un concepto nuevo se distingue por luminosidad (oscuro, medio, hueco) y por forma, nunca por un tono nuevo. Acierto y fallo de caché comparten color: los separa el trazo, continuo o discontinuo, y el icono ✓ o ✕.",
+        "body": "Un concepto se distingue por luminosidad (oscuro, medio, hueco) y por forma, no solo por tono. Acierto y fallo de caché comparten color: los separa el trazo, continuo o discontinuo, y el icono ✓ o ✕. El tono solo se suma en las series de una gráfica, y siempre junto con el trazo: Prussian continua, azul discontinua, verde continua y texto 3 de puntos.",
         "section": "colors"
       },
       {
         "name": "La regla del hex de marca",
-        "body": "Solo los colores de marca llevan hex, en `design-system.css`. Todo lo demás es `color-mix()` de una variable de marca, y el código usa siempre `var(--color-<rol>)`.",
+        "body": "Solo los colores de marca de openbank.es llevan hex, en `design-system.css`. Todo lo demás es `color-mix()` de una variable de marca, y el código usa siempre `var(--color-<rol>)`.",
         "section": "colors"
       },
       {
@@ -703,6 +1027,8 @@
       "**Do** reservar el rojo para una sola cosa por pantalla, y también por lámina de referencia: la zona actual, el nivel, la parada actual o la cifra protagonista.",
       "**Do** mantener el texto en 24 px o más, con contraste de al menos 4,5:1; el mínimo de 3:1 solo vale para texto de 24 px o más y para gráficos.",
       "**Do** usar las clases `.tipo-*` y la escala `--tipo-*` para todo texto.",
+      "**Do** dibujar la ventana de contexto como la barra horizontal, con su ancho a escala de su capacidad, y comparar capacidades superponiendo ventanas a la escala de la mayor.",
+      "**Do** separar las series de una gráfica por trazo y luminosidad además de por color, con `--color-serie-1` a `--color-serie-3` y texto 3.",
       "**Do** marcar «Cifras ficticias» en toda escena con cifras de ejemplo, y poner la nota de fuente bajo toda cifra real o gráfica.",
       "**Do** usar iconos Lucide de `design/iconos.js` a 36 px con `stroke-width 2` (24 dentro de etiquetas, 48 para el icono principal de una pieza grande), y el icono cuando la fuente no tenga el carácter.",
       "**Do** encadenar cámara, `--pausa-tras-camara` y animación de zona, y dejar las pausas de lectura (1,5 s con una etiqueta o una cifra, 3 s con una frase).",
@@ -713,9 +1039,10 @@
     "donts": [
       "**Don't** escribir un color a mano (hex, `rgb()`, `hsl()` o nombres como `red`) en el código de la presentación, ni en atributos SVG ni en una animación.",
       "**Don't** poner dos elementos rojos a la vez ni introducir tonos rojizos que compitan con el acento.",
+      "**Don't** usar el azul y el verde de las series fuera de una gráfica, ni el verde sin oscurecer.",
       "**Don't** usar partículas, brillos, destellos, degradados, sombras difusas ni giros 3D decorativos.",
       "**Don't** mover la cámara mientras algo se anima dentro de la zona.",
-      "**Don't** dibujar un concepto de otra forma: un token es siempre una píldora en DM Mono y la caché, siempre un corchete.",
+      "**Don't** dibujar un concepto de otra forma: un token es siempre una píldora en DM Mono, la ventana de contexto siempre una barra horizontal y la caché, siempre un corchete.",
       "**Don't** sobrescribir una variable dentro de una escena, ni poner una medida suelta a un componente cuando existe su variable; si una escena necesita otro valor, se crea una variable con nombre propio en `design-system.css`.",
       "**Don't** escribir duraciones ni curvas literales, ni usar el tiempo simulado para transiciones.",
       "**Don't** cargar fuentes, iconos ni librerías por CDN: todo va dentro del proyecto y funciona sin conexión.",

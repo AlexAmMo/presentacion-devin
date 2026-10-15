@@ -59,3 +59,8 @@ body.presentacion { overflow: hidden; background: var(--color-fondo); color: var
 .hub > *, .hub__pieza { position: absolute; }
 .hub__plugin { box-sizing: border-box; }
 .hub .hueco { box-sizing: border-box; }
+
+/* ── Escenas reales ───────────────────────────────────────────────────── */
+
+/* Contenido de un paso [A]: si se saltan (tecla A), no se ve aunque la escena esté terminada. */
+.sin-avanzados .solo-avanzado, .sin-avanzados [data-avanzado] { display: none; }

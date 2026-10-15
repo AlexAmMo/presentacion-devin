@@ -28,8 +28,11 @@ La presentación se construye con Vite y se exporta a un único HTML autoconteni
 - El mapa es una cruz de cinco bloques (regiones): Devin y sus temas en el centro, en una cuadrícula de 3 × 3, y una pantalla arriba, a la derecha, abajo y a la izquierda. Cada zona es una pantalla; las escenas de un mismo tema comparten zona y se suceden en ella sin mover la cámara.
 - Cada bloque tiene una tapa con su título (`src/tapas.js`; la del centro, con el logo de Devin, es la portada). Se levanta la primera vez que se entra en el bloque, cuando la cámara ya ha llegado.
 - Cada escena real va en `src/escenas/EXX.js` y cumple el contrato documentado en `src/escenas/contrato.js` (`montar`, `irA(paso, { animar, tl })`, `desmontar`). Las que no tienen fichero usan el marcador de posición.
+- Las escenas no van en una tarjeta: dibujan directamente sobre el fondo (pantalla libre), dentro de la zona segura, con la cabecera común de `src/escenas/comun.js` (etiqueta de la zona y mensaje como título) y posiciones en px de 1920 × 1080.
+- Los pasos se declaran en el marcado (`data-paso`, `data-hasta`, `data-atenua`/`data-aviva`, `data-clase`, `data-efecto`/`data-salida`, `data-orden`, `data-propio`, y `solo-avanzado` para lo de un paso [A]) y `crearPasos` (`comun.js`) los pone al instante o los anima: saltar a un paso y llegar animando dan el mismo estado. Cada escena programa a mano solo lo suyo (capas que se llenan, cifras, recorridos).
+- El hub (`src/hub.js`) y el circuito de Buenas prácticas (`src/circuito.js`) son de su pantalla, no de una escena: su estado sale del paso (`src/pasos.js`), y sus medidas, de `src/datos/mapa.js` (`HUB`, `CIRCUITO`).
 - La cámara (`src/camara.js`) solo se mueve con el efecto `volarCamara` y la ruta de `escenas.md`: misma pantalla → no se mueve; otra pantalla del mismo bloque → `--dur-camara-corta`, en línea recta; otro bloque → `--dur-camara`; hacia o desde la vista general → `--dur-camara-larga`. Las escenas nunca mueven la cámara, y los pasos [A] no acercan la cámara.
-- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general (los bloques aún no visitados, con su tapa); `A` incluir o saltar los pasos [A]; `P` vista de ponente. Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar.
+- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general (los bloques aún no visitados, con su tapa); `A` incluir o saltar los pasos [A]; `P` vista de ponente. Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar: cada paso llega a su estado final al instante.
 
 ## Colores: solo variables
 
@@ -68,7 +71,7 @@ La presentación se construye con Vite y se exporta a un único HTML autoconteni
      - progresión (cifras que suben, líneas que se dibujan, puntos que recorren un camino) entre 0,8 y 1,5 s;
      - tiempo simulado (el paso del tiempo dentro de la escena, como el temporizador de E22) entre 2 y 5 s, siempre con curva lineal (`none`). No se usa para transiciones.
    - Curvas por propósito: apariciones con ease-out, salidas con ease-in, cámara con ease-in-out, interfaz con `back` o `elastic` y cambios de estado breves (`--dur-micro`) con un ease-out suave (`--ease-estado`).
-3. **Animación que se repite en más de una escena o forma parte del vocabulario** (por ejemplo, «una ficha cae al recipiente»): regístrala como efecto en `motion.js`.
+3. **Animación que se repite en más de una escena o forma parte del vocabulario** (por ejemplo, «una ficha entra en la ventana de contexto»): regístrala como efecto en `motion.js`.
    - Sus valores por defecto se leen de las variables cada vez que se llama.
    - Se nombra con un verbo en infinitivo (`aparecer`, `volarCamara`, `subirContador`) y lleva encima un comentario `/** … */` con su descripción.
    - En modo estático (`?estatico` o `prefers-reduced-motion`) dura 0 y salta a su estado final.
@@ -102,7 +105,7 @@ Declaradas en el repositorio: plugins en `.claude/settings.json` y MCP en `.mcp.
 
 - **GSAP** (`gsap-skills`): para escribir las animaciones y la cámara.
 - **Impeccable** (`/impeccable <comando>`): criterio de diseño y revisión. Sustituye a frontend-design, que no se usa en este proyecto.
-- **Playwright MCP**: para ver lo que se construye, con capturas y grabación de vídeo (`--caps=devtools`). Bloquea `file://`: los ficheros exportados se prueban sirviéndolos con un servidor estático simple.
+- **Playwright MCP**: para ver lo que se construye, con capturas y grabación de vídeo (`--caps=devtools`), siempre en modo headless (`--headless`): no abre ventanas en la pantalla de quien revisa. Bloquea `file://`: los ficheros exportados se prueban sirviéndolos con un servidor estático simple.
 
 ## Impeccable, siempre por debajo del design system
 

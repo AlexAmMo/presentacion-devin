@@ -1,18 +1,25 @@
 // Los pasos: una lista plana con todos los pasos de todas las escenas, y la navegación.
 // - Avanzar anima: primero la cámara (si cambia de pantalla), después --pausa-tras-camara,
 //   después la tapa del bloque si es la primera vez que se entra, el cambio de escena si
-//   la pantalla ya mostraba otra, el paso de la escena y la pieza que entra en el hub.
+//   la pantalla ya mostraba otra, la pieza que entra en el hub, el cambio de forma de Contexto
+//   (círculo o ventana) y el paso de la escena.
 // - Retroceder, saltar y recargar no animan: ponen al instante el estado del paso.
 // - Cada paso tiene su URL (#E05/3).
 // - Los pasos [A] se pueden saltar (tecla A); la preferencia dura la sesión.
 import { gsap } from 'gsap';
 import { s, esEstatico } from '../design/motion.js';
 import { ESCENAS } from './datos/escenas.js';
+import { CIRCUITO, HUB, TAPAS } from './datos/mapa.js';
 
 export const PASOS = ESCENAS.flatMap((escena, ie) => escena.pasos.map(p => ({ ...p, escena, ie, ref: `${escena.id}/${p.n}` })));
 const indiceDe = ref => PASOS.findIndex(p => p.ref === ref);
 const LLEGADAS = PASOS.flatMap((p, i) => (p.hub ? [{ id: p.hub, en: i }] : []));
 const piezasHasta = i => new Set(LLEGADAS.filter(l => l.en <= i).map(l => l.id));
+// Pasos en los que Contexto se ve como ventana de contexto, no como círculo.
+const COMO_VENTANA = new Set(HUB.contextoComoVentana);
+const ventanaEn = i => COMO_VENTANA.has(PASOS[i].ref);
+// Desde este paso se ve el hub (antes, ni Devin ni sus huecos).
+const HUB_DESDE = PASOS.findIndex(p => p.ref === HUB.aparece);
 // Primer paso de cada bloque: desde ahí su tapa está abierta.
 const ENTRADAS = new Map();
 PASOS.forEach((p, i) => { if (p.escena.region !== 'general' && !ENTRADAS.has(p.escena.region)) ENTRADAS.set(p.escena.region, i); });
@@ -24,7 +31,7 @@ const PREFERENCIA = 'devin-sin-avanzados';
 const LIMPIAR = { clearProps: 'opacity,visibility,transform' };
 
 export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
-  const { escenas, hub, tapas, anuncio } = mundo;
+  const { escenas, hub, circuito, tapas, anuncio } = mundo;
   let actual = 0, general = false, animacion = null;
   let conAvanzados = true;
   try { conAvanzados = sessionStorage.getItem(PREFERENCIA) !== 'si'; } catch { /* sin almacenamiento: se incluyen */ }
@@ -58,6 +65,12 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
   const indice = e => escenas.get(e.id).indice;
   const vistaEn = (lista, ie) => lista.find(e => indice(e) === ie) ?? [...lista].reverse().find(e => indice(e) < ie) ?? lista[0];
 
+  // La parada del circuito en el paso i: la de la escena que se ve en su pantalla, si ya se ha llegado a ella.
+  const paradaEn = i => {
+    const lista = POR_ZONA.get(CIRCUITO.zona), ie = PASOS[i].ie, vista = vistaEn(lista, ie);
+    return indice(vista) <= ie ? lista.indexOf(vista) : null;
+  };
+
   const ponerVisibles = i => {
     const p = PASOS[i];
     // Solo la escena actual está en el árbol de accesibilidad; las demás, inert.
@@ -78,7 +91,8 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
     general = false;
     if (!animar) {
       ponerEscenas(i, false);
-      hub.pintar(piezasHasta(i));
+      hub.pintar(piezasHasta(i), { ventana: ventanaEn(i), base: i >= HUB_DESDE });
+      circuito.pintar(paradaEn(i));
       tapas.pintar(abiertasHasta(i));
       camara.poner(destino);
       ponerVisibles(i);
@@ -94,31 +108,47 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
       // Las piezas de los temas se colocan sin animación; la que entra con el hub a la vista, se anima.
       const piezas = piezasHasta(i);
       if (p.hub && enHub) piezas.delete(p.hub);
-      hub.pintar(piezas);
+      // Contexto cambia de forma a la vista si se queda en el hub; si se sale, conserva su forma
+      // mientras vuela la cámara y la cambia al final, fuera de cámara.
+      const cambiaForma = ventanaEn(i) !== ventanaEn(actual);
+      const transforma = enHub && cambiaForma;
+      const aparece = actual < HUB_DESDE && i >= HUB_DESDE;
+      hub.pintar(piezas, { ventana: ventanaEn(actual), base: actual >= HUB_DESDE });
       tapas.pintar(abiertas);
 
       const tl = gsap.timeline();
       const vuela = camara.volar(tl, destino);
+      const finVuelo = tl.duration();
       // Misma pantalla y otra escena: la anterior se va y la nueva aparece en su sitio.
       const lista = POR_ZONA.get(p.escena.zona);
       const previa = lista && vistaEn(lista, antes.ie);
       const cambia = !vuela && lista && previa !== p.escena;
       if (!cambia) ponerVisibles(i);
       if (vuela && !esEstatico()) tl.to({}, { duration: s('--pausa-tras-camara') });
-      if (abre) tapas.abrir(region, tl);
+      // La tapa se levanta al llegar; la del centro, en el último tercio del vuelo (TAPAS.enVuelo).
+      if (abre) tapas.abrir(region, tl, vuela && TAPAS.enVuelo.includes(region) ? (finVuelo * 2) / 3 : undefined);
       // El contrato anima desde el paso anterior: si se ha saltado un [A], primero se pone ese estado.
       if (x.estado !== p.n - 1) x.ctrl.irA(p.n - 1, { animar: false });
       if (cambia) {
+        // En el circuito, el punto va de una parada a la otra mientras cambia el contenido.
         const salir = escenas.get(previa.id).raiz;
         tl.desaparecer(salir)
           .add(() => ponerVisibles(i))
-          .set(salir, LIMPIAR)
-          .aparecer(x.raiz)
+          .set(salir, LIMPIAR);
+        if (p.escena.zona === CIRCUITO.zona) circuito.mover(tl, paradaEn(actual), paradaEn(i));
+        tl.aparecer(x.raiz)
           .set(x.raiz, LIMPIAR);
-      }
+      } else circuito.pintar(paradaEn(i));
+      // El hub aparece (Devin, sus herramientas y los huecos), con su tapa ya levantada.
+      if (aparece) hub.entrar(tl);
+      // La pieza que entra en el hub, antes que el paso: el paso cuenta con ella (el bucle gira, el plugin se etiqueta…).
+      if (p.hub && enHub) hub.llegar(p.hub, tl);
+      if (transforma) hub.transformar(tl, ventanaEn(i));
+      else if (cambiaForma) tl.add(() => hub.pintar(piezasHasta(i), { ventana: ventanaEn(i) }));
       x.ctrl.irA(p.n, { animar: true, tl });
       x.estado = p.n;
-      if (p.hub && enHub) hub.llegar(p.hub, tl);
+      // En modo estático, todo corta: también las coreografías propias de las escenas.
+      if (esEstatico()) tl.progress(1);
       animacion = tl;
     }
     actual = i;

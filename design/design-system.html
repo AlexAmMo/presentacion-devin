@@ -343,9 +343,9 @@ import { grafica, dial, temporizador, circuito, bucle, curva } from '../design/d
   <h3 class="sub">Usar los efectos en una escena</h3>
 <pre class="codigo"><span class="c">// Coreografía de una sola escena: encadena efectos; tiempos solo con s() y v().</span>
 const tl = gsap.timeline();
-tl.apilarCapa('.e09 .capa')
-  .subirNivel('.e09 .nivel', { y: -354 }, `+=${s('--pausa-lectura-corta')}`)
-  .atenuar('.e09 .capa:not(.relevante)');
+tl.llenarVentana('.e09 .capa')
+  .moverNivel('.e09 .nivel', { x: 0 }, '<')
+  .atenuar('.e09 .capa:not(.relevante)', {}, `+=${s('--pausa-lectura-corta')}`);
 
 <span class="c">// Una cifra: formato español y dígitos tabulares.</span>
 gsap.effects.subirContador('.total', { hasta: 0.43, decimales: 2 });</pre>

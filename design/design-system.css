@@ -48,12 +48,15 @@
   --color-pizarra: #546E7A;       /* Pizarra · texto 3: escalas y anotaciones */
   --color-old-lace: #FFF9F4;      /* Old lace · fondo de escena */
   --color-cinderella: #FFF1E5;    /* Cinderella · superficie 2: apoyos muy suaves */
-  --color-blanco: #FFFFFF;        /* Blanco · superficies: islas, recipiente y tarjetas */
+  --color-blanco: #FFFFFF;        /* Blanco · superficies: islas, ventana de contexto y tarjetas */
+  --color-royal-blue: #2566E8;    /* Azul del CSS de openbank.es · serie 2 de las gráficas */
+  --color-malachite: #2BE24E;     /* Verde del CSS de openbank.es · solo oscurecido, en la serie 3 de las gráficas */
 
   /* ── Color · roles ───────────────────────────────────────────────────── */
   --color-fondo: var(--color-old-lace);                 /* Fondo de la escena */
-  --color-superficie: var(--color-blanco);              /* Islas, recipiente, tarjetas y documentos */
+  --color-superficie: var(--color-blanco);              /* Islas, ventana de contexto, tarjetas y documentos */
   --color-superficie-2: var(--color-cinderella);        /* Apoyos muy suaves: franjas de gráfica, capturas pendientes */
+  --color-franja-critica: color-mix(in srgb, var(--color-red-ribbon) 12%, var(--color-old-lace));   /* ≈ #FBDBDF · franja de una gráfica donde el resultado se degrada mucho: tinte del acento, más oscuro que la superficie 2 */
   --color-superficie-inversa: var(--color-prussian);    /* Superficies navy: agente, cabeceras de documento */
   --color-texto-1: var(--color-prussian);               /* Texto principal */
   --color-texto-2: var(--color-bluewood);               /* Texto secundario */
@@ -80,8 +83,16 @@
   --patron-razonamiento: repeating-linear-gradient(135deg, var(--color-razonamiento) 0 10px, var(--color-razonamiento-rayado) 10px 20px);   /* Rayas de 10 px a 135° */
   --color-cache-acierto: var(--color-bluewood);     /* Corchete continuo + ✓ */
   --color-cache-fallo: var(--color-bluewood);       /* Corchete discontinuo + ✕: se distingue por el trazo, no por el tono */
+  --color-cacheado: var(--color-royal-blue);        /* Tokens leídos de caché (E21–E23): sólidos, para reconocerlos de un vistazo · 4,9:1 sobre el fondo; con la entrada, 2,9:1 de luminosidad */
+  --color-sobre-cacheado: var(--color-blanco);      /* Texto sobre tokens leídos de caché · 5,1:1 */
+  --color-serie-1: var(--color-prussian);           /* Gráficas: serie 1, la más oscura */
+  --color-serie-2: var(--color-royal-blue);         /* Gráficas: serie 2, discontinua */
+  --color-serie-3: color-mix(in srgb, var(--color-malachite) 55%, var(--color-prussian));   /* ≈ #188F4A · gráficas: serie 3, verde oscurecido para llegar a 3:1 sobre las franjas */
   --color-coste: var(--color-prussian);             /* Contador de coste: relleno */
   --color-sobre-coste: var(--color-blanco);         /* Texto sobre el contador de coste */
+  --color-obligatorio: var(--color-royal-blue);     /* Plugin obligatorio (E18): su icono, el candado · 5,1:1 sobre la superficie; se distingue de los otros dos por el icono y su nombre */
+  --color-opcional: color-mix(in srgb, var(--color-malachite) 55%, var(--color-prussian));   /* ≈ #18904A · plugin opcional (E18): su icono, el check · 4,1:1 sobre la superficie */
+  --color-prohibido: var(--color-acento);            /* Plugin prohibido (E18): su icono, el de prohibido · es el acento de su pantalla, que no tiene otro */
 
   /* ── Tipografía · familias y pesos ───────────────────────────────────── */
   --fuente-display: 'Outfit', system-ui, sans-serif;     /* Títulos y cifras */
@@ -133,7 +144,7 @@
   /* ── Radios ──────────────────────────────────────────────────────────── */
   --radio-s: 12px;            /* Capas, código, documentos y capturas */
   --radio-m: 24px;            /* Tarjetas: agente, skill y consejo */
-  --radio-l: 48px;            /* Islas del mapa, recipiente y caja de plugin */
+  --radio-l: 48px;            /* Islas del mapa y caja de plugin */
   --radio-pildora: 999px;     /* Fichas de token, etiquetas, contadores y círculos */
 
   /* ── Trazos ──────────────────────────────────────────────────────────── */
@@ -158,13 +169,12 @@
   --ficha-alto: 60px;                 /* Ficha de token */
   --ficha-alto-s: 52px;               /* Ficha de token pequeña, con texto mono s */
   --contador-alto: 64px;              /* Contador en píldora */
-  --recipiente-ancho: 440px;          /* Ventana de contexto */
-  --recipiente-alto: 760px;           /* Ventana de contexto */
-  --recipiente-mini-ancho: 64px;      /* Ventana del subagente */
-  --recipiente-mini-alto: 112px;      /* Ventana del subagente */
-  --corchete-ancho: 24px;             /* Corchete de caché */
+  --ventana-alto: 96px;               /* Ventana de contexto: alto de la barra (el ancho lo da la escena, a escala de su capacidad) */
+  --ventana-mini-alto: 48px;          /* Ventana pequeña: la del subagente y la del hub, sin texto dentro */
+  --corchete-ancho: 24px;             /* Corchete de caché: alto de sus patas bajo (o sobre) la ventana */
   --agente-ancho: 390px;              /* Tarjeta del agente */
   --agente-alto: 150px;               /* Tarjeta del agente */
+  --agente-diametro: 170px;           /* El agente en círculo (el del hub): su icono y su nombre */
   --subagente-ancho: 312px;           /* Tarjeta del subagente (≈ 80 % del agente) */
   --subagente-alto: 112px;            /* Tarjeta del subagente */
   --documento-ancho: 300px;           /* Documento (rules, AGENTS.md) */
@@ -174,9 +184,11 @@
   --skill-pestana-ancho: 150px;       /* Pestaña de la skill */
   --skill-pestana-alto: 40px;         /* Pestaña de la skill */
   --herramienta-diametro: 112px;      /* Círculo de herramienta */
+  --proveedor-logo: 48px;             /* Logo de un proveedor de modelos, junto a su nombre (E05) */
+  --hub-pieza-diametro: 160px;        /* Pieza del hub: un círculo igual para todas, con su icono y su nombre */
   --isla-ancho: 320px;                /* Isla: ancho mínimo */
   --isla-alto: 190px;                 /* Isla: alto mínimo */
-  --definicion-ancho: 600px;          /* Tarjeta de definición de herramienta */
+  --definicion-ancho: 720px;          /* Tarjeta de definición de herramienta: su descripción cabe en dos líneas */
   --conector-diametro: 88px;          /* Nodo del conector MCP */
   --candado-lado: 96px;               /* Candado */
   --consejo-ancho: 760px;             /* Tarjeta de consejo: ancho máximo */
@@ -184,9 +196,11 @@
   --temporizador-diametro: 240px;     /* Temporizador */
   --circuito-parada: 64px;            /* Diámetro de cada parada del circuito */
   --punto-diametro: 28px;             /* Punto que recorre un camino */
-  --bucle-diametro: 480px;            /* Bucle del agente: rodea la tarjeta del agente */
+  --repeticion-diametro: 72px;        /* Anillo de repetición: rodea un icono de --icono-m con holgura; en una lista de viñetas, ancho de la columna de iconos */
+  --bucle-diametro: 306px;            /* Bucle del agente: rodea el agente en círculo (--agente-diametro) y sus herramientas, pegadas a él, van sobre él */
   --tapa-escala: 8;                   /* Tapa de bloque: se dibuja ×8, porque la vista general se ve a ≈ 1:8 y desde allí se lee como una isla a escala 1 */
-  --tapa-logo: 640px;                 /* Logo de Devin en la tapa del centro: en la portada, su símbolo ocupa ≈ 40 % del alto; en la vista general, ≈ 50 px */
+  --tapa-logo: 180px;                 /* Logo de Devin en la tapa del centro, a escala 1 (se dibuja ×--tapa-escala): en la vista general, ≈ 210 px con su margen blanco */
+  --tapa-icono: 60px;                 /* Icono de una tapa de fuera, a escala 1 (se dibuja ×--tapa-escala): en la vista general, ≈ 70 px */
   --grafica-discontinua: 18px 12px;   /* Serie 2 de una gráfica y franja: trazo discontinuo */
   --grafica-punteada: 0 14px;         /* Serie 4 de una gráfica: trazo de puntos */
 
@@ -196,10 +210,17 @@
   --dur-entrada: 0.5s;        /* Entrada · aparición de elementos */
   --dur-contador: 0.9s;       /* Progresión · cifras que suben */
   --dur-trazado: 1.2s;        /* Progresión · líneas que se dibujan y puntos que recorren un camino */
+  --dur-trazado-serie: 0.8s;  /* Progresión · líneas que se dibujan seguidas: las series de una gráfica, una tras otra, la flecha de una lectura y el traspaso del resultado de un subagente */
+  --dur-ampliar: 1s;          /* Progresión · una captura se amplía hasta la zona que se explica */
+  --dur-ajustar: 1.2s;        /* Progresión · lo ocupado de una ventana crece o se recoge (continuar, compactar, empezar de nuevo), con el nivel pegado a su borde; o sus capas leídas de caché se encogen hasta su coste */
+  --dur-desplazar: 0.8s;      /* Progresión · las columnas de una pantalla se desplazan un sitio: la primera sale por un lado y entra una nueva por el otro */
+  --dur-vuelta: 1.5s;         /* Progresión · media vuelta lenta del bucle del agente: una llamada, explicada paso a paso */
+  --dur-vuelta-rapida: 0.8s;  /* Progresión · una vuelta rápida del bucle: llamadas que se suceden */
   --dur-camara-corta: 0.8s;   /* Cámara · entre pantallas de un mismo bloque (las casillas del centro), en línea recta */
   --dur-camara: 1.2s;         /* Cámara · vuelo estándar: entre bloques del mapa, «alejar, viajar, acercar» */
   --dur-camara-larga: 1.5s;   /* Cámara · saltos largos: hacia o desde la vista general */
   --dur-temporizador: 3s;     /* Tiempo simulado · un temporizador se agota (cinco minutos comprimidos) */
+  --dur-repeticion: 4s;       /* Tiempo simulado · una vuelta de la flecha de repetición: gira sin parar, despacio, mientras se ve */
 
   /* ── Movimiento · curvas (nombres de GSAP) ───────────────────────────── */
   --ease-aparicion: power3.out;       /* Apariciones · con --dur-entrada */
@@ -207,17 +228,22 @@
   --ease-camara: power2.inOut;        /* Cámara, también en los vuelos cortos (--dur-camara-corta) · con --dur-camara */
   --ease-camara-larga: sine.inOut;    /* Cámara en saltos largos y vista general · con --dur-camara-larga */
   --ease-interfaz: back.out(1.4);     /* Interfaz: efecto muelle · con --dur-entrada */
-  --ease-caida: power2.in;            /* Fichas que caen al recipiente · con --dur-entrada */
-  --ease-asentado: back.out(1.2);     /* La capa se asienta · con --dur-entrada */
+  --ease-caida: power2.in;            /* Fichas y documentos que entran en la ventana desde arriba · con --dur-entrada */
+  --ease-llenado: power2.out;         /* La ventana se llena: cada capa entra desde la izquierda y frena al llegar · con --dur-entrada */
   --ease-estado: power1.out;          /* Cambios de estado breves: atenuar, avivar, pulsar, caducar · con --dur-micro */
   --ease-contador: power1.out;        /* Cifras que suben · con --dur-contador */
-  --ease-trazado: power1.inOut;       /* Líneas que se dibujan y puntos que recorren · con --dur-trazado */
+  --ease-trazado: power1.inOut;       /* Líneas que se dibujan (también las de --dur-trazado-serie) y puntos que recorren · con --dur-trazado */
+  --ease-ampliar: power2.inOut;       /* Una captura se amplía: arranca y frena suave, sin rebote · con --dur-ampliar */
+  --ease-ajustar: power2.inOut;       /* Lo ocupado de una ventana crece o se recoge (o sus capas cacheadas): arranca y frena suave, y el nivel y su cifra lo siguen · con --dur-ajustar */
+  --ease-desplazar: power2.inOut;     /* Columnas que se desplazan: arrancan y frenan suave, sin rebote · con --dur-desplazar */
   --ease-temporizador: none;          /* El tiempo corre a ritmo constante · con --dur-temporizador */
+  --ease-repeticion: none;            /* La flecha de repetición gira a ritmo constante · con --dur-repeticion */
 
   /* ── Movimiento · escalonado y pausas ────────────────────────────────── */
   --escalonado: 0.06s;              /* Elementos de una lista, tarjetas y leyendas */
   --escalonado-tokens: 0.03s;       /* Fichas de token: rápido, se leen como una frase */
-  --escalonado-capas: 0.12s;        /* Capas del recipiente: cada una debe verse entrar */
+  --escalonado-capas: 0.12s;        /* Capas de la ventana: cada una debe verse entrar */
+  --escalonado-series: 0.2s;        /* Series de una gráfica: cada una empieza a trazarse poco después de la anterior */
   --pausa-tras-camara: 0.3s;        /* La cámara llega; después empieza la zona */
   --pausa-lectura-corta: 1.5s;      /* Mínimo con una etiqueta o una cifra en pantalla */
   --pausa-lectura: 3s;              /* Mínimo con una frase en pantalla */

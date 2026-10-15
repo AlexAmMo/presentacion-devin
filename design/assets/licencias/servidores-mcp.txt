@@ -1,0 +1,10 @@
+Logos de los servidores MCP del departamento (E16)
+
+- github.svg, atlassian.svg y sonar.svg: de Simple Icons (https://simpleicons.org, paquete
+  simple-icons), descargados el 15-10-2026. Los SVG de Simple Icons se publican con licencia
+  CC0 1.0; las marcas son de GitHub, Atlassian y SonarSource, y se usan solo para identificar sus
+  servidores MCP en una charla interna.
+- DS-Workspace (servidor interno) se identifica con la llave de Openbank: openbank-llave.svg es
+  el símbolo de openbank-logo-fondo-claro.svg, solo, con el mismo trazado y el mismo color y el
+  cuadro ajustado a él (recortado a petición del autor de la charla).
+- Se usan tal cual, sin recolorear (CLAUDE.md, «Colores: solo variables»).

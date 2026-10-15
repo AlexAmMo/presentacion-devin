@@ -9,8 +9,8 @@
 - **Escena** (E01, E02…): una unidad de contenido con sus pasos. Se ve en una **pantalla** del mapa, de 1920×1080, que la cámara encuadra. Si un tema tiene varias escenas (Modelos, Contexto…), se suceden en la misma pantalla: el contenido cambia y la cámara no se mueve.
 - **Paso**: cada número de la lista de pasos es un click de «avanzar». Al llegar a una pantalla, el primer paso empieza cuando la cámara se detiene y pasa `--pausa-tras-camara`.
 - **[A] Avanzado**: paso de detalle, en la misma pantalla. Se puede saltar con una tecla según el público.
-- **Componentes**: los del vocabulario visual del design system (ficha de token, capa, recipiente, corchete de caché, contador de coste, agente, subagente, documento, skill y herramienta). Los que faltan se listan al final.
-- **Cifras ficticias**: toda escena con cifras de ejemplo lleva visible la etiqueta «Cifras ficticias».
+- **Componentes**: los del vocabulario visual del design system (ficha de token, capa, ventana de contexto, corchete de caché, contador de coste, agente, subagente, documento, skill y herramienta). Los que faltan se listan al final.
+- **Cifras ficticias**: las cifras de ejemplo no se rotulan; se da por hecho que lo son y la etiqueta solo distrae.
 
 ---
 
@@ -30,7 +30,7 @@ Los cuatro bloques de fuera son una sola pantalla cada uno: sus escenas se suced
 
 ### Tapas
 
-- En la apertura, cada bloque está cubierto por una **tapa** con su título, que es el de su parte en este documento. La del centro lleva además el logo de Devin, y la portada es esa tapa vista de cerca.
+- En la apertura, cada bloque está cubierto por una **tapa** con el icono de su zona y su título, que es el de su parte en este documento. La del centro lleva el logo de Devin y, debajo, «Devin»; la portada encuadra ese logo y ese nombre, que se ven grandes también desde la vista general.
 - La tapa de un bloque se levanta la primera vez que se entra en él: la cámara llega, pasa `--pausa-tras-camara`, la tapa desaparece y empieza el primer paso.
 - En la vista general (tecla `O`), los bloques ya visitados se ven abiertos y los demás, tapados.
 
@@ -48,7 +48,7 @@ Los cuatro bloques de fuera son una sola pantalla cada uno: sus escenas se suced
 ┌─────────┐  ├────────────┼────────────┼────────────┤  ┌─────────┐
 │PREGUNTAS│  │ MCP        │ DEVIN      │ Contexto   │  │ COSTE   │
 │E30 · E31│  │ E16        │ E04 E14    │ E09–E11    │  │ E20–E23 │
-└─────────┘  │            │ E18 E19    │            │  └─────────┘
+└─────────┘  │            │ E18        │            │  └─────────┘
              ├────────────┼────────────┼────────────┤
              │ Tools      │ Skills     │ Rules      │
              │ E15        │ E13        │ E12        │
@@ -64,7 +64,7 @@ Alrededor de Devin, en el sentido de las agujas del reloj desde arriba: Modelos 
 
 ### Ruta de la cámara
 
-Portada (Devin) → vista general → Primeros pasos → Devin → alrededor de Devin, en sentido horario, de Modelos a Skills → Devin (el bucle) → Tools propias, MCP y Subagentes → Devin (plugins y token) → Coste → Buenas prácticas → Preguntas.
+Portada (Devin) → vista general → Primeros pasos → Devin → alrededor de Devin, en sentido horario, de Modelos a Skills → Devin (el bucle) → Tools propias, MCP y Subagentes → Devin (plugins) → Coste → Buenas prácticas → Preguntas.
 
 - Entre escenas de una misma pantalla, la cámara no se mueve: el contenido cambia en su sitio.
 - Entre pantallas de un mismo bloque (las del centro, siempre contiguas): `--dur-camara-corta`, en línea recta.
@@ -73,22 +73,25 @@ Portada (Devin) → vista general → Primeros pasos → Devin → alrededor de 
 
 ### El hub, estado a estado
 
-Las piezas de los temas de alrededor se colocan sin animación al terminar su escena, porque el hub no está a la vista. Las de E14 y E18 entran animadas, con la cámara en Devin.
+Disposición: en la mitad izquierda de la pantalla, Devin en un círculo oscuro (sin «Agente»), con sus cuatro herramientas de serie pegadas a él, sobre el bucle. Alrededor, un anillo simétrico con las ocho piezas, todas círculos iguales con su icono y su nombre, cada una en la dirección de su pantalla (Modelo arriba, Effort arriba a la derecha, Contexto a la derecha…). A la derecha, el panel de la escena del hub (E14 y E18), con su cabecera y su contenido; en E04 no hay panel y el diagrama se ve centrado.
+
+Contexto es un círculo como las demás; cuando una escena del hub anima el contexto (E14, paso 2), el círculo se transforma en la ventana de contexto, con una capa por cada pieza que deja algo en ella (instrucciones, AGENTS.md, descripciones de skills y definiciones de herramientas): todo acaba en el contexto. Después vuelve a ser círculo.
+
+Las piezas de los temas de alrededor se colocan sin animación al terminar su escena, porque el hub no está a la vista. Las de E14 y E18 entran animadas, con la cámara en Devin, antes que el paso.
 
 | Tras la escena | El hub muestra |
 |---|---|
-| E04 | La tarjeta del agente y huecos vacíos con la silueta de cada pieza. |
+| E04 | Devin y, alrededor, los huecos vacíos de cada pieza: círculos punteados. |
 | E07 | + modelo. |
-| E08 | + dial de effort, unido al modelo. |
-| E11 | + recipiente de contexto. |
-| E12 | + documento AGENTS.md al fondo del recipiente. |
-| E13 | + tarjetas de skill plegadas. |
-| E14 | + herramientas de serie y las flechas del bucle. Aquí se revela que «esto es un agente». |
-| E15 | + herramientas propias del departamento. |
-| E16 | + conector MCP hacia servidores (local y remoto). |
-| E17 | + subagente con su propio recipiente. |
+| E08 | + effort. |
+| E11 | + contexto. |
+| E12 | + AGENTS.md. |
+| E13 | + skills. |
+| E14 | + herramientas de serie y las flechas del bucle. Contexto se transforma en la ventana y se llena. Aquí se revela que «esto es un agente». |
+| E15 | + tools propias del departamento. |
+| E16 | + MCP. |
+| E17 | + subagente. |
 | E18 | Todo envuelto en la caja de plugin. |
-| E19 | El bucle gira y el contador de llamadas sube: puente a la parte 3. |
 
 ### Restricciones para el esqueleto
 
@@ -106,27 +109,29 @@ Guion: Apertura.
 
 Mensaje: esto es lo que vamos a recorrer.
 
-1. Portada: el logo de Devin, en grande, en el centro del mapa. Es la tapa del bloque central vista de cerca.
-2. La cámara se aleja a la vista general: los cinco bloques, cada uno con su tapa y su título (Primeros pasos, Principales herramientas, Coste, Buenas prácticas y Preguntas).
+1. Portada: el logo de Devin y, debajo, «Devin», en grande, en el centro del mapa. Es la tapa del bloque central vista de cerca.
+2. La cámara se aleja a la vista general: los cinco bloques, cada uno con su tapa. En la del centro siguen el logo y «Devin»; en las de fuera, al principio solo su icono (Primeros pasos `footprints`, Coste `coins`, Buenas prácticas `route` y Preguntas `message-circle-question`). Cuando la cámara llega, cada icono sube y aparece su título debajo.
 
 ---
 
 ## Parte 1 · Primeros pasos · ~8 min
 
-### E02 · Local y Cloud · ~4 min
+### E02 · Devin Desktop, CLI y Cloud · ~4 min
 
 Guion: 1.1.
 
 Mensaje: dónde se ejecuta decide qué podemos hacer.
 
-1. Dos preguntas: «¿Dónde se ejecuta?» y «¿Desde dónde interactúo?».
-2. Se separan dos islas: **Local** (icono `laptop`) y **Cloud** (icono `cloud`).
-3. Local: aparecen tres ventajas como etiquetas: «Control de modelo y effort», «Acceso a lo local», «Revisión visual de cambios».
-4. Cloud: una tarea se entrega y se ejecuta sola en remoto; después, la misma tarea se repite en bucle sobre un calendario (`calendar-clock`): «Automatizar flujos repetitivos».
-5. Dentro de Local aparecen dos tarjetas: **Desktop** (IDE) y **CLI** (terminal).
+1. Dos preguntas, centradas juntas: «¿Dónde voy a ejecutar Devin?» y «¿Cómo interactúo con él?».
+2. Se separan dos islas: **Local** (icono `laptop`) y **Cloud** (icono `cloud`). Primero se explica Local entero; después, Cloud.
+3. Local: aparecen tres ventajas: «Control de modelo y effort», «Acceso a lo local», «Revisión visual de cambios».
+4. Dentro de Local aparecen sus dos interfaces: **Desktop** (IDE) y **CLI** (terminal).
+5. Cloud: una tarea se entrega y se ejecuta sola en remoto; después, la misma tarea se repite cada semana (`calendar-clock`, con una flecha que gira sin parar); y su ventaja: «Trabajar con múltiples repositorios».
 6. Las tres opciones se conectan con una línea: «Pueden combinarse».
 
-Componentes nuevos: isla, etiqueta de ventaja.
+Componentes nuevos: isla, viñeta, repetición.
+
+Diseño: arriba, las dos preguntas, centradas juntas; debajo, dos islas: Local (a la izquierda las ventajas; a la derecha, Desktop y CLI) y Cloud (la tarea que se entrega, la tarea de cada semana y la ventaja, centradas en su isla). Las viñetas van sin caja, con su icono centrado en la altura de su texto, y cada columna se centra en el alto de su isla. Al final, un cable une Desktop, CLI y la tarea de Cloud, y «Pueden combinarse» aparece centrada bajo Desktop y CLI.
 
 ### E03 · Dónde está cada control · ~4 min
 
@@ -134,22 +139,23 @@ Guion: 1.2.
 
 Mensaje: dónde se toca cada cosa; qué hace, después.
 
-1. Captura de Devin Desktop a tamaño grande.
-2. Se resalta el **cuadro de mensajes**.
-3. Se resalta el **selector de modelo** → etiqueta «Parte 2 · Modelos».
-4. Se resalta el **effort** → «Parte 2 · Effort».
-5. Se resalta el **modo** → «Parte 4 · Planificar».
-6. Se resalta el **indicador de contexto** → «Parte 2 · Contexto».
-7. Se resalta el **consumo de la sesión** → «Parte 3 · Coste».
-8. Mensaje final: «Antes de empezar: modelo, effort y modo».
+1. Captura de Devin Desktop, entera.
+2. La captura se amplía hasta el panel de la sesión y se resalta el **cuadro de mensajes**.
+3. Se abre el selector de modelo y se resalta → etiqueta «Modelo».
+4. En la ficha del modelo, se resalta el **effort** («Higher effort consumes more tokens») → «Effort».
+5. Se abre el selector de **modo** (Code, Smart, Ask, Plan, Bypass Permissions) → «Modo».
+6. Al pasar por el **indicador de contexto** sale su aviso (contexto usado y caché) → «Contexto».
+7. Mensaje final: «Antes de empezar» y, debajo, modelo, effort y modo, cada uno con su icono.
 
-Cada etiqueta lleva una línea de puntos que sale hacia la región del mapa donde se explica (se ve en el siguiente vuelo).
+El consumo de la sesión queda fuera: depende de la organización.
 
-Pendiente: capturas reales de Desktop, con los controles y el consumo localizados.
+Capturas: grabación de Devin Desktop del 15-10-2026, con una cuenta Free (el effort se ve en la ficha del modelo, pero no se puede elegir).
+
+Diseño: la captura a la izquierda, primero entera y después ampliada en el panel de la sesión; cada paso cambia su estado (un desplegable abierto, el aviso del contexto). A la derecha, las etiquetas, una por paso, en columna. Una guía en rojo, en codo y con las esquinas redondeadas, une el resaltado del paso (el único a la vista) con su etiqueta. Al cambiar de paso, el resaltado y su guía se van juntos antes de que entre el siguiente.
 
 ---
 
-## Parte 2 · Principales herramientas · ~25 min
+## Parte 2 · Principales herramientas · ~27 min
 
 ### E04 · El agente, vacío · ~0,5 min
 
@@ -157,16 +163,21 @@ Guion: transición a la parte 2.
 
 Mensaje: vamos a montar el agente pieza a pieza.
 
-1. La tarjeta del agente, con los huecos vacíos de cada pieza.
+1. En una animación rápida y seguida aparecen Devin, en su círculo, sus herramientas de serie y, después, los huecos vacíos de cada pieza, en el orden de la ruta.
+
+Diseño: solo el diagrama, centrado en la pantalla, sin cabecera ni panel: Devin en el centro, sus herramientas de serie pegadas a él y las ocho piezas en un anillo, todas círculos punteados iguales.
 
 ### E05 · Modelos: niveles y generaciones · ~2 min
 
 Guion: 2.1, hasta la tabla y las generaciones.
 
-Mensaje: los niveles de OpenAI y Anthropic se corresponden, y la generación también cuenta.
+Mensaje: la elección más relevante a la hora de usar Devin es: ¿qué modelo uso?
 
-1. Familias como píldoras: GPT (OpenAI), Claude (Anthropic), SWE (Cognition) y otras.
-2. La tabla de niveles se construye fila a fila, de arriba abajo:
+Diseño: primero, los tres proveedores principales con su logo, grandes y en el centro; después, en fila bajo el título, sin píldora, con los demás. A la izquierda, la tabla de niveles con su fuente y, a su derecha, los saltos de precio; a la derecha, las generaciones de cada familia (la actual, destacada), con su cabecera a la altura de la de la tabla.
+
+1. Los tres proveedores principales, con su logo, grandes y centrados: OpenAI (GPT), Anthropic (Claude) y Cognition (SWE, con el logo de Devin).
+2. Se colocan bajo el título, cada uno con su logo y su nombre, y aparece «y otros: Gemini, Kimi, GLM…».
+3. La tabla de niveles se construye fila a fila, de arriba abajo:
 
    | Nivel | OpenAI | Anthropic | Entrada / salida por 1M |
    |---|---|---|---|
@@ -175,12 +186,11 @@ Mensaje: los niveles de OpenAI y Anthropic se corresponden, y la generación tam
    | Medio | GPT-6 Sol · 6.1 Sol | Sonnet 5.5 | 2 $ / 10 $ |
    | Económico | GPT-6 Luna | Haiku 5.5 | 0,10 $ / 0,50 $ |
 
-3. Generaciones: una línea de tiempo por familia (GPT-5.5 → 5.6 → 6 → 6.1; Claude 4.x → 5 → 5.5). «El nombre del nivel no basta: mira la generación.»
-4. [A] «Sol cambió de nivel»: en GPT-5.6, Sol ≈ Opus y Terra ≈ Sonnet; en GPT-6 no hay Terra y Sol ≈ Sonnet.
+4. A la derecha de la tabla, un arco por salto de nivel, con lo que multiplica el precio: de Económico a Medio, ×20; de Medio a Alto, ×2; de Alto a Máximo, ×2,5.
+5. Desde el económico a todos los demás, arcos cada vez más abiertos: ×20 (Medio), ×40 (Alto) y ×100 (Máximo, en acento: un modelo SOTA frente al más económico). Los otros dos saltos se atenúan.
+6. Generaciones: una línea de tiempo por familia (GPT-5.5 → 5.6 → 6 → 6.1; Claude 4.x → 5 → 5.5). «El nombre del nivel no basta: mira la generación.»
 
 Datos: `research_notes/Graficas y tools para el guion/modelos_y_coste_rendimiento.md`, §3.
-
-Pendiente: confirmar Haiku 5.5 y SWE-2 en el selector de la cuenta.
 
 ### E06 · Modelos: coste y rendimiento · ~2 min
 
@@ -188,10 +198,14 @@ Guion: 2.1, «La relación entre rendimiento y coste».
 
 Mensaje: arriba a la izquierda es mejor, y la generación pesa tanto como el nivel.
 
-1. Ejes de la gráfica: coste por intento (escala logarítmica) y porcentaje de acierto. Nota de fuente visible: «Terminal-Bench 4.0 · Anthropic, 22-09-2026».
-2. Las líneas se dibujan una a una: GPT-5.6 Sol, Opus 5, Fable 5.1, GPT-6 Astra y, la última y en acento, Opus 5.5.
-3. Lectura 1: se resaltan Opus 5 en Max y Opus 5.5 en su esfuerzo por defecto. Flecha: «más acierto por ~1/5 del coste».
-4. Lectura 3: dos puntos a la misma altura, uno de un modelo barato con más esfuerzo y otro de uno caro con menos.
+1. Ejes de la gráfica: coste por intento (escala logarítmica) y efectividad (%). Nota de fuente visible: «Terminal-Bench 4.0 · Anthropic, 22-09-2026».
+2. Las líneas se dibujan seguidas y rápidas: GPT-5.6 Sol, Opus 5, Fable 5.1 y GPT-6 Astra. Después, sola y en acento, Opus 5.5: según la línea llega a cada punto, aparece el nombre de su nivel de esfuerzo (Low, Medium, High, XHigh, Max), para que se lea que cada punto es un esfuerzo mayor.
+3. Lectura 1: se resaltan Opus 5 en Max y Opus 5.5 en su esfuerzo por defecto (Medium). Flecha: «más efectividad por ~1/5 del coste».
+4. Lectura 3: dos puntos a la misma altura, uno de un modelo barato con más esfuerzo y otro de uno caro con menos: Opus 5 en XHigh (50,6 %) y GPT-6 Astra en Low (49,7 %), unidos por una guía discontinua. Opus 5.5 se atenúa y GPT-6 Astra se aviva.
+
+Diseño: la gráfica a la izquierda y, a la derecha, centrada en la altura de la gráfica y con el texto justificado, la lectura de cada paso (arriba a la izquierda es mejor · la generación pesa · no hay un modelo «mejor»). En la lectura 1 se atenúan todas las líneas salvo Opus 5 y Opus 5.5.
+
+Transiciones de los pasos 3 y 4: lo resaltado antes (anillos, notas, flecha) y su lectura se van rápido y a la vez; después, a la vez, la lectura nueva, las líneas que se atenúan o se avivan y los anillos nuevos; la flecha, al final.
 
 La lectura 2 (rendimientos decrecientes del esfuerzo) se hace en E08, con esta misma gráfica en pequeño junto al dial.
 
@@ -205,20 +219,23 @@ Guion: 2.1, «Cómo elegir».
 
 Mensaje: lo que importa es el coste de completar bien la tarea.
 
-1. Tabla de tipo de tarea y estrategia inicial, con escalonado.
-2. Dos contadores: un modelo barato que necesita tres intentos frente a uno bueno que acierta a la primera; el barato acaba costando más. Etiqueta «Cifras ficticias».
+Diseño: la tabla a todo el ancho y, debajo, una fila por modelo con sus intentos (✕ o ✓ y su coste) y el total. Sin la etiqueta «Cifras ficticias»: se da por hecho y distrae.
+
+1. Tabla de tipo de tarea, estrategia inicial y modelo recomendado, con escalonado. Para las tareas sencillas (localizar o explicar, cambio pequeño, trabajo repetitivo), GPT-6 Luna; para las complejas (diagnóstico, revisión de un cambio importante), GPT-6.1 Sol / SWE-2 mientras esté en promoción.
+2. Dos contadores: un modelo barato que necesita tres intentos (0,40 cada uno: 1,20) frente a uno bueno que acierta a la primera (0,90); el barato acaba costando más.
 
 ### E08 · Effort · ~2,5 min
 
 Guion: 2.2.
 
-Mensaje: subir el esfuerzo encarece más de lo que mejora.
+Mensaje: el effort regula cuánto «piensa» el modelo antes de responder.
 
-1. Dial de effort con cinco posiciones: Low, Medium, High, XHigh, Max. Nota pequeña: «Depende del modelo: SWE-2 solo tiene tres niveles».
-2. El dial gira de Low a Max: crecen las fichas de razonamiento (rayadas) y suben dos contadores, latencia y coste.
-3. Junto al dial, la gráfica de E06 en pequeño. Se resaltan los puntos de una línea: de Low a Medium, salto grande; de XHigh a Max, casi nulo.
-4. «El esfuerzo no sustituye al contexto». Una pieza de información falta y pensar más no la crea.
-5. Tarjeta de consejo: «Empieza por un nivel medio; sube cuando lo justifique la tarea».
+Diseño: tres columnas, de dos en dos. Primero, a la izquierda, el dial y, centrados debajo, lo que crece al subirlo (latencia y coste; cifras ficticias, sin rótulo) y, a la derecha, la gráfica de E06 en pequeño. Después, las columnas se desplazan un sitio a la izquierda: el dial sale por la izquierda, la gráfica ocupa su sitio y la tercera columna entra entera por la derecha.
+
+1. Dial de effort con cinco posiciones: Low, Medium, High, XHigh, Max.
+2. El dial gira de Low a Max y suben dos contadores, latencia y coste.
+3. Junto al dial, la gráfica de E06 en pequeño, con las demás líneas atenuadas. Se resaltan los puntos de Opus 5.5: de Low a Medium, +19 puntos; de XHigh a Max, −2.
+4. Las columnas se desplazan. La tercera: «El esfuerzo no sustituye al contexto» · «Dar al agente el contexto adecuado es la mejor manera de aumentar su eficacia» · tarjeta de consejo: «Empieza por un nivel medio; sube cuando lo justifique la tarea».
 
 Componentes nuevos: dial de effort, tarjeta de consejo.
 
@@ -228,34 +245,40 @@ Guion: 2.3, definición y tres conceptos.
 
 Mensaje: el contexto es todo lo que el modelo lee en cada llamada.
 
-1. Aparece el recipiente vacío y entran capas, de abajo arriba: instrucciones, conversación, código leído, resultados de herramientas.
-2. Capacidad: se resalta la escala completa del recipiente.
-3. Utilizado: la línea de nivel en acento.
-4. Relevante: solo algunas capas quedan resaltadas; el resto se atenúa.
+Diseño: una fila por concepto, cada una con su ventana de contexto horizontal a todo el ancho. Cifras ficticias, sin rótulo.
+
+1. Capacidad: tres ventanas superpuestas, de 256K, 512K y 1M tokens. La capacidad depende del modelo.
+2. Utilizado: una ventana de 256K se llena de izquierda a derecha con lo que lee el modelo: instrucciones, reglas, conversación, código leído y resultados de herramientas. La línea de nivel, en acento, marca el 65 %.
+3. Relevante: el mismo relleno se atenúa salvo un trozo del código leído, «Contexto útil».
 
 ### E10 · Contexto: degradación · ~2 min
 
 Guion: 2.3, «Por qué no conviene llenarlo».
 
-Mensaje: el modelo rinde peor con más contexto, y empieza a caer pronto.
+Mensaje: cuanto más contexto, peor rendimiento ofrece el modelo.
+
+Diseño: a la izquierda, la gráfica; a la derecha, una tabla con los mismos datos, con su título centrado sobre ella. Cada modelo, con su color.
 
 1. Ejes: tokens de contexto (8K → 1M, logarítmica) y acierto (%). Fuente: «Context Arena · GDM-MRCR v2 · 14-10-2026».
-2. Las líneas se dibujan: Claude Sonnet 5, Claude Opus 5 y GPT-5.6 Sol, con etiquetas en 8K, 128K y 512K.
-3. Se sombrea la franja 64K–256K: «La caída empieza con una cuarta parte de la ventana o menos».
-4. El remate, con cifras grandes: misma pregunta y mismo modelo. Con 300 tokens relevantes acierta el **92 %**; con 113.000 tokens de historial, el **38 %**. Fuente: «Chroma · Context Rot · 2025».
-5. [A] Modelos actuales (GraphWalks, ficha de Gemini 4 Argon): Opus 5.5 pasa de 90,6 a 66,8 y GPT-6 Astra de 98,7 a 71,8.
+2. Las tres líneas se dibujan a la vez: GPT-5.6 Sol, Claude Opus 5 y Claude Sonnet 5. Al acabar, sin otro clic, se sombrean las franjas, una tras otra: 64K–256K, «Inicio de degradación», y 256K–512K, más oscura y rojiza, «Degradación alta».
+3. La tabla «Acierto según la ventana usada»: cada modelo con la ventana casi vacía (8K), al 25 % (256K) y al 50 % (512K). Las tres ventanas son de 1M. Las columnas del 25 % y del 50 % llevan el tono de su franja.
 
-Datos: `research_notes/Graficas y tools para el guion/degradacion_contexto.md`.
+Datos: `research_notes/Graficas y tools para el guion/degradacion_contexto.md` (4-A). Ventanas: `max_context_length` de Context Arena.
+
+Solo en el guion, sin apoyo en pantalla: el remate de Chroma (92 % frente a 38 %) y los datos de GraphWalks de la generación actual.
 
 ### E11 · Contexto: gestionar la sesión · ~1,5 min
 
 Guion: 2.3, «Continuar, compactar o empezar de nuevo».
 
-Mensaje: decidir con criterio cuándo seguir, compactar o empezar de cero.
+Mensaje: cómo podemos gestionar mejor el contexto.
 
-1. Tres caminos desde una sesión: continuar, compactar y sesión nueva, cada uno con sus situaciones de la tabla.
-2. Compactar: el recipiente lleno se comprime en una capa de resumen. Al lado aparece la lista de lo que hay que guardar (cinco puntos).
-3. Consejos: «Una sesión por objetivo» y «No reinicies continuamente (y la caché… en la parte 3)».
+Diseño: arriba, los tres caminos en columnas, que aparecen uno a uno (el anterior se atenúa); debajo, centrada en el espacio libre, la ventana de la sesión, que muestra cada camino. La línea de nivel va pegada al borde de lo ocupado mientras crece o se recoge, y su cifra cambia a la vez. Cifras ficticias, sin rótulo.
+
+1. Continuar, con sus situaciones. La ventana ya está cargada (68 %): aunque el contexto sea amplio, si es necesario y relevante se puede seguir, y lo ocupado crece un poco más (75 %).
+2. Compactar (continuar se atenúa): la conversación y lo explorado se recogen, suave, hasta el resumen de la sesión (12 %).
+3. Sesión nueva (compactar se atenúa): la ventana vuelve a estar llena y se vacía casi por completo; queda el system prompt (5 %).
+4. A la derecha, lo que hay que guardar antes de compactar o cambiar de sesión (cinco puntos); compactar se aviva.
 
 Pendiente: comando `/compact` y limpiar contexto en Desktop.
 
@@ -263,25 +286,29 @@ Pendiente: comando `/compact` y limpiar contexto en Desktop.
 
 Guion: 2.4.
 
-Mensaje: lo que va siempre debe ser breve y estable.
+Mensaje: normas fijas que debe cumplir el agente.
 
-1. El documento AGENTS.md cae al fondo del recipiente: «Lo primero que entra».
-2. Niveles: árbol del repositorio. El AGENTS.md de la raíz se carga al inicio; el de un subdirectorio aparece cuando el agente entra en esa carpeta.
-3. Un AGENTS.md largo engorda la capa del fondo, y en cada llamada se relee: un contador hace tic en cada llamada.
+1. El documento AGENTS.md entra en la ventana y ocupa su principio: «Se incluyen automáticamente en todos los prompts».
+2. Niveles: árbol del repositorio. Las rules (`.devin/rules/rule-1.md`, `rule-2.md`) y el AGENTS.md de la raíz se cargan al inicio; el de un subdirectorio aparece cuando el agente entra en esa carpeta.
+3. «Las rules y AGENTS.md se releen en cada llamada»: si son largos, engordan la capa del fondo; un contador hace tic en cada llamada.
 4. Consejo: «Breve y estable; para lo largo, una skill». Una rule apunta a una skill.
 
 Componente nuevo: árbol de repositorio.
+
+Diseño: arriba, «Se incluyen automáticamente en todos los prompts» y la ventana a todo el ancho; el documento cae sobre su principio y se convierte en su primera capa. Debajo, a la izquierda, el árbol del repositorio; a la derecha, los contadores (llamadas y tokens releídos), el consejo y la rule que apunta a una skill. Cifras ficticias, sin rótulo.
 
 ### E13 · Skills · ~2 min
 
 Guion: 2.5.
 
-Mensaje: una skill solo ocupa contexto cuando se usa.
+Mensaje: instrucciones sobre cómo realizar una tarea.
 
 1. Varias skills plegadas: solo se ve su nombre y su descripción.
-2. Llega una tarea que encaja con una: esa skill se despliega y su contenido entra en el recipiente. Las demás siguen plegadas.
+2. Llega una tarea que encaja con una: su contenido entra en la ventana y las demás se atenúan. Ninguna se despliega: la tarjeta sigue mostrando solo nombre y descripción.
 3. Dos formas de activarla: `/nombre-de-la-skill` (nosotros) o el agente la elige por su descripción.
-4. Cuándo crear una: tres ejemplos y su anatomía (cuándo se aplica, qué necesita, pasos, resultado).
+4. «Cuándo crear una», a la izquierda, y debajo «Procedimientos propios repetitivos»; a su derecha, cuatro flechas curvas (abanico) hacia lo que debe explicar una skill, una parte encima de otra: cuándo, qué necesita, pasos y resultado. Después, el consejo.
+
+Diseño: arriba, las tres skills plegadas (los tres ejemplos del guion) y, a la derecha, la tarea que llega y las dos formas de activarla. Debajo, la ventana a todo el ancho con las descripciones (unas líneas) y, cuando se usa, el contenido de la skill; bajo ella, los contadores de lo que ocupa cada cosa. Abajo, cuándo crear una, con su abanico, y el consejo. Cifras ficticias, sin rótulo.
 
 ### E14 · El bucle del agente · ~1,5 min · en el hub
 
@@ -289,56 +316,56 @@ Guion: 2.6, primeros párrafos.
 
 Mensaje: las herramientas convierten un modelo en un agente.
 
-1. Aparecen las herramientas de serie: `file-text` (leer), `pencil` (editar), `search` (buscar) y `terminal` (ejecutar).
-2. El bucle da una vuelta lenta: el modelo decide, una herramienta pulsa y su resultado entra como ficha en el recipiente. Rótulo: «Esto es un agente».
-3. El bucle da tres vueltas más rápidas y el recipiente crece. Esto prepara la parte 3.
+1. «Por defecto, Devin incluye una serie de tools disponibles» y, debajo, las herramientas de serie en una rejilla de 2 × 2, todas del mismo tamaño: `search` (buscar), `file-text` (leer), `pencil` (editar) y `terminal` (ejecutar).
+2. El bucle da una vuelta lenta: el modelo decide, una herramienta pulsa y su resultado entra como ficha en la ventana; en el panel, cada fase aparece cuando ocurre. Seguidas, sin otro clic, tres vueltas más rápidas: la ventana se llena y el contador de llamadas sube de 1 a 4 (esto prepara la parte 3). Al final, el rótulo: «Esto es un agente».
 
 ### E15 · Herramientas del departamento · ~2,5 min
 
 Guion: 2.6, desde «Cómo las usa el agente».
 
-Mensaje: el agente decide por la descripción; una tool da manos, una skill da oficio.
+Mensaje: una tool «da manos» al LLM, una skill «da conocimiento».
 
-1. Herramientas propias como círculos con su nombre en mono: documentación, incidencias, validación y revisión (provisionales).
-2. Una herramienta se da la vuelta: el código queda oculto y se ve lo que el agente lee, que es nombre, descripción y parámetros. La descripción se resalta: «La descripción es el disparador».
-3. [A] Los tres pasos en Local:
-   - lista de servidores (poco contexto);
-   - el agente pide las herramientas de uno y sus definiciones entran en el recipiente;
-   - la llamada: solo entran argumentos y resultado, mientras código y credenciales se quedan tras un muro.
-4. Comparación en dos columnas, «Manos» (tool) y «Oficio» (skill), con las filas de la tabla del guion apareciendo de dos en dos.
-5. «No compiten»: una skill se acopla a una herramienta.
-6. Nuestras herramientas: tabla con dónde está cada una, qué permisos necesita y quién la mantiene.
-7. Consejos para quien las crea (tres).
+1. Un solo ejemplo claro: la herramienta `create_pull_request` (icono y nombre en mono) y su ficha, lo que el agente lee de ella: nombre, descripción y parámetros. Las dos, juntas, centradas y en grande: son las piezas principales.
+2. La pantalla se reordena en un esquema, de izquierda a derecha: Agente → Tool → sus tres elementos, uno encima de otro (Nombre, Descripción, Parámetros) → la ficha, con una flecha de cada elemento a su campo. Sin recuadro rojo.
+3. Comparación en dos columnas, «Tool propia → manos» y «Skill → conocimiento», y debajo «No compiten»: una skill se acopla a una herramienta. Todas las filas y el pie entran en una sola animación, escalonada.
 
-Pendiente: herramientas reales del departamento.
+Diseño: dos fases en la misma pantalla. Pasos 1–2: la herramienta y su ficha, centradas, que después se colocan en el esquema (con el agente, los elementos y las flechas, abanico). Paso 3: la tabla tool/skill a todo el ancho y, debajo, «No compiten». Quitada la fase de «Nuestras herramientas» y sus consejos, para reducir contenido.
 
 Componente nuevo: tarjeta de definición de herramienta (nombre, descripción, parámetros).
 
-### E16 · MCP · ~1 min
+
+### E16 · MCP · ~2,5 min
 
 Guion: 2.7.
 
-Mensaje: MCP es el enchufe para nuestras herramientas.
+Mensaje: MCP es el estándar con el que conectamos herramientas a Devin.
 
-1. Conector MCP del hub hacia dos servidores: uno local (`laptop`) y uno remoto (`cloud`).
-2. Cómo se añaden: `devin mcp add` (fichero local o de proyecto) y Cloud → Customize → MCPs.
-3. Candado: «Credenciales nunca en el repositorio».
+1. Sin un estándar: arriba, tres agentes (Devin, otro agente y un IDE con IA); abajo, tres servicios (GitHub, Atlassian y Sonar, con su logo); un cable de cada agente a cada servicio. «Sin un estándar, cada agente necesita su propia integración con cada servicio: 3 × 3 = 9».
+2. Con MCP: los nueve cables se van y todo pasa por el conector, en el centro. «Con MCP, cada servicio publica un servidor una vez y cualquier agente compatible lo usa: 3 + 3 = 6». Debajo: «Cada servidor se ejecuta en nuestra máquina o como un servicio remoto».
+3. Qué trae un servidor: Devin, con el conector en su borde, unido al servidor de GitHub, que despliega algunas de sus tools; resaltada, `create_pull_request`, la del ejemplo de Tools propias (E15). «Sus tools se suman a las de serie, con el mismo sistema de permisos» y «La del ejemplo de "Tools propias" llega por aquí: el agente la ve como `mcp__github__create_pull_request`».
+4. Los MCPs del departamento: el servidor de GitHub pasa a su sitio en una columna con los demás, cada uno con el logo de su servicio y un cable desde el conector. Externos: GitHub, Atlassian y Sonar; internos: DS-Workspace (con la llave de Openbank). Al pie, centrado: «La guía de instalación completa está disponible en el repositorio Master-Control-Program».
 
-Componentes nuevos: conector MCP, candado.
+Componentes nuevos: conector MCP.
 
-### E17 · Subagentes · ~2,5 min
+Diseño: dos fases que se relevan en la misma pantalla. En la primera, los agentes en fila arriba y los servicios en fila abajo, en las mismas columnas, y la leyenda centrada debajo; el conector, con «MCP» al lado, entre las dos filas. En la segunda, el agente a la izquierda, con el conector (con su aro punteado) en el borde; en el paso 3, el servidor de GitHub a su altura y sus tools en abanico a la derecha, con la del ejemplo resaltada; en el paso 4, los servidores en columna, agrupados en Externos e Internos, con el nombre del grupo centrado encima, y la nota del repositorio al pie.
+
+### E17 · Subagentes · ~3 min
 
 Guion: 2.8.
 
-Mensaje: contexto separado, coste propio.
+Mensaje: un subagente resuelve parte de la tarea en su propio contexto.
 
-1. El agente lanza un subagente por el camino de puntos, con su propio recipiente vacío: no hereda la conversación.
-2. El recipiente del subagente se llena mientras el del agente apenas crece. Vuelve una ficha «↩ resumen + evidencias».
-3. El subagente tiene su propio contador de coste. Nota: «General: hereda el modelo; exploración: otro».
-4. Cuándo compensan: lista de sí y lista de no.
-5. El encargo de ejemplo, en una tarjeta en mono.
-6. Dos subagentes editan el mismo archivo y aparece un conflicto. Solución: repartir archivos.
-7. Consejo: «No por defecto: cuando separar aporte más que coordinar».
+1. El agente lanza un subagente por el camino de puntos, con su propia ventana, vacía: no hereda la conversación.
+2. La ventana del subagente se llena y al final queda su resultado, una capa pequeña en rojo. Una flecha roja, por debajo de las dos ventanas, la lleva al final de la del agente, donde aparece la misma capa. Bajo la flecha: «El agente solo ve el resultado y mantiene limpio su contexto». A la vez que la flecha, sube el coste de cada uno (el del subagente, más).
+3. Tipos de subagente: el agente, con el modelo del IDE, lanza tres subagentes, de menos a más complejo, cada uno con su modelo: Documentación (GPT-6 Luna), Research (SWE-2) y Análisis (GPT-6.1 Sol). Debajo, centrado: «El agente usa siempre el modelo que elegimos en el IDE; el subagente puede usar otros para optimizar tanto la efectividad como el coste».
+4. Cuándo sí, casi sin texto: el agente con su ventana y tres subagentes, cada uno con la suya; cada uno lee lo suyo y devuelve su resultado, en rojo, que es lo único que guarda el agente. «Partes independientes, cada una con su resultado».
+5. Cuándo no: el agente ya tiene mucho contexto y cada subagente lo vuelve a cargar entero para leer muy poco y devolver un resultado mínimo. «Cada subagente vuelve a cargar el contexto que el agente ya tenía: lo pagamos tres veces por un resultado mínimo».
+6. En vertical, dos etapas: dos subagentes editan el mismo archivo y aparece un conflicto; debajo, «Un worktree por subagente: pueden editar el mismo archivo», cada uno con su copia de `sesion.ts`. A la derecha: «Contexto separado no significa archivos aislados».
+7. Consejo, a la derecha, bajo la frase: «No por defecto: cuando separar aporte más que coordinar».
+
+Componentes nuevos: subagente (con su ventana pequeña), resultado de un subagente (capa en rojo y su flecha).
+
+Diseño: fases que se relevan en la misma pantalla. En la primera (pasos 1 y 2), el agente a la izquierda y el subagente a la derecha, cada uno en una columna centrada con su tarjeta, su ventana (las dos a la misma altura) y su coste; la flecha del resultado, en rojo, en codo por debajo de las ventanas, con su rótulo debajo. En el paso 3, el agente arriba, en el centro, y los tres tipos de subagente en fila debajo, unidos por caminos de puntos, con la frase del modelo centrada abajo. En la segunda (pasos 4 y 5), arriba los tres subagentes en fila, cada uno con su ventana; abajo, el agente con su ventana a la derecha y la leyenda (cuándo sí, cuándo no) a la derecha de esta; las flechas, en codo, de cada resultado a la ventana del agente, sin cruzarse. En la tercera, a la izquierda y en vertical, el conflicto (centrado bajo el archivo) y, debajo, la solución con un worktree por subagente; a la derecha, la frase y el consejo.
 
 ### E18 · Plugins · ~1 min · en el hub
 
@@ -346,33 +373,26 @@ Guion: 2.9.
 
 Mensaje: un plugin empaqueta todo lo anterior.
 
-1. Las piezas del hub (skills, AGENTS.md, conector MCP y subagente) se envuelven en la caja de plugin. [A] Etiqueta de hooks.
-2. Etiquetas de la organización: obligatorio, recomendado y prohibido.
-3. El patrón del departamento: MCP + skills + AGENTS.md mínimo. Rótulo de transición: «Ya conocemos las piezas. ¿Cuánto cuesta usarlas?».
+1. Las piezas del hub se envuelven en la caja de plugin y, a la derecha, entra toda la columna de una vez, grupo a grupo: lo que trae un plugin, en una cuadrícula de dos columnas y tres filas (Rules, Skills, Tools, Servidores MCP, Subagentes y Hooks); cómo lo marca la organización, en una fila y con el icono en color (obligatorio, opcional y prohibido), y «El departamento tiene:» un plugin (`ods-ds-mcp`), centrado, y debajo lo que incluye (MCPs, Skills, Tools y Rules), unido a él por flechas curvas que se trazan.
 
-Componente nuevo: caja de plugin.
+Componente nuevo: caja de plugin. Las marcas de la organización son etiquetas con el icono en color (`--color-obligatorio`, `--color-opcional`, `--color-prohibido`).
 
 ---
 
-## Parte 3 · Coste · ~10 min
+## Parte 3 · Coste · ~8 min
 
-### E19 · Qué es un token · ~1,5 min · en el hub
-
-Guion: 3.1.
-
-Mensaje: en cada llamada el modelo relee todo el contexto.
-
-1. La frase «Arregla la paginación» se parte en fichas de token.
-2. El bucle del agente gira y en cada vuelta una línea recorre todo el recipiente («se relee»). Un contador de llamadas sube: 1, 2, 3…
-
-### E20 · Qué pagamos · ~1 min
+### E20 · El coste total · ~1 min
 
 Guion: 3.2.
 
-Mensaje: ACUs ≈ coste en tokens + 20 %.
+Mensaje: ¿De qué depende el coste total?
 
-1. Fichas → «coste en tokens» → ×1,2 → «ACUs».
-2. Etiqueta bien visible: «Benchmark interno · pocas tareas · aproximación».
+1. Arriba, el coste total (icono de dólar); debajo, una llave que abarca todo lo que lo forma, de izquierda a derecha: Tokens → Modelos → Coste por token → Coste en ACUs.
+2. Debajo de cada pieza, un ejemplo: 50.000 tokens de salida consumidos, el modelo elegido (GPT-6.1 Sol), su precio por token de salida (10 $ por millón, el de E05) y lo que sale en ACUs: ≈ 0,60 $, que sube como un contador (0,50 $ en tokens). El ponente explica de palabra el +20 % (benchmark interno) y que no es una tarifa.
+
+Componente nuevo: llave.
+
+Diseño: el coste total centrado bajo el título y, bajo él, la llave, con el pico en el centro, que abarca las cuatro piezas en columnas con flechas entre ellas; el ejemplo, en las mismas columnas, debajo.
 
 ### E21 · Los cuatro tipos · ~2 min
 
@@ -380,13 +400,9 @@ Guion: 3.3.
 
 Mensaje: no todos los tokens cuestan lo mismo.
 
-1. **Input sin caché**: capa sólida, sin corchete.
-2. **Cache write**: el corchete se alarga sobre una capa nueva.
-3. **Cache read**: corchete continuo con ✓ sobre las capas ya vistas. Barra de precio pequeña: «2,5–10 % del input».
-4. **Output**: fichas huecas, y rayadas para el razonamiento: «el más caro por token».
-5. [A] Tabla de tarifas reales de los modelos de la cuenta.
+1. Los cuatro tipos, seguidos, en una sola animación, cada uno con su fila: **input sin caché** (capa sólida, sin corchete); **cache write** (el corchete se alarga sobre las capas); **cache read** (en la llamada siguiente, corchete continuo con ✓ sobre lo ya visto; barra de precio pequeña: «2,5–10 % del input»), y **output** («el más caro por token»).
 
-Pendiente: tarifas reales.
+Diseño: arriba, una ventana (100K) a todo el ancho en la que se ve cada tipo (las capas, la salida de la llamada anterior y el corchete al guardarse y al reutilizarse); debajo, una fila por tipo con qué es y su precio por millón con GPT-6.1 Sol en una barra proporcional (docs.devin.ai: input 2 $, cache write 2,5 $, cache read 0,1 $, output 10 $), con su fuente.
 
 ### E22 · La caché · ~1,5 min
 
@@ -394,26 +410,27 @@ Guion: 3.4.
 
 Mensaje: lo ya visto se relee barato, mientras la caché no caduque.
 
-1. Dos llamadas seguidas, una al lado de la otra: el principio es idéntico y el corchete lo cubre. Solo lo nuevo se paga completo.
-2. Un temporizador de cinco minutos se agota: el corchete pasa a discontinuo con ✕ y todo se vuelve a escribir.
+1. Dos llamadas seguidas, una al lado de la otra: el principio es idéntico y el corchete lo cubre. Eso se relee de caché: toma su color y se encoge hasta su coste, un 10 % del input. Solo lo nuevo se paga completo.
+2. Un temporizador de cinco minutos («Anthropic ofrece por defecto 5 minutos de caché») se agota: el corchete pasa a discontinuo con ✕ y lo cacheado vuelve a su tamaño, porque todo se vuelve a escribir.
 3. Nota: «Duración en Devin: pendiente de verificar».
 
-### E23 · Una conversación, paso a paso · ~4 min
+Diseño: las dos llamadas una sobre otra (no una al lado de la otra: con la ventana horizontal, así se ve que el principio es idéntico), a la misma escala; a la derecha, el temporizador; abajo, la nota. Los tokens leídos de caché van en su color (el mismo en E21 y E23).
+
+### E23 · Una conversación, paso a paso · ~3,5 min
 
 Guion: 3.5. Es la animación principal de la charla.
 
 Mensaje: la caché ahorra mucho, y las pausas largas la desperdician.
 
-Diseño: dos recipientes lado a lado, «Sin caché» y «Con caché». Bajo cada uno, cuatro contadores (input sin caché, cache write, cache read y output) y un total. Encima, una gráfica pequeña del coste acumulado de los dos lados. Etiqueta «Cifras ficticias».
+Diseño: dos ventanas, una sobre otra y a la misma escala, «Sin caché» y «Con caché», con el corchete de lo que se lee de caché en cada llamada; eso va en el color de la caché (como en E22), y la línea «Con caché» de la gráfica, también en azul. Sin capacidad escrita: la escala es la de lo que se llega a ocupar. A la derecha de cada una, su coste por tipo en dólares (input sin caché; cache write, cache read y output) y el total, alineados con su ventana. Encima, a la izquierda, la gráfica del coste acumulado (una línea por variante); a la derecha, las llamadas y el resultado del paso, en acento. En el paso 5, las conclusiones ocupan la columna derecha. Sin la variante de compactación.
 
 1. Situación inicial: 20.000 tokens fijos (AGENTS.md e instrucciones) en ambos lados.
-2. Llamada 1: con caché cuesta un poco más (0,070 frente a 0,058).
-3. Llamadas 2 a 12 en reproducción continua: sin caché, cada llamada cuesta más; con caché, el coste por llamada apenas crece. Totales: **1,36 frente a 0,43, un −69 %**.
-4. Variante pausa: el lado con caché rebobina a la llamada 6. En la 7 la caché caduca y la llamada cuesta 0,145. Total **0,54, un +27 %**.
-5. Variante compactación: tras la llamada 8 el recipiente se comprime; las llamadas siguientes son más baratas, pero la compactación también cuesta. Total 0,445: en una sesión corta no ahorra. [A] En 30 llamadas, un −12 %.
-6. Tres conclusiones, una a una: «La caché es lo que más ahorra», «Las pausas largas y los reinicios la desperdician» y «Compactar es sobre todo calidad».
+2. Llamada 1: con caché cuesta un poco más (0,123 $ frente a 0,102 $, +21 %).
+3. Llamadas 2 a 10 en reproducción continua: sin caché, cada llamada cuesta más; con caché, el coste por llamada apenas crece. Totales: **3,09 $ frente a 0,94 $, un −70 %**.
+4. Variante pausa: el lado con caché rebobina, llamada a llamada (capas, corchete y desglose a la vez), hasta la 5. En la 6 la caché caduca: todo se vuelve a escribir (0,41 $, más que la misma llamada sin caché, 0,33 $). Total **1,26 $, un +34 %**.
+5. Dos conclusiones, una a una, centradas en la columna derecha y con su número grande: «La caché es lo que más ahorra» (−70 % en 10 llamadas) y «Las pausas largas y los reinicios la desperdician» (una sola pausa: +34 %).
 
-Datos: guion, Anexo A, con los valores por llamada.
+Datos: tarifas de GPT-6.1 Sol (las de E21: input 2, cache write 2,5, cache read 0,1 y output 10 $ por millón). 20.000 tokens fijos; en cada llamada, 21.000 nuevos (el mensaje y lo que leen las herramientas) y 2.000 de salida, que entran en el contexto de la siguiente: la llamada 10 lleva 248.000 tokens. Las fórmulas, en `src/escenas/E23.js`; el Anexo A del guion sigue con el caso ficticio anterior.
 
 ---
 
@@ -432,6 +449,8 @@ Mensaje: una buena petición responde cinco preguntas.
 3. La petición mejorada, en mono.
 4. Cada fragmento de la petición mejorada se subraya con el número de la pregunta que responde (1 a 5).
 
+Diseño: arriba a la derecha, el circuito (fijo en las seis escenas). A la izquierda, las cinco preguntas; a la derecha, las dos peticiones, una sobre otra (la inicial se atenúa).
+
 ### E25 · Contexto progresivo · ~1,5 min
 
 Guion: 4.2.
@@ -442,6 +461,8 @@ Mensaje: primero lo esencial, el resto accesible.
 2. La hipótesis como sugerencia, no como orden (la cita del guion).
 3. Mil líneas de log se filtran hasta el fragmento relevante.
 
+Diseño: a la izquierda, lo primero y la hipótesis; a la derecha, el log, que se atenúa salvo el fragmento, y el fragmento en su tarjeta.
+
 ### E26 · Planificar · ~1,5 min
 
 Guion: 4.3.
@@ -451,6 +472,8 @@ Mensaje: un plan solo cuando aporta.
 1. Dos caminos: cambio pequeño → ejecutar; tarea amplia → modo planificación.
 2. La tarjeta del plan: qué cambiar, por qué, riesgos y cómo validarlo.
 
+Diseño: los dos caminos en dos filas (situación → qué hacer); debajo del segundo, la tarjeta del plan.
+
 ### E27 · Intervenir · ~1,5 min
 
 Guion: 4.4.
@@ -459,6 +482,8 @@ Mensaje: corregir pronto y con datos concretos.
 
 1. El agente se desvía del camino; la corrección con información concreta lo devuelve (la cita).
 2. Pausa de diagnóstico: la petición en mono.
+
+Diseño: a la izquierda, el recorrido (tramo común, desvío con ✕ y vuelta con ✓); a la derecha, la corrección en mono; abajo, la pausa de diagnóstico a todo el ancho.
 
 ### E28 · Verificar · ~1,5 min
 
@@ -470,6 +495,8 @@ Mensaje: una respuesta convincente no demuestra que funcione.
 2. Lista de comprobación: archivos cambiados, alcance y pruebas, más lo que no se ha podido comprobar.
 3. La petición de cierre.
 
+Diseño: el rótulo grande arriba; debajo, a la izquierda, la lista y, a la derecha, la petición de cierre.
+
 ### E29 · Hábitos · ~1 min
 
 Guion: 4.6.
@@ -478,6 +505,8 @@ Mensaje: lo que gasta sin aportar.
 
 1. Los cuatro hábitos genéricos con su alternativa.
 2. Recordatorio de los hábitos propios de cada pieza, con líneas hacia sus zonas: effort (E08), contexto (E11) y subagentes (E17).
+
+Diseño: la tabla de hábitos y alternativas a todo el ancho; debajo, los tres de cada pieza con la etiqueta (e icono) de su zona.
 
 ---
 
@@ -494,11 +523,15 @@ Mensaje: cinco preguntas antes de empezar.
 1. Las cinco preguntas aparecen una a una, cada una con la etiqueta del bloque donde se explica: resultado → Buenas prácticas, configuración → Primeros pasos y Principales herramientas, contexto → Contexto, herramientas → Tools y plugins, terminado → Verificar.
 2. Mensaje final y logo de Openbank.
 
+Diseño: las cinco preguntas en filas, cada una con la etiqueta (e icono) de su bloque a la derecha; abajo, el mensaje final y el logo.
+
 ### E31 · Preguntas
 
 Mensaje: turno de preguntas.
 
 1. Rótulo «¿Preguntas?», con el título de la charla, «Devin en el día a día», y el logo de Openbank.
+
+Diseño: sin título de escena; el rótulo grande a la izquierda, el título de la charla debajo y el logo abajo a la derecha, donde estaba en E30.
 
 ### E32 · Caso práctico (pendiente de decidir)
 
@@ -511,34 +544,22 @@ Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de pagi
 | Bloque | Escenas | Pasos | Tiempo |
 |---|---|---:|---:|
 | Apertura | E01 | 2 | ~2 min |
-| Parte 1 · Primeros pasos | E02–E03 | 14 | ~8 min |
-| Parte 2 · Principales herramientas | E04–E18 | 59 | ~25 min |
-| Parte 3 · Coste | E19–E23 | 18 | ~10 min |
+| Parte 1 · Primeros pasos | E02–E03 | 13 | ~8 min |
+| Parte 2 · Principales herramientas | E04–E18 | 52 | ~27 min |
+| Parte 3 · Coste | E20–E23 | 11 | ~8 min |
 | Parte 4 · Buenas prácticas | E24–E29 | 16 | ~9,5 min |
 | Cierre · Preguntas | E30–E31 | 3 | ~2 min + preguntas |
-| **Total** | **31** | **112** | **~57 min + preguntas** |
+| **Total** | **30** | **97** | **~57 min + preguntas** |
 
-Lo marcado con [A] se puede saltar: cuatro pasos completos (E05, E10, E15 y E21) y dos detalles dentro de otros pasos (E18 y E23). Saltarlo todo ahorra unos 3 minutos.
+Ya no queda nada marcado con [A]: la tecla `A` sigue disponible para pasos de detalle que se añadan.
 
-## Componentes que faltan en el vocabulario
+## Componentes del vocabulario
 
-Siguiendo la regla «cada concepto, un único dibujo», hay que diseñarlos una vez en `design/componentes.css` y documentarlos en `design/design-system.html`:
-
-- Isla y etiqueta de ventaja (E02).
-- Captura con resaltado de un control (E03).
-- Gráfica de líneas con fuente visible (E06, E08, E10, E23).
-- Dial de effort (E08).
-- Tarjeta de consejo (E08, E11, E12, E15, E17).
-- Árbol de repositorio (E12).
-- Tarjeta de definición de herramienta (E15).
-- Conector MCP y candado (E16).
-- Caja de plugin (E18).
-- Temporizador (E22).
-- Circuito con punto que lo recorre (Parte 4).
+Todos los que necesitan estas escenas ya están dibujados en `design/componentes.css` y documentados en `design/design-system.html`. Entre otros: isla y viñeta, repetición, captura con resaltado, gráfica de líneas con su nota de fuente, dial de effort, tarjeta de consejo, árbol de repositorio, definición de herramienta, conector MCP y candado, caja de plugin, temporizador, circuito y tapa de bloque. Si una escena necesita uno nuevo, se diseña allí primero («cada concepto, un único dibujo»).
 
 ## Pendientes de contenido
 
-- [ ] Capturas reales de Devin Desktop con los controles, el consumo y el indicador de contexto (E03).
+- [x] Capturas reales de Devin Desktop con los controles y el indicador de contexto (E03). El consumo queda fuera.
 - [ ] Haiku 5.5 y SWE-2 en el selector de la cuenta (E05).
 - [ ] Comando `/compact` y limpiar contexto en Desktop (E11).
 - [ ] Herramientas reales del departamento (E15).

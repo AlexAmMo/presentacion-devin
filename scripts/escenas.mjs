@@ -106,7 +106,8 @@ for (const e of conPasos) {
 for (const id of Object.keys(ZONA_DE)) if (!ids.has(id)) error(`${id} tiene zona en mapa.js, pero no está en escenas.md (o no tiene pasos).`);
 for (const [ref, destino] of Object.entries(ENCUADRES)) {
   if (!existe(ref)) error(`ENCUADRES: el paso ${ref} no existe en escenas.md.`);
-  if (destino !== 'general' && !(ids.has(destino) && zonaDe(destino) !== 'general')) error(`ENCUADRES: ${ref} apunta a ${destino}, que no tiene pantalla en el mapa.`);
+  if (destino === 'diagrama' && zonaDe(ref.split('/')[0]) !== 'hub') error(`ENCUADRES: ${ref} encuadra el diagrama del hub, pero no es del hub.`);
+  if (!['general', 'portada', 'diagrama'].includes(destino) && !(ids.has(destino) && zonaDe(destino) !== 'general')) error(`ENCUADRES: ${ref} apunta a ${destino}, que no tiene pantalla en el mapa.`);
 }
 // HUB.llega: una escena ('E07' → su último paso, sin animación) o un paso de una escena del hub ('E14/1', animada).
 const llegadas = new Map();
@@ -117,6 +118,13 @@ for (const pieza of HUB.piezas) {
   const ref = n !== undefined ? pieza.llega : `${id}/${conPasos.find(x => x.id === id).pasos.length}`;
   if (llegadas.has(ref)) error(`HUB: dos piezas llegan en ${ref}.`);
   llegadas.set(ref, pieza);
+}
+
+// HUB.contextoComoVentana: pasos de escenas del hub en los que Contexto se ve como ventana.
+if (!existe(HUB.aparece)) error(`HUB.aparece: el paso ${HUB.aparece} no existe en escenas.md.`);
+for (const ref of HUB.contextoComoVentana ?? []) {
+  if (!existe(ref)) error(`HUB.contextoComoVentana: el paso ${ref} no existe en escenas.md.`);
+  else if (zonaDe(ref.split('/')[0]) !== 'hub') error(`HUB.contextoComoVentana: ${ref} no ocurre en el hub.`);
 }
 
 // ── Salida ──────────────────────────────────────────────────────────────────
@@ -156,7 +164,7 @@ const texto = `// Generado por \`npm run escenas\` a partir de escenas.md y src/
 // de una misma zona comparten pantalla.
 // Por paso: n, texto, detalle (sublista o filas de tabla), avanzado ([A]: se puede saltar),
 // detalleAvanzado (un detalle [A] dentro del paso), hub (pieza que entra en el hub) y
-// encuadre propio: null (su pantalla) · 'general' · id de otra escena.
+// encuadre propio: null (su pantalla) · 'general' · 'portada' · 'diagrama' · id de otra escena.
 
 export const ESCENAS = [
 ${salida.map(({ pasos, ...e }) => `  {\n    ${js(e).slice(1, -1)},\n    pasos: [\n${pasos.map(p => `      ${js(p)},`).join('\n')}\n    ],\n  },`).join('\n')}

@@ -1,0 +1,8 @@
+Logos de los proveedores de modelos (E05)
+
+- openai.svg y anthropic.svg: de Simple Icons (https://simpleicons.org, paquete simple-icons),
+  descargados el 15-10-2026. Los SVG de Simple Icons se publican con licencia CC0 1.0; las marcas
+  son de OpenAI y de Anthropic, y se usan solo para identificar sus modelos en una charla interna.
+- Los modelos SWE (Cognition) se identifican con el logo de Devin (devin-avatar-fondo-claro.svg):
+  Cognition no publica un logo propio de la familia SWE.
+- Se usan tal cual, sin recolorear (CLAUDE.md, «Colores: solo variables»).
