@@ -50,56 +50,58 @@
 :root {
   /* ── Color · marca (openbank.es) ─────────────────────────────────────── */
   --color-prussian: #002B45;      /* Prussian blue · la tinta: texto principal, contornos, tokens de entrada y coste */
-  --color-bluewood: #2C4054;      /* Pickled bluewood · texto secundario y corchete de caché */
+  --color-bluewood: #2C4054;      /* Pickled bluewood · base del texto 2 (con Prussian) y del texto 3 (con Pizarra) */
   --color-red-ribbon: #DF0049;    /* Red ribbon · el acento sobre fondo claro (botones de openbank.es) */
   --color-rojo-oscuro: #FF0049;   /* Rojo del logo para fondo oscuro · el acento sobre navy */
   --color-rojo-logo: #E9004C;     /* Rojo del logo para fondo claro · solo dentro del logo, nunca en la interfaz */
-  --color-pizarra: #546E7A;       /* Pizarra · texto 3: escalas y anotaciones */
-  --color-old-lace: #FFF9F4;      /* Old lace · fondo de escena */
-  --color-cinderella: #FFF1E5;    /* Cinderella · superficie 2: apoyos muy suaves */
+  --color-pizarra: #546E7A;       /* Pizarra · con Bluewood, el texto 3: escalas y anotaciones */
+  --color-cinderella: #FFF1E5;    /* Cinderella · fondo de escena: una crema que el proyector no confunde con el blanco */
+  --color-porcelain: #E3E9E9;     /* Porcelain del CSS de openbank.es · superficie 2: apoyos neutros, un escalón por debajo del fondo */
   --color-blanco: #FFFFFF;        /* Blanco · superficies: islas, ventana de contexto y tarjetas */
-  --color-royal-blue: #2566E8;    /* Azul del CSS de openbank.es · serie 2 de las gráficas */
+  --color-royal-blue: #2566E8;    /* Azul del CSS de openbank.es · la caché (tokens leídos y corchete), la serie 2 de las gráficas y la pregunta 3 */
+  --color-cian: #31C3DF;          /* Cian del CSS de openbank.es · aclarado, el rayado del razonamiento; oscurecido, la pregunta 5 */
+  --color-amarillo: #FBB800;      /* Amarillo del CSS de openbank.es · solo oscurecido, en la pregunta 4 */
   --color-negro-devin: #000000;   /* Negro del logo de Devin (cognition.com/brand) · solo su nombre, junto al logo */
   --color-malachite: #2BE24E;     /* Verde del CSS de openbank.es · solo oscurecido, en la serie 3 de las gráficas */
 
   /* ── Color · roles ───────────────────────────────────────────────────── */
-  --color-fondo: var(--color-old-lace);                 /* Fondo de la escena */
+  --color-fondo: var(--color-cinderella);               /* Fondo de la escena: crema marcada, para que las superficies blancas se despeguen también en el proyector */
   --color-superficie: var(--color-blanco);              /* Islas, ventana de contexto, tarjetas y documentos */
-  --color-superficie-2: var(--color-cinderella);        /* Apoyos muy suaves: franjas de gráfica, capturas pendientes */
-  --color-superficie-3: color-mix(in srgb, var(--color-prussian) 12%, var(--color-cinderella));   /* ≈ #E0D9D3 · apoyo algo más marcado: la ventana más pequeña de una comparación de capacidades (E09), un escalón más oscura que la superficie 2 */
-  --color-franja-critica: color-mix(in srgb, var(--color-red-ribbon) 12%, var(--color-old-lace));   /* ≈ #FBDBDF · franja de una gráfica donde el resultado se degrada mucho: tinte del acento, más oscuro que la superficie 2 */
+  --color-superficie-2: var(--color-porcelain);         /* Apoyos suaves, neutros y un escalón más oscuros que el fondo: franjas de gráfica, ventanas menores, capturas pendientes */
+  --color-superficie-3: color-mix(in srgb, var(--color-prussian) 14%, var(--color-porcelain));   /* ≈ #C3CED2 · apoyo algo más marcado: la ventana más pequeña de una comparación de capacidades (E09), un escalón más oscura que la superficie 2 · texto 2 encima, 7,2:1 */
+  --color-franja-critica: color-mix(in srgb, var(--color-red-ribbon) 12%, var(--color-cinderella));   /* ≈ #FBD4D2 · franja de una gráfica donde el resultado se degrada mucho: tinte del acento, que se distingue de la superficie 2 (neutra) por el tono */
   --color-superficie-inversa: var(--color-prussian);    /* Superficies navy: agente, cabeceras de documento */
-  --color-texto-1: var(--color-prussian);               /* Texto principal */
-  --color-texto-2: var(--color-bluewood);               /* Texto secundario */
-  --color-texto-3: var(--color-pizarra);                /* Escalas, anotaciones y etiquetas de apoyo */
+  --color-texto-1: var(--color-prussian);               /* Texto principal · 13,2:1 sobre el fondo */
+  --color-texto-2: color-mix(in srgb, var(--color-bluewood) 75%, var(--color-prussian));   /* ≈ #213B50 · texto secundario, más firme que Bluewood solo · 10,5:1 sobre el fondo */
+  --color-texto-3: color-mix(in srgb, var(--color-pizarra) 50%, var(--color-bluewood));    /* ≈ #405767 · escalas, anotaciones y etiquetas de apoyo, firmes para leerse desde el fondo de la sala · 6,8:1 sobre el fondo */
   --color-texto-inverso: var(--color-blanco);           /* Texto sobre superficie inversa */
-  --color-devin: var(--color-negro-devin);             /* El nombre «Devin» de la portada, en el negro de su logo · 19:1 sobre la superficie */
+  --color-devin: var(--color-negro-devin);             /* El nombre «Devin» de la portada, en el negro de su logo · 21:1 sobre la superficie */
   --color-texto-inverso-2: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));   /* = #CCD5DA, el gris claro de la marca · texto secundario sobre navy */
   --color-texto-simulado: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));    /* = #CCD5DA · líneas que simulan texto en un documento: no se leen */
   --color-contorno: var(--color-prussian);              /* Contorno de toda superficie */
-  --color-separador: color-mix(in srgb, var(--color-prussian) 10%, var(--color-cinderella));    /* ≈ #E6DDD5 · líneas finas: separadores y rejillas */
-  --color-acento: var(--color-red-ribbon);              /* El único acento: lo que hay que mirar ahora */
+  --color-separador: color-mix(in srgb, var(--color-prussian) 18%, var(--color-cinderella));    /* ≈ #D1CDC8 · líneas finas: separadores y rejillas · 1,4:1 sobre el fondo: se ven, pero nunca llevan significado */
+  --color-acento: var(--color-red-ribbon);              /* El único acento: lo que hay que mirar ahora · 4,48:1 sobre el fondo: todo texto en acento mide 24 px o más, así que su mínimo es 3:1 */
   --color-acento-sobre-oscuro: var(--color-rojo-oscuro);   /* El acento sobre navy */
   --color-sobre-acento: var(--color-blanco);            /* Texto sobre el acento */
 
-  /* ── Color · semántica (siempre derivada de navy) ────────────────────── */
+  /* ── Color · semántica (derivada de la marca) ───────────────────────── */
   --color-entrada: var(--color-prussian);           /* Tokens de entrada: relleno sólido */
   --color-sobre-entrada: var(--color-blanco);       /* Texto sobre tokens de entrada */
   --color-salida: var(--color-blanco);              /* Tokens de salida: huecos, con contorno */
   --color-salida-borde: var(--color-prussian);      /* Contorno de los tokens de salida */
   --color-sobre-salida: var(--color-prussian);      /* Texto sobre tokens de salida */
-  --color-razonamiento: color-mix(in srgb, var(--color-prussian) 40%, var(--color-blanco));         /* = #99AAB5 · tokens de razonamiento: rayado */
-  --color-razonamiento-rayado: color-mix(in srgb, var(--color-prussian) 27%, var(--color-blanco));  /* ≈ #BAC6CD · la raya clara del patrón */
+  --color-razonamiento: color-mix(in srgb, var(--color-cian) 55%, var(--color-blanco));         /* ≈ #8EDEED · tokens de razonamiento: rayado en cian claro · texto navy encima, 9,7:1 */
+  --color-razonamiento-rayado: color-mix(in srgb, var(--color-cian) 25%, var(--color-blanco));  /* ≈ #CBF0F7 · la raya clara del patrón · texto navy encima, 12,1:1 */
   --color-razonamiento-borde: var(--color-prussian);   /* Contorno del razonamiento: el rayado solo no llega a 3:1 sobre el fondo */
   --color-sobre-razonamiento: var(--color-prussian);   /* Texto sobre tokens de razonamiento */
   --patron-razonamiento: repeating-linear-gradient(135deg, var(--color-razonamiento) 0 10px, var(--color-razonamiento-rayado) 10px 20px);   /* Rayas de 10 px a 135° */
-  --color-cache-acierto: var(--color-bluewood);     /* Corchete continuo + ✓ */
-  --color-cache-fallo: var(--color-bluewood);       /* Corchete discontinuo + ✕: se distingue por el trazo, no por el tono */
-  --color-cacheado: var(--color-royal-blue);        /* Tokens leídos de caché (E21–E23): sólidos, para reconocerlos de un vistazo · 4,9:1 sobre el fondo; con la entrada, 2,9:1 de luminosidad */
+  --color-cache-acierto: var(--color-royal-blue);   /* Corchete continuo + ✓: el azul de la caché, el de sus tokens · 4,6:1 sobre el fondo */
+  --color-cache-fallo: var(--color-royal-blue);     /* Corchete discontinuo + ✕: se distingue por el trazo, no por el tono */
+  --color-cacheado: var(--color-royal-blue);        /* Tokens leídos de caché (E21–E23): sólidos, para reconocerlos de un vistazo · 4,6:1 sobre el fondo; con la entrada, 2,9:1 de luminosidad */
   --color-sobre-cacheado: var(--color-blanco);      /* Texto sobre tokens leídos de caché · 5,1:1 */
   --color-serie-1: var(--color-prussian);           /* Gráficas: serie 1, la más oscura */
   --color-serie-2: var(--color-royal-blue);         /* Gráficas: serie 2, discontinua */
-  --color-serie-3: color-mix(in srgb, var(--color-malachite) 55%, var(--color-prussian));   /* ≈ #188F4A · gráficas: serie 3, verde oscurecido para llegar a 3:1 sobre las franjas */
+  --color-serie-3: color-mix(in srgb, var(--color-malachite) 52%, var(--color-prussian));   /* ≈ #168A4A · gráficas: serie 3, verde oscurecido para llegar a 3:1 sobre las franjas (3,2:1 sobre la crítica) */
   --color-coste: var(--color-prussian);             /* Contador de coste: relleno */
   --color-sobre-coste: var(--color-blanco);         /* Texto sobre el contador de coste */
   --color-obligatorio: var(--color-royal-blue);     /* Plugin obligatorio (E18): su icono, el candado · 5,1:1 sobre la superficie; se distingue de los otros dos por el icono y su nombre */
@@ -110,17 +112,17 @@
   --color-moneda-luz: color-mix(in srgb, var(--color-prussian) 45%, var(--color-blanco));   /* ≈ #8CA0AC · luz del relieve de la moneda: filos del reborde y laterales del signo */
   --color-sobre-moneda: var(--color-blanco);        /* El signo de la moneda, por delante y por detrás · 9:1 */
   --color-pregunta-1: var(--color-prussian);        /* Pregunta 1 de una buena petición (E24, el resultado): su número y el subrayado de lo que la responde · 14:1 sobre la superficie */
-  --color-pregunta-2: var(--color-serie-3);         /* Pregunta 2 (el contexto): verde · 3,9:1 sobre el fondo */
-  --color-pregunta-3: var(--color-royal-blue);      /* Pregunta 3 (el alcance): azul · 4,9:1 sobre el fondo */
-  --color-pregunta-4: color-mix(in srgb, var(--color-malachite) 50%, var(--color-red-ribbon));   /* ≈ #85714C · pregunta 4 (las restricciones): ocre, cálido sin ser rojizo · 4,5:1 sobre el fondo */
-  --color-pregunta-5: color-mix(in srgb, var(--color-malachite) 45%, var(--color-royal-blue));   /* ≈ #289EA3 · pregunta 5 (cómo se comprueba): turquesa, la más clara · 3,1:1 sobre el fondo (solo números de 24 px o más y el subrayado) */
+  --color-pregunta-2: var(--color-serie-3);         /* Pregunta 2 (el contexto): verde · 4,0:1 sobre el fondo */
+  --color-pregunta-3: var(--color-royal-blue);      /* Pregunta 3 (el alcance): azul · 4,6:1 sobre el fondo */
+  --color-pregunta-4: color-mix(in srgb, var(--color-amarillo) 60%, var(--color-prussian));   /* ≈ #97801C · pregunta 4 (las restricciones): el amarillo de la marca oscurecido, un ocre cálido sin ser rojizo · 3,5:1 sobre el fondo (solo números de 24 px o más y el subrayado) */
+  --color-pregunta-5: color-mix(in srgb, var(--color-cian) 65%, var(--color-prussian));   /* ≈ #208EA9 · pregunta 5 (cómo se comprueba): el cian de la marca oscurecido, la más clara · 3,5:1 sobre el fondo (solo números de 24 px o más y el subrayado) */
 
   /* ── Tipografía · familias y pesos ───────────────────────────────────── */
   --fuente-display: 'Outfit', system-ui, sans-serif;     /* Títulos y cifras */
   --fuente-texto: 'Outfit', system-ui, sans-serif;       /* Texto y etiquetas */
   --fuente-mono: 'DM Mono', ui-monospace, monospace;     /* Fichas de token, código y nombres de fichero */
   --fuente-devin: 'Inter', system-ui, sans-serif;        /* Solo el nombre «Devin» de la portada (la fuente solo trae esas letras): la libre más parecida a la de su logotipo (NB International, de pago), con --peso-enfasis */
-  --peso-display: 300;        /* Títulos y cifras */
+  --peso-display: 400;        /* Títulos y cifras · regular: a 300 el trazo se adelgaza y el proyector lo lava */
   --peso-texto: 400;          /* Texto corrido y mono */
   --peso-enfasis: 500;        /* Etiquetas y nombres */
   --peso-fuerte: 600;         /* La cifra del nivel y el énfasis puntual */
@@ -171,19 +173,19 @@
   --radio-pildora: 999px;     /* Fichas de token, etiquetas, contadores y círculos */
 
   /* ── Trazos ──────────────────────────────────────────────────────────── */
-  --trazo-fino: 2px;          /* Separadores, marcas de escala y ejes */
-  --trazo-contorno: 3px;      /* Contorno de toda superficie y líneas de gráfica */
-  --trazo-fuerte: 6px;        /* Corchete de caché, línea de nivel, resaltado y caja de plugin */
-  --icono-trazo: 2;           /* stroke-width de Lucide (viewBox 24) */
-  --icono-s: 24px;            /* Iconos dentro de etiquetas · trazo efectivo 2 px */
-  --icono-m: 36px;            /* Tamaño por defecto · trazo efectivo 3 px = contorno */
-  --icono-l: 48px;            /* Icono principal de una pieza grande · trazo efectivo 4 px */
+  --trazo-fino: 3px;          /* Separadores, marcas de escala y ejes */
+  --trazo-contorno: 4px;      /* Contorno de toda superficie y líneas de gráfica: firme desde el fondo de la sala */
+  --trazo-fuerte: 6px;        /* Corchete de caché, línea de nivel, resaltado, subrayado y caja de plugin · a 8 px el subrayado de E24 tapa los rasgos del texto */
+  --icono-trazo: 2.5;         /* stroke-width de Lucide (viewBox 24) */
+  --icono-s: 24px;            /* Iconos dentro de etiquetas · trazo efectivo 2,5 px */
+  --icono-m: 36px;            /* Tamaño por defecto · trazo efectivo 3,75 px ≈ contorno */
+  --icono-l: 48px;            /* Icono principal de una pieza grande · trazo efectivo 5 px */
   --ruta-grosor: 10px;        /* Camino de puntos: diámetro de cada punto */
   --ruta-hueco: 24px;         /* Camino de puntos: distancia entre puntos */
 
   /* ── Elevación (mínima, sombra plana: el proyector no muestra difusas) ─ */
   --elevacion-0: none;        /* Todo lo que está quieto en la escena */
-  --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent);   /* Lo que flota: una ficha que se arrastra o un documento encima de otro */
+  --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 22%, transparent);   /* Lo que flota: una ficha que se arrastra o un documento encima de otro */
 
   /* ── Opacidad ────────────────────────────────────────────────────────── */
   --opacidad-atenuado: 0.3;   /* Estado atenuado de lo que no es texto (capas, líneas de documento, trazos): lo que no toca mirar ahora (E09) y el «·» de espacio en las fichas */

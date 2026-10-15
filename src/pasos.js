@@ -17,12 +17,12 @@ import { gsap } from 'gsap';
 import { s, v, esEstatico } from '../design/motion.js';
 import { ESCENAS } from './datos/escenas.js';
 import { plano, primeraFrase } from './texto.js';
-import { CIRCUITO, HUB, TAPAS } from './datos/mapa.js';
+import { CIRCUITO, HUB, TAPAS, PREGUNTAS } from './datos/mapa.js';
 
 export const PASOS = ESCENAS.flatMap((escena, ie) => escena.pasos.map(p => ({ ...p, escena, ie, ref: `${escena.id}/${p.n}` })));
 const indiceDe = ref => PASOS.findIndex(p => p.ref === ref);
-// El primer paso de la última escena: las preguntas.
-const FINAL = PASOS.findIndex(p => p.ie === ESCENAS.length - 1);
+// El primer paso de las preguntas (a donde lleva Fin; después solo quedan los post-créditos).
+const FINAL = PASOS.findIndex(p => p.escena.id === PREGUNTAS);
 const LLEGADAS = PASOS.flatMap((p, i) => (p.hub ? [{ id: p.hub, en: i }] : []));
 const piezasHasta = i => new Set(LLEGADAS.filter(l => l.en <= i).map(l => l.id));
 // Pasos en los que Contexto se ve como ventana de contexto, no como círculo.

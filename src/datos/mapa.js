@@ -57,8 +57,11 @@ export const ZONA_DE = {
   E18: 'hub',
   E20: 'parte3', E21: 'parte3', E22: 'parte3', E23: 'parte3',
   E24: 'parte4', E25: 'parte4', E26: 'parte4', E27: 'parte4', E28: 'parte4', E29: 'parte4',
-  E30: 'cierre', E31: 'cierre',
+  E30: 'cierre', E31: 'cierre', E33: 'cierre',
 };
+
+/** La escena de las preguntas: a ella lleva Fin (después solo quedan los post-créditos, E33). */
+export const PREGUNTAS = 'E31';
 
 /**
  * Pasos con un encuadre distinto del de su escena: el id de otra escena (se encuadra su

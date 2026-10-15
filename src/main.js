@@ -1,6 +1,5 @@
 // Arranque: la presentación o, con ?ponente, la vista de ponente (el mismo HTML).
 import { gsap } from 'gsap';
-import { px } from '../design/motion.js';
 import { ESCENAS } from './datos/escenas.js';
 import { montarMundo } from './mundo.js';
 import { crearCamara } from './camara.js';
@@ -18,16 +17,9 @@ async function iniciarPresentacion() {
   }
 
   const camara = crearCamara({ mundo: mundo.mundo, portada: mundo.tapas.portada });
-  const ajustar = () => {
-    const [W, H] = [px('--escena-ancho'), px('--escena-alto')];
-    const k = Math.min(innerWidth / W, innerHeight / H);
-    const [ancho, alto] = [Math.round(W * k), Math.round(H * k)];
-    Object.assign(mundo.escenario.style, {
-      width: `${ancho}px`, height: `${alto}px`,
-      left: `${Math.round((innerWidth - ancho) / 2)}px`, top: `${Math.round((innerHeight - alto) / 2)}px`,
-    });
-    camara.ajustar(ancho, alto);
-  };
+  // El escenario ocupa la ventana entera: en una pantalla que no es 16:9 (pantalla completa en un
+  // portátil de 16:10), la cámara encaja la escena y alrededor se sigue viendo el mapa, sin bandas.
+  const ajustar = () => camara.ajustar(innerWidth, innerHeight);
   ajustar();
   addEventListener('resize', ajustar);
 

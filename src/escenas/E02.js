@@ -13,7 +13,7 @@ import { icono } from '../../design/iconos.js';
 import { repeticion } from '../../design/dibujos.js';
 import { en, paso, cabecera, crearPasos, encadenar } from './comun.js';
 
-const VENTAJAS = ['Control de modelo y effort', 'Acceso a lo local', 'Revisión visual de cambios'];
+const VENTAJAS = ['Control de modelo y effort', 'Acceso completo local', 'Revisión visual de cambios'];
 const INTERFACES = [['monitor', 'Desktop', 'Desde el IDE, con el código y los cambios a la vista'], ['terminal', 'CLI', 'Desde la terminal, en comandos y scripts']];
 const LOCAL = { x: 120, y: 380, ancho: 960, alto: 520 }, CLOUD = { x: 1120, y: 380, ancho: 680, alto: 520 };
 

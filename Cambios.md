@@ -467,6 +467,9 @@ E25:
 - en /3 oscure o cambia el color del archivo completo con logs para mostrar que es erroneo al igual que en E24/4 con la peticion inicial
 - Alinea a la izquierda el texto final y pon "El resto de contexto completo puede estar disponible para consultarlo"
 
+E01:
+
+- Revisa la animacion entre /1 y /2, durante el zoom out no se cargan correctamnete todos los bloques.
 
 
 

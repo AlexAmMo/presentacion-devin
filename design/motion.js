@@ -355,8 +355,10 @@ registrar('girarMoneda', (t, c) =>
 /**
  * La cámara vuela entre dos vistas del mundo, cada una [centro x, centro y, ancho visible].
  * Entre zonas sigue la trayectoria «alejar, viajar, acercar» (d3.interpolateZoom); dentro
- * de una zona, línea recta. Escribe translate y scale en el mundo (con transform-origin 0 0),
- * redondea la traslación y solo pone will-change mientras vuela, así el texto llega nítido.
+ * de una zona, línea recta. Escribe translate y scale en el mundo (con transform-origin 0 0) y
+ * redondea la traslación. Sin will-change: con él, el navegador separa el mundo en capas pintadas a
+ * la escala de salida y, al alejarse, no llega a pintar lo que entra (los bloques lejanos salían
+ * cortados o en blanco). Sin él, cada fotograma se pinta entero, a su escala, y el texto va nítido.
  * Opciones: desde, hasta, pantalla ([ancho, alto] del escenario en px, o una función que los
  * devuelve: así un cambio de tamaño a mitad de vuelo se respeta) y trayectoria ('zoom' o 'recta').
  */
@@ -374,9 +376,8 @@ registrar('volarCamara', (t, c) => {
   const avance = { u: 0 };
   return gsap.to(avance, {
     u: 1, duration: c.duration, ease: c.ease,
-    // will-change se pone en cada fotograma (también si se rebobina) y se quita al llegar a cualquiera de los dos extremos.
-    onUpdate: () => { mundo.style.willChange = 'transform'; pintar(avance.u === 1 ? b : ruta(avance.u)); },
-    onComplete: () => { pintar(b); mundo.style.willChange = 'auto'; },
-    onReverseComplete: () => { pintar(a); mundo.style.willChange = 'auto'; },
+    onUpdate: () => pintar(avance.u === 1 ? b : ruta(avance.u)),
+    onComplete: () => pintar(b),
+    onReverseComplete: () => pintar(a),
   });
 }, () => ({ duration: s('--dur-camara'), ease: v('--ease-camara'), trayectoria: 'zoom' }));

@@ -1,4 +1,4 @@
-// El mundo: #escenario (16:9, a pantalla completa y centrado) y #mundo con todas las
+// El mundo: #escenario (la ventana entera) y #mundo con todas las
 // pantallas en su sitio, el hub, el circuito de Buenas prácticas y las tapas de los bloques.
 // Las escenas de una misma zona
 // comparten pantalla: se apilan en el mismo sitio y solo se ve una (pasos.js decide cuál).

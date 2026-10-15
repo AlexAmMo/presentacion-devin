@@ -427,3 +427,31 @@ Las notas se aplican según se escriben (monitor sobre `Cambios.md`). Pasos: de 
 - Icono `folders` (59 iconos).
 - Cabeceras al día (salto, capa, repetición); `DESIGN.md` regenerado.
 - Comprobaciones: 22/22. `dist/index.html`: 1,12 MB, sin peticiones externas ni errores.
+
+## Revisión con `Cambios.md` (16-10-2026 · cuarta ronda)
+
+### Decisiones
+
+- E01 (y cualquier alejamiento, también con «O»): los bloques lejanos salían cortados o en blanco durante el vuelo, en Chrome y en Brave, sobre todo con el Mac cargado. La causa era el `will-change` que la cámara ponía en el mundo mientras volaba: Chrome lo partía en una docena de capas pintadas a la escala de salida y, al alejarse, no llegaba a pintar lo que entraba. `volarCamara` ya no lo pone, y Chrome pinta cada fotograma entero, a su escala. Mismos 60 fotogramas por segundo en headless, también con la CPU ×4 más lenta; con la memoria de GPU limitada a 64 MB, todos los fotogramas completos. El usuario lo ha confirmado en su Chrome.
+
+- E33 · Post-créditos (nueva, petición del usuario): después de las preguntas, en la misma pantalla; las tecnologías principales con que se ha hecho la presentación (Claude Code, GSAP, d3-interpolate, Vite y vite-plugin-singlefile, Impeccable, Playwright, Lucide y las tipografías) y una línea sobre el design system. Fin sigue llevando a las preguntas: `PREGUNTAS` en `src/datos/mapa.js` (antes, «la última escena»). `cabecera()` admite el icono de la etiqueta. Pasos: 91.
+
+### Nuevo en `design/`
+
+- `volarCamara`, sin `will-change`; `DESIGN.md` al día.
+- Iconos `popcorn`, `clapperboard`, `spline`, `zap`, `pen-tool`, `drama`, `shapes` y `type` (67). `DESIGN.md` pendiente de regenerar por el recuento de iconos.
+
+### Paleta canónica: el prototipo 1, «claro con más contraste» (petición del usuario)
+
+- De los cinco prototipos (`prototipos/`), el usuario fija como canon el 1. Se trae su `design/design-system.css` y la introducción de color de `design/design-system.html`; nada más cambia.
+- Color:
+  - El fondo pasa a Cinderella y Old lace sale de la marca.
+  - Nuevas variables de marca de openbank.es: `--color-porcelain` (superficie 2), `--color-cian` y `--color-amarillo`.
+  - Texto 2 (≈ #213B50, 10,5:1) y texto 3 (≈ #405767, 6,8:1) más oscuros, y separador más marcado.
+  - La caché, toda en azul, corchete incluido. El razonamiento, en cian aclarado. La serie 3, algo más oscura.
+  - Preguntas 4 y 5 de E24 en amarillo y cian oscurecidos.
+- Sin color: `--peso-display` pasa a 400, `--trazo-fino` a 3 px, `--trazo-contorno` a 4 px e `--icono-trazo` a 2,5; `--elevacion-1`, navy al 22 %.
+- Comentarios corregidos: el negro de Devin da 21:1 (no 19:1); el acento sobre la crema nueva, 4,48:1. Basta, porque todo texto en acento mide 24 px o más y su mínimo es 3:1.
+- Comprobaciones 22/22. Todas las escenas verificadas: igual llegando animando que saltando, salvo las diferencias conocidas (giros sin fin y paso por la vista general); nada fuera de zona; nada < 24 px. `DESIGN.md` regenerado.
+- E02/2: «Acceso a lo local» pasa a «Acceso completo local».
+- Pantalla completa (F) en una pantalla que no es 16:9, como la de un portátil de 16:10: el escenario era un 16:9 centrado y alrededor quedaban bandas del color del fondo. Ahora ocupa la ventana entera y la cámara encaja cada pantalla de 1920 × 1080 sin recortarla, así que alrededor se sigue viendo el mapa (`src/main.js`, `src/esqueleto.css`). Al cambiar el tamaño de la ventana, la vista se vuelve a encajar con su rectángulo: antes reutilizaba el ancho calculado para la proporción anterior, y en una pantalla más ancha que 16:9 recortaba la escena (`src/camara.js`). Probado a 1512 × 982, 16:10, 4:3, 21:9 y 16:9: la pantalla de cada escena cabe entera en todas.

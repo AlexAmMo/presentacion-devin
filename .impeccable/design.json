@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-16T00:08:16+02:00",
+  "generatedAt": "2026-10-16T01:43:54+02:00",
   "title": "Design System: Devin en el día a día",
   "extensions": {
     "colorMeta": {
@@ -21,7 +21,7 @@
       },
       "bluewood": {
         "role": "neutral",
-        "displayName": "Pickled bluewood · texto 2 y corchete",
+        "displayName": "Pickled bluewood · base del texto 2 y del texto 3",
         "canonical": "oklch(36.4% 0.043 249.1)",
         "tonalRamp": [
           "#000C1B",
@@ -81,7 +81,7 @@
       },
       "pizarra": {
         "role": "neutral",
-        "displayName": "Pizarra · texto 3",
+        "displayName": "Pizarra · base del texto 3",
         "canonical": "oklch(52.2% 0.036 227.9)",
         "tonalRamp": [
           "#000D14",
@@ -94,24 +94,9 @@
           "#DAF3FF"
         ]
       },
-      "old-lace": {
-        "role": "neutral",
-        "displayName": "Old lace · fondo de escena",
-        "canonical": "oklch(98.5% 0.009 62.6)",
-        "tonalRamp": [
-          "#0E0A07",
-          "#27231F",
-          "#433F3B",
-          "#625D58",
-          "#817C78",
-          "#A39D99",
-          "#C9C3BE",
-          "#F3EDE8"
-        ]
-      },
       "cinderella": {
         "role": "neutral",
-        "displayName": "Cinderella · superficie 2",
+        "displayName": "Cinderella · fondo de escena",
         "canonical": "oklch(96.6% 0.022 63.2)",
         "tonalRamp": [
           "#120903",
@@ -122,6 +107,21 @@
           "#A99C91",
           "#CFC1B6",
           "#FAECE0"
+        ]
+      },
+      "porcelain": {
+        "role": "neutral",
+        "displayName": "Porcelain · superficie 2",
+        "canonical": "oklch(92.9% 0.006 197.0)",
+        "tonalRamp": [
+          "#080C0C",
+          "#222626",
+          "#3E4343",
+          "#5D6262",
+          "#7E8484",
+          "#A1A6A6",
+          "#C5CACA",
+          "#EAF0F0"
         ]
       },
       "blanco": {
@@ -141,7 +141,7 @@
       },
       "royal-blue": {
         "role": "secondary",
-        "displayName": "Royal blue · serie 2, cacheado, obligatorio y pregunta 3",
+        "displayName": "Royal blue · la caché (tokens y corchete), serie 2, obligatorio y pregunta 3",
         "canonical": "oklch(55.0% 0.208 262.1)",
         "tonalRamp": [
           "#00072A",
@@ -154,9 +154,39 @@
           "#E6EFFE"
         ]
       },
+      "cian": {
+        "role": "secondary",
+        "displayName": "Cian · aclarado, el razonamiento; oscurecido, la pregunta 5",
+        "canonical": "oklch(75.5% 0.123 214.2)",
+        "tonalRamp": [
+          "#000E12",
+          "#002B33",
+          "#004B58",
+          "#006D7F",
+          "#0192A9",
+          "#1CB8D4",
+          "#55DDFA",
+          "#D2F6FF"
+        ]
+      },
+      "amarillo": {
+        "role": "secondary",
+        "displayName": "Amarillo · solo oscurecido, en la pregunta 4",
+        "canonical": "oklch(82.3% 0.170 82.1)",
+        "tonalRamp": [
+          "#120A00",
+          "#322201",
+          "#563D01",
+          "#7E5A00",
+          "#A77A07",
+          "#D39A07",
+          "#FFBC1B",
+          "#FFECCB"
+        ]
+      },
       "malachite": {
         "role": "secondary",
-        "displayName": "Malachite · solo oscurecido o mezclado",
+        "displayName": "Malachite · solo oscurecido",
         "canonical": "oklch(79.8% 0.236 145.3)",
         "tonalRamp": [
           "#001001",
@@ -184,6 +214,36 @@
           "#EEEEEE"
         ]
       },
+      "texto-2": {
+        "role": "neutral",
+        "displayName": "Texto 2 · texto secundario",
+        "canonical": "oklch(34.1% 0.049 244.3)",
+        "tonalRamp": [
+          "#000C19",
+          "#0D273B",
+          "#2B455A",
+          "#49657B",
+          "#6A869E",
+          "#8CA9C2",
+          "#AFCDE7",
+          "#E1F1FF"
+        ]
+      },
+      "texto-3": {
+        "role": "neutral",
+        "displayName": "Texto 3 · escalas, anotaciones y apoyos",
+        "canonical": "oklch(44.4% 0.038 239.1)",
+        "tonalRamp": [
+          "#000D18",
+          "#122836",
+          "#2F4554",
+          "#4D6575",
+          "#6E8697",
+          "#90A9BB",
+          "#B3CDE0",
+          "#DFF1FF"
+        ]
+      },
       "gris-marca": {
         "role": "neutral",
         "displayName": "Gris claro de marca · texto 2 sobre navy y texto simulado",
@@ -202,121 +262,121 @@
       "separador": {
         "role": "neutral",
         "displayName": "Separador · líneas finas",
-        "canonical": "oklch(90.2% 0.015 64.3)",
+        "canonical": "oklch(85.0% 0.008 73.7)",
         "tonalRamp": [
-          "#100A05",
-          "#29231D",
-          "#453E38",
-          "#645C55",
-          "#847C74",
-          "#A59D95",
-          "#CBC2BB",
-          "#F6EDE5"
+          "#0D0B08",
+          "#272421",
+          "#45413D",
+          "#64615C",
+          "#85827D",
+          "#A8A49F",
+          "#CCC8C3",
+          "#F2EEE9"
         ]
       },
       "superficie-3": {
         "role": "neutral",
         "displayName": "Superficie 3 · la ventana más pequeña de una comparación",
-        "canonical": "oklch(88.9% 0.011 63.3)",
+        "canonical": "oklch(84.4% 0.013 221.4)",
         "tonalRamp": [
-          "#0F0A07",
-          "#2B2521",
-          "#49443F",
-          "#6B6560",
-          "#8E8882",
-          "#B3ADA7",
-          "#DAD3CD",
-          "#F4EDE7"
+          "#060C0F",
+          "#1E272A",
+          "#3B4447",
+          "#596367",
+          "#7A8488",
+          "#9CA7AB",
+          "#C0CBCF",
+          "#E5F1F5"
         ]
       },
       "franja-critica": {
         "role": "primary",
         "displayName": "Franja crítica · tinte del acento para tramos degradados",
-        "canonical": "oklch(91.9% 0.036 9.3)",
+        "canonical": "oklch(90.2% 0.044 21.5)",
         "tonalRamp": [
-          "#170508",
-          "#361F23",
-          "#563D41",
-          "#795E62",
-          "#9D8184",
-          "#C3A5A9",
-          "#E7C8CC",
-          "#FEE8EB"
+          "#1A0304",
+          "#381C1B",
+          "#573938",
+          "#785856",
+          "#9B7877",
+          "#BF9B99",
+          "#E5BFBD",
+          "#FEE9E7"
         ]
       },
       "serie-3": {
         "role": "secondary",
-        "displayName": "Verde oscurecido · serie 3, opcional y pregunta 2",
-        "canonical": "oklch(57.2% 0.144 151.6)",
+        "displayName": "Verde oscurecido · serie 3 y pregunta 2",
+        "canonical": "oklch(55.8% 0.138 152.6)",
         "tonalRamp": [
           "#001004",
-          "#013014",
-          "#055428",
-          "#107A3E",
-          "#33A15B",
-          "#5EC77F",
-          "#86EFA4",
-          "#C9FED5"
+          "#012E14",
+          "#015027",
+          "#01753B",
+          "#2D9958",
+          "#57BE7A",
+          "#7DE39D",
+          "#C7FFD5"
         ]
       },
       "razonamiento": {
-        "role": "neutral",
-        "displayName": "Razonamiento · franja oscura del rayado",
-        "canonical": "oklch(72.8% 0.025 236.1)",
+        "role": "secondary",
+        "displayName": "Razonamiento · franja cian del rayado",
+        "canonical": "oklch(85.4% 0.081 210.7)",
         "tonalRamp": [
-          "#020D14",
-          "#18262F",
-          "#33424B",
-          "#51606A",
-          "#70808A",
-          "#90A1AC",
-          "#B6C7D2",
-          "#DFF2FD"
+          "#000E11",
+          "#012B31",
+          "#024B55",
+          "#126D7B",
+          "#3E8F9E",
+          "#63B3C2",
+          "#88D8E7",
+          "#CFF7FF"
         ]
       },
       "razonamiento-rayado": {
-        "role": "neutral",
+        "role": "secondary",
         "displayName": "Razonamiento · franja clara del rayado",
-        "canonical": "oklch(81.9% 0.016 233.1)",
+        "canonical": "oklch(93.1% 0.040 210.3)",
         "tonalRamp": [
-          "#050C11",
-          "#1C262B",
-          "#374147",
-          "#555F66",
-          "#747F86",
-          "#95A0A7",
-          "#BAC6CD",
-          "#E4F1F8"
+          "#000E11",
+          "#082A30",
+          "#27484E",
+          "#46686E",
+          "#678990",
+          "#89ACB3",
+          "#ACD1D8",
+          "#D1F6FD"
         ]
       },
       "pregunta-4": {
         "role": "secondary",
         "displayName": "Ocre · pregunta 4 (las restricciones)",
-        "canonical": "oklch(55.8% 0.058 82.3)",
+        "canonical": "oklch(60.4% 0.115 95.1)",
         "tonalRamp": [
-          "#120A00",
-          "#342300",
-          "#54421E",
-          "#77633E",
-          "#9B8661",
-          "#C0AB84",
-          "#E7D1A9",
-          "#FFECCB"
+          "#0F0B00",
+          "#2D2401",
+          "#4F4101",
+          "#736000",
+          "#98811D",
+          "#BBA448",
+          "#E0C96D",
+          "#FFEFB2"
         ]
       },
       "pregunta-5": {
         "role": "secondary",
-        "displayName": "Turquesa · pregunta 5 (cómo se comprueba)",
-        "canonical": "oklch(64.0% 0.099 199.3)",
+        "displayName": "Cian oscurecido · pregunta 5 (cómo se comprueba)",
+        "canonical": "oklch(60.0% 0.101 219.1)",
         "tonalRamp": [
-          "#000E0F",
-          "#002D2F",
-          "#014F52",
-          "#077479",
-          "#239BA0",
-          "#54C1C6",
-          "#7DE8ED",
-          "#BDFCFF"
+          "#000E13",
+          "#012A34",
+          "#044A5A",
+          "#026D83",
+          "#2390AB",
+          "#50B4D0",
+          "#77D9F6",
+          "#D6F5FF"
         ]
       },
       "moneda": {
@@ -429,7 +489,7 @@
       },
       "entradilla": {
         "displayName": "Entradilla",
-        "purpose": "Ideas clave y citas. ×8 y en Outfit 300, el título de una tapa."
+        "purpose": "Ideas clave y citas. ×8 y en Outfit 400, el título de una tapa."
       },
       "texto": {
         "displayName": "Texto",
@@ -472,7 +532,7 @@
       },
       {
         "name": "elevacion-1",
-        "value": "0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent)",
+        "value": "0 6px 0 color-mix(in srgb, var(--color-prussian) 22%, transparent)",
         "purpose": "Existe en design-system.css, pero ninguna escena ni componente la usa; solo aparece en una lámina de referencia."
       }
     ],
@@ -855,7 +915,7 @@
       {
         "name": "efecto · volarCamara",
         "value": "--dur-camara · --ease-camara",
-        "purpose": "La cámara vuela entre dos vistas del mundo, cada una [centro x, centro y, ancho visible]. Entre zonas sigue la trayectoria «alejar, viajar, acercar» (d3.interpolateZoom); dentro de una zona, línea recta. Escribe translate y scale en el mundo (con transform-origin 0 0), redondea la traslación y solo pone will-change mientras vuela, así el texto llega nítido. Opciones: desde, hasta, pantalla ([ancho, alto] del escenario en px, o una función que los devuelve: así un cambio de tamaño a mitad de vuelo se respeta) y trayectoria ('zoom' o 'recta')."
+        "purpose": "La cámara vuela entre dos vistas del mundo, cada una [centro x, centro y, ancho visible]. Entre zonas sigue la trayectoria «alejar, viajar, acercar» (d3.interpolateZoom); dentro de una zona, línea recta. Escribe translate y scale en el mundo (con transform-origin 0 0) y redondea la traslación. Sin will-change: con él, el navegador separa el mundo en capas pintadas a la escala de salida y, al alejarse, no llega a pintar lo que entra (los bloques lejanos salían cortados o en blanco). Sin él, cada fotograma se pinta entero, a su escala, y el texto va nítido. Opciones: desde, hasta, pantalla ([ancho, alto] del escenario en px, o una función que los devuelve: así un cambio de tamaño a mitad de vuelo se respeta) y trayectoria ('zoom' o 'recta')."
       }
     ]
   },
@@ -951,13 +1011,13 @@
   ],
   "narrative": {
     "northStar": "Usted está aquí",
-    "overview": "La charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, ventanas de contexto, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 3 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores e iguala crema y blanco. Por eso la separación nunca depende solo del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de él con `color-mix()`. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de cuarenta y dos componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas. Quedan fuera las partículas, los brillos, los destellos, los degradados de color (el rayado del razonamiento es de franjas duras y el subrayado, una línea de un solo color), las sombras difusas y los giros 3D decorativos: el volteo de una tarjeta es plano. La única excepción, pedida expresamente, es la moneda del turno de preguntas (E31), que gira en 3D.",
+    "overview": "La charla es un único mapa dibujado con tinta navy sobre papel crema, como un plano de orientación. Islas, ventanas de contexto, fichas y rutas se trazan con el mismo navy y se separan con un contorno de 4 px. El rojo es el punto «usted está aquí»: marca la zona actual, el nivel que importa o la cifra protagonista, y nunca hay dos a la vez. Una cámara recorre el mapa; al llegar se detiene y solo entonces se anima la zona.\n\nEl sistema está hecho para un proyector que lava los colores y acerca crema y blanco; por eso el fondo es una crema marcada, el texto de apoyo es firme y los trazos, gruesos. Por eso la separación nunca depende solo del tono: depende del contorno, de la luminosidad (oscuro, medio, hueco) y de la forma (sólido, rayado o contorno; continuo, discontinuo o punteado). La paleta se ciñe a la marca Openbank y todo lo que no es color de marca se deriva de ella con `color-mix()`. Cada escena se diseña a 1920×1080 y ningún texto baja de 24 px.\n\nLa densidad es baja y deliberada: una idea por zona, mucho aire y un vocabulario cerrado de cuarenta y dos componentes en el que cada concepto tiene un único dibujo. Las formas son redondeadas y planas. Quedan fuera las partículas, los brillos, los destellos, los degradados de color (el rayado del razonamiento es de franjas duras y el subrayado, una línea de un solo color), las sombras difusas y los giros 3D decorativos: el volteo de una tarjeta es plano. La única excepción, pedida expresamente, es la moneda del turno de preguntas (E31), que gira en 3D.",
     "keyCharacteristics": [
-      "Tinta navy sobre crema, con superficies blancas siempre contorneadas a 3 px.",
+      "Tinta navy sobre crema, con superficies blancas siempre contorneadas a 4 px.",
       "Un único acento rojo por pantalla; los tres rojos de la marca cuentan como uno.",
       "Conceptos distinguidos por luminosidad y forma; cuando se suma el tono, siempre va con otra señal (trazo, icono, número o nombre).",
       "La ventana de contexto es siempre una barra horizontal que se llena de izquierda a derecha.",
-      "Escala tipográfica que empieza en 24 px; Outfit ligera en grande y DM Mono para tokens y código, alojadas en el proyecto (y una Inter recortada solo para el nombre «Devin» de la portada).",
+      "Escala tipográfica que empieza en 24 px; Outfit regular también en grande y DM Mono para tokens y código, alojadas en el proyecto (y una Inter recortada solo para el nombre «Devin» de la portada).",
       "Plano: lo quieto no tiene sombra.",
       "Cámara que llega, espera `--pausa-tras-camara` y después anima la zona.",
       "Todo funciona sin conexión: fuentes, iconos y logos van dentro y la presentación se exporta a un único HTML."
@@ -975,7 +1035,7 @@
       },
       {
         "name": "La regla de luminosidad y forma",
-        "body": "Un concepto se distingue por luminosidad (oscuro, medio, hueco) y por forma, no solo por tono. Acierto y fallo de caché comparten color: los separa el trazo, continuo o discontinuo, y el icono ✓ o ✕. Cuando se suma el tono, va siempre con otra señal: en las series de una gráfica, el trazo (Prussian continua, azul discontinua, verde continua y texto 3 de puntos); en los tokens leídos de caché, la luminosidad frente a la entrada; en las preguntas, su número; en las marcas de plugin, el icono y el nombre.",
+        "body": "Un concepto se distingue por luminosidad (oscuro, medio, hueco) y por forma, no solo por tono. Acierto y fallo de caché comparten el azul de la caché: los separa el trazo, continuo o discontinuo, y el icono ✓ o ✕. Cuando se suma el tono, va siempre con otra señal: en las series de una gráfica, el trazo (Prussian continua, azul discontinua, verde continua y texto 3 de puntos); en los tokens leídos de caché, la luminosidad frente a la entrada; en las preguntas, su número; en las marcas de plugin, el icono y el nombre.",
         "section": "colors"
       },
       {
@@ -1000,7 +1060,7 @@
       },
       {
         "name": "La regla del contorno",
-        "body": "Toda superficie clara lleva un contorno de 3 px en `--color-contorno` (`--trazo-contorno`): navy sobre crema, blanco dentro de `.inverso`. Las piezas sólidas navy (agente, conector, entrada, coste, hueco lleno) son tinta y no lo necesitan. El tono por sí solo no separa nada.",
+        "body": "Toda superficie clara lleva un contorno de 4 px en `--color-contorno` (`--trazo-contorno`): navy sobre crema, blanco dentro de `.inverso`. Las piezas sólidas navy (agente, conector, entrada, coste, hueco lleno) son tinta y no lo necesitan. El tono por sí solo no separa nada.",
         "section": "elevation"
       },
       {
@@ -1010,13 +1070,13 @@
       },
       {
         "name": "La regla del icono a 36",
-        "body": "Un icono suelto en escena va a 36 px, para que su trazo coincida con el contorno; 24 dentro de una etiqueta y 48 solo para el icono principal de una pieza grande.",
+        "body": "Un icono suelto en escena va a 36 px, para que su trazo (3,75 px) se acerque al del contorno; 24 dentro de una etiqueta y 48 solo para el icono principal de una pieza grande.",
         "section": "shapes"
       }
     ],
     "dos": [
       "**Do** usar las variables de rol y de semántica (`--color-texto-1`, `--color-acento`, `--color-entrada`…) en componentes y escenas; en SVG, el color va por CSS y en GSAP se lee con `v()`.",
-      "**Do** contornear cada superficie clara con 3 px de `--color-contorno`, porque el proyector iguala crema y blanco.",
+      "**Do** contornear cada superficie clara con 4 px de `--color-contorno`, porque el proyector acerca crema y blanco.",
       "**Do** reservar el rojo para una sola cosa por pantalla, y también por lámina de referencia: la zona actual, el nivel, la parada actual, el resaltado o la cifra protagonista.",
       "**Do** mantener el texto en 24 px o más, con contraste de al menos 4,5:1; el mínimo de 3:1 solo vale para texto de 24 px o más y para gráficos.",
       "**Do** usar las clases `.tipo-*` y la escala `--tipo-*` para todo texto.",
@@ -1025,7 +1085,7 @@
       "**Do** dibujar cada modelo con la misma serie en todas las gráficas.",
       "**Do** atenuar el texto a `--opacidad-atenuado-texto` y lo gráfico a `--opacidad-atenuado`, siempre con `atenuar` o la clase `.atenuado`.",
       "**Do** poner la nota de fuente bajo toda cifra real o gráfica, y la marca «Cifras ficticias» solo en un dato que falta por verificar.",
-      "**Do** usar iconos Lucide de `design/iconos.js` a 36 px con `stroke-width 2` (24 dentro de etiquetas, 48 para el icono principal de una pieza grande), y el icono cuando la fuente no tenga el carácter.",
+      "**Do** usar iconos Lucide de `design/iconos.js` a 36 px con un `stroke-width` de 2,5 (24 dentro de etiquetas, 48 para el icono principal de una pieza grande), y el icono cuando la fuente no tenga el carácter.",
       "**Do** encadenar cámara, `--pausa-tras-camara` y animación de zona, y dejar las pausas de lectura (1,5 s con una etiqueta o una cifra, 3 s con una frase).",
       "**Do** animar con los efectos de `motion.js` y, en una coreografía de escena, con `s()` y `v()`; el tiempo simulado, siempre con curva lineal.",
       "**Do** unir una etiqueta con lo que señala mediante la guía fina continua (o, en una captura, la guía en codo del resaltado); los puntos redondos quedan para el movimiento.",
@@ -1034,7 +1094,7 @@
     "donts": [
       "**Don't** escribir un color a mano (hex, `rgb()`, `hsl()` o nombres como `red`) en el código de la presentación, ni en atributos SVG ni en una animación.",
       "**Don't** poner dos elementos rojos a la vez ni introducir tonos rojizos que compitan con el acento.",
-      "**Don't** usar el azul y el verde de marca directamente: solo por sus roles (series, cacheado, preguntas, marcas de plugin), y el verde nunca sin oscurecer o mezclar.",
+      "**Don't** usar el azul, el verde, el cian y el amarillo de marca directamente: solo por sus roles (caché, series, razonamiento, preguntas, marcas de plugin); el verde y el amarillo, siempre oscurecidos, y el cian, aclarado u oscurecido.",
       "**Don't** usar partículas, brillos, destellos, degradados de color, sombras difusas ni giros 3D decorativos; la moneda de E31 es la única excepción, pedida expresamente.",
       "**Don't** mover la cámara mientras algo se anima dentro de la zona.",
       "**Don't** dibujar un concepto de otra forma: un token es siempre una píldora en DM Mono, la ventana de contexto siempre una barra horizontal y la caché, siempre un corchete.",

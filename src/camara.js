@@ -1,4 +1,5 @@
-// La cámara: encuadra un rectángulo del mundo a pantalla completa con un transform sobre
+// La cámara: encuadra un rectángulo del mundo en la ventana entera (sin recortarlo: si la ventana no
+// es 16:9, alrededor se sigue viendo el mapa) con un transform sobre
 // #mundo (transform-origin 0 0). Una vista es { v: [centro x, centro y, ancho visible],
 // zona, region }. Los vuelos son el efecto volarCamara de design/motion.js, con la
 // duración y la curva de la ruta de escenas.md, leídas de las variables:
@@ -39,10 +40,11 @@ export function crearCamara({ mundo, portada }) {
   let pantalla = [px('--escena-ancho'), px('--escena-alto')];
   let actual = null;
 
-  // Encaja un rectángulo en la pantalla (sin recortarlo) y lo centra.
+  // Encaja un rectángulo en la pantalla (sin recortarlo) y lo centra. Guarda el rectángulo: si la
+  // pantalla cambia de proporción, la vista se vuelve a encajar.
   const vista = (r, zona) => ({
     v: [r.x + r.ancho / 2, r.y + r.alto / 2, Math.max(r.ancho, r.alto * (pantalla[0] / pantalla[1]))],
-    zona, region: ZONAS[zona].region,
+    zona, region: ZONAS[zona].region, r,
   });
   const pintar = ([x, y, ancho]) => {
     const k = pantalla[0] / ancho;
@@ -71,7 +73,6 @@ export function crearCamara({ mundo, portada }) {
     /** Al instante. */
     poner(nueva) {
       actual = nueva;
-      mundo.style.willChange = 'auto';
       pintar(nueva.v);
     },
 
@@ -87,15 +88,15 @@ export function crearCamara({ mundo, portada }) {
       return true;
     },
 
-    /** Tras completar un vuelo de golpe: quita will-change y vuelve a pintar la vista final. */
+    /** Tras completar un vuelo de golpe: vuelve a pintar la vista final. */
     reposar() {
       if (actual) camara.poner(actual);
     },
 
-    /** El escenario cambió de tamaño: misma vista, nueva escala. */
+    /** El escenario cambió de tamaño: el mismo rectángulo, encajado en la nueva pantalla. */
     ajustar(ancho, alto) {
       pantalla = [ancho, alto];
-      if (actual) camara.poner(actual);
+      if (actual) camara.poner(vista(actual.r, actual.zona));
     },
   };
   return camara;

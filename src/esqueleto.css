@@ -5,8 +5,8 @@
 html, body { margin: 0; height: 100%; }
 body.presentacion { overflow: hidden; background: var(--color-fondo); color: var(--color-texto-1); font-family: var(--fuente-texto); }
 
-/* El escenario es 16:9 y se centra en la ventana (main.js le da tamaño y sitio). */
-#escenario { position: fixed; overflow: hidden; background: var(--color-fondo); }
+/* El escenario ocupa la ventana entera; la cámara encaja en ella cada pantalla de 16:9 (camara.js). */
+#escenario { position: fixed; inset: 0; overflow: hidden; background: var(--color-fondo); }
 #mundo { position: absolute; left: 0; top: 0; width: 0; height: 0; transform-origin: 0 0; }
 .escena { position: absolute; }
 .oculto { visibility: hidden; }

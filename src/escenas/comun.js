@@ -52,9 +52,9 @@ export const en = (x, y, html, opciones = '') => {
 /** «El contexto es…» a partir del mensaje de escenas.md: mayúscula inicial y sin punto final. */
 const comoTitulo = t => t.charAt(0).toUpperCase() + t.slice(1).replace(/\.$/, '');
 
-/** Dónde estamos y el mensaje de la escena, arriba a la izquierda. Si son dos frases, cada una en su línea. Un título largo que debe caber en una línea usa la clase tipo-titulo-ajustado. */
-export const cabecera = (escena, ancho = 900, x = 120, clase = 'tipo-titulo-s') =>
-  en(x, 96, `<span class="etiqueta">${icono(ZONAS[escena.zona].icono, 'icono--s')}${esc(escena.titulo)}</span>`) +
+/** Dónde estamos y el mensaje de la escena, arriba a la izquierda. Si son dos frases, cada una en su línea. Un título largo que debe caber en una línea usa la clase tipo-titulo-ajustado. La etiqueta lleva el icono de la zona, salvo que la escena pase otro (E33). */
+export const cabecera = (escena, ancho = 900, x = 120, clase = 'tipo-titulo-s', icon = ZONAS[escena.zona].icono) =>
+  en(x, 96, `<span class="etiqueta">${icono(icon, 'icono--s')}${esc(escena.titulo)}</span>`) +
   en(x, 168, `<h2 class="${clase}" style="margin:0">${enLinea(comoTitulo(escena.mensaje)).replace(/\. (?=[A-ZÁÉÍÓÚ¿¡«])/g, '.<br>')}</h2>`, `width:${ancho}px`);
 
 /** Nota de fuente: «Fuente:» y la referencia en mono. */

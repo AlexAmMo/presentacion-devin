@@ -124,7 +124,7 @@ Guion: 1.1.
 Mensaje: dónde se ejecuta decide qué podemos hacer.
 
 1. Dos preguntas, centradas juntas: «¿Dónde voy a ejecutar Devin?» y «¿Cómo interactúo con él?»; en la misma animación, debajo, dos islas: **Local** (icono `laptop`) y **Cloud** (icono `cloud`). Primero se explica Local entero; después, Cloud.
-2. Local: aparecen tres ventajas: «Control de modelo y effort», «Acceso a lo local», «Revisión visual de cambios».
+2. Local: aparecen tres ventajas: «Control de modelo y effort», «Acceso completo local», «Revisión visual de cambios».
 3. Dentro de Local aparecen sus dos interfaces: **Desktop** (IDE) y **CLI** (terminal), separadas de las ventajas por una línea vertical fina.
 4. Cloud, en cascada y sin pausas (cada uno empieza un poco antes de que acabe el anterior): una tarea se entrega y se ejecuta sola en remoto; «Automatizar tareas repetitivas», la misma tarea sin intervención (`calendar-clock`, con una flecha que gira sin parar, con aire alrededor del icono); y su ventaja: «Trabajar con múltiples repositorios» (`folders`, carpetas apiladas).
 5. Las tres opciones se conectan con una línea: «Pueden combinarse».
@@ -508,7 +508,7 @@ Diseño: la tabla de hábitos y alternativas a todo el ancho, con la columna «A
 
 ## Cierre · Preguntas · ~2 min
 
-Una sola pantalla: el cierre y, en su sitio, el turno de preguntas.
+Una sola pantalla: el cierre, en su sitio el turno de preguntas y, después, los post-créditos.
 
 ### E30 · Antes de pulsar Enter · ~2 min
 
@@ -533,6 +533,14 @@ Diseño: sin título de escena; la moneda (`.moneda`, `moneda()` en `dibujos.js`
 
 Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de paginación pasa por cada bloque con la decisión que toca en cada uno.
 
+### E33 · Post-créditos
+
+Mensaje: cómo se ha hecho esta presentación.
+
+1. Las tecnologías principales con que se ha hecho, en dos columnas, cada una con su icono y para qué sirvió: Claude Code (agentes con Claude Opus 5.5: código, diseño y pruebas), GSAP (la cámara y todas las animaciones), d3-interpolate (el vuelo de la cámara), Vite y vite-plugin-singlefile (un único HTML sin conexión), Impeccable (criterio de diseño y revisión), Playwright (pruebas en un navegador sin ventanas), Lucide (los iconos) y Outfit, DM Mono e Inter (las tipografías). Debajo: «HTML, CSS y JavaScript, sin frameworks: todos los colores, medidas y movimientos salen de un design system de variables».
+
+Diseño: después de las preguntas, en la misma pantalla (la sustituye); Fin sigue llevando a las preguntas (E31). Etiqueta con el icono `popcorn`; Claude Code, con el logo de Anthropic; las demás, con iconos de Lucide. Sin acento.
+
 ---
 
 ## Resumen de tiempos
@@ -544,8 +552,8 @@ Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de pagi
 | Parte 2 · Principales herramientas | E04–E18 | 46 | ~27 min |
 | Parte 3 · Coste | E20–E23 | 11 | ~8 min |
 | Parte 4 · Buenas prácticas | E24–E29 | 16 | ~9,5 min |
-| Cierre · Preguntas | E30–E31 | 3 | ~2 min + preguntas |
-| **Total** | **30** | **90** | **~57 min + preguntas** |
+| Cierre · Preguntas | E30–E31, E33 | 4 | ~2 min + preguntas |
+| **Total** | **31** | **91** | **~57 min + preguntas** |
 
 Ya no queda nada marcado con [A]: la tecla `A` sigue disponible para pasos de detalle que se añadan.
 

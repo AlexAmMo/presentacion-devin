@@ -8,3 +8,5 @@ dist/*
 .impeccable/*.cache.json
 dist-design/
 previsualizacion/
+# Copias de trabajo de los agentes (git worktree): no son parte del proyecto.
+.claude/worktrees/
