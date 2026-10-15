@@ -5,17 +5,20 @@
 // etiqueta, a la derecha. Solo el resaltado del paso está a la vista (es el acento); las etiquetas
 // se quedan. Al final, lo que hay que mirar antes de empezar.
 // Capturas: grabación de Devin Desktop del 15-10-2026 (src/escenas/capturas). Las medidas, en px
-// de esa grabación (1512 × 949 pt a 2×).
+// de esa grabación (1512 × 949 pt a 2×). Retocadas para que se lean más nítidas: grises medios más
+// claros sin aclarar el negro y algo de enfoque (ffmpeg: curves=master='0/0 0.1/0.11 0.35/0.48
+// 0.7/0.85 1/1',unsharp=5:5:0.8), las cuatro igual. Se usan en WebP sin pérdida (cwebp -lossless
+// -z 9), los mismos píxeles que los PNG originales en menos de la mitad de peso.
 // Pasos: 1 captura · 2 mensajes · 3 modelo · 4 effort · 5 modo · 6 contexto · 7 antes de empezar.
 import { gsap } from 'gsap';
-import { px } from '../../design/motion.js';
+import { px, s } from '../../design/motion.js';
 import { icono } from '../../design/iconos.js';
 import { codo } from '../../design/dibujos.js';
-import { en, paso, cabecera, crearPasos } from './comun.js';
-import base from './capturas/devin-desktop.png';
-import conModelo from './capturas/devin-desktop-modelo.png';
-import conModo from './capturas/devin-desktop-modo.png';
-import conContexto from './capturas/devin-desktop-contexto.png';
+import { en, paso, cabecera, crearPasos, encadenar } from './comun.js';
+import base from './capturas/devin-desktop.webp';
+import conModelo from './capturas/devin-desktop-modelo.webp';
+import conModo from './capturas/devin-desktop-modo.webp';
+import conContexto from './capturas/devin-desktop-contexto.webp';
 
 const FOTO = { ancho: 3024, alto: 1898 };
 // La zona ampliada: el panel de la sesión con sus desplegables (misma proporción que el marco).
@@ -57,11 +60,13 @@ export default function ({ escena, raiz }) {
             <div class="captura__lienzo" style="width:${FOTO.ancho}px;height:${FOTO.alto}px"><img src="${base}" alt="Devin Desktop" style="left:0;top:0;width:${FOTO.ancho}px;height:${FOTO.alto}px">${estados}</div></div>`, { paso: 1 }) +
         resaltados +
         `<svg style="position:absolute;left:0;top:0;width:1920px;height:1080px;overflow:visible">${CONTROLES.map((c, i) =>
-          `<path class="resaltado__guia" data-guia${paso(i + 2, { hasta: i + 3, efecto: 'trazar', orden: 2 })}/>`).join('')}</svg>` +
+          `<path class="resaltado__guia" data-guia${paso(i + 2, { hasta: i + 3, efecto: 'trazar', orden: 2, opciones: { duration: s('--dur-trazado-serie') } })}/>`).join('')}</svg>` +
         CONTROLES.map(([ic, texto], i) => en(EX, EY(i), `<span class="etiqueta" data-etiqueta>${icono(ic, 'icono--s')}${texto}</span>`, { paso: i + 2, orden: 3 })).join('') +
-        en(EX, 712, '<p class="tipo-texto" style="margin:0;font-weight:var(--peso-enfasis)">Antes de empezar</p>', { paso: 7 }) +
-        en(EX, 776, `<div style="display:flex;gap:var(--esp-4)">${ANTES.map(([ic, texto]) =>
-          `<div class="vineta">${icono(ic)}<span class="vineta__titulo">${texto}</span></div>`).join('')}</div>`, { paso: 7, orden: 1 });
+        // «Antes de empezar», centrado sobre los tres controles.
+        en(EX, 712, `<div style="display:grid;justify-items:center;row-gap:var(--esp-3)">
+            <p class="tipo-texto" style="margin:0;font-weight:var(--peso-enfasis)"${paso(7)}>Antes de empezar</p>
+            <div style="display:flex;gap:var(--esp-4)"${paso(7, { orden: 1 })}>${ANTES.map(([ic, texto]) =>
+              `<div class="vineta">${icono(ic)}<span class="vineta__titulo">${texto}</span></div>`).join('')}</div></div>`);
 
       // Cada guía sale del borde de su resaltado y llega al borde izquierdo de su etiqueta.
       const caja = raiz.getBoundingClientRect(), escala = caja.width / 1920;
@@ -93,9 +98,10 @@ export default function ({ escena, raiz }) {
       // Paso 2: la captura se amplía hasta el panel de la sesión antes del primer resaltado.
       if (n === 2) tl.ampliarCaptura(lienzo, AMPLIADA);
       // El resaltado y la guía anteriores (y el estado de la captura) se van juntos; después,
-      // por grupos: el nuevo estado, el resaltado, la guía y la etiqueta.
+      // encadenados (cada uno empieza un poco antes de que acabe el anterior): el nuevo estado,
+      // el resaltado, la guía y la etiqueta.
       pasos.salir(n, tl);
-      pasos.ordenes(n).forEach(o => pasos.animar(n, tl, { orden: o, sinSalidas: true }));
+      encadenar(tl, pasos.ordenes(n).map(o => pasos.animar(n, gsap.timeline(), { orden: o, sinSalidas: true })));
     },
 
     desmontar() { raiz.innerHTML = ''; },

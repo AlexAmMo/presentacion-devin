@@ -52,10 +52,10 @@ const ventana = (ancho, capas, capacidad = '', { clase = '', nivel = '' } = {}) 
   return `<div class="ventana${clase}" style="width:${ancho}px">${relleno}${capacidad ? `<span class="ventana__capacidad">${capacidad}</span>` : ''}${linea}</div>`;
 };
 /** Corchete de caché bajo el principio de una ventana (desde su primera capa), con su etiqueta debajo. */
-const corcheteBajo = (ancho, fallo = false, texto = fallo ? 'Fallo' : 'Acierto', detalle = fallo ? 'se reprocesa' : 'se reutiliza') =>
+const corcheteBajo = (ancho, fallo = false, texto = fallo ? 'Fallo' : 'Acierto', detalle = fallo ? 'se reprocesa' : 'se reutiliza', linea = false) =>
   `<div style="display:grid;gap:var(--esp-1);margin-left:${holgura()}px">
     <div class="corchete${fallo ? ' corchete--fallo' : ''}" style="width:${ancho}px"></div>
-    <div class="corchete-etiqueta${fallo ? ' corchete-etiqueta--fallo' : ''}">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}${texto}<span class="corchete-etiqueta__detalle">${detalle}</span></div>
+    <div class="corchete-etiqueta${fallo ? ' corchete-etiqueta--fallo' : ''}${linea ? ' corchete-etiqueta--linea' : ''}">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}${texto}<span class="corchete-etiqueta__detalle">${detalle}</span></div>
   </div>`;
 const lienzo = () => `width="${px('--escena-ancho')}" height="${px('--escena-alto')}"`;
 const formato = (n, decimales) => n.toLocaleString('es-ES', { minimumFractionDigits: decimales, maximumFractionDigits: decimales, useGrouping: 'always' });
@@ -66,7 +66,7 @@ function v1(n) {
   const bloque = (titulo, cuerpo) => `<div style="display:grid;gap:var(--esp-2);justify-items:start">${vet(titulo)}${cuerpo}</div>`;
   // Tres capacidades superpuestas, cada una a la escala de la mayor (1M = 820 px).
   const capacidades = `<div style="position:relative;width:820px;height:var(--ventana-alto)">
-      ${[[820, '1M'], [420, '512K'], [210, '256K']].map(([w, c], i) => `<div class="abs" style="left:0;top:0">${ventana(w, [], c, { clase: i ? ' ventana--menor' : '' })}</div>`).join('')}
+      ${[[820, '1M'], [420, '512K'], [210, '256K']].map(([w, c], i) => `<div class="abs" style="left:0;top:0">${ventana(w, [], c, { clase: ['', ' ventana--menor', ' ventana--minima'][i] })}</div>`).join('')}
     </div>`;
   // Si acierta, lo que cubre se relee de caché: en su color.
   const cache = fallo => `<div style="display:grid;gap:var(--esp-1)">${ventana(400, [[fallo ? 'entrada' : 'cacheada', 120], [fallo ? 'entrada' : 'cacheada', 72], ['salida', 40]])}${corcheteBajo(120 + 3 + 72, fallo)}</div>`;
@@ -239,7 +239,7 @@ function v5(n) {
       `<span class="proveedor${clase}"><img class="proveedor__logo" src="${logo}" alt="">${familia}<span class="proveedor__nombre">${nombre}</span></span>`).join('')}</div>`));
 }
 
-const PARADAS = [['24', 'Definir'], ['25', 'Contexto'], ['26', 'Planificar'], ['27', 'Intervenir'], ['28', 'Verificar'], ['29', 'Hábitos']].map(([id, nombre]) => ({ id, nombre }));
+const PARADAS = ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(i + 1), nombre }));
 
 // Un solo acento por lámina, como en escena: la isla actual aquí, el resaltado en la 7 y el circuito con parada actual en el mapa de «Aplicado».
 function v6(n) {
@@ -294,6 +294,9 @@ function v7(n) {
     en(1010, 430, vet('×0,5. En escena, sola en el centro, girando sobre su eje vertical'), 'width:250px') +
     en(1320, 150, '<div class="vh">Ruta y guía</div>') +
     en(1320, 230, `<div style="display:grid;gap:var(--esp-5)">${muestra('Ruta · puntos: recorrido de la cámara o del subagente', 'camino')}${muestra('Guía · línea fina: une una etiqueta con lo que señala', 'camino camino--guia')}</div>`) +
+    // Hitos de un recorrido: el desvío y el bueno, con su nombre encima y debajo.
+    en(1010, 560, '<div class="vh">Hito</div>') +
+    en(1040, 655, `<div style="display:flex;align-items:center;gap:var(--esp-6);height:var(--hito-diametro)"><div class="hito"><div class="hito__circulo">${icono('x')}</div><p class="hito__texto">Desvío</p></div><div class="hito hito--abajo"><div class="hito__circulo">${icono('check')}</div><p class="hito__texto">El bueno</p></div></div>`) +
     en(1320, 510, '<div class="vh">Tapa de bloque</div>') +
     // En el mapa se dibuja ×--tapa-escala; aquí, a escala 1: así se ve desde la vista general.
     en(1320, 560, `<div class="tapa" style="--tapa-escala:1;width:330px;height:240px"><div class="tapa__contenido">${icono('footprints', 'tapa__icono')}<h2 class="tapa__titulo">Primeros pasos</h2></div></div>`) +
@@ -311,7 +314,7 @@ export function mapa(duraciones) {
   const [cx, cy, dx, dy] = [1020, 560, 350, 170];
   // Alrededor de Devin, en sentido horario desde arriba: [columna, fila, icono, nombre, escenas].
   const temas = [
-    [0, -1, 'cpu', 'Modelos', 'E05–E07'], [1, -1, 'gauge', 'Effort', 'E08'], [1, 0, 'app-window', 'Contexto', 'E09–E11'], [1, 1, 'file-text', 'Rules', 'E12'],
+    [0, -1, 'cpu', 'Modelos', 'E05–E07'], [1, -1, 'gauge', 'Effort', 'E08'], [1, 0, 'app-window', 'Contexto', 'E09–E11'], [1, 1, 'scroll-text', 'Rules', 'E12'],
     [0, 1, 'puzzle', 'Skills', 'E13'], [-1, 1, 'wrench', 'Tools propias', 'E15'], [-1, 0, 'plug', 'MCP', 'E16'], [-1, -1, 'git-fork', 'Subagentes', 'E17'],
   ].map(([c, f, ic, nombre, ids]) =>
     `<div class="abs" style="left:${cx + c * dx}px;top:${cy + f * dy}px;transform:translate(-50%,-50%)"><span class="etiqueta">${icono(ic, 'icono--s')}${nombre} · ${ids}</span></div>`).join('');
@@ -377,7 +380,7 @@ export function e23() {
     en(120, 548, ventana(ancho, capas, '100K')) +
     en(1340, 500, desglose([['Input sin caché', totalSin - output], ['Output', output]], totalSin)) +
     en(120, 700, rotulo('Con caché')) +
-    en(120, 748, `<div style="display:grid;gap:var(--esp-1)">${ventana(ancho, capas, '100K')}${corcheteBajo(leido, false, 'Cache read', '74.000 tokens')}</div>`) +
+    en(120, 748, `<div style="display:grid;gap:var(--esp-1)">${ventana(ancho, capas, '100K')}${corcheteBajo(leido, false, 'Cache read', '74.000 tokens', true)}</div>`) +
     en(1340, 700, desglose([['Cache write', write], ['Cache read', read], ['Output', output]], totalCon)));
 }
 
@@ -407,7 +410,7 @@ export function e09() {
     en(120, 136, '<div class="tipo-titulo-s">El contexto es todo lo que el modelo lee en cada llamada</div>') +
     concepto(0, 'Capacidad', 'Cuánto puede admitir el modelo') +
     [[1000, '1M tokens'], [512, '512K tokens'], [256, '256K tokens']].map(([n, c], i) =>
-      enPaso(X, y(0), barra(Math.round((ANCHO * n) / 1000), '', c, i ? ' ventana--menor' : ''), '', 1)).join('') +
+      enPaso(X, y(0), barra(Math.round((ANCHO * n) / 1000), '', c, ['', ' ventana--menor', ' ventana--minima'][i]), '', 1)).join('') +
     concepto(1, 'Utilizado', 'Cuánto se está ocupando') +
     enPaso(X, y(1), barra(ANCHO, conClase(utilizadas), '256K tokens'), '', 2) +
     enPaso(nivelX, y(1) - px('--esp-3') / 2, `<div class="nivel" data-e09="nivel" style="position:static"><span class="nivel__cifra">${Math.round((usado / VENTANA) * 100)} %</span></div>`, '', 2) +

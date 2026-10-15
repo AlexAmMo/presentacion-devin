@@ -39,9 +39,11 @@
 
 /* ── Utilidad · Estado atenuado ────────────────────────────────────────────
    clase: .atenuado
-   uso: Lo que no toca mirar ahora (E01, E09). Se anima con atenuar y avivar.
+   uso: Lo que no toca mirar ahora. Se anima con atenuar y avivar. El texto, a --opacidad-atenuado-texto, para que se siga leyendo; lo que no es texto (capas, líneas de documento, trazos SVG), a --opacidad-atenuado; las series de una gráfica, más tenues (--opacidad-atenuado-serie).
    ─────────────────────────────────────────────────────────────────────── */
-.atenuado { opacity: var(--opacidad-atenuado); }
+.atenuado { opacity: var(--opacidad-atenuado-texto); }
+svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opacidad-atenuado); }
+.grafica__serie.atenuado { opacity: var(--opacidad-atenuado-serie); }
 
 /* ── Utilidad · Volteo ─────────────────────────────────────────────────────
    clase: .volteo
@@ -118,7 +120,7 @@
 
 /* ── Componente · Tokens leídos de caché ───────────────────────────────────
    clase: .capa--cacheada · .leyenda__muestra--cacheada
-   forma: Lo que una llamada relee de la caché: las capas del principio de su ventana, bajo el corchete. Cuando la ventana se pesa por coste, su ancho se multiplica por lo que cuesta un token leído de caché respecto a uno de entrada (un 10 % en Anthropic): así se ve lo poco que pesa.
+   forma: Lo que una llamada relee de la caché: las capas del principio de su ventana, bajo el corchete (las de salida conservan su dibujo: contorno y relleno blanco). Cuando la ventana se pesa por coste, su ancho se multiplica por lo que cuesta un token leído de caché respecto a uno de entrada (un 10 % en Anthropic): así se ve lo poco que pesa.
    color: --color-cacheado con texto --color-sobre-cacheado: el mismo en todas las pantallas del coste, para reconocerlo de un vistazo.
    medidas: Las de la capa · su ancho, el de sus tokens o, pesado por coste, multiplicado por el coeficiente (como mínimo --trazo-contorno)
    icono: —
@@ -129,9 +131,9 @@
 .traspaso { fill: none; stroke: var(--color-acento); stroke-width: var(--trazo-contorno); stroke-linecap: round; stroke-linejoin: round; }
 
 /* ── Componente · Ventana de contexto ──────────────────────────────────────
-   clase: .ventana · .ventana__relleno · .ventana__capacidad · .nivel · .ventana__lectura
-   forma: Barra en píldora que se llena de izquierda a derecha con capas, con su capacidad en el extremo derecho y una línea de nivel vertical donde acaba lo ocupado. Su ancho es proporcional a su capacidad: varias ventanas superpuestas, cada una a la escala de la mayor, comparan capacidades. La pequeña (.ventana--mini), sin texto dentro, es la del subagente. Cuando el modelo relee el contexto, una línea de lectura (.ventana__lectura) recorre lo ocupado, dentro de la barra.
-   color: Interior --color-superficie (las menores de una comparación, --color-superficie-2) · contorno --color-contorno · nivel, su cifra y la línea de lectura en --color-acento.
+   clase: .ventana · .ventana--menor · .ventana--minima · .ventana--mini · .ventana__relleno · .ventana__capacidad · .nivel · .ventana__lectura
+   forma: Barra en píldora que se llena de izquierda a derecha con capas, con su capacidad en el extremo derecho y una línea de nivel vertical donde acaba lo ocupado. Su ancho es proporcional a su capacidad: varias ventanas superpuestas, cada una a la escala de la mayor y cada una en un tono (más oscuro cuanto más pequeña), comparan capacidades. La pequeña (.ventana--mini), sin texto dentro, es la del subagente. Cuando el modelo relee el contexto, una línea de lectura (.ventana__lectura) recorre lo ocupado, dentro de la barra.
+   color: Interior --color-superficie (las menores de una comparación, --color-superficie-2 y, la más pequeña, --color-superficie-3) · contorno --color-contorno · nivel, su cifra y la línea de lectura en --color-acento.
    medidas: Alto --ventana-alto (pequeña: --ventana-mini-alto) · --radio-pildora · relleno a --esp-1 del contorno · nivel --trazo-fuerte, --esp-3 más alto que la barra
    icono: app-window (en etiquetas)
    movimiento: llenarVentana y vaciarVentana (las capas) · moverNivel · ajustarVentana (lo ocupado crece o se recoge con el nivel pegado a su borde y su cifra a la vez) · entrarEnVentana (lo que entra desde fuera) · releerVentana (la línea de lectura)
@@ -143,6 +145,7 @@
   background: var(--color-superficie);
 }
 .ventana--menor { background: var(--color-superficie-2); }
+.ventana--minima { background: var(--color-superficie-3); }
 .ventana--mini { height: var(--ventana-mini-alto); }
 .ventana__relleno { position: absolute; inset: var(--esp-1); display: flex; gap: var(--trazo-contorno); border-radius: var(--radio-pildora); overflow: hidden; }
 .ventana__relleno > .capa { box-sizing: border-box; height: 100%; justify-content: center; padding: 0 var(--esp-2); }
@@ -159,8 +162,8 @@
 }
 
 /* ── Componente · Corchete de caché ────────────────────────────────────────
-   clase: .corchete · .corchete-etiqueta
-   forma: Corchete bajo el tramo de la ventana que cubre (o sobre él, .corchete--arriba), siempre desde la izquierda: el principio del contexto, que se repite en cada llamada. Continuo con ✓ si acierta; discontinuo con ✕ si falla. Su etiqueta va debajo.
+   clase: .corchete · .corchete-etiqueta · .corchete-etiqueta--linea
+   forma: Corchete bajo el tramo de la ventana que cubre (o sobre él, .corchete--arriba), siempre desde la izquierda: el principio del contexto, que se repite en cada llamada. Continuo con ✓ si acierta; discontinuo con ✕ si falla. Su etiqueta va debajo: su texto y, debajo, el detalle; o, si falta alto, todo en una línea (.corchete-etiqueta--linea).
    color: --color-cache-acierto · --color-cache-fallo (mismo tono: los separa el trazo y el icono).
    medidas: Ancho, el del tramo · alto de las patas --corchete-ancho · --trazo-fuerte · --radio-s
    icono: check · x
@@ -182,6 +185,8 @@
 .corchete-etiqueta__fallo, .corchete-etiqueta--fallo .corchete-etiqueta__acierto { display: none; }
 .corchete-etiqueta--fallo .corchete-etiqueta__fallo { display: block; }
 .corchete-etiqueta__detalle { grid-column: 2; color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); white-space: nowrap; }
+.corchete-etiqueta--linea { grid-template-columns: auto auto 1fr; }
+.corchete-etiqueta--linea .corchete-etiqueta__detalle { grid-column: auto; margin-left: var(--esp-2); }
 
 /* ── Componente · Contador ─────────────────────────────────────────────────
    clase: .contador · .cifra
@@ -328,7 +333,7 @@
 
 /* ── Componente · Moneda ───────────────────────────────────────────────────
    clase: .moneda · .moneda__cuerpo · .moneda__cara · .moneda__canto · .moneda__signo · .moneda__pared
-   forma: Moneda en 3D: dos caras con un reborde, un signo de interrogación con volumen que la atraviesa y sobresale por las dos caras: una pieza geométrica (gancho, palo y punto) con dos tapas planas y paredes perpendiculares, sin capas apiladas (por detrás se ve en espejo, como una pieza de verdad), y un canto con grosor (una banda de segmentos alrededor del borde, perpendiculares a las caras) que se ve al girar, continuo también de canto. El turno de preguntas: es lo único en pantalla, con el logo. Única excepción, a petición expresa, a «nada de giros 3D».
+   forma: Moneda en 3D: dos caras con un reborde, un signo de interrogación con volumen que la atraviesa y sobresale por las dos caras: una pieza geométrica (gancho, palo y punto) con dos tapas planas y paredes perpendiculares, sin capas apiladas (por detrás se ve en espejo, como una pieza de verdad), y un canto con grosor (una banda de segmentos alrededor del borde, perpendiculares a las caras) que se ve al girar, continuo también de canto. El turno de preguntas: protagonista sola en el centro, con el logo y, discreta, la franja de recursos. Única excepción, a petición expresa, a «nada de giros 3D».
    color: Cara --color-moneda · signo --color-sobre-moneda, con sus paredes --color-moneda-luz · canto y surco --color-moneda-canto · filos --color-moneda-luz.
    medidas: --moneda-diametro · --moneda-grosor · --moneda-signo-grosor · --moneda-perspectiva · reborde --esp-4 con filos de --trazo-contorno · signo, en proporción al radio de la moneda (dibujos.js)
    icono: —
@@ -430,7 +435,7 @@
    forma: Nodo con el enchufe en el borde del agente, con un aro punteado que lo separa de él; un cable continuo lo une a cada servidor. Para explicar el estándar, el nodo va solo, entre los agentes y los servicios, y todos los cables pasan por él. Un servidor real lleva el logo de su servicio en lugar del icono.
    color: Nodo --color-superficie-inversa con aro punteado --color-texto-inverso · cable --color-contorno · servidor --color-superficie con --color-contorno · logo tal cual.
    medidas: --conector-diametro · cable --trazo-contorno · servidor --radio-m · logo del alto de --icono-m (apaisado, como la llave de Openbank, del de --icono-s, para que pese como los demás)
-   icono: plug · laptop (servidor local) · cloud (servidor remoto; los reales, con el logo oficial: assets/logos/github.svg, atlassian.svg, sonar.svg y, para los internos, la llave de Openbank, openbank-llave.svg)
+   icono: plug · laptop (servidor local) · cloud (servidor remoto; los reales, con el logo oficial: assets/logos/github.svg, atlassian.svg, sonar.svg y, para los internos, la llave de Openbank, openbank-llave.svg) · database (Datahub, sin logo libre)
    movimiento: entrarConMuelle (nodo y servidores) · trazar (cable)
    escenas: E16, E18
    ─────────────────────────────────────────────────────────────────────── */
@@ -521,12 +526,12 @@
 .isla--actual { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); }
 
 /* ── Componente · Tapa de bloque ───────────────────────────────────────────
-   clase: .tapa · .tapa__contenido · .tapa__icono · .tapa__titulo · .tapa--centro · .tapa__logo
-   forma: La isla de un bloque del mapa, dibujada ×--tapa-escala: lo cubre entero en la apertura con el icono de su zona y, debajo, su título, para que desde la vista general se lean los cinco bloques. La del centro lleva el logo de Devin y, debajo, su nombre, más grande: la portada encuadra ese logo y ese nombre.
-   color: --color-superficie con --color-contorno · icono y título --color-texto-1 · el logo, tal cual.
-   medidas: Las del bloque · ×--tapa-escala: --trazo-contorno, --radio-l, relleno --esp-4, icono --tapa-icono, --esp-3 entre icono y título y título --tipo-entradilla (en la del centro, logo --tapa-logo y nombre --tipo-titulo)
-   icono: footprints · coins · route · message-circle-question (el de su zona) · La del centro, el logo oficial de Devin: assets/logos/devin-avatar-fondo-claro.svg
-   movimiento: aparecer (los títulos de fuera, al llegar a la vista general, mientras su icono sube a su sitio) · desaparecer (se levanta la primera vez que se entra en su bloque, cuando la cámara ya ha llegado)
+   clase: .tapa · .tapa__contenido · .tapa__icono · .tapa__titulo · .tapa--centro · .tapa__logo · .tapa__pie · .tapa__lema · .tapa__marca
+   forma: La isla de un bloque del mapa, dibujada ×--tapa-escala: lo cubre entero en la apertura con el icono de su zona y, debajo, su título, para que desde la vista general se lean los cinco bloques. La del centro lleva el logo de Devin y, debajo, su nombre, más grande, y, discretos, el resto del título de la charla y el logo de Openbank: la portada encuadra ese conjunto.
+   color: --color-superficie con --color-contorno · icono y título --color-texto-1 · el logo, tal cual, y su nombre --color-devin, el negro del logo · el subtítulo, --color-texto-2 · el logo de Openbank, tal cual.
+   medidas: Las del bloque · ×--tapa-escala: --trazo-contorno, --radio-l, relleno --esp-4, icono --tapa-icono, --esp-3 entre icono y título y título --tipo-entradilla (en la del centro, logo --tapa-logo y nombre --tipo-titulo en --fuente-devin y --peso-enfasis, como en su logotipo; subtítulo --tapa-lema y logo de Openbank --tapa-marca de alto, a --esp-2 uno de otro y a --esp-1 del nombre)
+   icono: footprints · coins · route · message-circle-question (el de su zona) · La del centro, los logos oficiales de Devin (assets/logos/devin-avatar-fondo-claro.svg) y de Openbank (assets/logos/openbank-logo-fondo-claro.svg)
+   movimiento: aparecer (los títulos de fuera, al llegar a la vista general, mientras su icono sube a su sitio) · desaparecer (se levanta la primera vez que se entra en su bloque: antes, su contenido, desde TAPAS.fundidoContenido del vuelo; después, la tapa, en la segunda mitad del vuelo, con --ease-camara, y ha desaparecido cuando llega la cámara)
    escenas: E01 (portada y vista general) y la primera de cada bloque (E02, E04, E20, E24, E30)
    ─────────────────────────────────────────────────────────────────────── */
 .tapa {
@@ -541,8 +546,18 @@
   margin: 0; text-align: center;
   font: var(--peso-display) calc(var(--tipo-entradilla) * var(--tapa-escala))/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display);
 }
-.tapa--centro .tapa__titulo { font-size: calc(var(--tipo-titulo) * var(--tapa-escala)); }
+.tapa--centro .tapa__titulo {
+  font: var(--peso-enfasis) calc(var(--tipo-titulo) * var(--tapa-escala))/var(--interlineado-display) var(--fuente-devin); letter-spacing: normal;
+  color: var(--color-devin);
+}
 .tapa__logo { display: block; width: calc(var(--tapa-logo) * var(--tapa-escala)); height: calc(var(--tapa-logo) * var(--tapa-escala)); }
+/* El pie (subtítulo y logo de Openbank), pegado al nombre: el hueco de --esp-3 menos --esp-2. */
+.tapa__pie { display: flex; flex-direction: column; align-items: center; gap: calc(var(--esp-2) * var(--tapa-escala)); margin-top: calc(var(--esp-2) * var(--tapa-escala) * -1); }
+.tapa__lema {
+  margin: 0; text-align: center; color: var(--color-texto-2);
+  font: var(--peso-texto) calc(var(--tapa-lema) * var(--tapa-escala))/var(--interlineado-texto) var(--fuente-texto);
+}
+.tapa__marca { display: block; width: auto; height: calc(var(--tapa-marca) * var(--tapa-escala)); }
 
 /* ── Componente · Etiqueta ─────────────────────────────────────────────────
    clase: .etiqueta · .etiqueta--compacta · .etiqueta--obligatorio · .etiqueta--opcional · .etiqueta--prohibido
@@ -585,7 +600,7 @@
    clase: .repeticion · .repeticion__anillo
    forma: Anillo abierto con una flecha alrededor de un icono: lo que se repite solo, como una tarea programada. El anillo no ocupa sitio: en una lista de viñetas, la lista es .vinetas--anillo y todos los iconos se alinean en el centro del anillo.
    color: Anillo --color-contorno · icono --color-texto-1.
-   medidas: --repeticion-diametro · --trazo-contorno · icono --icono-m
+   medidas: --repeticion-diametro · --trazo-contorno · icono --icono-s (con el anillo ceñido, ocupa poco más que un icono de --icono-m)
    icono: El de lo que se repite (calendar-clock)
    movimiento: girar (el anillo, sin parar, a ritmo constante)
    escenas: E02
@@ -687,6 +702,26 @@
 .tabla th.tabla__franja, .tabla td.tabla__franja { padding-left: var(--esp-2); padding-right: var(--esp-2); background: var(--color-superficie-2); }
 .tabla th.tabla__franja--critica, .tabla td.tabla__franja--critica { background: var(--color-franja-critica); }
 
+/* ── Componente · Hito de un recorrido ─────────────────────────────────────
+   clase: .hito · .hito__circulo · .hito__texto · .hito--abajo
+   forma: Un círculo con un icono donde llega (o se desvía) un camino de puntos, y su nombre encima (o debajo, .hito--abajo), centrado. El desvío equivocado lleva ✕ y el bueno, ✓.
+   color: Círculo --color-superficie con --color-contorno · icono --color-texto-1 · nombre --color-texto-2.
+   medidas: --hito-diametro · --trazo-contorno · icono --icono-m · nombre --tipo-etiqueta, a --esp-2 del círculo
+   icono: x · check (el del sitio al que se llega)
+   movimiento: entrarConMuelle (al llegar el camino) · atenuar (el desvío, cuando llega la vuelta)
+   escenas: E27
+   ─────────────────────────────────────────────────────────────────────── */
+.hito { position: relative; width: var(--hito-diametro); height: var(--hito-diametro); }
+.hito__circulo {
+  box-sizing: border-box; display: grid; place-items: center; width: 100%; height: 100%;
+  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-pildora); background: var(--color-superficie); color: var(--color-texto-1);
+}
+.hito__texto {
+  position: absolute; left: 50%; bottom: calc(100% + var(--esp-2)); translate: -50% 0; margin: 0; white-space: nowrap;
+  color: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+}
+.hito--abajo .hito__texto { bottom: auto; top: calc(100% + var(--esp-2)); }
+
 /* ── Componente · Camino de puntos y guía ──────────────────────────────────
    clase: .camino
    forma: Línea de puntos redondos: la ruta de la cámara en el mapa y el camino por el que sale un subagente; los puntos son siempre movimiento. La guía (.camino--guia) es una línea fina continua que une una etiqueta con lo que señala.
@@ -701,11 +736,11 @@
 
 /* ── Componente · Gráfica de líneas ────────────────────────────────────────
    clase: .grafica · .fuente
-   forma: Ejes, rejilla y una línea por serie con su nombre al final (sin leyenda aparte). Las series se separan por color, luminosidad y trazo; solo la protagonista va en acento. Franjas opcionales para marcar tramos del eje x: la normal y la crítica (donde el resultado se degrada mucho). Anotaciones opcionales para una lectura: el nombre de un punto (su esfuerzo), un punto resaltado con un anillo más grueso y una flecha entre dos puntos con su texto (discontinua y sin punta si une dos puntos a la misma altura). Siempre con su nota de fuente.
+   forma: Ejes, rejilla y una línea por serie con su nombre al final (sin leyenda aparte). Las series se separan por color, luminosidad y trazo; solo la protagonista va en acento. Franjas opcionales para marcar tramos del eje x: la normal y la crítica (donde el resultado se degrada mucho). Anotaciones opcionales para una lectura: el nombre de un punto (su esfuerzo), un punto resaltado con un anillo más grueso y una flecha entre dos puntos con su texto (discontinua y sin punta si une dos puntos a la misma altura). Siempre con su nota de fuente. Un modelo se dibuja igual en todas las gráficas: GPT-5.6 Sol, serie 1; Opus 5, serie 2; GPT-6 Astra y Sonnet 5, serie 3; Fable 5.1, serie 4 (los que comparten serie nunca coinciden en una gráfica).
    color: Ejes --color-contorno · rejilla --color-separador · series --color-serie-1, --color-serie-2 (discontinua), --color-serie-3 y --color-texto-3 (de puntos) · protagonista --color-acento · franja --color-superficie-2 · franja crítica --color-franja-critica · flecha --color-texto-1 (discontinua, --color-texto-3) · notas del color de su serie.
    medidas: Líneas --trazo-contorno (protagonista --trazo-fuerte) · --grafica-discontinua · --grafica-punteada · marcas --tipo-mono-s · punto --esp-1 de radio (resaltado: --esp-2 y --trazo-fuerte) · flecha --trazo-contorno, punta --esp-2
    icono: —
-   movimiento: trazar (las líneas, seguidas, con --dur-trazado-serie y --escalonado-series; la protagonista, a su ritmo, con el nombre de cada punto según llega a él; y las flechas) · aparecer (puntos, etiquetas y notas) · atenuar y avivar (las series que no toca mirar)
+   movimiento: trazar (las líneas, seguidas, con --dur-trazado-serie y --escalonado-series; la protagonista, a su ritmo, con el nombre de cada punto según llega a él; y las flechas) · aparecer (puntos, etiquetas y notas) · atenuar y avivar (las series que no toca mirar, hasta --opacidad-atenuado-serie)
    escenas: E06, E08, E10, E23
    ─────────────────────────────────────────────────────────────────────── */
 .grafica { overflow: visible; }
@@ -738,7 +773,7 @@
    medidas: Logo --proveedor-logo (el de Devin, ampliado: su símbolo solo ocupa el 64 % de su cuadro) · --tipo-texto-s · --esp-2 entre logo y texto
    icono: — (logos oficiales: assets/logos/openai.svg, anthropic.svg y, para SWE, devin-avatar-fondo-claro.svg)
    movimiento: entrarConMuelle (uno tras otro, grandes; después, la fila se coloca bajo el título)
-   escenas: E05
+   escenas: E05, E20 (solo los logos)
    ─────────────────────────────────────────────────────────────────────── */
 .proveedor { display: inline-flex; align-items: center; gap: var(--esp-2); white-space: nowrap; isolation: isolate; background: var(--color-fondo); color: var(--color-texto-1); font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
 .proveedor__logo { flex: none; width: var(--proveedor-logo); height: var(--proveedor-logo); mix-blend-mode: multiply; }
@@ -749,9 +784,9 @@
 
 /* ── Componente · Salto de precio ──────────────────────────────────────────
    clase: .salto · .salto__arco · .salto__cifra · .salto--acento
-   forma: Arco que une dos filas de una tabla por su derecha, con la punta en la fila más cara; cuántas veces cuesta más (×20) va en esa fila, en una columna a la derecha de todos los arcos. Los saltos desde una misma fila se anidan: cuanto mayor el salto, más abierto el arco.
+   forma: Arco que une dos filas de una tabla por su derecha, con la punta en la fila más cara; cuántas veces cuesta más (×20) va pegado al arco, a la altura de su vértice (entre dos filas vecinas, la línea que las separa), o, si los saltos se anidan, en la fila más cara, en una columna a la derecha de todos los arcos. Los saltos desde una misma fila se anidan: cuanto mayor el salto, más abierto el arco.
    color: Arco y cifra --color-texto-1 · el salto protagonista, --color-acento.
-   medidas: --trazo-contorno · punta --esp-1 · cifra --tipo-texto-s
+   medidas: --trazo-contorno · punta --esp-1 · cifra --tipo-texto-s, pegada a --esp-1 del vértice
    icono: —
    movimiento: trazar (el arco, con su punta al final) · aparecer (la cifra) · desaparecer (los saltos que dejan su sitio a otra comparación)
    escenas: E05
@@ -807,7 +842,7 @@
 
 /* ── Componente · Circuito ─────────────────────────────────────────────────
    clase: .circuito
-   forma: Circuito cerrado con una parada numerada por paso del método. La parada actual va en acento; al pasar a la siguiente, un punto recorre la pista entre las dos. Si el acento está en otra parte (el mapa con otra zona actual), va sin parada actual ni punto.
+   forma: Circuito cerrado con una parada numerada (del 1 al 6) por paso del método. La parada actual va en acento; al pasar a la siguiente, un punto recorre la pista entre las dos. Si el acento está en otra parte (el mapa con otra zona actual), va sin parada actual ni punto.
    color: Pista --color-contorno · paradas --color-superficie (hechas: --color-entrada; actual y punto: --color-acento).
    medidas: --circuito-parada · --punto-diametro · pista --trazo-contorno · nombres --tipo-etiqueta
    icono: list-checks (en etiquetas)

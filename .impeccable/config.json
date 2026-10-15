@@ -47,6 +47,12 @@
         ],
         "createdAt": "2026-10-14T19:14:50.449Z",
         "reason": "Radio de code en la página de documentación (variable doc-radio-s): no se proyecta."
+      },
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-10-15T15:35:39.951Z",
+        "reason": "Pedido del usuario: solo el nombre «Devin» de la portada, en la tipografía libre más parecida a su logotipo (NB International, de pago)"
       }
     ]
   }

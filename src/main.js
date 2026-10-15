@@ -37,7 +37,7 @@ async function iniciarPresentacion() {
     const p = nav.actual, e = p.escena, sig = nav.siguiente();
     const resumen = x => x && { ref: x.ref, escena: x.escena.id, titulo: x.escena.titulo, n: x.n, total: x.escena.pasos.length, texto: x.texto, detalle: x.detalle, avanzado: x.avanzado };
     return {
-      escena: { id: e.id, titulo: e.titulo, bloque: e.bloque, mensaje: e.mensaje, minutos: e.minutos },
+      escena: { id: e.id, titulo: e.titulo, bloque: e.bloque, mensaje: e.mensaje, minutos: e.minutos, guion: e.guion, notas: e.notas },
       paso: resumen(p), siguiente: resumen(sig), progreso: nav.progreso(),
       general: nav.general, conAvanzados: nav.conAvanzados,
       minutos: { hastaAqui: minutosHasta(p.ie), total: minutosHasta(ESCENAS.length - 1) },

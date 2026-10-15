@@ -17,9 +17,9 @@ body.ponente {
 .ponente__crono { display: flex; align-items: center; gap: var(--esp-2); }
 .ponente__tiempo { min-width: 4ch; text-align: right; font: var(--peso-display) var(--tipo-entradilla)/var(--interlineado-cifra) var(--fuente-display); font-variant-numeric: var(--cifras); }
 
-/* Dos columnas independientes: a la izquierda, la escena y el progreso; a la derecha, «Ahora»
-   (hasta dos tercios del alto) y «Siguiente», que cede espacio y se desplaza si no cabe. */
-.ponente__cuerpo { min-height: 0; display: grid; grid-template-columns: 2fr 3fr; gap: var(--esp-5); }
+/* Dos columnas independientes: a la izquierda, la escena, su guion (que se desplaza si no cabe) y
+   el progreso; a la derecha, «Ahora» (hasta dos tercios del alto) y «Siguiente», en una frase. */
+.ponente__cuerpo { min-height: 0; display: grid; grid-template-columns: 3fr 2fr; gap: var(--esp-5); }
 .ponente__columna { min-height: 0; display: flex; flex-direction: column; gap: var(--esp-3); }
 .ponente__escena { flex: 1 1 auto; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: var(--esp-2); }
 .ponente__paso { flex: 0 0 auto; max-height: 65%; }
@@ -28,6 +28,10 @@ body.ponente {
 .ponente__titulo { font: var(--peso-display) var(--tipo-entradilla)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
 .ponente__mensaje { color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
 .ponente__mensaje::first-letter { text-transform: uppercase; }
+.ponente__guion { display: flex; flex-direction: column; gap: var(--esp-2); margin-top: var(--esp-2); padding-top: var(--esp-3); border-top: var(--trazo-fino) solid var(--color-separador); }
+.ponente__guion:empty { display: none; }
+.ponente__guion h3 { margin: var(--esp-1) 0 0; font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__guion ul { margin: 0; padding-left: var(--esp-4); }
 
 /* Si un paso es muy largo, su tarjeta se desplaza: los mandos nunca salen de la ventana. */
 .ponente__paso {

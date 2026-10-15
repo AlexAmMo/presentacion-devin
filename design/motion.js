@@ -74,10 +74,16 @@ registrar('entrarConMuelle', (t, c) =>
     { autoAlpha: 1, scale: 1, duration: c.duration, ease: c.ease, stagger: c.stagger }),
 () => ({ duration: s('--dur-entrada'), ease: v('--ease-interfaz'), stagger: s('--escalonado'), escala: 0.8 }));
 
-/** Pasa a segundo plano: opacidad --opacidad-atenuado. */
+/** Pasa a segundo plano: el texto, a --opacidad-atenuado-texto; lo gráfico (trazos SVG, capas, líneas de documento), a --opacidad-atenuado; las series de una gráfica, a --opacidad-atenuado-serie. */
 registrar('atenuar', (t, c) =>
   gsap.to(t, { opacity: c.opacidad, duration: c.duration, ease: c.ease }),
-() => ({ duration: s('--dur-micro'), ease: v('--ease-estado'), opacidad: parseFloat(v('--opacidad-atenuado')) }));
+() => ({
+  duration: s('--dur-micro'), ease: v('--ease-estado'),
+  // Lo mismo que les da la clase .atenuado al saltar: las series de una gráfica, más tenues; lo que
+  // no es texto (trazos SVG, capas, líneas de documento), atenuado; el texto, menos, para que se lea.
+  opacidad: (i, el) => parseFloat(v(el.classList?.contains('grafica__serie') ? '--opacidad-atenuado-serie'
+    : el instanceof SVGElement || el.matches?.('.capa, .documento__linea') ? '--opacidad-atenuado' : '--opacidad-atenuado-texto')),
+}));
 
 /** Vuelve a primer plano lo atenuado. */
 registrar('avivar', (t, c) =>
@@ -94,13 +100,17 @@ registrar('entrarEnVentana', (t, c) =>
 
 /**
  * La ventana se llena: sus capas aparecen de izquierda a derecha, una tras otra, sin deformar su
- * texto. Con «immediateRender: false», no se recortan hasta que empiezan: para capas que aún se
- * ven y vuelven a llenarse más tarde en el mismo timeline (rebobinar y seguir).
+ * texto. Con «immediateRender: false», no se recortan al construir el timeline, sino al empezar
+ * (todas a la vez, también las que el escalonado hace esperar): para capas que aún se ven y
+ * vuelven a llenarse más tarde en el mismo timeline (rebobinar y seguir).
  */
-registrar('llenarVentana', (t, c) =>
-  gsap.fromTo(t, { clipPath: 'inset(0% 100% 0% 0%)' },
-    { clipPath: 'inset(0% 0% 0% 0%)', duration: c.duration, ease: c.ease, stagger: c.stagger, immediateRender: c.immediateRender, clearProps: 'clipPath' }),
-() => ({ duration: s('--dur-entrada'), ease: v('--ease-llenado'), stagger: s('--escalonado-capas'), immediateRender: true }));
+registrar('llenarVentana', (t, c) => {
+  const vacia = { clipPath: 'inset(0% 100% 0% 0%)' };
+  const tl = gsap.timeline();
+  if (!c.immediateRender) tl.set(t, { ...vacia, immediateRender: false }, 0);
+  return tl.fromTo(t, vacia,
+    { clipPath: 'inset(0% 0% 0% 0%)', duration: c.duration, ease: c.ease, stagger: c.stagger, immediateRender: c.immediateRender, clearProps: 'clipPath' }, 0);
+}, () => ({ duration: s('--dur-entrada'), ease: v('--ease-llenado'), stagger: s('--escalonado-capas'), immediateRender: true }));
 
 /** La ventana se vacía: sus capas se recogen hacia la izquierda, de la última a la primera (compactar, empezar de nuevo). */
 registrar('vaciarVentana', (t, c) =>

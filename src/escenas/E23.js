@@ -12,7 +12,7 @@ import { gsap } from 'gsap';
 import { s, v, px } from '../../design/motion.js';
 import { icono } from '../../design/iconos.js';
 import { grafica } from '../../design/dibujos.js';
-import { en, cabecera, crearPasos, pausa, miles, decimal } from './comun.js';
+import { en, cabecera, crearPasos, pausa, miles, decimal, encadenar } from './comun.js';
 
 // ── Cuentas ──────────────────────────────────────────────────────────────────
 // Tarifas de GPT-6.1 Sol por token (docs.devin.ai/desktop/models, nivel estándar, 15-10-2026).
@@ -54,11 +54,13 @@ const SERIES = [['sin', 1, 1, [2, 6]], ['con', 2, 1, [2, 6]], ['pausa', 3, PAUSA
 const NOMBRES = { sin: 'Sin caché', con: 'Con caché', pausa: 'Con una pausa' };
 
 // ── Composición ──────────────────────────────────────────────────────────────
-// Las ventanas, a la escala de 260.000 tokens: lo que se llega a ocupar (248.000) casi las llena.
-// Sin capacidad escrita: la de GPT-6.1 Sol no es esa.
-const VANCHO = 1120, ESCALA = 260000;
+// Las ventanas, a la escala de 275.000 tokens: lo que se llega a ocupar (248.000, con las capas
+// de salida a su ancho mínimo) casi las llena. Sin capacidad escrita: la de GPT-6.1 Sol no es esa.
+const VANCHO = 1120, ESCALA = 275000;
 const G = { x: 120, y: 262, ancho: 1120, alto: 306 };
-const SIN = { y: 590 }, CON = { y: 740 };      // rótulo; la ventana va 40 px más abajo
+// El rótulo de cada ventana; la ventana va BAJO px más abajo: entre las dos cabe la etiqueta de la
+// pausa. La etiqueta del corchete, en una línea, para que quepa todo bajo la gráfica.
+const SIN = { y: 590 }, CON = { y: 760 }, BAJO = 52;
 const DX = 1340;                               // columna derecha
 
 export default function ({ escena, raiz }) {
@@ -66,6 +68,9 @@ export default function ({ escena, raiz }) {
   const hueco = () => px('--trazo-contorno');
   const borde = () => hueco() + px('--esp-1');
   const ancho = n => Math.round((n * (VANCHO - 2 * borde())) / ESCALA) - hueco();
+  // Las de salida (2.000 tokens, unos 5 px), con un ancho mínimo, no a escala: así se ve su relleno
+  // blanco dentro de su contorno, como en las demás pantallas.
+  const anchoCapa = (n, tipo) => (tipo === 'salida' ? Math.max(ancho(n), 5 * hueco()) : ancho(n));
   const $ = q => raiz.querySelector(q);
   const $$ = q => [...raiz.querySelectorAll(q)];
 
@@ -73,19 +78,19 @@ export default function ({ escena, raiz }) {
   // y lo nuevo (data-k: la llamada en la que entran).
   const normales = () => [[FIJO, 0, 'Fijo'], [NUEVO, 1], ...Array.from({ length: LLAMADAS - 1 }, (_, i) => [[SALIDA, i + 2, '', 'salida'], [NUEVO, i + 2]]).flat()];
   const capa = ([n, k, texto = '', tipo = 'entrada'], atrs = '') =>
-    `<div class="capa capa--${tipo}" data-k="${k}"${atrs} style="width:${ancho(n)}px">${texto}</div>`;
+    `<div class="capa capa--${tipo}" data-k="${k}"${atrs} style="width:${anchoCapa(n, tipo)}px">${texto}</div>`;
   // Ancho del principio de la ventana que cubre «leido» tokens (las capas y sus huecos).
   const tramo = leido => {
-    const lote = [FIJO, NUEVO, ...Array.from({ length: 2 * LLAMADAS }, (_, i) => (i % 2 ? NUEVO : SALIDA))];
+    const lote = [[FIJO], [NUEVO], ...Array.from({ length: 2 * LLAMADAS }, (_, i) => (i % 2 ? [NUEVO] : [SALIDA, 'salida']))];
     let resto = leido, w = 0, m = 0;
-    for (const t of lote) { if (resto <= 0) break; w += ancho(t); resto -= t; m++; }
+    for (const [t, tipo] of lote) { if (resto <= 0) break; w += anchoCapa(t, tipo); resto -= t; m++; }
     return m ? w + hueco() * (m - 1) : 0;
   };
   const leidoEn = (variante, n) => (n ? tokens(variante, n).read : 0);
   const fallaEn = (variante, n) => variante === 'pausa' && n === PAUSA;
   // Si una capa del lado «Con caché» se lee de caché en la llamada n: lo de las anteriores, salvo
-  // si la caché caduca.
-  const cacheadaEn = (variante, n, el) => n >= 2 && !fallaEn(variante, n) && +el.dataset.k < n;
+  // si la caché caduca. Las de salida conservan su dibujo (contorno y relleno blanco).
+  const cacheadaEn = (variante, n, el) => n >= 2 && !fallaEn(variante, n) && +el.dataset.k < n && !el.classList.contains('capa--salida');
   const capasCon = () => $$('[data-lado="con"] .capa[data-k]');
 
   // ── Estado instantáneo ──────────────────────────────────────────────────────
@@ -146,17 +151,20 @@ export default function ({ escena, raiz }) {
   }
 
   // ── Animación de una llamada ────────────────────────────────────────────────
-  const dur = () => s('--dur-entrada');
-  function subir(tl, clave, desde, hasta, pos) {
+  // Cada llamada, en reproducción continua; al rebobinar, cada una se recoge como una salida.
+  const dur = () => s('--dur-llamada'), durVuelta = () => s('--dur-salida');
+  function subir(tl, clave, desde, hasta, pos, duracion = dur()) {
     const el = $(`[data-d="${clave}"]`);
-    if (el && Math.abs(desde - hasta) > 1e-9) tl.subirContador(el, { desde, hasta, decimales: 3, duration: dur() }, pos);
+    if (el && Math.abs(desde - hasta) > 1e-9) tl.subirContador(el, { desde, hasta, decimales: 3, duration: duracion }, pos);
   }
-  function subirLado(tl, lado, a, b, pos) {
-    for (const t of ['input', 'write', 'read', 'output', 'total']) subir(tl, `${lado}-${t}`, a[t], b[t], pos);
+  function subirLado(tl, lado, a, b, pos, duracion) {
+    for (const t of ['input', 'write', 'read', 'output', 'total']) subir(tl, `${lado}-${t}`, a[t], b[t], pos, duracion);
   }
   function extender(tl, variante, desde, a, b, pos) {
     const linea = serie(variante).querySelector('.grafica__linea');
-    tl.fromTo(linea, { clipPath: recorte(desde, Math.max(1, a)) }, { clipPath: recorte(desde, b), duration: dur(), ease: 'none' }, pos);
+    // Sin pintarlo al construir (immediateRender): si no, el último tramo deja la línea casi entera
+    // a la vista hasta que empieza el primero.
+    tl.fromTo(linea, { clipPath: recorte(desde, Math.max(1, a)) }, { clipPath: recorte(desde, b), duration: dur(), ease: v('--ease-llamada'), immediateRender: false }, pos);
   }
   /** La llamada k en los lados indicados: entran sus capas, sube el desglose y avanza la gráfica. */
   function llamar(tl, k, { sin = true, con = 'con' } = {}) {
@@ -165,13 +173,13 @@ export default function ({ escena, raiz }) {
     tl.subirContador($('[data-llamadas]'), { desde: k - 1, hasta: k, duration: s('--dur-micro') }, pos);
     if (sin) {
       const nuevas = $$(`[data-lado="sin"] [data-k="${k}"]`);
-      tl.set(nuevas, { autoAlpha: 1 }, pos).llenarVentana(nuevas, {}, pos);
+      tl.set(nuevas, { autoAlpha: 1 }, pos).llenarVentana(nuevas, { duration: dur() }, pos);
       subirLado(tl, 'sin', desglose('sin', k - 1), desglose('sin', k), pos);
       extender(tl, 'sin', 1, k - 1, k, pos);
     }
     // Sin recortarlas al construir: tras rebobinar, las de esta llamada aún se ven al empezar.
     const nuevas = $$(`[data-lado="con"] [data-k="${k}"]`);
-    tl.set(nuevas, { autoAlpha: 1 }, pos).llenarVentana(nuevas, { immediateRender: false }, pos);
+    tl.set(nuevas, { autoAlpha: 1 }, pos).llenarVentana(nuevas, { duration: dur(), immediateRender: false }, pos);
     subirLado(tl, 'con', desglose(con, k - 1), desglose(con, k), pos);
     extender(tl, con, SERIES.find(([v]) => v === con)[2], k - 1, k, pos);
     // El corchete: lo que se lee de caché en esta llamada (o, si caducó, discontinuo con ✕).
@@ -189,8 +197,7 @@ export default function ({ escena, raiz }) {
       else tl.to(corchete, { width: anchoLeido, duration: dur(), ease: v('--ease-llenado') }, pos);
       if (antes || fallaEn(con, k - 1)) {
         tl.to([corchete, etiqueta], { autoAlpha: 0, duration: s('--dur-micro'), ease: v('--ease-estado') }, pos)
-          .set(corchete, { attr: { class: 'corchete' } })
-          .set(etiqueta, { attr: { class: 'corchete-etiqueta' } })
+          .set([corchete, etiqueta], { attr: { class: (i, el) => el.getAttribute('class').split(/\s+/).filter(c => !c.endsWith('--fallo')).join(' ') } })
           .to([corchete, etiqueta], { autoAlpha: 1, duration: s('--dur-micro'), ease: v('--ease-estado') });
       }
     }
@@ -205,20 +212,20 @@ export default function ({ escena, raiz }) {
     const pos = `deshace${k}-${tl.duration().toFixed(3)}`;
     const capas = $$(`[data-lado="con"] [data-k="${k}"]`), leido = leidoEn('con', k - 1);
     tl.addLabel(pos)
-      .vaciarVentana(capas, { duration: dur(), ease: v('--ease-llenado') }, pos)
+      .vaciarVentana(capas, {}, pos)
       .set(capas, { autoAlpha: 0 })
-      .to($('.corchete'), { width: tramo(leido), duration: dur(), ease: v('--ease-llenado') }, pos)
+      .to($('.corchete'), { width: tramo(leido), duration: durVuelta(), ease: v('--ease-salida') }, pos)
       .set($('[data-leido]'), { textContent: `${miles(leido)} tokens` }, pos)
       .subirContador($('[data-llamadas]'), { desde: k, hasta: k - 1, duration: s('--dur-micro') }, pos);
-    recolorear(tl, el => cacheadaEn('con', k, el), el => cacheadaEn('con', k - 1, el), pos);
-    subirLado(tl, 'con', desglose('con', k), desglose('con', k - 1), pos);
+    recolorear(tl, el => cacheadaEn('con', k, el), el => cacheadaEn('con', k - 1, el), pos, durVuelta());
+    subirLado(tl, 'con', desglose('con', k), desglose('con', k - 1), pos, durVuelta());
   }
   /** Las capas del lado «Con caché» que pasan a leerse de caché (o dejan de hacerlo) entre dos estados. */
-  function recolorear(tl, antes, despues, pos) {
+  function recolorear(tl, antes, despues, pos, duracion = dur()) {
     const cambian = capasCon().filter(el => antes(el) !== despues(el));
     const [pasan, dejan] = [cambian.filter(despues), cambian.filter(el => !despues(el))];
-    if (pasan.length) tl.cachearCapas(pasan, { duration: dur() }, pos);
-    if (dejan.length) tl.cachearCapas(dejan, { cacheadas: false, duration: dur() }, pos);
+    if (pasan.length) tl.cachearCapas(pasan, { duration: duracion }, pos);
+    if (dejan.length) tl.cachearCapas(dejan, { cacheadas: false, duration: duracion }, pos);
   }
   function nombres(tl, variantes) {
     tl.aparecer(variantes.map(x => serie(x).querySelector('.grafica__etiqueta')), { distancia: 0 });
@@ -243,11 +250,17 @@ export default function ({ escena, raiz }) {
       const resultado = (paso, hasta, cifra, apoyo, extra = {}) => en(DX, 330, `<div class="tipo-titulo" style="color:var(--color-acento);white-space:nowrap">${cifra}</div>
           <p class="tipo-etiqueta" style="margin:var(--esp-1) 0 0;color:var(--color-texto-3)">${apoyo}</p>`, { paso, hasta, orden: 20, estilo: 'width:460px', ...extra });
       const [sinN, conN, pausaN] = ['sin', 'con', 'pausa'].map(x => acumulado(x, LLAMADAS));
-      const dolares = n => `${decimal(n, 2)} $`;
-      // Las conclusiones, en viñetas centradas en altura en la columna derecha (de la gráfica al borde
-      // de la zona segura), cada una con su icono, su frase y su cifra debajo.
-      const conclusiones = filas => en(DX, G.y, `<div class="vinetas" style="width:460px;height:${px('--escena-alto') - px('--margen-y') - G.y}px">
-          ${filas.map(([ic, texto, apoyo], i) => `<div class="vineta" data-paso="5" data-orden="${i + 1}">${icono(ic)}<span class="vineta__titulo">${texto}</span><span class="vineta__detalle">${apoyo}</span></div>`).join('')}</div>`);
+      // Todas las cifras de la escena, con tres decimales: las de la llamada 1 los necesitan, y los
+      // porcentajes se calculan sobre esos mismos valores.
+      const dolares = n => `${decimal(n, 3)} $`;
+      // Las conclusiones, centradas en altura en la columna derecha (de la gráfica al borde de la zona
+      // segura): cada una, con su cifra grande, como el resultado de los pasos anteriores, y su frase
+      // debajo. Solo «−70 %» en acento: es la cifra que hay que recordar.
+      const conclusiones = filas => en(DX, G.y, `<div style="width:460px;height:${px('--escena-alto') - px('--margen-y') - G.y}px;display:flex;flex-direction:column;justify-content:center;gap:var(--esp-6)">
+          ${filas.map(([cifra, texto, apoyo, acento], i) => `<div data-paso="5" data-orden="${i + 1}">
+            <div class="tipo-titulo" style="white-space:nowrap${acento ? ';color:var(--color-acento)' : ''}">${cifra}</div>
+            <p class="tipo-texto-s" style="margin:var(--esp-1) 0 0;font-weight:var(--peso-enfasis);text-wrap:balance">${texto}</p>
+            <p class="tipo-etiqueta" style="margin:var(--esp-1) 0 0;color:var(--color-texto-3)">${apoyo}</p></div>`).join('')}</div>`);
 
       raiz.innerHTML =
         cabecera(escena, 1680) +
@@ -255,24 +268,27 @@ export default function ({ escena, raiz }) {
 
         // La columna derecha: llamadas y resultado (pasos 1–4); conclusiones (paso 5).
         en(DX, G.y, `<span class="contador">${icono('repeat')}<span data-llamadas>0</span><span class="contador__unidad">llamadas</span></span>`, { paso: 1, hasta: 5 }) +
-        resultado(2, 3, porcentaje(acumulado('con', 1), acumulado('sin', 1)), `la primera llamada, con caché: ${decimal(acumulado('con', 1), 3)} $ frente a ${decimal(acumulado('sin', 1), 3)} $`) +
+        resultado(2, 3, porcentaje(acumulado('con', 1), acumulado('sin', 1)), `la primera llamada, con caché: ${dolares(acumulado('con', 1))} frente a ${dolares(acumulado('sin', 1))}`) +
         resultado(3, 4, porcentaje(conN, sinN), `con caché, frente a sin caché: ${dolares(conN)} frente a ${dolares(sinN)}`) +
-        resultado(4, 5, porcentaje(pausaN, conN), `con una pausa larga antes de la llamada ${PAUSA}: ${dolares(pausaN)}`) +
+        resultado(4, 5, porcentaje(pausaN, conN), `con una pausa larga antes de la llamada ${PAUSA}, frente a sin pausa: ${dolares(pausaN)} frente a ${dolares(conN)}`) +
         conclusiones([
-          ['coins', 'La caché es lo que más ahorra', `${porcentaje(conN, sinN)} en ${LLAMADAS} llamadas`],
-          ['timer', 'Las pausas largas y los reinicios la desperdician', `una sola pausa: ${porcentaje(pausaN, conN)}`],
+          [porcentaje(conN, sinN), 'La caché es lo que más ahorra', `en ${LLAMADAS} llamadas`, true],
+          [porcentaje(pausaN, conN), 'Las pausas largas y los reinicios la desperdician', 'con una sola pausa larga'],
         ]) +
         // Sin caché.
         rotulo(SIN.y, 'Sin caché', { paso: 1 }) +
-        en(120, SIN.y + 40, `<div class="ventana" style="width:${VANCHO}px" data-lado="sin"><div class="ventana__relleno">${normales().map(c => capa(c)).join('')}</div></div>`, { paso: 1 }) +
+        // Desde la llamada 1, el tamaño de cada bloque, a la derecha del rótulo (vale para las dos ventanas).
+        en(120, SIN.y, `<p class="tipo-etiqueta" style="margin:0;text-align:right;color:var(--color-texto-2)">Cada bloque ≈ ${miles(FIJO)} tokens; los de salida, ${miles(SALIDA)}</p>`,
+          { paso: 2, orden: 10, estilo: `width:${VANCHO - borde()}px;line-height:var(--interlineado-texto)` }) +
+        en(120, SIN.y + BAJO, `<div class="ventana" style="width:${VANCHO}px" data-lado="sin"><div class="ventana__relleno">${normales().map(c => capa(c)).join('')}</div></div>`, { paso: 1 }) +
         en(DX, SIN.y, desgloses('sin', [['Input sin caché', 'input'], ['Output', 'output']]), { paso: 1, hasta: 5 }) +
         // Con caché.
         rotulo(CON.y, 'Con caché', { paso: 1 }) +
         en(320, CON.y - 6, `<span class="etiqueta">${icono('timer', 'icono--s')}Pausa larga antes de la llamada ${PAUSA}</span>`, { paso: 4, orden: 9 }) +
-        en(120, CON.y + 40, `<div class="ventana" style="width:${VANCHO}px" data-lado="con"><div class="ventana__relleno">${normales().map(c => capa(c)).join('')}</div></div>`, { paso: 1 }) +
-        en(120 + borde(), CON.y + 40 + px('--ventana-alto') + px('--esp-1'), '<div class="corchete" style="width:0"></div>') +
-        en(120 + borde(), CON.y + 40 + px('--ventana-alto') + px('--esp-1') + px('--corchete-ancho') + px('--esp-1'),
-          `<div class="corchete-etiqueta">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}
+        en(120, CON.y + BAJO, `<div class="ventana" style="width:${VANCHO}px" data-lado="con"><div class="ventana__relleno">${normales().map(c => capa(c)).join('')}</div></div>`, { paso: 1 }) +
+        en(120 + borde(), CON.y + BAJO + px('--ventana-alto') + px('--esp-1'), '<div class="corchete" style="width:0"></div>') +
+        en(120 + borde(), CON.y + BAJO + px('--ventana-alto') + px('--esp-1') + px('--corchete-ancho') + px('--esp-1'),
+          `<div class="corchete-etiqueta corchete-etiqueta--linea">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}
             <span class="corchete-etiqueta__acierto">Cache read</span><span class="corchete-etiqueta__fallo">Caché caducada: se vuelve a escribir</span>
             <span class="corchete-etiqueta__detalle corchete-etiqueta__acierto" data-leido>0 tokens</span></div>`) +
         en(DX, CON.y, desgloses('con', [['Cache write', 'write'], ['Cache read', 'read'], ['Output', 'output']]),
@@ -301,7 +317,8 @@ export default function ({ escena, raiz }) {
       if (paso === 2) {
         tl.set([serie('sin'), serie('con')], { autoAlpha: 1 });
         llamar(tl, 1);
-        grupos(20);
+        // Tras la llamada, el tamaño de cada bloque (10) y el resultado (20).
+        grupos(10);
         return;
       }
       if (paso === 3) {
@@ -323,8 +340,8 @@ export default function ({ escena, raiz }) {
         grupos(20);
         return;
       }
-      // 5: la columna derecha deja paso a las conclusiones, una a una.
-      pasos.ordenes(5).filter(o => o >= 1 && o < 9).forEach((o, i) => { if (i) pausa(tl); pasos.animar(5, tl, { orden: o, sinSalidas: true }); });
+      // 5: la columna derecha deja paso a las conclusiones, encadenadas, sin pausas.
+      encadenar(tl, pasos.ordenes(5).filter(o => o >= 1 && o < 9).map(o => pasos.animar(5, gsap.timeline(), { orden: o, sinSalidas: true })));
     },
 
     desmontar() { raiz.innerHTML = ''; },

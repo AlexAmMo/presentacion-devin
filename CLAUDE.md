@@ -13,7 +13,7 @@ Todo lo visual y todo el movimiento salen de estos ficheros. No se copian ni se 
 - `design/motion.js`: el único módulo que lee las variables de movimiento. Exporta `v(nombre)` (valor en texto), `s(nombre)` (segundos como número), `px(nombre)` (distancias) y `esEstatico()`, y registra las animaciones reutilizables con `gsap.registerEffect({ …, extendTimeline: true })`.
 - `design/dibujos.js`: la geometría de los componentes SVG (gráfica, dial, temporizador, circuito, bucle y curvas para caminos). No lleva colores: devuelve marcado con las clases de `componentes.css`.
 - `design/iconos.js`: los iconos de Lucide que se usan, como SVG en línea. Se genera con `npm run iconos -- nombre` y no se edita a mano.
-- `design/assets/`: fuentes (Outfit y DM Mono en woff2, con su OFL), logos oficiales y licencias.
+- `design/assets/`: fuentes (Outfit, DM Mono e Inter en woff2, con su OFL; Inter, solo para el nombre de Devin en la portada), logos oficiales y licencias.
 - `design/design-system.html`: documentación y referencia visual.
   - No copia ningún valor: al cargarse lee los ficheros anteriores y este `CLAUDE.md`, e importa `componentes.css` y `motion.js` para mostrar los componentes y sus efectos.
   - Su sección «Comprobaciones» avisa de lo que no cuadre entre las fuentes. Revísala tras cada cambio en `design/`.
@@ -26,7 +26,7 @@ La presentación se construye con Vite y se exporta a un único HTML autoconteni
 - `index.html` y `src/`: el mapa con la cámara, la navegación y la vista de ponente (el mismo HTML con `?ponente`). `npm run dev` la abre en `/`; `npm run build` genera `dist/index.html`, autocontenido; `npm run preview` lo sirve.
 - `src/datos/escenas.js` se genera con `npm run escenas` (también antes de `dev` y `build`) a partir de `escenas.md` (texto) y `src/datos/mapa.js` (zona de cada escena, encuadres propios y piezas del hub). No se edita a mano; si los dos ficheros no cuadran, el generador para y dice qué falla.
 - El mapa es una cruz de cinco bloques (regiones): Devin y sus temas en el centro, en una cuadrícula de 3 × 3, y una pantalla arriba, a la derecha, abajo y a la izquierda. Cada zona es una pantalla; las escenas de un mismo tema comparten zona y se suceden en ella sin mover la cámara.
-- Cada bloque tiene una tapa con su título (`src/tapas.js`; la del centro, con el logo de Devin, es la portada). Se levanta la primera vez que se entra en el bloque, cuando la cámara ya ha llegado.
+- Cada bloque tiene una tapa con su título (`src/tapas.js`; la del centro, con el logo de Devin, es la portada). Se levanta la primera vez que se entra en el bloque: se funde mientras la cámara se acerca, en la segunda mitad del vuelo, y ha desaparecido cuando llega.
 - Cada escena real va en `src/escenas/EXX.js` y cumple el contrato documentado en `src/escenas/contrato.js` (`montar`, `irA(paso, { animar, tl })`, `desmontar`). Las que no tienen fichero usan el marcador de posición.
 - Las escenas no van en una tarjeta: dibujan directamente sobre el fondo (pantalla libre), dentro de la zona segura, con la cabecera común de `src/escenas/comun.js` (etiqueta de la zona y mensaje como título) y posiciones en px de 1920 × 1080.
 - Los pasos se declaran en el marcado (`data-paso`, `data-hasta`, `data-atenua`/`data-aviva`, `data-clase`, `data-efecto`/`data-salida`, `data-orden`, `data-propio`, y `solo-avanzado` para lo de un paso [A]) y `crearPasos` (`comun.js`) los pone al instante o los anima: saltar a un paso y llegar animando dan el mismo estado. Cada escena programa a mano solo lo suyo (capas que se llenan, cifras, recorridos).

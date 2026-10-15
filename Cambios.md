@@ -247,6 +247,156 @@ E31:
 - Corrige la moneda para que tenga realmente 2 caras y tras girar se vea "por detras" con la interrogacion girada.
 
 
+E01:
+
+- Cambia la tipografia del titulo principal "Devin", si devin tiene una tipografia propia usala sino, busca una mas acorde con el logo y su topologia. Ademas usa como color el negro oscuro al igual que el logo
+
+E01-E02:
+- La transicion quitando la tadera es desagradable, mientras el zoom se acerca, la tapadera ya deberia estar difuminandose en vez de esperar hasta completar el zoom. Esto aplica a todos los zooms sobre tapaderas
+
+E02:
+
+- Quiero que los bloques Local y Cloud entren en la animacion inicial de la presentacion, sin necesidad de hacer click
+- Pon una linea vertical fina entra los 3 "pros" de "local" y las 2 variantes, Desktop y CLI, para separar mejor ese cuadro
+- Acelera las animaciones de cloud para que duren menos como conjunto y hazlas fluidas, no tiene que haber terminado la anterior al 100% para que empiece la siguente, deja un pequeño solape para dar fluidez
+
+E03:
+
+- Cambia el titulo a "Donde encontrar cada una de las opciones"
+- Mejora si fuera posible la calidad de la imagen retocando brillo, contraste... para que se vea mas nitida y limpia. 
+- Acelera todas las animaciones que indican con linea roja donde está cada elementos
+- Centra el titulo "Antes de Empezar" encima de los 3 elementos que indica
+
+E04:
+
+-La diapositiva como conjunto deberia estar alineada debajo del logo de Devin de la tapadera, de forma que al quitarla se vea como "su core es esto"
+- sustituye "AGENTS.md" por "Rules", cogeremos como canon el concepto "rules" y explicaremos en la seccion correspondiente que los agents.md comparten caracteristicas y los explicaremos pero "rule" será el concepto canon.
+
+
+E05:
+
+- Deja en los modelo unicamente el Logo y el tipo, ej: logo GPT, elimina el resto
+- Haz mas suave la transicion de los modelos entre E05/1 y E05/2, es demasiado rapida 
+- Unifica en E05/2 todas las animaciones que hay hasta E05/4 incluida, de forma secuencia y a la misma velocidad
+- En E05/4, revisa la distancia de los indicadores "x20", deberian estar pegados al arco no separados.
+- Alinea los indicadores "xN" en altura con la barra que separa 2 categorias de modelo 
+
+E05:
+
+- Cambia el titulo a "La efectividad de un LLM depende de: Modelo, Generacion y Effort" poniendo en negrita las 3 variables
+
+E06:
+
+- Haz que en E06/1 carguen directamente todos los modelos sin necesidad de otro click
+- En E06/3 difumina mas los modelos que no son Opus 5 y opus 5.5 para poder ver mejor la comparativa que estamos haciendo
+- Aplica el mismo cambio en E06/4 con los modelos que se estan comparando
+
+E07:
+
+- Ordena las tareas para que primero salgan todas las que usan luna y despues las que usan sol y SWE.
+- En la ultima columna en vez de repetir el modelo en cada una, deja solo 1 fila de separacion entre las tareas mas simples y su modelo centrado en altura, Luna, y en el otro bloque, Sol y SWE centrado tambien entre sus 2 tares.
+
+E09:
+
+- Pon un tono distinto a cada una de las capacidades que mostramos, 256, 512, 1 millon
+
+
+E10:
+
+- Incluye la animacion de E10/2 directamente en /1 
+
+E11:
+
+- Entre /2 y /3 se está borrando completamente la pill del contexto, simplemente deberia verse como se disminuye el contexto hasta dejar solo un pequeño trozo que representa la instrucciones del sistema
+- El bloque final de "antes de compactar o cambiar de sesion" no tiene alineados los "ticks" con su texto, alinealos 
+
+E12:
+
+- No incluya directamente en /1 la animacion de la rule entrando en el contexto, crea una etapa intermedia nueva /2 que sea solo esa animacion
+- En el arbol de ficheros, resalta la carpeta "API" en la que está el agente para que se vea mas claramente
+- Indica que los 72000 tokens son suponiendo 24.000 x 3 llamadas
+- Elimina la seccion "Una rule puede apuntar a una skill"
+- Cambia el texto del consejo a "Deben ser Breves y Claras. Si necesitas dar una serie de instrucciones -> Crea una skill"
+
+E13:
+
+- Deja solo la skill "Validar migracion" y centra la skill en conjunto con "dos formas de activarla". Despues pon a la derecha de estos 2 bloques "llega una tarea" y entonces pasamos a la animacion de ejemplo
+- En la pills deja unicamente "300 Tokens - Descripcion de "Validar_migracion", "10.000 tokens - "Validar_migracion" completa"
+
+
+E14: 
+
+- Simplifica los bucles que hace el agente, haz solo 3 llamadas al modelo con la velocidad mas lenta que tiene la primera llamada. 
+- Centra el texto "Esto es un agente" en su columna
+- Elimina la pill final "3 llamadas"
+
+E15:
+
+- Deja en la pill del titulo unicamente "Tools del departamente"
+- Pon en negrita en el titulo tool y skill para remarcarlos 
+- Actualiza el titulo antes de la 15/3 a "Las tools otorgan nuevas capacidades a nuestro agente". Manten el titulo actual en /3 para la comparativa tool vs skill
+- Actualiza el icono de create pull request a el oficial de github si existe
+
+E15/3:
+
+- Cambia la pill del titulo a "Tools vs Skills"
+
+E16/3:
+
+- Elimina el parrado inferior completo "Sus tools se suman..." deja unicmanete el grafico y centralo en altura tras borrar el texto
+
+E16/4:
+
+- Incluye una "subrama" a la derecha de "DS-Workspace" que incluya "Datahub" ya que este MCP se disponibiliza a traves del de DS
+
+E20/2
+
+- Incluye en la pill Azul el precio en ACUs final (0,5 ACUs por ejemplo) y debajo el precio en $
+
+E21:
+
+- No hagas una animacion inicial para cambiar de cache read a cache write, deja siempre el write, y haz que todo los tipos de token entren en la animacion inicial en vez de esperar al cambio a cache read
+
+
+E22:
+
+- Crea un nuevo /2 para que la llamada 2 no se inicie directamente al pasar a esta diapositiva, que se inicie tras hacer click
+- Acelera un poco la animacion de los 5 minutos del reloj. Y centra su texto descriptivo
+- Elimina /3 y la pill "Pendiente de verificar"
+
+E23:
+
+- Indica en /2 cuantos tokens tendria cada "bloque azul de contexto" para que el lector tenga una idea del tamaño
+- Revisa la animcacion entre /2 y /3, en la grafica hay un efecto extraño en el que se precarga la linea completa, se borra y empieza la animacion
+- Revisa tambien la animacion "Con caché". Los bloques azul oscuro dan "tirones" al ir apareciendo
+- Por coherencia con las otras diapositivas, intenta marcar los bloques de "output" con el mismo formato que antes, borde azul pero relleno blanco
+- Acelera un poco la animacion completa de comparacion en una conversacion normal
+- Acelera tambien la animacion de vuelta a "antes de la llamada 6". aumenta ademas el espacion disponible para la pill "pausa antes de la llamada 6"
+- Acelera la animacion de /5 para que el texto aparezca de forma rapida
+
+E24 25 26 27 28 29:
+
+- Cambia la numeracion del "carrusel" superior para que en vez de numerar la diapositiva, numera las distintas buenas practicas del 1 al 6
+
+E25: 
+
+- Acelera la animacion en /3 al salir los 2 fragmetos y marca de alguna forma sutil como erroneo el paquete de logs con 1000 lineas
+
+E26:
+
+- Pon a la misma distancia las "->" de ambas columnas 
+- Centra en su fila el texto "Con una extension...." para que este alineado verticalmente con el plan
+
+E27:
+
+- Acelera mucho /1 para que todos los elementos se carguen rapidamente
+
+E30: 
+
+- Elimina el logo de openbank de esta diapositiva
+
+
+
 
 
 

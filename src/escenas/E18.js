@@ -11,7 +11,7 @@ import { en, cabecera, crearPasos, marcar } from './comun.js';
 import { PANEL } from './hub.js';
 
 // Guion 2.9: skills y, opcionalmente, rules, hooks, servidores MCP y subagentes; y tools (Cambios.md).
-const TRAE = [['file-text', 'Rules'], ['puzzle', 'Skills'], ['wrench', 'Tools'], ['plug', 'Servidores MCP'], ['git-fork', 'Subagentes'], ['repeat', 'Hooks']];
+const TRAE = [['scroll-text', 'Rules'], ['puzzle', 'Skills'], ['wrench', 'Tools'], ['plug', 'Servidores MCP'], ['git-fork', 'Subagentes'], ['repeat', 'Hooks']];
 const MARCAS = [['lock', 'Obligatorio', 'obligatorio'], ['circle-check', 'Opcional', 'opcional'], ['ban', 'Prohibido', 'prohibido']];
 // El plugin del departamento (Cambios.md) y lo que incluye.
 const INCLUYE = ['MCPs', 'Skills', 'Tools', 'Rules'];

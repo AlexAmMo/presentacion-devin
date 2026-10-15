@@ -15,7 +15,7 @@
 import { s, px } from '../../design/motion.js';
 import { icono } from '../../design/iconos.js';
 import { traspaso } from '../../design/dibujos.js';
-import { en, cabecera, consejo, crearPasos, pausa, decimal, marcar } from './comun.js';
+import { en, cabecera, consejo, crearPasos, decimal, marcar } from './comun.js';
 
 // Ventanas de 200K (en miles de tokens): lo que ya tiene el agente, lo que lee el subagente y
 // el resultado que vuelve.
@@ -159,9 +159,9 @@ export default function ({ escena, raiz }) {
         en(xa, pasillo + px('--esp-2'), '<p class="tipo-etiqueta" data-rotulo style="margin:0;color:var(--color-texto-2)">El agente solo ve el resultado y mantiene limpio su contexto</p>',
           { paso: 2, hasta: 3, propio: true, estilo: `width:${xs - xa}px;text-align:center` }) +
         // El coste de cada uno: sube a la vez que la flecha.
-        en(AV.x, 776, `<span class="contador" data-columna="${colA}">${icono('coins')}<span data-cifra>${decimal(COSTE.agente, 2)}</span><span class="contador__unidad">u. · agente</span></span>`,
+        en(AV.x, 776, `<span class="contador" data-columna="${colA}">${icono('coins')}<span data-cifra>${decimal(COSTE.agente, 2)}</span><span class="contador__unidad">ACUs · agente</span></span>`,
           { paso: 2, hasta: 3, propio: true }) +
-        en(SV.x, 776, `<span class="contador contador--coste" data-columna="${colS}">${icono('coins')}<span data-cifra>${decimal(COSTE.subagente, 2)}</span><span class="contador__unidad">u. · subagente</span></span>`,
+        en(SV.x, 776, `<span class="contador contador--coste" data-columna="${colS}">${icono('coins')}<span data-cifra>${decimal(COSTE.subagente, 2)}</span><span class="contador__unidad">ACUs · subagente</span></span>`,
           { paso: 2, hasta: 3, propio: true }) +
         // Paso 3: el agente, con el modelo del IDE, lanza tres tipos de subagente, cada uno con
         // un modelo según la complejidad de su tarea; debajo, la frase.
@@ -188,7 +188,7 @@ export default function ({ escena, raiz }) {
           `<span class="tipo-mono-s" style="display:flex;align-items:center;gap:var(--esp-1);transform:translateY(-50%);color:var(--color-texto-2)">${icono('git-branch', 'icono--s')}worktree ${i ? 'B' : 'A'}</span>`,
           { paso: 6, orden: F3 + 2 })).join('') +
         // A la derecha, centrados en la altura del gráfico: la frase y, en el paso 7, el consejo.
-        en(DERECHA_X, 470, '<p class="tipo-texto" style="margin:0;font-weight:var(--peso-enfasis)">Contexto separado no significa archivos aislados</p>',
+        en(DERECHA_X, 470, '<p class="tipo-texto" style="margin:0;font-weight:var(--peso-enfasis);text-wrap:balance">Contexto separado no significa archivos aislados</p>',
           { paso: 6, orden: F3 + 3, estilo: `width:${1800 - DERECHA_X}px` }) +
         en(DERECHA_X, 600, consejo('No por defecto: cuando separar aporte más que coordinar'), { paso: 7, efecto: 'entrarConMuelle', estilo: `width:${1800 - DERECHA_X}px` });
 
@@ -279,13 +279,12 @@ export default function ({ escena, raiz }) {
       }
       if (paso === 6) {
         // Cambio de fase: lo anterior se va de una vez. Los dos subagentes y el archivo entran a la
-        // vez, sus cables se trazan deprisa y aparece el conflicto; tras una pausa, la solución,
+        // vez, sus cables se trazan deprisa y aparece el conflicto; seguida, sin pausa, la solución,
         // igual de deprisa, y la frase.
         salir();
         pasos.animar(6, tl, { orden: F3, sinSalidas: true });
         trazarJuntas(tl, todos('[data-cables="0"] path'));
         pasos.animar(6, tl, { orden: F3 + 1, sinSalidas: true });
-        pausa(tl);
         pasos.animar(6, tl, { orden: F3 + 2, sinSalidas: true });
         trazarJuntas(tl, todos('[data-cables="1"] path'));
         pasos.animar(6, tl, { orden: F3 + 3, sinSalidas: true });

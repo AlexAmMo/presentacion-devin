@@ -6,7 +6,8 @@
 // Las tres ventanas son de 1M (max_context_length de Context Arena: 1.000.000 para los
 // dos Claude y 1.050.000 para GPT-5.6 Sol), así que 256K ≈ 25 % y 512K ≈ 50 %.
 // Datos: research_notes/Graficas y tools para el guion/degradacion_contexto.md (4-A).
-// Pasos: 1 ejes y fuente · 2 las tres líneas a la vez y, al acabar, las franjas, una tras otra · 3 la tabla.
+// Pasos: 1 ejes y fuente y, enseguida, las tres líneas a la vez y, al acabar, las franjas, una tras
+// otra · 2 la tabla.
 import { grafica } from '../../design/dibujos.js';
 import { en, cabecera, fuente, crearPasos, marcar, marcarSeries, trazarSeries } from './comun.js';
 
@@ -50,16 +51,16 @@ export default function ({ escena, raiz }) {
         // El título, centrado sobre la tabla; la tabla entra entera: con los bordes colapsados, una
         // fila oculta seguiría dibujando su línea.
         en(1252, 268, `<div style="display:flex;flex-direction:column;align-items:center;width:max-content">
-          <div data-paso="3" style="text-align:center"><p class="tipo-texto-s" style="margin:0;font-weight:var(--peso-enfasis)">Acierto según la ventana usada</p>
+          <div data-paso="2" style="text-align:center"><p class="tipo-texto-s" style="margin:0;font-weight:var(--peso-enfasis)">Acierto según la ventana usada</p>
             <p class="tipo-etiqueta" style="margin:0;color:var(--color-texto-3)">Misma prueba · ventanas de 1M</p></div>
-          <table class="tabla" data-paso="3" data-orden="1" style="margin-top:var(--esp-5)"><thead><tr><th>Modelo</th>${cabeza}</tr></thead><tbody>${filas}</tbody></table></div>`);
+          <table class="tabla" data-paso="2" data-orden="1" style="margin-top:var(--esp-5)"><thead><tr><th>Modelo</th>${cabeza}</tr></thead><tbody>${filas}</tbody></table></div>`);
 
-      // Dentro de la gráfica, todo en el paso 2: las series, con su coreografía (línea, y después
-      // puntos y nombre), y al acabar, cada franja (fondo, bordes y nombre), sin desplazarse.
+      // Dentro de la gráfica, todo en el paso 1, tras los ejes: las series, con su coreografía (línea,
+      // y después puntos y nombre), y al acabar, cada franja (fondo, bordes y nombre), sin desplazarse.
       const g = raiz.querySelector('.grafica');
       const [fondos, bordes, notas] = ['.grafica__franja', '.grafica__franja-borde', '.grafica__nota'].map(q => [...g.querySelectorAll(q)]);
-      fondos.forEach((f, i) => marcar([f, bordes[i], notas[i]], 2, { propio: true }));
-      marcarSeries(g, 2);
+      fondos.forEach((f, i) => marcar([f, bordes[i], notas[i]], 1, { propio: true }));
+      marcarSeries(g, 1);
       pasos = crearPasos(raiz);
       pasos.poner(0);
     },
@@ -67,8 +68,8 @@ export default function ({ escena, raiz }) {
     irA(paso, { animar = false, tl } = {}) {
       if (!animar || !tl) return pasos.poner(paso);
       pasos.animar(paso, tl);
-      if (paso !== 2) return;
-      // Las tres líneas a la vez y, cuando acaban, las franjas, una tras otra, sin otro clic.
+      if (paso !== 1) return;
+      // Tras los ejes, las tres líneas a la vez y, cuando acaban, las franjas, una tras otra, sin otro clic.
       const g = raiz.querySelector('.grafica');
       trazarSeries(tl, g, { escalonado: 0 });
       const [fondos, bordes, notas] = ['.grafica__franja', '.grafica__franja-borde', '.grafica__nota'].map(q => [...g.querySelectorAll(q)]);

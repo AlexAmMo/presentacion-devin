@@ -14,7 +14,8 @@ export function crearCircuito({ mundo, x, y }) {
   const raiz = document.createElement('div');
   raiz.className = 'circuito-fijo';
   raiz.style.cssText = `position:absolute;left:${x + CIRCUITO.x}px;top:${y + CIRCUITO.y}px`;
-  const paradas = Object.entries(CIRCUITO.paradas).map(([id, nombre]) => ({ id: id.slice(1), nombre }));
+  // Cada parada, numerada por su orden en el método (1 a 6), no por su escena.
+  const paradas = Object.entries(CIRCUITO.paradas).map(([, nombre], i) => ({ id: String(i + 1), nombre }));
   raiz.innerHTML = circuito({ paradas, ancho: CIRCUITO.ancho, alto: CIRCUITO.alto, actual: 0 });
   mundo.append(raiz);
 
@@ -26,6 +27,7 @@ export function crearCircuito({ mundo, x, y }) {
   const sitio = i => grupos[i].querySelector('circle');
 
   return {
+    raiz,
     pintar(actual) {
       gsap.killTweensOf(punto);
       grupos.forEach((g, i) => g.setAttribute('class', clases(actual, i)));

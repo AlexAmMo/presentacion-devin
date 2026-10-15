@@ -80,6 +80,13 @@ export const decimal = (n, decimales) =>
 
 /** Pausa de lectura dentro de un paso (--pausa-lectura-corta, --pausa-lectura…). En modo estático, nada. */
 export const pausa = (tl, nombre = '--pausa-lectura-corta') => (esEstatico() ? tl : tl.to({}, { duration: s(nombre) }));
+
+/** Añade a tl, seguidas, las animaciones dadas (timelines de grupos): cada una empieza
+ *  --escalonado-solape antes de que acabe la anterior, sin pausas. Las vacías no cuentan. */
+export function encadenar(tl, animaciones) {
+  animaciones.filter(a => a.duration() > 0).forEach((a, i) => tl.add(a, i ? `-=${s('--escalonado-solape')}` : undefined));
+  return tl;
+}
 //
 // Cada elemento dice en el marcado cuándo cambia (todas opcionales):
 // - data-paso="N": aparece en el paso N; antes, oculto.
@@ -88,7 +95,8 @@ export const pausa = (tl, nombre = '--pausa-lectura-corta') => (esEstatico() ? t
 // - data-clase="K clase": desde el paso K lleva esa clase (cambio de estado al instante).
 // - data-efecto: cómo entra (por defecto aparecer; también entrarConMuelle, entrarEnVentana,
 //   llenarVentana, trazar…); data-salida: cómo se va (por defecto desaparecer; vaciarVentana…).
-//   data-opciones='{"distancia":0}': opciones del efecto, en JSON (nunca duraciones ni curvas).
+//   data-opciones='{"distancia":0}': opciones del efecto, en JSON. Una duración o una curva, solo
+//   leída de su variable al montar (duration: s('--dur-trazado-serie'), como en E03 y E05); nunca literal.
 // - data-orden="1": dentro de un paso, los grupos entran uno tras otro, de menor a mayor
 //   (por defecto 0). La escena puede animar cada grupo por separado e intercalar lo suyo.
 //   Lo que se atenúa, se aviva o cambia de clase lo hace con su grupo (el de su data-orden).

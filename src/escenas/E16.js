@@ -4,8 +4,9 @@
 // pasa por el conector: cada servicio publica un servidor una vez y cualquier agente lo usa.
 // Fase 2 (pasos 3–4), para qué sirve: Devin, con el conector en su borde, unido al servidor de
 // GitHub, que trae sus tools; entre ellas, create_pull_request, la del ejemplo de Tools propias.
-// Después, el servidor ocupa su sitio entre los MCPs del departamento, externos e internos, y al
-// pie, centrado, dónde está la guía de instalación.
+// Después, el servidor ocupa su sitio entre los MCPs del departamento, externos e internos (de
+// DS-Workspace sale una subrama a Datahub, que llega a través de él), y al pie, centrado, dónde
+// está la guía de instalación.
 // Pasos: 1 sin estándar · 2 con MCP · 3 qué trae un servidor · 4 los MCPs del departamento.
 import { gsap } from 'gsap';
 import { s, v, px } from '../../design/motion.js';
@@ -23,9 +24,10 @@ const AGENTES = ['Devin', 'Otro agente', 'IDE con IA'];
 const SERVICIOS = [[logoGithub, 'GitHub'], [logoAtlassian, 'Atlassian'], [logoSonar, 'Sonar']];
 const COLUMNAS = [440, 960, 1480];
 const FILA_AGENTES = 300, FILA_SERVICIOS = 700, NUDO_Y = 575, LEYENDA_Y = 830;
-// Fase 2, centrada en la altura C: el agente, el servidor de GitHub en el paso 3 (GX) y la columna
-// de los del departamento en el paso 4 (LX). Sus grupos (data-orden) empiezan en F2.
-const F2 = 10, C = 560, AX = 300, GX = 900, LX = 1300;
+// Fase 2, centrada en la altura C (el centro del espacio bajo el título): el agente, el servidor de
+// GitHub en el paso 3 (GX) y la columna de los del departamento en el paso 4 (LX). Sus grupos
+// (data-orden) empiezan en F2.
+const F2 = 10, C = 600, AX = 300, GX = 900, LX = 1180;
 // Algunas tools del servidor MCP oficial de GitHub; la del medio es la del ejemplo de E15.
 const TOOLS = ['get_file_contents', 'create_branch', 'create_pull_request', 'list_issues', 'search_code'];
 const EJEMPLO = 2;
@@ -89,12 +91,9 @@ export default function ({ escena, raiz }) {
         en(AX + agenteAncho - r, C - r, enchufe, { paso: 3, orden: F2, efecto: 'entrarConMuelle' }) +
         `<div data-lista style="position:absolute;left:${LX}px;top:0;width:${SANCHO}px;display:grid;gap:var(--esp-5)">${columna}</div>` +
         `<div data-tools style="position:absolute;left:${GX + SANCHO + 160}px;top:0;display:grid;gap:var(--esp-2)" data-paso="3" data-hasta="4" data-orden="${F2 + 3}">${tools}</div>` +
-        centrado(760, `<p class="tipo-texto-s" style="margin:0;font-weight:var(--peso-enfasis)">Sus tools se suman a las de serie, con el mismo sistema de permisos</p>
-          <p class="tipo-texto-s" style="margin:var(--esp-1) 0 0;color:var(--color-texto-2)">La del ejemplo de «Tools propias» llega por aquí: el agente la ve como <span class="tipo-mono-s" style="color:var(--color-texto-1)">mcp__github__create_pull_request</span></p>`,
-          { paso: 3, hasta: 4, orden: F2 + 5 }) +
         centrado(1080 - px('--margen-y') - 40,
           '<p class="tipo-etiqueta" style="margin:0;font-weight:var(--peso-texto);color:var(--color-texto-2)">La guía de instalación completa está disponible en el repositorio <b style="font-weight:var(--peso-fuerte);color:var(--color-texto-1)">Master-Control-Program</b>.</p>',
-          { paso: 4, orden: F2 + 9 });
+          { paso: 4, orden: F2 + 11 });
 
       raiz.innerHTML =
         cabecera(escena, 1680) +
@@ -115,6 +114,12 @@ export default function ({ escena, raiz }) {
       const servicios = [...raiz.querySelectorAll('[data-servicio]')].map(caja);
       enEjemplo = { x: GX - columnas[0].x, y: C - (columnas[0].y + columnas[0].alto / 2) };
 
+      // Datahub, a la derecha de DS-Workspace (el último de la columna), a su altura: llega a través de él.
+      const ds = columnas.at(-1), datahubX = LX + SANCHO + px('--esp-6');
+      raiz.insertAdjacentHTML('beforeend', en(datahubX, ds.y + ds.alto / 2,
+        `<div class="servidor" style="transform:translateY(-50%)">${icono('database')}<span class="servidor__nombre">Datahub</span></div>`,
+        { paso: 4, orden: F2 + 10, efecto: 'entrarConMuelle' }));
+
       // El resaltado de la del ejemplo, alrededor de su fila.
       const f = filas[EJEMPLO], [hx, hy] = [px('--esp-2'), px('--esp-1')];
       raiz.insertAdjacentHTML('beforeend', en(f.x - hx, f.y - hy, '<div class="resaltado" style="inset:0"></div>',
@@ -132,6 +137,7 @@ export default function ({ escena, raiz }) {
         COLUMNAS.map((_, i) => cable(vertical([960, NUDO_Y + r], arriba(i)), paso(2, 3, 1))).join('') +
         cable(horizontal(salida, [GX, C]), paso(3, 4, F2 + 1)) +
         columnas.map(c => cable(horizontal(salida, [LX, c.y + c.alto / 2]), paso(4, null, F2 + 8))).join('') +
+        cable(horizontal([LX + SANCHO, ds.y + ds.alto / 2], [datahubX, ds.y + ds.alto / 2]), paso(4, null, F2 + 9)) +
         `<g data-abanico>${abanico({ desde: [GX + SANCHO + px('--esp-3'), C], hasta: filas.map(t => [t.x - px('--esp-3'), t.y + t.alto / 2]) })}</g>`;
       marcar(svg.querySelectorAll('[data-abanico] .abanico__flecha'), 3, { hasta: 4, orden: F2 + 3, efecto: 'trazar' });
 

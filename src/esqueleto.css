@@ -29,6 +29,7 @@ body.presentacion { overflow: hidden; background: var(--color-fondo); color: var
 .texto__codigo, .texto__simbolo { font-family: var(--fuente-mono); font-weight: var(--peso-texto); }
 .texto__codigo { font-size: var(--tipo-mono-s); }
 .texto__icono { vertical-align: middle; }
+.texto__fuerte { font-weight: var(--peso-enfasis); }
 
 .marcador__pasos {
   list-style: none; margin: 0; padding: 0; min-height: 0; overflow: hidden;

@@ -179,7 +179,9 @@ function tipografia() {
   const [familias] = grupos('Tipografía · familias');
   $('#tipo-familias tbody').innerHTML = familias.variables.map(x => {
     const estilo = x.nombre.startsWith('--fuente') ? `font-family:var(${x.nombre})` : `font-weight:var(${x.nombre})`;
-    return `<tr><td>${codigo(x.nombre)}</td><td>${esc(x.valor)}</td><td style="${estilo};font-size:var(--doc-h3)">Devin en el día a día · 0123</td><td>${conCodigo(x.nota)}</td></tr>`;
+    // Inter va recortada a los glifos de «Devin»: su muestra es solo esa palabra.
+    const muestra = x.nombre === '--fuente-devin' ? 'Devin' : 'Devin en el día a día · 0123';
+    return `<tr><td>${codigo(x.nombre)}</td><td>${esc(x.valor)}</td><td style="${estilo};font-size:var(--doc-h3)">${muestra}</td><td>${conCodigo(x.nota)}</td></tr>`;
   }).join('');
   const [escala] = grupos('Tipografía · escala');
   $('#tipo-escala tbody').innerHTML = escala.variables.map(x => {
@@ -278,7 +280,7 @@ const pilaDemo = clase => `<div style="display:grid;gap:var(--esp-1);justify-ite
   <div class="corchete-etiqueta${clase}" style="margin-left:${holguraDemo()}px">${icono('check', 'icono--s corchete-etiqueta__acierto')}${icono('x', 'icono--s corchete-etiqueta__fallo')}Caché<span class="corchete-etiqueta__detalle">5 min</span></div></div>`;
 const etiquetasDemo = clase => ['Modelos', 'Effort', 'Contexto'].map((t, i) => `<span class="etiqueta${i && clase ? ' ' + clase : ''}">${t}</span>`).join('');
 const herramientaDemo = `<div class="herramienta"><div class="herramienta__circulo">${icono('wrench', 'icono--l')}</div><span class="herramienta__nombre">incidencias</span></div>`;
-const paradasDemo = ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(24 + i), nombre }));
+const paradasDemo = ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(i + 1), nombre }));
 let posicionDial = 0;
 // Demo de la cámara: un escenario de 640×360 y cuatro vistas [centro x, centro y, ancho visible] del mundo.
 const PANTALLA_DEMO = [640, 360];
@@ -729,7 +731,7 @@ async function pintarComprobaciones() {
   await document.fonts.ready;
   if (!$('#comprobaciones-resumen')) return; // ?lamina=…: la página se ha sustituido por una lámina
   const lista = comprobaciones();
-  const fuentes = ['300 24px Outfit', '400 24px Outfit', '500 24px Outfit', '600 24px Outfit', '400 24px "DM Mono"', '500 24px "DM Mono"'];
+  const fuentes = ['300 24px Outfit', '400 24px Outfit', '500 24px Outfit', '600 24px Outfit', '400 24px "DM Mono"', '500 24px "DM Mono"', '500 24px Inter'];
   lista.push({ titulo: 'Las fuentes locales están cargadas', fallos: fuentes.filter(f => !document.fonts.check(f, 'Devin 0123')) });
   const bien = lista.filter(c => !c.fallos.length).length;
   const todas = bien === lista.length;

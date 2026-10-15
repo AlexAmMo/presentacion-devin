@@ -28,6 +28,8 @@
 //   coloca después del vuelo y de --pausa-tras-camara: la escena nunca mueve la cámara.
 //   Los cambios de clase van con tl.set(…, { attr: { class } }), para que el timeline
 //   pueda completarse de golpe si el ponente avanza antes de que termine.
+// - activa(si) (opcional): la escena pasa a ser la actual (true) o deja de serlo (false). Para
+//   lo que se mueve sin fin mientras se ve (la flecha que gira de E02): se pausa al irse.
 // - desmontar(): mata sus timelines y vacía raiz.
 // - Los pasos [A] ocurren en la misma pantalla, sin acercar la cámara.
 //

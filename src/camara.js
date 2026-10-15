@@ -8,7 +8,7 @@
 // - hacia o desde la vista general → --dur-camara-larga, con --ease-camara-larga.
 import { s, v, px } from '../design/motion.js';
 import { ESCENAS } from './datos/escenas.js';
-import { ZONAS, TAPAS, HUB } from './datos/mapa.js';
+import { ZONAS, TAPAS } from './datos/mapa.js';
 
 // Holgura alrededor del mapa entero en la vista general, en px del mundo: la de las tapas de
 // fuera y un margen hasta el borde de la pantalla.
@@ -58,14 +58,12 @@ export function crearCamara({ mundo, portada }) {
       return vista(ampliar(union(enMapa.map(rectDe)), MARGEN_GENERAL), 'general');
     },
 
-    /** La vista de un paso: su encuadre propio (otra escena, la vista general, la portada o el diagrama del hub) o la pantalla de su escena. */
+    /** La vista de un paso: su encuadre propio (otra escena, la vista general o la portada) o la pantalla de su escena. */
     vistaDe(paso) {
       const e = paso.escena;
       const encuadre = paso.encuadre ?? (e.zona === 'general' ? 'general' : null);
       if (encuadre === 'general') return camara.general();
       if (encuadre === 'portada') return vista(portada(), 'hub');
-      // El diagrama del hub en el centro de la pantalla: su pantalla, desplazada hasta su centro.
-      if (encuadre === 'diagrama') return vista({ x: e.x + HUB.centro.x - e.ancho / 2, y: e.y + HUB.centro.y - e.alto / 2, ancho: e.ancho, alto: e.alto }, 'hub');
       const destino = encuadre ? ESCENAS.find(o => o.id === encuadre) : e;
       return vista(rectDe(destino), destino.zona);
     },

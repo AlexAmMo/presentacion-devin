@@ -12,14 +12,14 @@ import { icono } from '../../design/iconos.js';
 import { en, cabecera, fuente, consejo, decimal, crearPasos, marcar } from './comun.js';
 
 const NIVELES = ['Low', 'Medium', 'High', 'XHigh', 'Max'];
-// Por nivel (cifras ficticias): latencia (s) y coste (u.).
+// Por nivel (cifras ficticias): latencia (s) y coste (ACUs).
 const POR_NIVEL = [[3, 0.02], [6, 0.04], [12, 0.08], [22, 0.15], [35, 0.24]];
 // Terminal-Bench 4.0 (E06): las demás líneas, atenuadas y sin nombre (ya se vieron en E06); Opus 5.5, con la lectura.
 const SERIES = [
-  { nombre: '', estilo: 4, puntos: [[1.46, 7.9], [2.69, 20.9], [4.12, 26.1], [5.39, 28.5], [7.89, 37.3]], marcar: false },
-  { nombre: '', estilo: 3, puntos: [[4.25, 28.5], [7.00, 41.2], [10.64, 47.0], [13.48, 50.6], [15.83, 52.3]], marcar: false },
-  { nombre: '', estilo: 2, puntos: [[5.70, 40.2], [7.80, 43.4], [10.50, 49.4], [15.80, 51.3], [19.50, 55.8]], marcar: false },
-  { nombre: '', estilo: 1, puntos: [[4.95, 49.7], [6.15, 53.9], [7.21, 57.9], [7.48, 57.6], [10.35, 56.7]], marcar: false },
+  { nombre: '', estilo: 1, puntos: [[1.46, 7.9], [2.69, 20.9], [4.12, 26.1], [5.39, 28.5], [7.89, 37.3]], marcar: false },
+  { nombre: '', estilo: 2, puntos: [[4.25, 28.5], [7.00, 41.2], [10.64, 47.0], [13.48, 50.6], [15.83, 52.3]], marcar: false },
+  { nombre: '', estilo: 4, puntos: [[5.70, 40.2], [7.80, 43.4], [10.50, 49.4], [15.80, 51.3], [19.50, 55.8]], marcar: false },
+  { nombre: '', estilo: 3, puntos: [[4.95, 49.7], [6.15, 53.9], [7.21, 57.9], [7.48, 57.6], [10.35, 56.7]], marcar: false },
   { nombre: 'Opus 5.5', estilo: 'acento', puntos: [[1.29, 38.5], [2.94, 57.6], [3.88, 64.2], [7.35, 66.4], [11.24, 64.8]],
     resaltar: [0, 1, 3, 4], notas: [[0, 'Low', 'abajo'], [1, 'Medium +19', 'izquierda'], [3, 'XHigh', 'arriba'], [4, 'Max −2', 'abajo']] },
 ];
@@ -70,7 +70,7 @@ export default function ({ escena, raiz }) {
         columna(0, `<div data-paso="1"><div data-dial></div></div>
           <div data-paso="2" data-propio style="display:flex;gap:var(--esp-3);justify-content:center;margin-top:var(--esp-6)">
             <span class="contador">${icono('hourglass')}<span data-cifra>3</span><span class="contador__unidad">s</span></span>
-            <span class="contador contador--coste">${icono('coins')}<span data-cifra>0,02</span><span class="contador__unidad">u.</span></span>
+            <span class="contador contador--coste">${icono('coins')}<span data-cifra>0,02</span><span class="contador__unidad">ACUs</span></span>
           </div>`) +
         columna(1, `<div data-paso="3">${svg}<div style="margin:var(--esp-3) 0 0 var(--esp-7);white-space:nowrap">${fuente('Terminal-Bench 4.0 · Anthropic, 22-09-2026')}</div></div>`) +
         // La tercera, en el sitio de la segunda: entra entera desde la derecha.

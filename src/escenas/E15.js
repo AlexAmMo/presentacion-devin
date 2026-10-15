@@ -1,16 +1,20 @@
-// E15 · Herramientas del departamento. Pantalla propia, en dos fases que se relevan.
+// E15 · Tools del departamento. Pantalla propia, en dos fases que se relevan.
 // Fase 1 (pasos 1–2): un ejemplo claro, create_pull_request. Primero, la herramienta y su ficha
 // (lo que lee de ella el agente: nombre, descripción y parámetros), juntas, centradas y en grande.
 // Después la pantalla se reordena en un esquema: Agente → Tool → sus tres elementos (nombre,
 // descripción y parámetros) → la ficha, con una flecha de cada elemento a su campo.
 // Fase 2 (paso 3): tool o skill, en una tabla de dos columnas, «manos» y «conocimiento», y debajo
-// «No compiten», en una sola entrada.
+// «No compiten», en una sola entrada. La etiqueta de arriba pasa a «Tools vs Skills» y el título,
+// al de la comparación (el mensaje de la escena es el de la fase 1).
 // Pasos: 1 la herramienta y su ficha · 2 el esquema · 3 tool o skill.
 import { gsap } from 'gsap';
 import { icono } from '../../design/iconos.js';
 import { abanico } from '../../design/dibujos.js';
 import { s, v, px } from '../../design/motion.js';
 import { en, cabecera, crearPasos, marcar } from './comun.js';
+import { enLinea } from '../texto.js';
+// El icono oficial de GitHub para un pull request (Octicons, MIT), tal cual.
+import iconoPullRequest from '../../design/assets/logos/github-pull-request.svg';
 
 // El ejemplo de la fase 1 y lo que el agente lee de él.
 const EJEMPLO = ['create_pull_request', 'Abre un pull request con los cambios de una rama. Úsala para proponer cambios a revisión.', 'branch: texto · title: texto · body: texto'];
@@ -27,6 +31,8 @@ const COMPARACION = [
 ];
 // Grupos (data-orden) de la fase 2: así no se mezclan con los de la fase anterior, que sale antes.
 const F2 = 10;
+// La etiqueta y el título de la fase 2.
+const ETIQUETA_F2 = 'Tools vs Skills', TITULO_F2 = 'Una **tool** «da manos» al LLM, una **skill** «da conocimiento»';
 const ARRIBA = 330;
 // El esquema (paso 2), centrado en la banda de contenido; en el paso 1, la herramienta y la ficha,
 // centradas como pareja y más grandes.
@@ -56,8 +62,9 @@ export default function ({ escena, raiz }) {
       // (lo tienen sus piezas, y las que se mueven, en un envoltorio), así que su sitio no cambia.
       const fila = `<div data-fila style="position:absolute;left:120px;top:${ESQUEMA.centro}px;width:1680px;height:0;display:flex;justify-content:center;align-items:center">
           <div class="agente agente--circulo" data-agente data-paso="2" data-hasta="3" data-efecto="entrarConMuelle">${icono('bot', 'icono--l')}<span class="agente__nombre">Devin</span></div>
-          <div data-paso="1" data-hasta="3" data-efecto="entrarConMuelle" style="margin-left:${ESQUEMA.huecos[0]}px"><div data-pieza="herramienta"><div class="herramienta"><div class="herramienta__circulo" data-circulo>${icono('git-pull-request', 'icono--l')}</div><span class="herramienta__nombre">${nombre}</span></div></div></div>
-          <div style="display:grid;gap:var(--esp-2);margin-left:${ESQUEMA.huecos[1]}px">${ELEMENTOS.map(e => `<div class="tipo-texto-s" data-elemento data-paso="2" data-hasta="3" data-orden="2"><span>${e}</span></div>`).join('')}</div>
+          <div data-paso="1" data-hasta="3" data-efecto="entrarConMuelle" style="margin-left:${ESQUEMA.huecos[0]}px"><div data-pieza="herramienta"><div class="herramienta"><div class="herramienta__circulo" data-circulo><img class="icono icono--l" src="${iconoPullRequest}" alt=""></div><span class="herramienta__nombre">${nombre}</span></div></div></div>
+          <div style="position:relative;display:grid;gap:var(--esp-2);margin-left:${ESQUEMA.huecos[1]}px">
+            <p class="tipo-etiqueta" data-que-recibe data-paso="2" data-hasta="3" data-orden="2" style="position:absolute;left:0;bottom:100%;margin:0;white-space:nowrap;color:var(--color-texto-3)">Qué recibe el agente en el contexto:</p>${ELEMENTOS.map(e => `<div class="tipo-texto-s" data-elemento data-paso="2" data-hasta="3" data-orden="2"><span>${e}</span></div>`).join('')}</div>
           <div data-paso="1" data-hasta="3" style="margin-left:${ESQUEMA.huecos[2]}px"><div data-pieza="ficha">${ficha}</div></div></div>`;
       // La tabla y su pie entran en una sola animación: todo en el mismo grupo, escalonado.
       const columna = (ic, nombre, papel) => `<span style="display:inline-flex;align-items:center;gap:var(--esp-1)">${icono(ic, 'icono--s')}${nombre}${icono('arrow-right', 'icono--s')}${papel}</span>`;
@@ -76,6 +83,16 @@ export default function ({ escena, raiz }) {
         en(120, 924, `<p class="tipo-texto" style="margin:0;display:flex;align-items:center;gap:var(--esp-2)">${icono('wrench')}+${icono('puzzle')}<b style="font-weight:var(--peso-enfasis);margin-left:var(--esp-2)">No compiten:</b> lo habitual es una herramienta con una skill que explica cuándo y cómo usarla.</p>`,
           { paso: 3, orden: F2 });
 
+      // La etiqueta y el título cambian con la fase: en la comparación, los suyos.
+      const etiqueta = raiz.querySelector('.etiqueta').parentElement, titulo = raiz.querySelector('h2').parentElement;
+      const [otraEtiqueta, otroTitulo] = [etiqueta, titulo].map(el => el.cloneNode(true));
+      otraEtiqueta.querySelector('.etiqueta').lastChild.textContent = ETIQUETA_F2;
+      otroTitulo.querySelector('h2').innerHTML = enLinea(TITULO_F2);
+      etiqueta.after(otraEtiqueta);
+      titulo.after(otroTitulo);
+      marcar([etiqueta, titulo], null, { hasta: 3 });
+      marcar([otraEtiqueta, otroTitulo], 3, { orden: F2 });
+
       // Medidas en la pantalla (px de 1920 × 1080).
       const caja = raiz.getBoundingClientRect(), k = caja.width / 1920;
       const rect = el => { const r = el.getBoundingClientRect(); return { x: (r.left - caja.left) / k, y: (r.top - caja.top) / k, ancho: r.width / k, alto: r.height / k }; };
@@ -83,6 +100,10 @@ export default function ({ escena, raiz }) {
       // La herramienta, con su círculo a la altura del centro de la fila (su nombre va debajo).
       const herramienta = raiz.querySelector('[data-pieza="herramienta"]');
       herramienta.style.marginTop = `${2 * (ESQUEMA.centro - centroY(rect(raiz.querySelector('[data-circulo]'))))}px`;
+      // Encima de los elementos, a la altura de la parte de arriba de la ficha (las flechas que suben a
+      // su cabecera no lo cruzan): qué recibe el agente.
+      const queRecibe = raiz.querySelector('[data-que-recibe]');
+      queRecibe.style.marginBottom = `${rect(queRecibe.parentElement).y - rect(raiz.querySelector('[data-pieza="ficha"]')).y + px('--esp-3')}px`;
       // Flechas del esquema: del agente a la herramienta, de la herramienta a sus elementos (abanico)
       // y de cada elemento a su campo de la ficha.
       const [agente, circulo] = [rect(raiz.querySelector('[data-agente]')), rect(raiz.querySelector('[data-circulo]'))];

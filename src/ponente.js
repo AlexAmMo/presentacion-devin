@@ -1,11 +1,12 @@
 // Vista de ponente: la abre la presentación con la tecla P (index.html?ponente).
-// Muestra la escena y el paso actuales, el paso siguiente, el mensaje de la escena, el
-// progreso y un cronómetro, y desde ella también se avanza (botones o teclado).
+// Muestra la escena (su mensaje y, debajo, su texto del guion, para saber qué decir), lo que se
+// ve en el paso actual y, en una línea, lo que viene después; el progreso y un cronómetro. Desde
+// ella también se avanza (botones o teclado). Las acotaciones técnicas de escenas.md no se ven.
 // El cronómetro empieza con el primer avance y se guarda en sessionStorage: sobrevive
 // si esta ventana se recarga.
 import { icono } from '../design/iconos.js';
 import { MARCA, LATIDO_MS, DESTINO, esNuestro } from './enlace.js';
-import { enLinea } from './texto.js';
+import { enLinea, sinTecnica, primeraFrase } from './texto.js';
 
 const CRONOMETRO = 'devin-cronometro';
 const minutos = n => `${String(Math.round(n * 10) / 10).replace('.', ',')}\u00a0min`;
@@ -39,10 +40,11 @@ export function iniciarPonente() {
           <p class="ponente__lugar" data-lugar></p>
           <h1 class="ponente__titulo" data-titulo></h1>
           <p class="ponente__mensaje" data-mensaje></p>
+          <div class="ponente__guion" data-guion></div>
         </section>
         <section class="ponente__progreso" aria-label="Progreso">
           <p data-progreso></p>
-          <div class="ponente__barra-progreso"><span data-barra></span></div>
+          <div class="ponente__barra-progreso"><span data-barra style="width:0"></span></div>
         </section>
       </div>
       <div class="ponente__columna">
@@ -51,16 +53,16 @@ export function iniciarPonente() {
           <div class="ponente__texto" data-actual></div>
         </section>
         <section class="ponente__paso ponente__paso--siguiente" aria-label="Paso siguiente">
-          <h2 class="ponente__rotulo" data-rotulo-siguiente></h2>
-          <div class="ponente__texto" data-siguiente></div>
+          <h2 class="ponente__rotulo" data-rotulo-siguiente>Siguiente</h2>
+          <p class="ponente__texto" data-siguiente></p>
         </section>
       </div>
     </main>
     <nav class="ponente__mandos" aria-label="Mandos">
       <button class="ponente__boton" data-accion="retroceder">${icono('arrow-left', 'icono--s')}Anterior</button>
       <button class="ponente__boton ponente__boton--principal" data-accion="avanzar">Siguiente${icono('arrow-right', 'icono--s')}</button>
-      <button class="ponente__boton" data-accion="general" aria-keyshortcuts="O"></button>
-      <button class="ponente__boton" data-accion="avanzados" aria-keyshortcuts="A"></button>
+      <button class="ponente__boton" data-accion="general" aria-keyshortcuts="O">Vista general (O)</button>
+      <button class="ponente__boton" data-accion="avanzados" aria-keyshortcuts="A">Pasos avanzados (A)</button>
       <button class="ponente__boton" data-accion="final" aria-keyshortcuts="End">Ir a las preguntas (Fin)</button>
     </nav>`;
   const $ = q => document.querySelector(q);
@@ -99,13 +101,25 @@ export function iniciarPonente() {
     $('[data-lugar]').textContent = `${e.bloque} · ${e.id}${e.minutos != null ? ` · ~${minutos(e.minutos)}` : ''}`;
     $('[data-titulo]').innerHTML = enLinea(e.titulo);
     $('[data-mensaje]').innerHTML = enLinea(e.mensaje);
+    // El guion de la escena: sus párrafos, subapartados y puntos, tal como están en Guion Devin.md.
+    const notas = e.notas ?? [];
+    const lista = items => `<ul>${items.map(t => `<li>${enLinea(t.slice(2))}</li>`).join('')}</ul>`;
+    let guion = '', puntos = [];
+    for (const t of notas) {
+      if (t.startsWith('- ')) { puntos.push(t); continue; }
+      if (puntos.length) { guion += lista(puntos); puntos = []; }
+      guion += t.startsWith('### ') ? `<h3>${enLinea(t.slice(4))}</h3>` : `<p>${enLinea(t)}</p>`;
+    }
+    if (puntos.length) guion += lista(puntos);
+    poner('[data-guion]', notas.length ? `<h2 class="ponente__rotulo">Guion${e.guion ? ` · ${enLinea(e.guion)}` : ''}</h2>${guion}` : '');
     $('[data-rotulo-actual]').textContent = `Ahora · paso ${paso.n} de ${paso.total}${paso.avanzado ? ' · avanzado' : ''}${general ? ' · en la vista general' : ''}`;
-    const texto = p => `<p>${enLinea(p.texto)}</p>${p.detalle?.length ? `<ul>${p.detalle.map(d => `<li>${enLinea(d)}</li>`).join('')}</ul>` : ''}`;
+    // Lo que se ve en el paso, sin las acotaciones técnicas; del siguiente, solo su primera frase.
+    const texto = p => `<p>${enLinea(sinTecnica(p.texto))}</p>${p.detalle?.length ? `<ul>${p.detalle.map(d => `<li>${enLinea(sinTecnica(d))}</li>`).join('')}</ul>` : ''}`;
     $('[data-actual]').innerHTML = texto(paso);
     $('[data-rotulo-siguiente]').textContent = siguiente
       ? `Siguiente · ${siguiente.escena === e.id ? `paso ${siguiente.n}` : `${siguiente.escena} · ${siguiente.titulo}, paso ${siguiente.n}`}${siguiente.avanzado ? ' · avanzado' : ''}`
       : 'Siguiente · fin de la presentación';
-    $('[data-siguiente]').innerHTML = siguiente ? texto(siguiente) : '';
+    $('[data-siguiente]').innerHTML = siguiente ? enLinea(primeraFrase(siguiente.texto)) : '';
     $('[data-progreso]').textContent = `Paso ${progreso.n} de ${progreso.total} · previsto hasta el final de esta escena: ~${minutos(m.hastaAqui)} de ~${minutos(m.total)}`;
     $('[data-barra]').style.width = `${(progreso.n / progreso.total) * 100}%`;
     $('[data-accion="general"]').textContent = general ? 'Volver al paso (O)' : 'Vista general (O)';

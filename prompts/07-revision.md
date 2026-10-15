@@ -261,3 +261,126 @@ Cambios pedidos por el usuario en `Cambios.md`, escena a escena. Aquí, solo lo 
 - Colores nuevos (rol, semántica): `--color-obligatorio` (royal blue), `--color-opcional` (≈ #18904A, verde de la serie 3) y `--color-prohibido` (el acento: E18 no tiene otro). Su luminosidad es parecida; se distinguen también por el icono (candado, check, prohibido) y por el nombre. Pares de contraste añadidos (sobre la superficie, 3:1). Etiqueta: variantes `.etiqueta--compacta` y de las tres marcas; muestra en la lámina 3, junto a la caja de plugin (la 6 ya tenía su acento).
 - Componente nuevo `.llave` (`llave()` en `dibujos.js`): agrupa lo de debajo y señala con su pico lo que lo resume (E20); muestra en la lámina 6. Icono nuevo `circle-dollar-sign`.
 - Comprobaciones: 22/22.
+
+## Revisión con `Cambios.md` (15-10-2026, noche · segunda ronda, sin orden de diapositivas)
+
+Las notas ya no van en orden: cada bloque nombra su diapositiva. Pasos: de 96 a 92 (E02, E05, E06, E10 y E13 juntan pasos; E12 gana uno).
+
+### Supuestos que conviene confirmar
+
+- La segunda nota «E05» (las de E06/1, E06/3 y E06/4) es de E06; el título nuevo («La efectividad de un LLM depende de: **Modelo**, **Generación** y **Effort**») sí se aplica a E05, como dice su bloque.
+- E03: el título que cambia es el mensaje (el texto grande); la etiqueta sigue «Dónde está cada control».
+- E12: el documento que cae en la ventana sigue llamándose AGENTS.md (el usuario lo llama «la rule»); si las rules son el concepto canónico, podría ser `rule-1.md`.
+- El atenuado más fuerte de las series (E06) vale para todas las gráficas (E08, E10, E23 también lo usan).
+
+### Decisiones
+
+- E01: «Devin» en Inter (`--fuente-devin`), a peso medio y en el negro del logo (`--color-devin`). Devin usa NB International Pro (de pago, no se puede incrustar); Inter, que su web también carga, es la libre más parecida a su logotipo. Subconjunto latino de Google Fonts (48 KB), con su OFL.
+- Tapas: se funden en la segunda mitad del vuelo que entra en su bloque, con la curva de la cámara (`TAPAS.fundido`), y han desaparecido al llegar; antes, la cámara llegaba, esperaba y la tapa desaparecía.
+- E04: el logo de la tapa del centro va justo encima del centro del hub: al acercarse la cámara, la tapa se funde y Devin aparece donde estaba su logo. Para que la portada siga dentro de su tapa, la holgura de la del centro pasa a [440, 380]; en la vista general, el logo y el nombre quedan algo a la izquierda y abajo de su tapa.
+- Hub: la pieza «AGENTS.md» se llama «Rules» (concepto canónico), también su capa en la ventana.
+- E02: las islas entran con las preguntas (5 pasos); una línea fina (`--color-separador`) separa las ventajas de Local de Desktop y CLI; Cloud entra encadenado (`encadenar`, `--escalonado-solape`: ~1,2 s en lugar de ~4,5 s).
+- E03: mensaje «Dónde encontrar cada una de las opciones»; capturas retocadas (grises medios más claros sin tocar el negro y algo de enfoque, las cuatro igual); estado, resaltado, guía (`--dur-trazado-serie`) y etiqueta encadenados (~2 s por paso en lugar de ~3 s); «Antes de empezar» centrado sobre los tres controles.
+- E05: solo el logo y la familia (GPT, Claude, SWE); los pasos 2 a 4 en uno, encadenado (~6 s): la fila sube despacio (`--dur-desplazar`), la tabla fila a fila, su fuente y cada salto con su cifra; las cifras de los saltos vecinos, pegadas al arco a la altura de la línea entre niveles (`pegada` en `saltos()`); en el paso 3, las de los saltos desde el económico, en columna. Títulos con **negrita** (`enLinea`, `.texto__fuerte`).
+- E06: ejes y líneas en el paso 1 (3 pasos); las series que no se comparan, a `--opacidad-atenuado-serie` (0,12).
+- E07: tareas agrupadas por modelo (primero Luna) y el modelo una vez por grupo, centrado en su altura.
+- E09: cada capacidad con su tono: 1M superficie, 512K superficie 2, 256K superficie 3 (nueva).
+- E10: ejes, líneas y franjas en el paso 1 (2 pasos).
+- E11: al pasar a sesión nueva, la ventana no se va: lo compactado se recoge hasta el system prompt; los checks de «Antes de compactar…», a la altura de la primera línea.
+- E12: paso 1 solo el texto, paso 2 solo el documento que cae (5 pasos); `api/` resaltada en el paso de los niveles; «24.000 tokens × 3 llamadas» explica los 72.000; fuera «Una rule puede apuntar a una skill»; consejo «Deben ser breves y claras. Si necesitas dar una serie de instrucciones → crea una skill» (en minúscula tras el punto, como en el resto).
+- E13: una sola skill (`validar-migracion`) y, a su lado, las dos formas de activarla, centradas juntas (paso 1); en el 2, encadenado, se corren a la izquierda (`--dur-desplazar`), llega la tarea a su derecha y el contenido cae en la ventana (3 pasos). Contadores: «300 tokens · descripción de validar-migracion» y «10.000 tokens · validar-migracion completa» (con guion, como el comando, aunque la nota decía «Validar_migracion»).
+- E14: tres vueltas del bucle, todas al ritmo de la primera (2 × `--dur-vuelta`; el paso dura ~17,6 s); sin el contador de llamadas; «Esto es un agente», centrado en la columna del panel. `--dur-vuelta-rapida` ya solo la usa la escena descartada E19.
+- E16/3: fuera el texto de debajo («Sus tools se suman…» y «La del ejemplo…»); la fase 2 se centra en y = 600 (antes 560), el centro del espacio bajo el título; el paso 4 baja con ella.
+- E16/4: subrama de DS-Workspace a Datahub, a su derecha (un cable recto y un servidor con el icono `database`: Simple Icons no tiene logo de DataHub; si es el DataHub de código abierto, su logo está en su repositorio, con licencia Apache 2.0). La columna pasa de x = 1300 a 1180 para que quepa.
+- E15: título de los pasos 1 y 2, «Las tools otorgan nuevas capacidades a nuestro agente» (el mensaje de la escena); en el 3, el de antes con «tool» y «skill» en negrita; la etiqueta, «Tools del departamento» (la nota decía «departamente») y, en la comparación (paso 3), «Tools vs Skills». El icono de `create_pull_request` es el oficial de GitHub: el Octicon `git-pull-request` (MIT, `assets/logos/github-pull-request.svg`, licencia en `assets/licencias/octicons-MIT.txt`), tal cual, en negro.
+- E20/2: la píldora azul da el coste en ACUs (≈ 0,30 ACUs) y, debajo, su precio (≈ 0,60 $, con «0,50 $ en tokens»); suben a la vez. Los ACUs salen de un precio de referencia de 2 $ por ACU (el público del plan Teams; el de Enterprise lo fija el contrato): con el ejemplo de la nota, 0,5 ACUs, el precio no cuadraría con el +20 %. Se cambia en `EJEMPLO.precioAcu`. Los logos de «Modelos» usan el componente proveedor (el de Devin se salía de su fondo y se veía su cuadro blanco).
+- E21: la ventana se llena de una vez con todos los tipos (input y output); el corchete se queda como «Cache write», sin pasar a cache read; las cuatro filas entran seguidas, sin pausa.
+- E22: la llamada 2 entra con un clic (paso 2 nuevo); el temporizador se agota algo más deprisa (`--dur-temporizador`, de 3 s a 2,2 s) y su texto va centrado debajo; fuera el paso de la nota «Duración en Devin: pendiente de verificar» (sigue en la lista de pendientes de `escenas.md`). Sigue con 3 pasos.
+- E23: «Cada bloque ≈ 20.000 tokens; los de salida, 2.000», a la derecha del rótulo «Sin caché», desde la llamada 1. La línea de la gráfica ya no aparece casi entera al empezar el paso 3 (cada tramo se pintaba al construirse, `immediateRender`). Las capas de «Con caché» ya no dan tirones: con el escalonado, la segunda capa de cada llamada se veía entera antes de recortarse; ahora `llenarVentana` con `immediateRender: false` las recorta todas al empezar. Las capas de salida, con un ancho mínimo (5 × el contorno; no a escala) para que se vea su relleno blanco, y nunca en el color de la caché; la escala pasa a 275.000 tokens para que quepan. Más deprisa: cada llamada, `--dur-llamada` (0,4 s; el paso 3, de ~6,9 s a ~6 s); el rebobinado, al ritmo de una salida (el paso 4, de ~9,7 s a ~8,2 s); las conclusiones, encadenadas sin pausas (el paso 5, de ~2,8 s a ~1,2 s). Más sitio para la etiqueta de la pausa: los rótulos van 52 px sobre su ventana (antes 40) y la gráfica es algo más baja (288 px).
+- E24–E29: las paradas del circuito se numeran del 1 al 6 (antes, con el número de su escena).
+- E25/3: el log, el filtrado, el fragmento y «El resto, accesible…», encadenados sin pausas (de ~3 s a ~1,2 s). El log entero se marca con discreción como lo que no hay que hacer: el icono `ban` (el de «hábitos a evitar» de E29) tras «app.log · 1.000 líneas», cuando se filtra. Un ✕ a la derecha de la cabecera parecía un botón de cerrar.
+- E26: las tres filas comparten columnas; la de la izquierda mide lo que su texto más largo (460 px), así que cada flecha queda a la misma distancia de las dos columnas. El plan va en la columna de la derecha y «Con una extensión proporcional a la tarea.», centrado en su fila, a su izquierda, en dos líneas equilibradas.
+- E27/1: los tres tiempos encadenados sin pausas y los tramos del recorrido a `--dur-trazado-serie` (de ~8 s a ~3,9 s, con el recorrido del circuito).
+- E30: fuera el logo de Openbank (E31 lo conserva).
+
+### Repaso de todas las notas de `Cambios.md` (las tres rondas)
+
+De unas 190 notas, casi todas estaban aplicadas. Faltaban o estaban a medias:
+
+- E02 (ronda 1, iconos del mismo tamaño): el anillo de «Cada semana» medía 72 px frente a los 36 px de los otros iconos. Ahora el anillo mide 52 px y ciñe un icono de `--icono-s`: la viñeta ocupa poco más que las otras.
+- E15/2 (ronda 1): faltaba «Qué recibe el agente en el contexto:». Va encima de los tres elementos, a la altura de la parte de arriba de la ficha (justo encima de «Nombre» lo cruzaría la flecha que sube a la cabecera).
+- E17/6 (ronda 1, «acelera la animación inicial»): fuera la pausa entre el conflicto y la solución (de ~5,7 s a ~4,2 s). «Contexto separado no significa archivos aislados», en dos líneas equilibradas.
+- E21 (ronda 1, «elimina "lo que genera el modelo"»): la descripción de Output aún lo decía; ahora, «El más caro por token; incluye el razonamiento».
+- E23 (ronda 1, gráfica más alta): al hacer sitio a la etiqueta de la pausa la había bajado de 306 a 288 px. Vuelve a 306; la etiqueta del corchete va en una línea (`.corchete-etiqueta--linea`, nueva).
+- E29 (ronda 1, «Alternativa» alineada con «Contexto»): solo se había movido el rótulo. Ahora toda la columna (rótulo e iconos) empieza en el borde izquierdo de la etiqueta «Contexto», medido al montar.
+
+Quedan abiertos, sin cambiar:
+
+- E16 (ronda 1, «¿un MCP aporta tools y skills?»): la pantalla dice que el MCP aporta tools; las skills llegan con los plugins (E18). Un servidor MCP puede ofrecer además recursos y prompts.
+- Pendientes de confirmar: el consejo de E08 (la nota quedó en «Consejo:....»), la introducción de E08 (se tomó como «qué es el effort»), `validar-migracion` o `validar_migracion` (E13), los 0,30 ACUs de E20, acelerar las vueltas de E14, el logo de DataHub (E16) y `rule-1.md` (E12).
+
+### Nuevo en `design/`
+
+- Fuente Inter (`assets/fonts/Inter-wght.woff2`, `OFL-Inter.txt`) y `--fuente-devin`; `--color-negro-devin` (marca, del logo de Devin) y su rol `--color-devin`.
+- `--escalonado-solape` (y `encadenar` en `comun.js`); `--opacidad-atenuado-serie` (atenuar la lee para las series de una gráfica y `.grafica__serie.atenuado` la usa al saltar); `--color-superficie-3` y `.ventana--minima`; `saltos()` con `pegada`; comentarios de `--dur-desplazar` y `--dur-trazado-serie` ampliados.
+- `--dur-temporizador`: de 3 s a 2,2 s (dentro del rango del tiempo simulado, 2–5 s).
+- `--dur-llamada` (0,4 s) y `--ease-llamada` (`none`, antes literal en E23); `llenarVentana` con `immediateRender: false` recorta todas sus capas al empezar; la cabecera de «Tokens leídos de caché» dice que las de salida conservan su dibujo.
+- Circuito: paradas numeradas del 1 al 6 (cabecera del componente y muestras de `laminas.js` y `documentacion.js`).
+- `--repeticion-diametro`: de 72 a 52 px, con el icono a `--icono-s`. `.corchete-etiqueta--linea` (la etiqueta del corchete en una línea), con su muestra en la lámina de E23.
+- Comprobaciones: 22/22.
+
+### Portada y Devin, centrados (petición del usuario)
+
+- El logo de Devin y su nombre van centrados en la tapa del centro (y en la portada y la vista general), y el diagrama de Devin, centrado en su pantalla, que es el centro del bloque: al levantarse la tapa, el diagrama está justo debajo.
+- Antes el diagrama ocupaba la mitad izquierda de su pantalla (x = 670) para dejar sitio al panel de E14 y E18; E04 lo centraba con un encuadre de cámara propio («diagrama»), y el logo se colocaba sobre él, descentrado en su tapa.
+- Ahora el hub va centrado (E04, vista general, bajo la tapa) y solo en las escenas con panel (`HUB.conPanel`: E14 y E18) pasa a la izquierda. Cambia de sitio sin animación y sin que se vea: al entrar en su pantalla, antes del vuelo; al salir, al final. Fuera el encuadre «diagrama».
+- El logo ya no está exactamente encima del círculo de Devin: el conjunto logo y nombre está centrado sobre él (el logo, algo por encima; el nombre, algo por debajo).
+
+
+## Revisión con Impeccable (`critique` + `audit`, 15-10-2026, noche)
+
+Crítica de diseño 28/40 y auditoría técnica 16/20 (instantánea en `.impeccable/critique/2026-10-15T17-42-12Z__index-html.md`). Prioridad elegida: robustez en directo. Se aplican todas las recomendaciones, incluidas la portada y el cierre.
+
+### Robustez en directo
+
+- Doble pulsación: si un paso aún se anima, la primera pulsación lo termina y la segunda avanza (antes, la segunda saltaba la animación siguiente: E23/2 → E23/4). `animando` exige una duración mayor que 0.
+- Modo estático (`?estatico`, `prefers-reduced-motion`): `ir()` nunca anima; antes, algunos pasos se quedaban a medias (E04/1 sin sus huecos).
+- Vista de ponente: a la izquierda, el apartado del guion de la escena (`notas`, que el generador saca de `Guion Devin.md`); el paso actual, sin acotaciones técnicas, y del siguiente, solo su primera frase. Botones con texto por defecto y barra de progreso desde 0.
+- `aria-live`: cada paso se anuncia en texto plano («Título. Paso n de m. Primera frase»); la vista general, «Vista general del mapa.».
+- El hub y el circuito, `inert` fuera de su pantalla; el giro de E02 se pausa fuera de su escena (gancho opcional `activa(si)` del contrato).
+
+### Lectura
+
+- Texto atenuado a `--opacidad-atenuado-texto` (0,6, nueva); lo gráfico sigue a `--opacidad-atenuado` (0,3).
+- Un icono por concepto: Rules `scroll-text` (mapa, hub, E12, E18), contenido de una skill `puzzle` (E13), ACUs `receipt` (E20), Desktop `monitor` (E02), Buenas prácticas `route` y Verificar `shield-check` (E30), pasos para reproducir `list-ordered` (E25).
+- Un estilo fijo por modelo en las gráficas: GPT-5.6 Sol 1, Opus 5 2, GPT-6 Astra 3 y Fable 5.1 4 (E06, E08); E10 ya seguía GPT-5.6 Sol 1, Opus 5 2 (Sonnet 5, 3).
+- E06/3: la lectura añade el precio de igualar: «aunque pagando ~×2,7 por intento» (13,48 $ frente a 4,95 $; la revisión decía ~×2,5, pero los datos de la gráfica dan 2,7).
+- E07, E08 y E17: la unidad «u.» pasa a ACUs, la unidad de consumo de Devin, que el guion ya nombra en la apertura (las cifras siguen siendo ficticias, sin rótulo). En E07 la unidad va solo en el total, para que la fila quepa.
+- E22: las ventanas, a la escala de 40K y sin capacidad escrita (como en E23). Lo que se relee de caché, al 10 %, mide ~70 px: el corchete ya no es una «U», sin falsear la proporción; y desaparece el «100K» que contradecía el ancho como coste.
+- E23: todas las cifras en dólares con tres decimales (textos, leyenda y desglose: antes «3,090 $» en un sitio y «3,09 $» en otro); el +34 % dice su base («frente a sin pausa: 1,259 $ frente a 0,940 $»); en el paso 5, cada conclusión con su cifra grande encima, al tamaño del resultado de los pasos anteriores, y solo «−70 %» en acento.
+- E27: el desvío y el fallo real usan el componente nuevo `.hito` (antes, un marcador de 56 px dibujado dentro de la escena).
+- E29/2: los tres hábitos de cada pieza llevan el ⊘ (`ban`) de la tabla; sin él parecían consejos.
+- E30/2: el mensaje final, el del guion con el consumo, la promesa de la charla: «Tareas correctas, verificables y fáciles de revisar, con menos trabajo y consumo innecesarios»; la segunda línea, en acento (el único de la pantalla).
+- Vuelo E18 → E20 (y cualquier entrada en un bloque): el icono y el título de la tapa se funden antes que ella, desde `TAPAS.fundidoContenido` (0,25) del vuelo hasta que empieza la tapa; ya no cruzan, enormes, el título de la escena.
+
+### Portada y cierre
+
+- Portada (E01/1): bajo «Devin», pegado al nombre y discreto, el resto del título de la charla («en el día a día: cómo aprovecharlo mejor y controlar el consumo», `TAPAS.lemaCentro`) y el logo de Openbank. El encuadre pasa a `TAPAS.portada` 0,8: el logo y el nombre siguen grandes (el logo, de ~350 a ~325 px de alto).
+- Cierre (E31): abajo a la izquierda, a la altura del logo de Openbank, la franja con lo que queda para después: «Guía de instalación: repositorio Master-Control-Program» (`git-branch`) y «Plugin del departamento: ods-ds-mcp» (`package`). La moneda sigue sola en el centro.
+
+### Peso y código
+
+- Capturas de E03 en WebP sin pérdida (`cwebp -lossless -z 9`): los mismos píxeles en 469 KB frente a 1.015 KB. Los PNG originales se quedan en `src/escenas/capturas/` (ya no se importan).
+- Inter recortada a los glifos de «Devin» (`Inter-Devin-wght.woff2`, `pyftsubset`, con el eje de peso): de 48 KB a 2 KB. La documentación muestra en su fila solo «Devin».
+- La nota de `data-opciones` en `comun.js` decía «nunca duraciones»; E03 y E05 pasan `duration: s(…)`. Ahora dice que una duración o una curva solo se leen de su variable.
+- Se conservan, aunque ninguna escena los use: `moverNivel`, `voltear` y `desplegar` (vocabulario documentado de la ventana, la herramienta y la skill); `--dur-vuelta-rapida` (la que haría falta para acelerar las vueltas de E14, pendiente de confirmar); `--pausa-por-palabra` y `--elevacion-0` (documentan reglas).
+
+### Nuevo en `design/`
+
+- `--opacidad-atenuado-texto` (0,6); `atenuar` la aplica al texto.
+- Iconos `scroll-text`, `receipt`, `monitor`, `list-ordered` y `shield-check` (`npm run iconos`).
+- Componente `.hito` (`.hito__circulo`, `.hito__texto`, `.hito--abajo`) con `--hito-diametro` (62 px) y su muestra en la lámina 7 de vocabulario, bajo la moneda.
+- Tapa del centro: `.tapa__pie`, `.tapa__lema` y `.tapa__marca`, con `--tapa-lema` (16 px) y `--tapa-marca` (20 px), a escala ×`--tapa-escala`.
+- `--fuente-devin` apunta a `Inter-Devin-wght.woff2`.
+- Cabeceras al día: gráfica (estilo fijo por modelo), tapa y moneda.
+- Comprobaciones: 22/22.

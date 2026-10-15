@@ -1,19 +1,18 @@
 // E30 · Antes de pulsar Enter. Comparte pantalla con E31.
 // Las cinco preguntas, en cascada (una tras otra, sin pausas), cada una con la etiqueta del bloque
-// (o la parada) donde se explica. Abajo, el mensaje final y el logo de Openbank.
+// (o la parada) donde se explica. Abajo, el mensaje final, con lo que toca al consumo en acento.
 // Pasos: 1 las cinco preguntas · 2 el mensaje final.
 import { icono } from '../../design/iconos.js';
-import logo from '../../design/assets/logos/openbank-logo-fondo-claro.svg';
 import { s } from '../../design/motion.js';
 import { en, cabecera, crearPasos } from './comun.js';
 
 // Guion, «Cierre»: cada pregunta, con dónde se explica (con los iconos del hub y de E03).
 const PREGUNTAS = [
-  ['¿Está claro el resultado que necesito?', [['list-checks', 'Buenas prácticas']]],
+  ['¿Está claro el resultado que necesito?', [['route', 'Buenas prácticas']]],
   ['¿He elegido una configuración proporcionada?', [['cpu', 'Modelo'], ['gauge', 'Effort'], ['code-xml', 'Modo']]],
   ['¿He aportado contexto relevante, y solo el relevante?', [['app-window', 'Contexto']]],
   ['¿Existe una herramienta o procedimiento del equipo que deba utilizar?', [['wrench', 'Tools'], ['puzzle', 'Skills']]],
-  ['¿Cómo sabré que el trabajo está terminado?', [['list-checks', 'Verificar']]],
+  ['¿Cómo sabré que el trabajo está terminado?', [['shield-check', 'Verificar']]],
 ];
 
 export default function ({ escena, raiz }) {
@@ -28,9 +27,9 @@ export default function ({ escena, raiz }) {
       raiz.innerHTML =
         cabecera(escena, 1680) +
         PREGUNTAS.map(fila).join('') +
-        en(120, 840, '<p class="tipo-entradilla" style="margin:0">Tareas correctas, verificables y fáciles de revisar, con menos trabajo innecesario.</p>',
-          { paso: 2, estilo: 'width:1300px' }) +
-        en(1560, 900, `<img src="${logo}" alt="Openbank" style="display:block;height:48px">`, { paso: 2, orden: 1 });
+        // El mensaje final, del guion, con el consumo (la promesa de la charla) en acento: el único de la pantalla.
+        en(120, 840, '<p class="tipo-entradilla" style="margin:0">Tareas correctas, verificables y fáciles de revisar, <span style="color:var(--color-acento);white-space:nowrap">con menos trabajo y consumo innecesarios</span>.</p>',
+          { paso: 2, estilo: 'width:1300px' });
       pasos = crearPasos(raiz);
       pasos.poner(0);
     },

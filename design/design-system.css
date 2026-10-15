@@ -15,10 +15,19 @@
 
 /* ── Fuentes (alojadas en el proyecto · SIL Open Font License 1.1) ──────── */
 /* Outfit © 2021 The Outfit Project Authors · DM Mono © 2020 The DM Mono
-   Project Authors. Licencias en assets/fonts/OFL-*.txt. */
+   Project Authors · Inter © 2016 The Inter Project Authors (la variable de
+   Google Fonts, recortada a los glifos de «Devin», lo único que escribe, con
+   pyftsubset: 2 KB). Licencias en assets/fonts/OFL-*.txt. */
 @font-face {
   font-family: 'Outfit';
   src: url('./assets/fonts/Outfit-wght.woff2') format('woff2');
+  font-weight: 100 900;
+  font-style: normal;
+  font-display: block;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/Inter-Devin-wght.woff2') format('woff2');
   font-weight: 100 900;
   font-style: normal;
   font-display: block;
@@ -50,18 +59,21 @@
   --color-cinderella: #FFF1E5;    /* Cinderella · superficie 2: apoyos muy suaves */
   --color-blanco: #FFFFFF;        /* Blanco · superficies: islas, ventana de contexto y tarjetas */
   --color-royal-blue: #2566E8;    /* Azul del CSS de openbank.es · serie 2 de las gráficas */
+  --color-negro-devin: #000000;   /* Negro del logo de Devin (cognition.com/brand) · solo su nombre, junto al logo */
   --color-malachite: #2BE24E;     /* Verde del CSS de openbank.es · solo oscurecido, en la serie 3 de las gráficas */
 
   /* ── Color · roles ───────────────────────────────────────────────────── */
   --color-fondo: var(--color-old-lace);                 /* Fondo de la escena */
   --color-superficie: var(--color-blanco);              /* Islas, ventana de contexto, tarjetas y documentos */
   --color-superficie-2: var(--color-cinderella);        /* Apoyos muy suaves: franjas de gráfica, capturas pendientes */
+  --color-superficie-3: color-mix(in srgb, var(--color-prussian) 12%, var(--color-cinderella));   /* ≈ #E0D9D3 · apoyo algo más marcado: la ventana más pequeña de una comparación de capacidades (E09), un escalón más oscura que la superficie 2 */
   --color-franja-critica: color-mix(in srgb, var(--color-red-ribbon) 12%, var(--color-old-lace));   /* ≈ #FBDBDF · franja de una gráfica donde el resultado se degrada mucho: tinte del acento, más oscuro que la superficie 2 */
   --color-superficie-inversa: var(--color-prussian);    /* Superficies navy: agente, cabeceras de documento */
   --color-texto-1: var(--color-prussian);               /* Texto principal */
   --color-texto-2: var(--color-bluewood);               /* Texto secundario */
   --color-texto-3: var(--color-pizarra);                /* Escalas, anotaciones y etiquetas de apoyo */
   --color-texto-inverso: var(--color-blanco);           /* Texto sobre superficie inversa */
+  --color-devin: var(--color-negro-devin);             /* El nombre «Devin» de la portada, en el negro de su logo · 19:1 sobre la superficie */
   --color-texto-inverso-2: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));   /* = #CCD5DA, el gris claro de la marca · texto secundario sobre navy */
   --color-texto-simulado: color-mix(in srgb, var(--color-prussian) 20%, var(--color-blanco));    /* = #CCD5DA · líneas que simulan texto en un documento: no se leen */
   --color-contorno: var(--color-prussian);              /* Contorno de toda superficie */
@@ -107,6 +119,7 @@
   --fuente-display: 'Outfit', system-ui, sans-serif;     /* Títulos y cifras */
   --fuente-texto: 'Outfit', system-ui, sans-serif;       /* Texto y etiquetas */
   --fuente-mono: 'DM Mono', ui-monospace, monospace;     /* Fichas de token, código y nombres de fichero */
+  --fuente-devin: 'Inter', system-ui, sans-serif;        /* Solo el nombre «Devin» de la portada (la fuente solo trae esas letras): la libre más parecida a la de su logotipo (NB International, de pago), con --peso-enfasis */
   --peso-display: 300;        /* Títulos y cifras */
   --peso-texto: 400;          /* Texto corrido y mono */
   --peso-enfasis: 500;        /* Etiquetas y nombres */
@@ -172,10 +185,13 @@
   --elevacion-1: 0 6px 0 color-mix(in srgb, var(--color-prussian) 14%, transparent);   /* Lo que flota: una ficha que se arrastra o un documento encima de otro */
 
   /* ── Opacidad ────────────────────────────────────────────────────────── */
-  --opacidad-atenuado: 0.3;   /* Estado atenuado: lo que no toca mirar ahora (E09) y el «·» de espacio en las fichas */
+  --opacidad-atenuado: 0.3;   /* Estado atenuado de lo que no es texto (capas, líneas de documento, trazos): lo que no toca mirar ahora (E09) y el «·» de espacio en las fichas */
+  --opacidad-atenuado-texto: 0.6;   /* Texto atenuado: ya no toca mirarlo, pero se tiene que poder leer desde el fondo de la sala (texto 1 sobre el fondo ≈ 4:1; texto 2 ≈ 3,4:1) */
+  --opacidad-atenuado-serie: 0.12;   /* Series de una gráfica que no toca mirar: más tenues que el resto de lo atenuado, para que se lea sola la comparación (E06) */
 
   /* ── Componentes · medidas ───────────────────────────────────────────── */
   --ficha-alto: 60px;                 /* Ficha de token */
+  --hito-diametro: 62px;              /* Hito de un recorrido: el círculo, con su contorno, donde llega o se desvía el camino */
   --ficha-alto-s: 52px;               /* Ficha de token pequeña, con texto mono s */
   --contador-alto: 64px;              /* Contador en píldora */
   --ventana-alto: 96px;               /* Ventana de contexto: alto de la barra (el ancho lo da la escena, a escala de su capacidad) */
@@ -205,8 +221,8 @@
   --temporizador-diametro: 240px;     /* Temporizador */
   --circuito-parada: 64px;            /* Diámetro de cada parada del circuito */
   --punto-diametro: 28px;             /* Punto que recorre un camino */
-  --repeticion-diametro: 72px;        /* Anillo de repetición: rodea un icono de --icono-m con holgura; en una lista de viñetas, ancho de la columna de iconos */
-  --moneda-diametro: 400px;          /* Moneda de las preguntas (E31): protagonista sola en la pantalla */
+  --repeticion-diametro: 52px;        /* Anillo de repetición: ceñido a un icono de --icono-s, para que, con el anillo, su viñeta no parezca mayor que las demás (--icono-m); en una lista de viñetas, ancho de la columna de iconos */
+  --moneda-diametro: 400px;          /* Moneda de las preguntas (E31): protagonista sola en el centro de la pantalla */
   --moneda-grosor: 40px;             /* Grosor del canto de la moneda: se ve al girar */
   --moneda-signo-grosor: 88px;       /* Grosor del signo de la moneda: más que ella, sobresale 24 px por cada cara */
   --moneda-perspectiva: 2000px;      /* Distancia de la perspectiva con la que se ve girar la moneda: lejana, para que no se deforme */
@@ -214,6 +230,8 @@
   --tapa-escala: 8;                   /* Tapa de bloque: se dibuja ×8, porque la vista general se ve a ≈ 1:8 y desde allí se lee como una isla a escala 1 */
   --tapa-logo: 180px;                 /* Logo de Devin en la tapa del centro, a escala 1 (se dibuja ×--tapa-escala): en la vista general, ≈ 210 px con su margen blanco */
   --tapa-icono: 60px;                 /* Icono de una tapa de fuera, a escala 1 (se dibuja ×--tapa-escala): en la vista general, ≈ 70 px */
+  --tapa-lema: 16px;                  /* Subtítulo de la tapa del centro (el resto del título de la charla), a escala 1 (×--tapa-escala): en la portada, ≈ 36 px */
+  --tapa-marca: 20px;                 /* Alto del logo de Openbank en la tapa del centro, a escala 1 (×--tapa-escala): en la portada, ≈ 46 px, como en el cierre */
   --grafica-discontinua: 18px 12px;   /* Serie 2 de una gráfica y franja: trazo discontinuo */
   --grafica-punteada: 0 14px;         /* Serie 4 de una gráfica: trazo de puntos */
 
@@ -221,18 +239,19 @@
   --dur-micro: 0.2s;          /* Micro · estados, ticks y pulsaciones */
   --dur-salida: 0.3s;         /* Micro · salidas */
   --dur-entrada: 0.5s;        /* Entrada · aparición de elementos */
+  --dur-llamada: 0.4s;        /* Entrada · cada llamada de una conversación en reproducción continua (E23): sus capas entran, su coste sube y la gráfica avanza un tramo */
   --dur-contador: 0.9s;       /* Progresión · cifras que suben */
   --dur-trazado: 1.2s;        /* Progresión · líneas que se dibujan, un texto que se subraya entero y puntos que recorren un camino */
-  --dur-trazado-serie: 0.8s;  /* Progresión · líneas que se dibujan seguidas: las series de una gráfica, una tras otra, la flecha de una lectura y el traspaso del resultado de un subagente */
+  --dur-trazado-serie: 0.8s;  /* Progresión · líneas que se dibujan seguidas: las series de una gráfica, una tras otra, la flecha de una lectura, el traspaso del resultado de un subagente y las guías de E03 */
   --dur-ampliar: 1s;          /* Progresión · una captura se amplía hasta la zona que se explica */
   --dur-ajustar: 1.2s;        /* Progresión · lo ocupado de una ventana crece o se recoge (continuar, compactar, empezar de nuevo), con el nivel pegado a su borde; o sus capas leídas de caché se encogen hasta su coste */
-  --dur-desplazar: 0.8s;      /* Progresión · las columnas de una pantalla se desplazan un sitio: la primera sale por un lado y entra una nueva por el otro */
+  --dur-desplazar: 0.8s;      /* Progresión · las columnas de una pantalla se desplazan un sitio: la primera sale por un lado y entra una nueva por el otro; también la fila de familias de E05, que se coloca bajo el título */
   --dur-vuelta: 1.5s;         /* Progresión · media vuelta lenta del bucle del agente: una llamada, explicada paso a paso */
   --dur-vuelta-rapida: 0.8s;  /* Progresión · una vuelta rápida del bucle: llamadas que se suceden */
   --dur-camara-corta: 0.8s;   /* Cámara · entre pantallas de un mismo bloque (las casillas del centro), en línea recta */
   --dur-camara: 1.2s;         /* Cámara · vuelo estándar: entre bloques del mapa, «alejar, viajar, acercar» */
   --dur-camara-larga: 1.5s;   /* Cámara · saltos largos: hacia o desde la vista general */
-  --dur-temporizador: 3s;     /* Tiempo simulado · un temporizador se agota (cinco minutos comprimidos) */
+  --dur-temporizador: 2.2s;   /* Tiempo simulado · un temporizador se agota (cinco minutos comprimidos) */
   --dur-repeticion: 4s;       /* Tiempo simulado · una vuelta de la flecha de repetición: gira sin parar, despacio, mientras se ve */
   --dur-moneda: 6s;           /* Tiempo simulado · una vuelta de la moneda de las preguntas: gira sin parar sobre su eje vertical, despacio, mientras se ve */
 
@@ -250,6 +269,7 @@
   --ease-ampliar: power2.inOut;       /* Una captura se amplía: arranca y frena suave, sin rebote · con --dur-ampliar */
   --ease-ajustar: power2.inOut;       /* Lo ocupado de una ventana crece o se recoge (o sus capas cacheadas): arranca y frena suave, y el nivel y su cifra lo siguen · con --dur-ajustar */
   --ease-desplazar: power2.inOut;     /* Columnas que se desplazan: arrancan y frenan suave, sin rebote · con --dur-desplazar */
+  --ease-llamada: none;               /* Las llamadas seguidas avanzan a ritmo constante: la línea de la gráfica crece sin tirones de un tramo al siguiente · con --dur-llamada */
   --ease-temporizador: none;          /* El tiempo corre a ritmo constante · con --dur-temporizador */
   --ease-repeticion: none;            /* La flecha de repetición gira a ritmo constante · con --dur-repeticion */
   --ease-moneda: none;                /* La moneda gira a ritmo constante, sin acelerones · con --dur-moneda */
@@ -259,6 +279,7 @@
   --escalonado-tokens: 0.03s;       /* Fichas de token: rápido, se leen como una frase */
   --escalonado-capas: 0.12s;        /* Capas de la ventana: cada una debe verse entrar */
   --escalonado-series: 0.2s;        /* Series de una gráfica: cada una empieza a trazarse poco después de la anterior */
+  --escalonado-solape: 0.15s;       /* Animaciones encadenadas sin pausas (encadenar, en comun.js: Cloud en E02, las guías de E03): cada una empieza este tiempo antes de que acabe la anterior, un pequeño solape que da fluidez */
   --escalonado-filas: 0.15s;        /* Filas grandes de una lista que entran en cascada, sin pausas: cada una se ve llegar y el conjunto se lee como un solo movimiento */
   --pausa-tras-camara: 0.3s;        /* La cámara llega; después empieza la zona */
   --pausa-lectura-corta: 1.5s;      /* Mínimo con una etiqueta o una cifra en pantalla */

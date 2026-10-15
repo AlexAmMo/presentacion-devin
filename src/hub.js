@@ -119,9 +119,14 @@ export function crearHub({ mundo, x, y, ancho, alto }) {
     return { x: contexto.ventana.x - (c.x - D / 2), y: contexto.ventana.y - (c.y - D / 2), width: contexto.ventana.ancho, height: contexto.ventana.alto };
   };
 
+  // Centrado en su pantalla o a la izquierda (escenas con panel): todo el hub se desplaza en x.
+  const aLaDerecha = ancho / 2 - centro.x;
+
   return {
     raiz,
     centro,
+    /** Al instante: el hub, centrado en su pantalla (true) o a la izquierda, con sitio para el panel. */
+    centrar(centrado) { raiz.style.left = `${x + (centrado ? aLaDerecha : 0)}px`; },
     /** El camino del bucle y su punto, para que una escena del hub lo recorra. */
     get bucle() { return { pista: raiz.querySelector('.bucle__pista'), punto: raiz.querySelector('.bucle__punto') }; },
     herramienta: nombre => raiz.querySelector(`[data-herramienta="${nombre}"] .herramienta__circulo`),

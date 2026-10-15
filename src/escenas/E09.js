@@ -1,6 +1,7 @@
 // E09 · Contexto: qué es. Comparte pantalla con E10 y E11.
 // Una fila por concepto, cada una con su ventana de contexto a todo el ancho:
-// - Capacidad: tres ventanas superpuestas, de 256K, 512K y 1M tokens (depende del modelo).
+// - Capacidad: tres ventanas superpuestas, de 256K, 512K y 1M tokens (depende del modelo), cada una
+//   en un tono: más oscuro cuanto más pequeña.
 // - Utilizado: una ventana de 256K, llena en parte con lo que lee el modelo, y la línea de nivel.
 // - Relevante: el mismo relleno, atenuado salvo el trozo que ayuda de verdad.
 // Las dos últimas comparten escala: cada capa queda justo debajo de la de arriba.
@@ -66,7 +67,7 @@ export default function ({ escena, raiz }) {
         CONCEPTOS.map(concepto).join('') +
         // Capacidad: cada ventana, encima de la mayor y a su escala.
         CAPACIDADES.map((n, i) => en(X, y1,
-          ventana(Math.round((ANCHO * n) / CAPACIDADES[0]), tokens(n), '', i ? ' ventana--menor' : ''), { paso: 1 })).join('') +
+          ventana(Math.round((ANCHO * n) / CAPACIDADES[0]), tokens(n), '', ['', ' ventana--menor', ' ventana--minima'][i]), { paso: 1 })).join('') +
         // Utilizado: las capas y la línea de nivel donde acaban.
         en(X, y2, ventana(ANCHO, tokens(VENTANA), utilizadas), { paso: 2 }) +
         en(X + borde() + usado * porMil() - hueco / 2 - px('--trazo-fuerte') / 2, y2 - sobra,

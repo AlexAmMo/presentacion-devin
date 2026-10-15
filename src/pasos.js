@@ -1,15 +1,19 @@
 // Los pasos: una lista plana con todos los pasos de todas las escenas, y la navegación.
-// - Avanzar anima: primero la cámara (si cambia de pantalla), después --pausa-tras-camara,
-//   después la tapa del bloque si es la primera vez que se entra, el cambio de escena si
+// - Avanzar anima: primero la cámara (si cambia de pantalla; la tapa del bloque, si es la primera
+//   vez que se entra, se funde mientras se acerca), después --pausa-tras-camara, el cambio de escena si
 //   la pantalla ya mostraba otra, la pieza que entra en el hub, el cambio de forma de Contexto
 //   (círculo o ventana) y el paso de la escena.
-// - Retroceder, saltar y recargar no animan: ponen al instante el estado del paso.
+// - Si se pulsa mientras un paso aún se anima, esa pulsación solo lo termina (llega a su estado
+//   final); la siguiente avanza. Así un doble toque del mando no se salta una animación.
+// - Retroceder, saltar y recargar no animan: ponen al instante el estado del paso. En modo
+//   estático (?estatico o prefers-reduced-motion), avanzar tampoco: va por esa misma vía.
 // - Ir al final (tecla Fin, por si falta tiempo) anima como avanzar: vuela hasta las preguntas.
 // - Cada paso tiene su URL (#E05/3).
 // - Los pasos [A] se pueden saltar (tecla A); la preferencia dura la sesión.
 import { gsap } from 'gsap';
-import { s, esEstatico } from '../design/motion.js';
+import { s, v, esEstatico } from '../design/motion.js';
 import { ESCENAS } from './datos/escenas.js';
+import { plano, primeraFrase } from './texto.js';
 import { CIRCUITO, HUB, TAPAS } from './datos/mapa.js';
 
 export const PASOS = ESCENAS.flatMap((escena, ie) => escena.pasos.map(p => ({ ...p, escena, ie, ref: `${escena.id}/${p.n}` })));
@@ -20,6 +24,9 @@ const LLEGADAS = PASOS.flatMap((p, i) => (p.hub ? [{ id: p.hub, en: i }] : []));
 const piezasHasta = i => new Set(LLEGADAS.filter(l => l.en <= i).map(l => l.id));
 // Pasos en los que Contexto se ve como ventana de contexto, no como círculo.
 const COMO_VENTANA = new Set(HUB.contextoComoVentana);
+// El hub va centrado en su pantalla salvo en las escenas con panel.
+const CON_PANEL = new Set(HUB.conPanel);
+const centradoEn = i => !CON_PANEL.has(PASOS[i].escena.id);
 const ventanaEn = i => COMO_VENTANA.has(PASOS[i].ref);
 // Desde este paso se ve el hub (antes, ni Devin ni sus huecos).
 const HUB_DESDE = PASOS.findIndex(p => p.ref === HUB.aparece);
@@ -76,25 +83,40 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
 
   const ponerVisibles = i => {
     const p = PASOS[i];
-    // Solo la escena actual está en el árbol de accesibilidad; las demás, inert.
+    // Solo la escena actual está en el árbol de accesibilidad; las demás, inert. La escena que deja
+    // de ser la actual (o vuelve a serlo) se entera: así para lo que se mueve sin fin (activa).
     for (const x of escenas.values()) {
-      x.raiz.classList.toggle('escena--actual', x.indice === p.ie);
-      x.raiz.inert = x.indice !== p.ie;
+      const esActual = x.indice === p.ie;
+      x.raiz.classList.toggle('escena--actual', esActual);
+      x.raiz.inert = !esActual;
+      if (x.activa !== esActual) { x.activa = esActual; x.ctrl.activa?.(esActual); }
     }
+    // El hub y el circuito, igual: solo están en el árbol de accesibilidad con su pantalla en cámara.
+    hub.raiz.inert = p.escena.zona !== 'hub';
+    circuito.raiz.inert = p.escena.zona !== CIRCUITO.zona;
     for (const lista of POR_ZONA.values()) {
       const vista = vistaEn(lista, p.ie);
       for (const e of lista) escenas.get(e.id).raiz.classList.toggle('oculto', e !== vista);
     }
   };
 
+  // Lo que oye el lector de pantalla al cambiar de paso: escena, paso y qué se ve, en texto plano.
+  const anunciar = i => {
+    const p = PASOS[i];
+    anuncio.textContent = `${p.escena.titulo}. Paso ${p.n} de ${p.escena.pasos.length}. ${plano(primeraFrase(p.texto))}`;
+  };
+
   function ir(i, { animar = false } = {}) {
     terminar();
+    // En modo estático, cada paso llega a su estado al instante, por la misma vía que al saltar.
+    if (esEstatico()) animar = false;
     const p = PASOS[i], antes = PASOS[actual];
     const destino = camara.vistaDe(p);
     general = false;
     if (!animar) {
       ponerEscenas(i, false);
       hub.pintar(piezasHasta(i), { ventana: ventanaEn(i), base: i >= HUB_DESDE });
+      hub.centrar(centradoEn(i));
       circuito.pintar(paradaEn(i));
       tapas.pintar(abiertasHasta(i));
       camara.poner(destino);
@@ -118,18 +140,29 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
       const aparece = actual < HUB_DESDE && i >= HUB_DESDE;
       hub.pintar(piezas, { ventana: ventanaEn(actual), base: actual >= HUB_DESDE });
       tapas.pintar(abiertas);
+      // El hub cambia de sitio (centrado o a la izquierda) sin que se vea: si se entra en su pantalla,
+      // antes del vuelo; si se sale, al final, con la cámara ya en la otra.
+      const recoloca = centradoEn(i) !== centradoEn(actual);
+      hub.centrar(centradoEn(enHub ? i : actual));
 
       const tl = gsap.timeline();
       const vuela = camara.volar(tl, destino);
       const finVuelo = tl.duration();
+      if (recoloca && !enHub) tl.add(() => hub.centrar(centradoEn(i)), finVuelo);
       // Misma pantalla y otra escena: la anterior se va y la nueva aparece en su sitio.
       const lista = POR_ZONA.get(p.escena.zona);
       const previa = lista && vistaEn(lista, antes.ie);
       const cambia = !vuela && lista && previa !== p.escena;
       if (!cambia) ponerVisibles(i);
       if (vuela && !esEstatico()) tl.to({}, { duration: s('--pausa-tras-camara') });
-      // La tapa se levanta al llegar; la del centro, en el último tercio del vuelo (TAPAS.enVuelo).
-      if (abre) tapas.abrir(region, tl, vuela && TAPAS.enVuelo.includes(region) ? (finVuelo * 2) / 3 : undefined);
+      // La tapa se funde mientras la cámara se acerca: desde TAPAS.fundido del vuelo hasta que llega,
+      // con la curva de la cámara; su icono y su título, antes, desde TAPAS.fundidoContenido, para que
+      // no crucen el título de la escena. Sin vuelo, se levanta como cualquier salida.
+      if (abre) {
+        const desde = finVuelo * TAPAS.fundido, contenido = finVuelo * TAPAS.fundidoContenido;
+        if (vuela) tapas.abrir(region, tl, desde, { duration: finVuelo - desde, ease: v('--ease-camara') }, { posicion: contenido, duration: desde - contenido });
+        else tapas.abrir(region, tl);
+      }
       // El contrato anima desde el paso anterior: si se ha saltado un [A], primero se pone ese estado.
       if (x.estado !== p.n - 1) x.ctrl.irA(p.n - 1, { animar: false });
       if (cambia) {
@@ -156,7 +189,7 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
     }
     actual = i;
     history.replaceState(null, '', `#${p.ref}`);
-    anuncio.textContent = `${p.escena.id} · ${p.escena.titulo}. Paso ${p.n} de ${p.escena.pasos.length}: ${p.texto}`;
+    anunciar(i);
     alCambiar();
   }
 
@@ -164,9 +197,14 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
     get actual() { return PASOS[actual]; },
     get general() { return general; },
     get conAvanzados() { return conAvanzados; },
-    get animando() { return Boolean(animacion && animacion.progress() < 1); },
+    get animando() { return Boolean(animacion && animacion.duration() > 0 && animacion.progress() < 1); },
 
     avanzar() {
+      // Si el paso aún se anima, esta pulsación solo lo termina; la siguiente avanza.
+      if (nav.animando) {
+        terminar();
+        return void alCambiar();
+      }
       const i = buscar(actual, 1);
       if (i != null) ir(i, { animar: true });
     },
@@ -191,6 +229,8 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
       general = !general;
       camara.volar(tl, general ? camara.general() : camara.vistaDe(PASOS[actual]));
       animacion = tl;
+      if (general) anuncio.textContent = 'Vista general del mapa.';
+      else anunciar(actual);
       alCambiar();
     },
 

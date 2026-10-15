@@ -2,7 +2,7 @@
 // Arriba, los tres caminos con sus situaciones (la tabla del guion), uno a uno; el anterior se
 // atenúa. Debajo, centrada en el espacio libre, la ventana de la sesión, que muestra cada camino:
 // continuar (lo ocupado crece un poco más), compactar (se recoge hasta el resumen) y sesión nueva
-// (se vacía y queda solo el system prompt). La línea de nivel va pegada al borde de lo ocupado
+// (desde lo compactado, se recoge hasta dejar solo el system prompt). La línea de nivel va pegada al borde de lo ocupado
 // y su cifra cambia a la vez (ajustarVentana). Al final, a la derecha, lo que hay que guardar.
 // Pasos: 1 continuar · 2 compactar · 3 sesión nueva · 4 antes de compactar o cambiar de sesión.
 // Fuera de pantalla (pendiente): el comando /compact y limpiar el contexto en Desktop.
@@ -76,8 +76,9 @@ export default function ({ escena, raiz }) {
           <div class="tipo-texto" style="display:flex;align-items:center;gap:var(--esp-2);font-weight:var(--peso-enfasis)">${icono(ic)}${nombre}</div>
           ${situaciones.map(t => `<div class="tipo-etiqueta" style="margin-top:var(--esp-1);font-weight:var(--peso-texto);color:var(--color-texto-2)">${t}</div>`).join('')}`,
         { paso: i + 1, estilo: 'width:520px', ...ATENUA[i] })).join('');
+      // Cada check, centrado en la altura de la primera línea de su texto (alguno ocupa dos).
       const guardar = GUARDAR.map(t =>
-        `<div class="tipo-texto-s" style="display:flex;align-items:flex-start;gap:var(--esp-2)">${icono('check', 'icono--s')}<span>${t}</span></div>`).join('');
+        `<div class="tipo-texto-s" style="display:flex;align-items:flex-start;gap:var(--esp-2)"><span style="display:flex;align-items:center;height:1lh">${icono('check', 'icono--s')}</span><span>${t}</span></div>`).join('');
 
       raiz.innerHTML =
         cabecera(escena, 1680) +
@@ -116,13 +117,17 @@ export default function ({ escena, raiz }) {
         ajustar(tl, 1, 2);
         tl.set(el('[data-encima]'), { autoAlpha: 0 }).aparecer(resumen);
       } else if (paso === 3) {
-        // Otra vez la sesión llena, como al continuar; se vacía y queda solo el system prompt.
-        tl.desaparecer([ventana, nivel, resumen], {}, inicio);
-        for (const [objetivo, props] of estado(1)) tl.set(objetivo, props);
-        tl.call(cifra(1)).aparecer([ventana, nivel]);
-        pausa(tl);
-        ajustar(tl, 1, 3);
-        tl.aparecer(sistema);
+        // Sin que la ventana se vaya: lo compactado (el system prompt y el resumen, abajo) se recoge
+        // hasta dejar solo el system prompt, con el nivel pegado y su cifra a la vez. Al acabar,
+        // queda como al saltar al paso.
+        const abajo = el('[data-resumen]').parentElement;
+        tl.desaparecer(resumen, {}, inicio)
+          .ajustarVentana(abajo, {
+            de: OCUPADO[2] * porMil(), a: OCUPADO[3] * porMil(), nivel: el('[data-nivel]'), cifra: el('[data-cifra]'), desde: pct(OCUPADO[2]), hasta: pct(OCUPADO[3]),
+          }, inicio);
+        for (const [objetivo, props] of estado(3)) tl.set(objetivo, props);
+        tl.set(abajo, { clearProps: 'clipPath' })
+          .aparecer(sistema);
       }
     },
 

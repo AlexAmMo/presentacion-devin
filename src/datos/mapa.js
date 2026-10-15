@@ -30,7 +30,7 @@ export const ZONAS = {
   modelos: { nombre: 'Modelos', region: 'centro', icono: 'cpu', x: 0, y: -1240 },
   effort: { nombre: 'Effort', region: 'centro', icono: 'gauge', x: 2080, y: -1240 },
   contexto: { nombre: 'Contexto', region: 'centro', icono: 'app-window', x: 2080, y: 0 },
-  rules: { nombre: 'Rules', region: 'centro', icono: 'file-text', x: 2080, y: 1240 },
+  rules: { nombre: 'Rules', region: 'centro', icono: 'scroll-text', x: 2080, y: 1240 },
   skills: { nombre: 'Skills', region: 'centro', icono: 'puzzle', x: 0, y: 1240 },
   tools: { nombre: 'Tools propias', region: 'centro', icono: 'wrench', x: -2080, y: 1240 },
   mcp: { nombre: 'MCP', region: 'centro', icono: 'plug', x: -2080, y: 0 },
@@ -62,34 +62,42 @@ export const ZONA_DE = {
 
 /**
  * Pasos con un encuadre distinto del de su escena: el id de otra escena (se encuadra su
- * pantalla), 'general', 'portada' (el logo y el nombre de la tapa del centro, src/tapas.js) o
- * 'diagrama' (la pantalla del hub con su diagrama en el centro, sin el panel de la derecha).
+ * pantalla), 'general' o 'portada' (el logo y el nombre de la tapa del centro, src/tapas.js).
  */
 export const ENCUADRES = {
   'E01/1': 'portada',   // Portada: el logo de Devin y su nombre, en la tapa del centro
-  'E04/1': 'diagrama',  // El hub solo, centrado: aún no hay panel a la derecha
 };
 
 /**
  * Las tapas de los bloques (src/tapas.js). Cubren su bloque con una holgura en px del mundo,
  * para que el borde no asome al encuadrar una de sus pantallas: [x, y]. Las de fuera son más
  * holgadas, porque llevan su icono (el de su zona, en ZONAS) encima del título. La del centro
- * lleva el logo de Devin y, debajo, su nombre en lugar del título de la parte.
- * - portada: lo que ocupan el logo y el nombre del alto de la portada (encuadre 'portada'); así
- *   el encuadre queda dentro de la tapa, sin que asomen sus esquinas.
- * - enVuelo: los bloques cuya tapa se levanta durante el último tercio del vuelo que entra en
- *   ellos, no al llegar: la del centro, porque a escala 1 su logo llenaría la pantalla.
+ * lleva el logo de Devin y, debajo, su nombre en lugar del título de la parte; su logo va encima
+ * del centro del hub, no en el centro de la tapa, y su holgura es la que necesita la portada,
+ * que encuadra ese logo y ese nombre, para quedar dentro.
+ * - tituloCentro y lemaCentro: el nombre bajo el logo de Devin y, debajo, discreto, el resto del
+ *   título de la charla (el de «Guion Devin.md»), sobre el logo de Openbank.
+ * - portada: lo que ocupan el logo, el nombre y ese pie del alto de la portada (encuadre
+ *   'portada'); así el encuadre queda dentro de la tapa, sin que asomen sus esquinas.
+ * - fundido: en qué punto del vuelo que entra en un bloque empieza a fundirse su tapa (0,5 = a
+ *   la mitad); termina cuando llega la cámara. Así se va mientras la cámara se acerca, sin
+ *   esperar a que llegue.
+ * - fundidoContenido: en qué punto del vuelo empiezan a fundirse su icono (o logo) y su título;
+ *   terminan cuando empieza la tapa. Así no cruzan, enormes, el título de la escena.
  */
-export const TAPAS = { holgura: [160, 160], holguraFuera: [360, 420], tituloCentro: 'Devin', portada: 0.7, enVuelo: ['centro'] };
+export const TAPAS = { holgura: [440, 380], holguraFuera: [360, 420], tituloCentro: 'Devin', lemaCentro: 'en el día a día: cómo aprovecharlo mejor y controlar el consumo', portada: 0.8, fundido: 0.5, fundidoContenido: 0.25 };
 
 /**
  * El hub: el agente (un círculo, con Devin) en el centro, sus herramientas de serie pegadas a él
  * sobre el bucle y, alrededor, un anillo con una pieza por tema: todas, círculos iguales con su
  * icono y su nombre, cada una en la dirección de su pantalla en la cuadrícula (Modelo arriba,
  * Effort arriba a la derecha, Contexto a la derecha…), a 45° unas de otras.
- * Ocupa la izquierda de su pantalla; a la derecha queda el panel de las escenas del hub (E04,
- * E14 y E18), con su cabecera y su contenido. Medidas en px dentro de la pantalla del hub.
- * - centro: el del agente, el del bucle y el del anillo. anillo: el radio del anillo de piezas.
+ * Va centrado en su pantalla (y así, en su bloque y bajo el logo de la tapa del centro), salvo en
+ * las escenas con panel (conPanel: E14 y E18), en las que ocupa la izquierda y a la derecha queda
+ * el panel, con su cabecera y su contenido. Pasa de un sitio a otro sin animación, con la cámara
+ * en otra pantalla. Medidas en px dentro de la pantalla del hub, con el hub a la izquierda.
+ * - centro: el del agente, el del bucle y el del anillo, a la izquierda (centrado, en el centro
+ *   de la pantalla). anillo: el radio del anillo de piezas.
  * - llega: cuándo entra la pieza.
  *   · Una escena ('E07'): al terminarla, sin animación; el hub no está a la vista, y al
  *     volver a Devin ya la tiene.
@@ -112,7 +120,7 @@ export const HUB = {
     { id: 'modelo', nombre: 'Modelo', icono: 'cpu', llega: 'E07', angulo: 0 },
     { id: 'effort', nombre: 'Effort', icono: 'gauge', llega: 'E08', angulo: 45 },
     { id: 'contexto', nombre: 'Contexto', icono: 'app-window', llega: 'E11', angulo: 90, ventana: { x: 850, y: 492, ancho: 310, alto: 96 } },
-    { id: 'rules', nombre: 'AGENTS.md', icono: 'file-text', llega: 'E12', angulo: 135 },
+    { id: 'rules', nombre: 'Rules', icono: 'scroll-text', llega: 'E12', angulo: 135 },
     { id: 'skills', nombre: 'Skills', icono: 'puzzle', llega: 'E13', angulo: 180 },
     { id: 'herramientas', nombre: 'Herramientas', icono: 'terminal', llega: 'E14/1', forma: 'herramientas' },
     { id: 'bucle', nombre: 'Bucle', llega: 'E14/2', forma: 'bucle' },
@@ -121,8 +129,9 @@ export const HUB = {
     { id: 'subagente', nombre: 'Subagente', icono: 'git-fork', llega: 'E17', angulo: 315 },
     { id: 'plugin', nombre: 'Plugin', icono: 'package', llega: 'E18/1', forma: 'plugin', x: 160, y: 123, ancho: 1020, alto: 834 },
   ],
-  ventanaCapas: [['contexto', 32, 'Instrucciones'], ['rules', 24, 'AGENTS.md'], ['skills', 8, 'Skills: descripciones'], ['herramientas', 12, 'Herramientas: definiciones'], ['propias', 8, 'Tools propias: definiciones']],
+  ventanaCapas: [['contexto', 32, 'Instrucciones'], ['rules', 24, 'Rules'], ['skills', 8, 'Skills: descripciones'], ['herramientas', 12, 'Herramientas: definiciones'], ['propias', 8, 'Tools propias: definiciones']],
   contextoComoVentana: ['E14/2'],
+  conPanel: ['E14', 'E18'],
   aparece: 'E04/1',
 };
 

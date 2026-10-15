@@ -162,17 +162,21 @@ export function codo(puntos, radio = medida('--radio-s')) {
  * Saltos de precio: arcos que unen filas de una tabla por su derecha, en px de la pantalla. Cada
  * salto va de la fila «desde» a la fila «hasta» (sus centros, en y), con la punta en «hasta», y se
  * abre «curva» px hacia la derecha de x. Su texto (×20) va en la fila de destino, en la columna
- * xCifras, a la derecha de todos los arcos: así no se pisan aunque se aniden. Con acento: true, es
- * el protagonista. Devuelve los grupos (.salto, con data-salto) para un SVG que cubra la pantalla.
+ * xCifras, a la derecha de todos los arcos: así no se pisan aunque se aniden. Con pegada: true, va
+ * junto al arco, a la altura de su vértice (entre dos filas vecinas, la línea que las separa). Con
+ * acento: true, es el protagonista. Devuelve los grupos (.salto, con data-salto) para un SVG que
+ * cubra la pantalla.
  */
 export function saltos({ x, xCifras, saltos: lista }) {
   const f = medida('--esp-1');
   return lista.map((sa, k) => {
     const { desde, hasta, curva, texto } = sa;
+    // El vértice del arco (una curva con los dos puntos de control en x + curva) está a 3/4 de curva.
+    const [cx, cy] = sa.pegada ? [x + (curva * 3) / 4 + f, (desde + hasta) / 2] : [xCifras, hasta];
     // Un solo trazo (la punta se repasa): al trazarse, la punta sale al final.
     const d = `M${r1(x)} ${r1(desde)}C${r1(x + curva)} ${r1(desde)} ${r1(x + curva)} ${r1(hasta)} ${r1(x)} ${r1(hasta)}L${r1(x + f)} ${r1(hasta - f)}L${r1(x)} ${r1(hasta)}L${r1(x + f)} ${r1(hasta + f)}`;
     return `<g class="salto${sa.acento ? ' salto--acento' : ''}" data-salto="${k}"><path class="salto__arco" d="${d}"/>` +
-      `<text class="salto__cifra" x="${r1(xCifras)}" y="${r1(hasta)}" dominant-baseline="central">${esc(texto)}</text></g>`;
+      `<text class="salto__cifra" x="${r1(cx)}" y="${r1(cy)}" dominant-baseline="central">${esc(texto)}</text></g>`;
   }).join('');
 }
 
@@ -268,7 +272,7 @@ export function repeticion(nombreIcono) {
   const t = [-Math.sin((210 * Math.PI) / 180), Math.cos((210 * Math.PI) / 180)], n = [Math.cos((210 * Math.PI) / 180), Math.sin((210 * Math.PI) / 180)];
   const punta = (s1, s2) => `${r1(x1 - f * t[0] + s1 * f * n[0])} ${r1(y1 - f * t[1] + s2 * f * n[1])}`;
   const svg = `<path d="M${r1(x0)} ${r1(y0)}A${r} ${r} 0 1 1 ${r1(x1)} ${r1(y1)}"/><path d="M${punta(1, 1)}L${r1(x1)} ${r1(y1)}L${punta(-1, -1)}"/>`;
-  return `<span class="repeticion">${icono(nombreIcono)}<svg class="repeticion__anillo" viewBox="0 0 ${D} ${D}" width="${D}" height="${D}">${svg}</svg></span>`;
+  return `<span class="repeticion">${icono(nombreIcono, 'icono--s')}<svg class="repeticion__anillo" viewBox="0 0 ${D} ${D}" width="${D}" height="${D}">${svg}</svg></span>`;
 }
 
 /** Bucle del agente: círculo con flechas en sentido horario, un punto y cuatro etiquetas (arriba, derecha, abajo, izquierda). */
