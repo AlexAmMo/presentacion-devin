@@ -27,9 +27,9 @@ export default function ({ escena, raiz }) {
         en(120, 668, peticion('La hipótesis', 'Sospecho de la gestión del estado, pero comprueba la causa antes de modificarla.', 760), { paso: 2, efecto: 'entrarConMuelle' }) +
         // El log, a la derecha: 1.000 líneas que se filtran.
         en(1000, 392, `<div class="documento" style="width:800px;height:auto;box-sizing:border-box"><div class="documento__cabecera">${icono('file-text', 'icono--s')}app.log · 1.000 líneas</div>
-            <div class="documento__cuerpo" style="gap:var(--esp-2);padding:var(--esp-3)">${lineas}</div></div>`, { paso: 3 }) +
-        en(1000, 728, peticion('El fragmento relevante', FRAGMENTO.join('<br>'), 800), { paso: 3, orden: 2, efecto: 'entrarConMuelle' }) +
-        en(1000, 950, '<p class="tipo-etiqueta" style="margin:0;color:var(--color-texto-2)">El resto, accesible si hace falta</p>', { paso: 3, orden: 3 });
+            <div class="documento__cuerpo" style="gap:var(--esp-1);padding:var(--esp-3)">${lineas}</div></div>`, { paso: 3 }) +
+        en(1000, 680, peticion('El fragmento relevante', FRAGMENTO.join('<br>'), 800), { paso: 3, orden: 2, efecto: 'entrarConMuelle' }) +
+        en(1000, 942, '<p class="tipo-etiqueta" style="margin:0;color:var(--color-texto-2)">El resto, accesible si hace falta</p>', { paso: 3, orden: 3 });
       pasos = crearPasos(raiz);
       pasos.poner(0);
     },

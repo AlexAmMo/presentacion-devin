@@ -4,7 +4,7 @@
 // tipografía y movimiento salen siempre de las variables.
 import { icono } from '../iconos.js';
 import { px } from '../motion.js';
-import { grafica, dial, temporizador, circuito, bucle, repeticion, codo, saltos, abanico, traspaso, llave } from '../dibujos.js';
+import { grafica, dial, temporizador, circuito, bucle, repeticion, codo, saltos, abanico, traspaso, llave, moneda } from '../dibujos.js';
 import logoClaro from '../assets/logos/openbank-logo-fondo-claro.svg';
 import logoOpenai from '../assets/logos/openai.svg';
 import logoAnthropic from '../assets/logos/anthropic.svg';
@@ -118,7 +118,7 @@ function v2(n) {
        ${ventana(312, [['entrada', 120], ['resultado', 24]], '', { clase: ' ventana--mini' })}`,
       'El subagente es el mismo símbolo, más pequeño y hueco, con su propia ventana debajo. Solo devuelve su resultado: una capa en rojo y su flecha.') +
     columna(550, 'Documento y árbol',
-      `<div style="position:relative;width:390px;height:280px">
+      `<div style="position:relative;flex:none;width:390px;height:280px">
         <div class="documento" style="position:absolute;left:72px;top:0;height:220px"><div class="documento__cabecera">${icono('file-text', 'icono--s')}rules/*.md</div></div>
         <div class="documento" style="position:absolute;left:0;top:56px;height:220px;box-shadow:var(--elevacion-1)"><div class="documento__cabecera">${icono('file-text', 'icono--s')}AGENTS.md</div><div class="documento__cuerpo">${lineas}</div></div>
       </div>
@@ -126,8 +126,11 @@ function v2(n) {
         <li>${nodo('file-text', 'AGENTS.md', ' arbol__nodo--cargado')}</li>
         <li>${nodo('folder-open', 'api/')}<ul><li>${nodo('file-text', 'AGENTS.md')}</li></ul></li>
         <li>${nodo('folder', 'ui/')}</li>
-      </ul></li></ul>`,
-      'Documento con su nombre de fichero en mono. En el árbol, el AGENTS.md cargado se rellena como un token de entrada.') +
+      </ul></li></ul>
+      ${vet('Subrayado')}
+      <p class="tipo-mono-s" style="margin:calc(var(--esp-2) * -1) 0 0;width:390px;line-height:var(--interlineado-texto)">${[[2, 'Al filtrar, la tabla queda vacía.'], [1, 'Vuelve a la página 1.'], [4, 'Mantén la API.']]
+        .map(([q, x]) => `<span class="subrayado subrayado--pregunta-${q}">${x}</span>`).join(' ')}</p>`,
+      'Documento con su nombre de fichero en mono. En el árbol, el AGENTS.md cargado se rellena como un token de entrada. El subrayado, en el color de la pregunta que responde cada parte, sigue las filas.') +
     columna(980, 'Skill',
       `<div style="display:grid;gap:var(--esp-1)">${vet('Plegada')}
         <div class="skill skill--plegada"><div class="skill__cuerpo"><div class="skill__titulo">${icono('puzzle')}<span class="skill__nombre">revisar-migracion</span></div>${descripcion}${anatomia}</div></div></div>
@@ -270,14 +273,14 @@ function v6(n) {
 }
 
 function v7(n) {
-  const [x, y, ancho, alto] = [120, 210, 1120, 630];
-  const resaltado = { left: 760, top: 520, width: 280, height: 72 };
+  const [x, y, ancho, alto] = [120, 210, 840, 630];
+  const resaltado = { left: 480, top: 520, width: 280, height: 72 };
   // La guía sale del borde del resaltado y llega, en codo, al borde de su etiqueta.
   const [gx, gy] = [x + resaltado.left + resaltado.width + px('--trazo-fuerte') * 1.5, y + resaltado.top + resaltado.height / 2 + px('--trazo-fuerte')];
   const ey = 456;
   const muestra = (texto, clase) => `<div style="display:grid;gap:var(--esp-2)">${vet(texto)}<svg width="480" height="16"><path class="${clase}" d="M8 8H472"/></svg></div>`;
-  return lamina('vocabulario-7', `Vocabulario ${n} · Captura, guía y tapa`,
-    cabecera(`Vocabulario · ${n} · Captura, guía y tapa`) +
+  return lamina('vocabulario-7', `Vocabulario ${n} · Captura, guía, tapa y moneda`,
+    cabecera(`Vocabulario · ${n} · Captura, guía, tapa y moneda`) +
     en(x, 150, '<div class="vh">Captura con resaltado</div>') +
     en(x, y, `<div class="captura" style="width:${ancho}px;height:${alto}px">
         <div class="captura__pendiente">${icono('image', 'icono--l')}Captura pendiente · Devin Desktop</div>
@@ -285,6 +288,10 @@ function v7(n) {
       </div>`) +
     `<svg class="abs" style="left:0;top:0" ${lienzo()}><path class="resaltado__guia" d="${codo([[gx, gy], [1272, gy], [1272, ey], [1316, ey]])}"/></svg>` +
     en(1316, ey - 27, `<span class="etiqueta">${icono('gauge', 'icono--s')}Effort</span>`) +
+    // La moneda, a media escala (en escena, sola en el centro y girando).
+    en(1010, 150, '<div class="vh">Moneda</div>') +
+    en(1010, 210, `<div style="transform:scale(0.5);transform-origin:0 0">${moneda()}</div>`) +
+    en(1010, 430, vet('×0,5. En escena, sola en el centro, girando sobre su eje vertical'), 'width:250px') +
     en(1320, 150, '<div class="vh">Ruta y guía</div>') +
     en(1320, 230, `<div style="display:grid;gap:var(--esp-5)">${muestra('Ruta · puntos: recorrido de la cámara o del subagente', 'camino')}${muestra('Guía · línea fina: une una etiqueta con lo que señala', 'camino camino--guia')}</div>`) +
     en(1320, 510, '<div class="vh">Tapa de bloque</div>') +

@@ -4,6 +4,7 @@
 //   la pantalla ya mostraba otra, la pieza que entra en el hub, el cambio de forma de Contexto
 //   (círculo o ventana) y el paso de la escena.
 // - Retroceder, saltar y recargar no animan: ponen al instante el estado del paso.
+// - Ir al final (tecla Fin, por si falta tiempo) anima como avanzar: vuela hasta las preguntas.
 // - Cada paso tiene su URL (#E05/3).
 // - Los pasos [A] se pueden saltar (tecla A); la preferencia dura la sesión.
 import { gsap } from 'gsap';
@@ -13,6 +14,8 @@ import { CIRCUITO, HUB, TAPAS } from './datos/mapa.js';
 
 export const PASOS = ESCENAS.flatMap((escena, ie) => escena.pasos.map(p => ({ ...p, escena, ie, ref: `${escena.id}/${p.n}` })));
 const indiceDe = ref => PASOS.findIndex(p => p.ref === ref);
+// El primer paso de la última escena: las preguntas.
+const FINAL = PASOS.findIndex(p => p.ie === ESCENAS.length - 1);
 const LLEGADAS = PASOS.flatMap((p, i) => (p.hub ? [{ id: p.hub, en: i }] : []));
 const piezasHasta = i => new Set(LLEGADAS.filter(l => l.en <= i).map(l => l.id));
 // Pasos en los que Contexto se ve como ventana de contexto, no como círculo.
@@ -175,6 +178,10 @@ export function crearNavegacion({ mundo, camara, alCambiar = () => {} }) {
       const i = indiceDe(ref);
       if (i >= 0) ir(i);
       return i >= 0;
+    },
+    /** Ir a las preguntas, por si falta tiempo: animando, como si se avanzara hasta ellas. */
+    irAlFinal() {
+      if (actual < FINAL) ir(FINAL, { animar: true });
     },
 
     /** Vista general del mapa, y volver al paso. Las tapas de los bloques aún no visitados siguen puestas. */

@@ -5,7 +5,7 @@
 import { gsap } from 'gsap';
 import { v, s, px, esEstatico } from '../motion.js';
 import { ICONOS, icono, pintarIconos } from '../iconos.js';
-import { grafica, dial, temporizador, circuito, repeticion } from '../dibujos.js';
+import { grafica, dial, temporizador, circuito, repeticion, moneda } from '../dibujos.js';
 import cssSistema from '../design-system.css?raw';
 import cssComponentes from '../componentes.css?raw';
 import jsMotion from '../motion.js?raw';
@@ -113,6 +113,8 @@ function pares(dentro) {
     lista.push(['--color-texto-2', '--color-franja-critica', 4.5]);
     // Los iconos de las marcas de un plugin, sobre la etiqueta.
     for (const marca of ['--color-obligatorio', '--color-opcional', '--color-prohibido']) lista.push([marca, '--color-superficie', 3]);
+    // Los colores de las preguntas: su número, sobre el fondo, y el subrayado, sobre la superficie.
+    for (let n = 1; n <= 5; n++) for (const f of ['--color-fondo', '--color-superficie']) lista.push([`--color-pregunta-${n}`, f, 3]);
   }
   return lista.map(([a, b, minimo]) => {
     const r = contraste(hex(a, dentro), hex(b, dentro));
@@ -336,6 +338,12 @@ const DEMOS = {
         .to(corchete, { width: corcheteA(1), ...ajuste }, '<');
     },
   },
+  subrayar: {
+    // Un texto en mono, en tres fragmentos de colores distintos, que ocupa dos filas.
+    html: () => `<p class="tipo-mono-s" style="margin:0;width:460px;line-height:var(--interlineado-texto)">${[[1, 'Corrige el comportamiento'], [3, 'empezando por la tabla'], [5, 'y verifica este caso.']]
+      .map(([n, x]) => `<span class="subrayado subrayado--vacio subrayado--pregunta-${n}">${x}</span>`).join(' ')}</p>`,
+    play: e => gsap.effects.subrayar($$('.subrayado', e)),
+  },
   subirContador: {
     html: () => `<span class="contador contador--coste">${icono('coins')}<span data-valor>0,00</span><span class="contador__unidad">u.</span></span>`,
     play: e => gsap.effects.subirContador($('[data-valor]', e), { desde: 0, hasta: 0.43, decimales: 2 }),
@@ -410,6 +418,12 @@ const DEMOS = {
     conservar: true,
   },
   // En escena gira sin parar; la demo da una vuelta.
+  girarMoneda: {
+    // Gira dos vueltas y se para (en escena, sin parar mientras se ve).
+    // A media escala, en un marco: el giro solo toca el ancho de la moneda.
+    html: () => `<div style="width:calc(var(--moneda-diametro) / 2);height:calc(var(--moneda-diametro) / 2)"><div style="transform:scale(0.5);transform-origin:0 0">${moneda()}</div></div>`,
+    play: e => gsap.effects.girarMoneda($('.moneda', e), { repeat: 1 }),
+  },
   girar: {
     html: () => `<div class="vinetas vinetas--anillo"><div class="vineta">${repeticion('calendar-clock')}<span class="vineta__titulo">Cada semana</span><span class="vineta__detalle">La misma tarea, sin intervención</span></div></div>`,
     play: e => gsap.effects.girar($('.repeticion__anillo', e), { repeat: 0 }),

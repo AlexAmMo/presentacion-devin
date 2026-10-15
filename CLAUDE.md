@@ -32,7 +32,7 @@ La presentación se construye con Vite y se exporta a un único HTML autoconteni
 - Los pasos se declaran en el marcado (`data-paso`, `data-hasta`, `data-atenua`/`data-aviva`, `data-clase`, `data-efecto`/`data-salida`, `data-orden`, `data-propio`, y `solo-avanzado` para lo de un paso [A]) y `crearPasos` (`comun.js`) los pone al instante o los anima: saltar a un paso y llegar animando dan el mismo estado. Cada escena programa a mano solo lo suyo (capas que se llenan, cifras, recorridos).
 - El hub (`src/hub.js`) y el circuito de Buenas prácticas (`src/circuito.js`) son de su pantalla, no de una escena: su estado sale del paso (`src/pasos.js`), y sus medidas, de `src/datos/mapa.js` (`HUB`, `CIRCUITO`).
 - La cámara (`src/camara.js`) solo se mueve con el efecto `volarCamara` y la ruta de `escenas.md`: misma pantalla → no se mueve; otra pantalla del mismo bloque → `--dur-camara-corta`, en línea recta; otro bloque → `--dur-camara`; hacia o desde la vista general → `--dur-camara-larga`. Las escenas nunca mueven la cámara, y los pasos [A] no acercan la cámara.
-- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general (los bloques aún no visitados, con su tapa); `A` incluir o saltar los pasos [A]; `P` vista de ponente. Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar: cada paso llega a su estado final al instante.
+- Teclas: →, espacio y AvPág avanzan; ← y RePág retroceden (sin animar); `O` vista general (los bloques aún no visitados, con su tapa); `A` incluir o saltar los pasos [A]; `P` vista de ponente; `F` pantalla completa; Fin, ir a las preguntas (animando, por si falta tiempo; también con un botón en la vista de ponente). Cada paso tiene su URL (`#E05/3`). `?estatico` (o `prefers-reduced-motion`) corta en lugar de volar: cada paso llega a su estado final al instante.
 
 ## Colores: solo variables
 
@@ -79,7 +79,7 @@ La presentación se construye con Vite y se exporta a un único HTML autoconteni
 5. **Reglas de movimiento:**
    - Primero llega la cámara, luego pasa `--pausa-tras-camara` y después anima la zona. La cámara nunca se mueve mientras algo se anima dentro de la zona.
    - Se respetan las pausas de lectura (`--pausa-lectura-corta`, `--pausa-lectura`).
-   - Nada de partículas, brillos, destellos ni giros 3D decorativos.
+   - Nada de partículas, brillos, destellos ni giros 3D decorativos. Única excepción, pedida expresamente: la moneda de E31 (`girarMoneda`).
 6. **Documenta en el mismo cambio:**
    - La variable nueva: su comentario en `design-system.css`. Aparece sola en la sección Movimiento de `design/design-system.html`.
    - El efecto nuevo: su demo en `design/doc/documentacion.js`.

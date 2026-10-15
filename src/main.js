@@ -49,10 +49,15 @@ async function iniciarPresentacion() {
       else if (m.tipo === 'retroceder') nav.retroceder();
       else if (m.tipo === 'general') nav.alternarGeneral();
       else if (m.tipo === 'avanzados') nav.alternarAvanzados();
+      else if (m.tipo === 'final') nav.irAlFinal();
       enlace.enviar(estado());
     },
   });
   nav = crearNavegacion({ mundo, camara, alCambiar: () => nav && enlace.enviar(estado()) });
+
+  // Pantalla completa sin nada del navegador alrededor; F otra vez o Esc la quitan.
+  const pantallaCompleta = () =>
+    (document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen()).catch(() => {});
 
   addEventListener('keydown', ev => {
     // Una tecla mantenida no avanza varios pasos.
@@ -63,6 +68,8 @@ async function iniciarPresentacion() {
       o: nav.alternarGeneral, O: nav.alternarGeneral,
       a: nav.alternarAvanzados, A: nav.alternarAvanzados,
       p: enlace.abrir, P: enlace.abrir,
+      f: pantallaCompleta, F: pantallaCompleta,
+      End: nav.irAlFinal,
     }[ev.key];
     if (!accion) return;
     ev.preventDefault();

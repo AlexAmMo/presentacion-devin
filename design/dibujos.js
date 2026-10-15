@@ -1,5 +1,5 @@
 // Geometría de los componentes SVG del vocabulario: gráfica de líneas, dial de
-// effort, temporizador, guía en codo, saltos de precio, circuito, repetición, bucle del agente y camino de puntos.
+// effort, temporizador, guía en codo, saltos de precio, circuito, repetición, bucle del agente, camino de puntos y moneda.
 // Devuelven marcado con las clases de componentes.css: color, trazos y tipografía
 // van siempre por CSS, nunca en atributos. Las medidas salen de design-system.css.
 import { icono } from './iconos.js';
@@ -291,4 +291,71 @@ export function bucle({ etiquetas = [] } = {}) {
   });
   svg += `<circle class="bucle__punto" cx="${cx}" cy="${cy - r}" r="${medida('--punto-diametro') / 2}"/>`;
   return `<svg class="bucle" viewBox="0 0 ${ancho} ${alto}" width="${ancho}" height="${alto}" data-centro="${cx} ${cy}">${svg}</svg>`;
+}
+
+/**
+ * Moneda en 3D (E31): una cara delante y otra detrás, y entre ellas el canto: una banda cilíndrica
+ * de segmentos alrededor del borde, del ancho de --moneda-grosor y perpendiculares a las caras, que
+ * de canto se ve como una franja continua. El signo «?» es una pieza geométrica que atraviesa la
+ * moneda y sobresale por las dos caras (--moneda-signo-grosor): un solo trazo (gancho, enlace curvo
+ * y palo) y un punto, con dos tapas planas (SVG) y sus paredes, perpendiculares a ellas, como el canto. Nada
+ * de capas apiladas casi en el mismo plano: así Chrome no parpadea al ordenarlas y el giro va
+ * fluido. Por detrás, el signo se ve en espejo, como una pieza de verdad. Gira con girarMoneda.
+ */
+export function moneda({ segmentos = 60 } = {}) {
+  const grosor = medida('--moneda-grosor'), radio = medida('--moneda-diametro') / 2;
+  // Las paredes del signo, un píxel por dentro de sus tapas: si llegan a su plano, asoman como
+  // líneas finas sobre el blanco.
+  const fondo = medida('--moneda-signo-grosor'), paredFondo = fondo - 2, r = radio;
+  const n = x => x.toFixed(2);
+  // Un plano perpendicular a las caras sobre el segmento de p a q (en px desde el centro), del fondo
+  // dado: canto de la moneda o pared del signo. Un píxel más ancho que el segmento: sin rendijas.
+  const pared = (clase, [x1, y1], [x2, y2], alto) => {
+    const largo = Math.hypot(x2 - x1, y2 - y1) + 1, angulo = (Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI;
+    return `<div class="${clase}" style="width:${n(largo)}px;height:${alto}px;margin:${-alto / 2}px 0 0 ${n(-largo / 2)}px;transform:translate(${n((x1 + x2) / 2)}px, ${n((y1 + y2) / 2)}px) rotateZ(${n(angulo)}deg) rotateX(90deg)"></div>`;
+  };
+  const arco = (cx, cy, rr, a0, a1, partes) => Array.from({ length: partes + 1 }, (_, i) => {
+    const a = a0 + ((a1 - a0) * i) / partes;
+    return [cx + rr * Math.cos(a), cy + rr * Math.sin(a)];
+  });
+  const paredes = (puntos, alto) => puntos.slice(1).map((q, i) => pared('moneda__pared', puntos[i], q, alto)).join('');
+
+  // El canto de la moneda: los segmentos de su borde.
+  const borde = arco(0, 0, r, 0, 2 * Math.PI, segmentos);
+  const canto = borde.slice(1).map((q, i) => pared('moneda__canto', borde[i], q, grosor)).join('');
+
+  // El signo, en proporción al radio: un solo trazo de grosor T (gancho, enlace y palo) y el punto.
+  // El gancho es un arco de centro (0, C) y radio R que empieza a la izquierda, algo por debajo de su
+  // centro, pasa por arriba y baja por la derecha; una curva lo enlaza con el palo, centrado debajo,
+  // al que llega ya en vertical: la unión es continua, sin ángulos.
+  const T = 0.17 * r, R = 0.25 * r, C = -0.22 * r, rp = 0.095 * r;
+  const a0 = Math.PI - 0.2, a1 = 2 * Math.PI + 0.75;
+  const fin = [R * Math.cos(a1), C + R * Math.sin(a1)], tangente = [-Math.sin(a1), Math.cos(a1)];
+  const arranque = C + R + 0.1 * r, base = arranque + 0.14 * r, punto = base + 0.1 * r + rp;
+  // El enlace: una curva de Bézier que sale del gancho en su dirección y llega al palo en vertical.
+  const [c1, c2, s] = [[fin[0] + 0.11 * r * tangente[0], fin[1] + 0.11 * r * tangente[1]], [0, arranque - 0.09 * r], [0, arranque]];
+  const bezier = u => [0, 1].map(k => (1 - u) ** 3 * fin[k] + 3 * (1 - u) ** 2 * u * c1[k] + 3 * (1 - u) * u ** 2 * c2[k] + u ** 3 * s[k]);
+  // El eje del trazo, en puntos: el arco, el enlace y el palo.
+  const eje = [...arco(0, C, R, a0, a1, 30), ...Array.from({ length: 14 }, (_, i) => bezier((i + 1) / 14)), [0, base]];
+  // Su contorno: el eje desplazado medio trazo a cada lado, por su normal (la tangente, de los vecinos).
+  const lado = signo => eje.map((p, i) => {
+    const [a, b] = [eje[Math.max(0, i - 1)], eje[Math.min(eje.length - 1, i + 1)]];
+    const largo = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    return [p[0] - (signo * T) / 2 * (b[1] - a[1]) / largo, p[1] + (signo * T) / 2 * (b[0] - a[0]) / largo];
+  });
+  const [izquierda, derecha] = [lado(1), lado(-1)];
+  const tapa = z => `<svg class="moneda__signo" viewBox="${-r} ${-r} ${2 * r} ${2 * r}" style="transform:translateZ(${z}px)">
+      <path d="M${n(R * Math.cos(a0))} ${n(C + R * Math.sin(a0))} A${n(R)} ${n(R)} 0 1 1 ${n(fin[0])} ${n(fin[1])} C${n(c1[0])} ${n(c1[1])} ${n(c2[0])} ${n(c2[1])} ${n(s[0])} ${n(s[1])} L0 ${n(base)}" style="stroke-width:${n(T)}px"/>
+      <circle cx="0" cy="${n(punto)}" r="${n(rp)}"/></svg>`;
+  // Las paredes: los dos lados del trazo, sus dos extremos (planos) y el contorno del punto. Además de
+  // las tapas, el signo se repite pegado a cada cara: el navegador parte las tapas por los planos de
+  // las paredes, y por las juntas asomaba la cara oscura en puntos sueltos.
+  const signo =
+    paredes(izquierda, paredFondo) + paredes(derecha, paredFondo) +
+    pared('moneda__pared', izquierda[0], derecha[0], paredFondo) + pared('moneda__pared', izquierda.at(-1), derecha.at(-1), paredFondo) +
+    paredes(arco(0, punto, rp, 0, 2 * Math.PI, 16), paredFondo) +
+    tapa(fondo / 2) + tapa(-fondo / 2) + tapa(grosor / 2 + 0.5) + tapa(-grosor / 2 - 0.5);
+  return `<div class="moneda"><div class="moneda__cuerpo">${canto}
+    <div class="moneda__cara" style="transform:translateZ(${grosor / 2}px)"></div>
+    <div class="moneda__cara" style="transform:rotateY(180deg) translateZ(${grosor / 2}px)"></div>${signo}</div></div>`;
 }

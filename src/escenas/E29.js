@@ -14,6 +14,10 @@ const HABITOS = [
 ];
 const PROPIOS = [['gauge', 'Effort', 'Effort máximo por defecto'], ['app-window', 'Contexto', 'Mezclar tareas y reiniciar'], ['git-fork', 'Subagentes', 'Subagentes por defecto']];
 
+// La columna «Alternativa» empieza en x = 808 (120 + 640 + 48 de hueco); su rótulo va centrado en
+// x = 960, el eje de la pantalla en el que también se centra la etiqueta «Contexto».
+const ALTERNATIVA = 808;
+
 export default function ({ escena, raiz }) {
   let pasos = null;
   return {
@@ -22,12 +26,12 @@ export default function ({ escena, raiz }) {
           <td style="width:640px"><span style="display:flex;align-items:center;gap:var(--esp-2)">${icono('ban', 'icono--s')}${h}</span></td>
           <td><span style="display:flex;align-items:center;gap:var(--esp-2)">${icono('check', 'icono--s')}${a}</span></td></tr>`).join('');
       const propios = PROPIOS.map(([ic, zona, habito], i) =>
-        en(120 + i * 570, 800, `<span class="etiqueta">${icono(ic, 'icono--s')}${zona}</span>
-          <p class="tipo-texto-s" style="margin:var(--esp-2) 0 0">${habito}</p>`, { paso: 2, orden: 1, estilo: 'width:540px' })).join('');
+        en(120 + i * 570, 852, `<span class="etiqueta">${icono(ic, 'icono--s')}${zona}</span>
+          <p class="tipo-texto-s" style="margin:var(--esp-2) 0 0">${habito}</p>`, { paso: 2, orden: 1, estilo: 'width:540px;display:grid;justify-items:center;text-align:center' })).join('');
       raiz.innerHTML =
         cabecera(escena, 1020) +
-        en(120, 392, `<table class="tabla" style="width:1680px"><thead data-paso="1"><tr><th>Hábito que gasta</th><th>Alternativa</th></tr></thead><tbody>${filas}</tbody></table>`) +
-        en(120, 740, '<p class="tipo-etiqueta" style="margin:0;color:var(--color-texto-3)">Y los de cada pieza, que ya vimos en su sección</p>', { paso: 2 }) +
+        en(120, 392, `<table class="tabla" style="width:1680px"><thead data-paso="1"><tr><th>Hábito que gasta</th><th><span style="display:inline-block;transform:translateX(calc(${960 - ALTERNATIVA}px - 50%))">Alternativa</span></th></tr></thead><tbody>${filas}</tbody></table>`) +
+        en(120, 795, '<p class="tipo-etiqueta" style="margin:0;color:var(--color-texto-3)">Y los de cada pieza, que ya vimos en su sección</p>', { paso: 2 }) +
         propios;
       pasos = crearPasos(raiz);
       pasos.poner(0);

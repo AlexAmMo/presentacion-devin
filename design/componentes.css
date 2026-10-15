@@ -309,6 +309,49 @@
 .documento__cuerpo { display: grid; gap: var(--esp-3); padding: var(--esp-4) var(--esp-3); }
 .documento__linea { height: var(--esp-2); border-radius: var(--radio-pildora); background: var(--color-texto-simulado); }
 
+/* ── Componente · Subrayado ────────────────────────────────────────────────
+   clase: .subrayado · .subrayado--vacio · .subrayado--pregunta-1 · .subrayado--pregunta-2 · .subrayado--pregunta-3 · .subrayado--pregunta-4 · .subrayado--pregunta-5
+   forma: Línea bajo un fragmento de texto que sigue sus filas: marca qué parte de un texto responde a qué (la pregunta del mismo color, que lleva su número en ese color). Sin números en el texto. Sin subrayar todavía, .subrayado--vacio.
+   color: --color-pregunta-1 a --color-pregunta-5 (sin variante, --color-contorno).
+   medidas: --trazo-fuerte de grueso, al pie de la línea de texto
+   icono: —
+   movimiento: subrayar (todo el texto en orden de lectura, de izquierda a derecha y fila a fila, como un solo trazo)
+   escenas: E24
+   ─────────────────────────────────────────────────────────────────────── */
+.subrayado { background: linear-gradient(var(--color-contorno), var(--color-contorno)) no-repeat 0 100% / 100% var(--trazo-fuerte); }
+.subrayado--vacio { background-size: 0% var(--trazo-fuerte); }
+.subrayado--pregunta-1 { background-image: linear-gradient(var(--color-pregunta-1), var(--color-pregunta-1)); }
+.subrayado--pregunta-2 { background-image: linear-gradient(var(--color-pregunta-2), var(--color-pregunta-2)); }
+.subrayado--pregunta-3 { background-image: linear-gradient(var(--color-pregunta-3), var(--color-pregunta-3)); }
+.subrayado--pregunta-4 { background-image: linear-gradient(var(--color-pregunta-4), var(--color-pregunta-4)); }
+.subrayado--pregunta-5 { background-image: linear-gradient(var(--color-pregunta-5), var(--color-pregunta-5)); }
+
+/* ── Componente · Moneda ───────────────────────────────────────────────────
+   clase: .moneda · .moneda__cuerpo · .moneda__cara · .moneda__canto · .moneda__signo · .moneda__pared
+   forma: Moneda en 3D: dos caras con un reborde, un signo de interrogación con volumen que la atraviesa y sobresale por las dos caras: una pieza geométrica (gancho, palo y punto) con dos tapas planas y paredes perpendiculares, sin capas apiladas (por detrás se ve en espejo, como una pieza de verdad), y un canto con grosor (una banda de segmentos alrededor del borde, perpendiculares a las caras) que se ve al girar, continuo también de canto. El turno de preguntas: es lo único en pantalla, con el logo. Única excepción, a petición expresa, a «nada de giros 3D».
+   color: Cara --color-moneda · signo --color-sobre-moneda, con sus paredes --color-moneda-luz · canto y surco --color-moneda-canto · filos --color-moneda-luz.
+   medidas: --moneda-diametro · --moneda-grosor · --moneda-signo-grosor · --moneda-perspectiva · reborde --esp-4 con filos de --trazo-contorno · signo, en proporción al radio de la moneda (dibujos.js)
+   icono: —
+   movimiento: entrarConMuelle · girarMoneda (sin parar, sobre su eje vertical, despacio y a ritmo constante)
+   escenas: E31
+   ─────────────────────────────────────────────────────────────────────── */
+.moneda { width: var(--moneda-diametro); height: var(--moneda-diametro); perspective: var(--moneda-perspectiva); }
+/* will-change: el giro no vuelve a rasterizar las capas en cada fotograma (sus bordes no tiemblan). */
+.moneda__cuerpo { position: relative; width: 100%; height: 100%; transform-style: preserve-3d; will-change: transform; }
+.moneda__cara { position: absolute; inset: 0; border-radius: 50%; }
+.moneda__canto { position: absolute; left: 50%; top: 50%; background: var(--color-moneda-canto); }
+.moneda__cara {
+  backface-visibility: hidden; background: var(--color-moneda);
+  /* El reborde: un filo de luz fuera, la banda del color de la cara, un surco y otro filo de luz. */
+  box-shadow: inset 0 0 0 var(--trazo-contorno) var(--color-moneda-luz), inset 0 0 0 var(--esp-4) var(--color-moneda),
+    inset 0 0 0 calc(var(--esp-4) + var(--trazo-contorno)) var(--color-moneda-canto), inset 0 0 0 calc(var(--esp-4) + 2 * var(--trazo-contorno)) var(--color-moneda-luz);
+}
+/* El signo: dos tapas planas (SVG) y sus paredes, en luz. */
+.moneda__signo { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; color: var(--color-sobre-moneda); }
+.moneda__signo path { fill: none; stroke: currentColor; }
+.moneda__signo rect, .moneda__signo circle { fill: currentColor; }
+.moneda__pared { position: absolute; left: 50%; top: 50%; background: var(--color-moneda-luz); }
+
 /* ── Componente · Skill ────────────────────────────────────────────────────
    clase: .skill
    forma: Tarjeta-pieza con pestaña. Plegada solo muestra nombre y descripción; desplegada, su anatomía numerada (cuándo, qué necesita, pasos, resultado).

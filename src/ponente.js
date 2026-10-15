@@ -61,6 +61,7 @@ export function iniciarPonente() {
       <button class="ponente__boton ponente__boton--principal" data-accion="avanzar">Siguiente${icono('arrow-right', 'icono--s')}</button>
       <button class="ponente__boton" data-accion="general" aria-keyshortcuts="O"></button>
       <button class="ponente__boton" data-accion="avanzados" aria-keyshortcuts="A"></button>
+      <button class="ponente__boton" data-accion="final" aria-keyshortcuts="End">Ir a las preguntas (Fin)</button>
     </nav>`;
   const $ = q => document.querySelector(q);
   const principal = window.opener;
@@ -127,6 +128,7 @@ export function iniciarPonente() {
     retroceder: () => enviar('retroceder'),
     general: () => enviar('general'),
     avanzados: () => enviar('avanzados'),
+    final: () => enviar('final'),
     pausar: () => {
       const ahora = Date.now();
       if (crono.inicio == null) crono = { inicio: ahora, pausa: null };
@@ -151,7 +153,7 @@ export function iniciarPonente() {
     if ((ev.key === ' ' || ev.key === 'Enter') && ev.target.closest('button')) return;
     const accion = {
       ArrowRight: 'avanzar', ' ': 'avanzar', PageDown: 'avanzar', ArrowLeft: 'retroceder', PageUp: 'retroceder',
-      o: 'general', O: 'general', a: 'avanzados', A: 'avanzados',
+      o: 'general', O: 'general', a: 'avanzados', A: 'avanzados', End: 'final',
     }[ev.key];
     if (!accion) return;
     ev.preventDefault();

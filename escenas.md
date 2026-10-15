@@ -447,9 +447,9 @@ Mensaje: una buena petición responde cinco preguntas.
 1. Las cinco preguntas en lista.
 2. La petición inicial: «Arregla la paginación».
 3. La petición mejorada, en mono.
-4. Cada fragmento de la petición mejorada se subraya con el número de la pregunta que responde (1 a 5).
+4. La petición mejorada se subraya de un trazo rápido, en orden de lectura y fila a fila; cada fragmento, en el color de la pregunta que responde (sin números en el texto).
 
-Diseño: arriba a la derecha, el circuito (fijo en las seis escenas). A la izquierda, las cinco preguntas; a la derecha, las dos peticiones, una sobre otra (la inicial se atenúa).
+Diseño: arriba a la derecha, el circuito (fijo en las seis escenas). A la izquierda, las cinco preguntas, cada una con su número grande en su color (`--color-pregunta-1` a `5`); a la derecha, las dos peticiones, una sobre otra (la inicial se atenúa).
 
 ### E25 · Contexto progresivo · ~1,5 min
 
@@ -520,7 +520,7 @@ Guion: Cierre.
 
 Mensaje: cinco preguntas antes de empezar.
 
-1. Las cinco preguntas aparecen una a una, cada una con la etiqueta del bloque donde se explica: resultado → Buenas prácticas, configuración → Primeros pasos y Principales herramientas, contexto → Contexto, herramientas → Tools y plugins, terminado → Verificar.
+1. Las cinco preguntas entran en cascada, rápida y sin pausas (`--escalonado-filas`), cada una con la etiqueta de donde se explica: resultado → Buenas prácticas, configuración → Modelo, Effort y Modo, contexto → Contexto, herramientas → Tools y Skills, terminado → Verificar.
 2. Mensaje final y logo de Openbank.
 
 Diseño: las cinco preguntas en filas, cada una con la etiqueta (e icono) de su bloque a la derecha; abajo, el mensaje final y el logo.
@@ -529,9 +529,9 @@ Diseño: las cinco preguntas en filas, cada una con la etiqueta (e icono) de su 
 
 Mensaje: turno de preguntas.
 
-1. Rótulo «¿Preguntas?», con el título de la charla, «Devin en el día a día», y el logo de Openbank.
+1. Una moneda en 3D con el signo «?» en relieve, en el centro, que gira despacio y sin parar sobre su eje vertical desde que llega, y el logo de Openbank.
 
-Diseño: sin título de escena; el rótulo grande a la izquierda, el título de la charla debajo y el logo abajo a la derecha, donde estaba en E30.
+Diseño: sin título de escena ni más texto; la moneda (`.moneda`, `moneda()` en `dibujos.js`) sola en el centro: dos caras con un reborde, un «?» con volumen que la atraviesa y sobresale por las dos caras (una pieza geométrica: un solo trazo continuo, gancho, curva de enlace y palo, más el punto, con dos tapas planas y paredes; por detrás se ve en espejo) y un canto con grosor (una banda continua alrededor del borde); gira en 3D, una vuelta cada 6 s (`--dur-moneda`), única excepción pedida a «nada de giros 3D». El logo, abajo a la derecha, donde estaba en E30.
 
 ### E32 · Caso práctico (pendiente de decidir)
 

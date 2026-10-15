@@ -168,6 +168,30 @@ registrar('cachearCapas', (t, c) => {
     .set(capas, { clearProps: 'backgroundColor' });
 }, () => ({ duration: s('--dur-ajustar'), ease: v('--ease-ajustar'), cacheadas: true }));
 
+/**
+ * Un texto se subraya en orden de lectura, de izquierda a derecha y fila a fila, como un solo
+ * trazo: cada fragmento (.subrayado, que parte de .subrayado--vacio) se lleva su parte del
+ * recorrido según su largo (el texto va en mono). El grueso es el de componentes.css.
+ */
+registrar('subrayar', (t, c) => {
+  const trozos = gsap.utils.toArray(t);
+  const largos = trozos.map(el => el.textContent.length), total = largos.reduce((a, b) => a + b, 0) || 1;
+  const grueso = trozos.length ? getComputedStyle(trozos[0]).backgroundSize.split(' ')[1] : '0px';
+  const avance = { p: 0 };
+  const pintar = () => {
+    let antes = 0;
+    trozos.forEach((el, i) => {
+      el.style.backgroundSize = `${Math.min(1, Math.max(0, (avance.p * total - antes) / largos[i])) * 100}% ${grueso}`;
+      antes += largos[i];
+    });
+  };
+  // Al terminar, queda como el subrayado entero de componentes.css: sin --vacio ni ancho propio.
+  return gsap.timeline()
+    .to(avance, { p: 1, duration: c.duration, ease: c.ease, onStart: pintar, onUpdate: pintar })
+    .set(trozos, { attr: { class: (i, el) => conClase(el, 'subrayado--vacio', false) } })
+    .set(trozos, { clearProps: 'backgroundSize' });
+}, () => ({ duration: s('--dur-trazado'), ease: v('--ease-trazado') }));
+
 /** Una cifra sube hasta «hasta», con formato español y dígitos tabulares. */
 registrar('subirContador', (t, c) => {
   const formato = new Intl.NumberFormat('es-ES', {
@@ -305,6 +329,16 @@ registrar('agotarTemporizador', (t, c) => {
 registrar('girar', (t, c) =>
   gsap.to(t, { rotation: '+=360', duration: c.duration, ease: c.ease, repeat: c.repeat }),
 () => ({ duration: s('--dur-repeticion'), ease: v('--ease-repeticion'), repeat: -1 }));
+
+/**
+ * La moneda gira sin parar sobre su eje vertical, en 3D (su cuerpo, .moneda__cuerpo), despacio y a
+ * ritmo constante. Es la única excepción, pedida expresamente, a «nada de giros 3D decorativos».
+ * Devuelve el tween, que se para con kill(). En modo estático no gira.
+ */
+registrar('girarMoneda', (t, c) =>
+  gsap.to(gsap.utils.toArray(t).map(m => m.querySelector('.moneda__cuerpo') ?? m),
+    { rotationY: '+=360', duration: c.duration, ease: c.ease, repeat: c.repeat }),
+() => ({ duration: s('--dur-moneda'), ease: v('--ease-moneda'), repeat: -1 }));
 
 // ── Cámara ────────────────────────────────────────────────────────────────
 

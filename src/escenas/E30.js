@@ -1,17 +1,18 @@
 // E30 · Antes de pulsar Enter. Comparte pantalla con E31.
-// Las cinco preguntas, una a una, cada una con la etiqueta del bloque (o la parada) donde se
-// explica. Abajo, el mensaje final y el logo de Openbank.
+// Las cinco preguntas, en cascada (una tras otra, sin pausas), cada una con la etiqueta del bloque
+// (o la parada) donde se explica. Abajo, el mensaje final y el logo de Openbank.
 // Pasos: 1 las cinco preguntas · 2 el mensaje final.
 import { icono } from '../../design/iconos.js';
 import logo from '../../design/assets/logos/openbank-logo-fondo-claro.svg';
-import { en, cabecera, crearPasos, pausa } from './comun.js';
+import { s } from '../../design/motion.js';
+import { en, cabecera, crearPasos } from './comun.js';
 
-// Guion, «Cierre»: cada pregunta, con dónde se explica.
+// Guion, «Cierre»: cada pregunta, con dónde se explica (con los iconos del hub y de E03).
 const PREGUNTAS = [
   ['¿Está claro el resultado que necesito?', [['list-checks', 'Buenas prácticas']]],
-  ['¿He elegido una configuración proporcionada?', [['map-pin', 'Primeros pasos'], ['bot', 'Principales herramientas']]],
+  ['¿He elegido una configuración proporcionada?', [['cpu', 'Modelo'], ['gauge', 'Effort'], ['code-xml', 'Modo']]],
   ['¿He aportado contexto relevante, y solo el relevante?', [['app-window', 'Contexto']]],
-  ['¿Existe una herramienta o procedimiento del equipo que deba utilizar?', [['wrench', 'Tools'], ['package', 'Plugins']]],
+  ['¿Existe una herramienta o procedimiento del equipo que deba utilizar?', [['wrench', 'Tools'], ['puzzle', 'Skills']]],
   ['¿Cómo sabré que el trabajo está terminado?', [['list-checks', 'Verificar']]],
 ];
 
@@ -19,11 +20,11 @@ export default function ({ escena, raiz }) {
   let pasos = null;
   return {
     montar() {
-      const fila = ([pregunta, bloques], i) => en(120, 332 + i * 92, `<div style="display:grid;grid-template-columns:48px 1010px 1fr;align-items:center">
+      const fila = ([pregunta, bloques], i) => en(120, 332 + i * 92, `<div data-fila style="display:grid;grid-template-columns:48px 1010px 1fr;align-items:center">
           <span class="tabla__mono" style="color:var(--color-texto-3)">${i + 1}</span>
           <p class="tipo-texto" style="margin:0">${pregunta}</p>
           <div style="display:flex;gap:var(--esp-2)">${bloques.map(([ic, nombre]) => `<span class="etiqueta">${icono(ic, 'icono--s')}${nombre}</span>`).join('')}</div></div>`,
-        { paso: 1, orden: i, estilo: 'width:1680px' });
+        { paso: 1, propio: true, estilo: 'width:1680px' });
       raiz.innerHTML =
         cabecera(escena, 1680) +
         PREGUNTAS.map(fila).join('') +
@@ -37,8 +38,9 @@ export default function ({ escena, raiz }) {
     irA(paso, { animar = false, tl } = {}) {
       if (!animar || !tl) return pasos.poner(paso);
       if (paso !== 1) return void pasos.animar(paso, tl);
-      // Una a una, con su pausa de lectura.
-      pasos.ordenes(1).forEach((o, i) => { if (i) pausa(tl); pasos.animar(1, tl, { orden: o }); });
+      // En cascada: cada fila llega poco después de la anterior, en un solo movimiento.
+      pasos.animar(1, tl);
+      tl.aparecer([...raiz.querySelectorAll('[data-fila]')].map(f => f.closest('[data-paso]')), { stagger: s('--escalonado-filas') });
     },
 
     desmontar() { raiz.innerHTML = ''; },

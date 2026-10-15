@@ -16,7 +16,7 @@ export const esNuestro = ev => ev.data?.marca === MARCA && ev.origin === ORIGEN;
 // Destino de postMessage: el propio origen; en file:// el origen es opaco y hay que usar «*».
 export const DESTINO = ORIGEN === 'null' ? '*' : ORIGEN;
 
-/** Lado de la presentación. alRecibir(mensaje) recibe { tipo: 'hola' | 'avanzar' | 'retroceder' | 'general' | 'avanzados' }. */
+/** Lado de la presentación. alRecibir(mensaje) recibe { tipo: 'hola' | 'avanzar' | 'retroceder' | 'general' | 'avanzados' | 'final' }. */
 export function crearEnlace({ alRecibir }) {
   let ponente = null;
   addEventListener('message', ev => {

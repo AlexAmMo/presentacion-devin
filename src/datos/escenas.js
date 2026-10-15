@@ -204,7 +204,7 @@ export const ESCENAS = [
       {n: 1, texto: "Las cinco preguntas en lista.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
       {n: 2, texto: "La petición inicial: «Arregla la paginación».", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
       {n: 3, texto: "La petición mejorada, en mono.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
-      {n: 4, texto: "Cada fragmento de la petición mejorada se subraya con el número de la pregunta que responde (1 a 5).", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
+      {n: 4, texto: "La petición mejorada se subraya de un trazo rápido, en orden de lectura y fila a fila; cada fragmento, en el color de la pregunta que responde (sin números en el texto).", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
     ],
   },
   {
@@ -247,14 +247,14 @@ export const ESCENAS = [
   {
     id: "E30", titulo: "Antes de pulsar Enter", bloque: "Cierre · Preguntas", bloqueCorto: "Cierre", bloqueTitulo: "Preguntas", mensaje: "cinco preguntas antes de empezar.", guion: "Cierre", minutos: 2, zona: "cierre", region: "cierre", x: -4960, y: 0, ancho: 1920, alto: 1080,
     pasos: [
-      {n: 1, texto: "Las cinco preguntas aparecen una a una, cada una con la etiqueta del bloque donde se explica: resultado → Buenas prácticas, configuración → Primeros pasos y Principales herramientas, contexto → Contexto, herramientas → Tools y plugins, terminado → Verificar.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
+      {n: 1, texto: "Las cinco preguntas entran en cascada, rápida y sin pausas (`--escalonado-filas`), cada una con la etiqueta de donde se explica: resultado → Buenas prácticas, configuración → Modelo, Effort y Modo, contexto → Contexto, herramientas → Tools y Skills, terminado → Verificar.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
       {n: 2, texto: "Mensaje final y logo de Openbank.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
     ],
   },
   {
     id: "E31", titulo: "Preguntas", bloque: "Cierre · Preguntas", bloqueCorto: "Cierre", bloqueTitulo: "Preguntas", mensaje: "turno de preguntas.", guion: "", minutos: null, zona: "cierre", region: "cierre", x: -4960, y: 0, ancho: 1920, alto: 1080,
     pasos: [
-      {n: 1, texto: "Rótulo «¿Preguntas?», con el título de la charla, «Devin en el día a día», y el logo de Openbank.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
+      {n: 1, texto: "Una moneda en 3D con el signo «?» en relieve, en el centro, que gira despacio y sin parar sobre su eje vertical desde que llega, y el logo de Openbank.", detalle: [], avanzado: false, detalleAvanzado: false, hub: null, encuadre: null},
     ],
   },
 ];

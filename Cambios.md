@@ -220,6 +220,35 @@ E23:
 - Centra en altura los 2 bullets points finales: Cache y pausas. Resulta de forma mas notoria el "1" y "2" o cambialos por algun tipo de bullet point para que sean mas esteticos y se distingan del texto normal.
 
 
+E24:
+
+- Ponle a cada numero de la preguntas un color. Y subraya el texto con ese color. De esta forma no es necesario incluir los numeros en el texto de la peticion mejorada.
+- Haz que la animacion de colorear el texto sea rapida y vaya de arriba a abajo, y izqueda a derecha reccoriendo el texto completo fila a fila de forma secuencial y fluida.
+
+E25:
+
+- Dale mas espacio superior al texto "El resto, accesible si hace falta", esta demasiado pegado al elemento superior
+
+E29:
+
+- Deja mas espacio superior al texto: "Y los de cada pieza, que ya vimos en su sección"
+- Centra cada pill encima de su texto asociado y centra el pack de 3 pills en su fila como conjunto.
+- Haz que la columna "Alternativa" esté alineada con la pill central "Contexto", sino la diapositiva da sensacion de descuadre
+
+E30:
+
+- Acelera la animacion de todas las preguntas y haz que sea mas fluida sin tirones
+- Cambia en el punto 4 "plugins" por "Skills"
+- Cambia las pills del punto 2 por "Modelo" y "Effort" y "Modo"
+
+E31:
+
+- Cambia el contenido de la diapositiva por una "moneda" con el simbolo de "?" girando sobre su eje vertical y deja el logo de openbank abajo a la derecha. Intenta que la moneda sea "3d" y tenga relieve, ademas haz que el giro se mas lento y suave. 
+- Corrige la moneda para que tenga realmente 2 caras y tras girar se vea "por detras" con la interrogacion girada.
+
+
+
+
 
 
 
