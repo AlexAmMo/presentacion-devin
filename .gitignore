@@ -1,6 +1,8 @@
 .DS_Store
 node_modules/
-dist/
+# De la exportación solo se sube el HTML autocontenido (npm run build).
+dist/*
+!dist/index.html
 *.local.json
 .playwright-mcp/
 .impeccable/*.cache.json
