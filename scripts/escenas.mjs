@@ -25,7 +25,7 @@ const minutosDe = partes => {
 // ── Lectura de escenas.md ───────────────────────────────────────────────────
 
 const escenas = [];
-let bloque = null, escena = null, paso = null;
+let bloque = null, escena = null, paso = null, notas = null;
 md.split('\n').forEach((linea, i) => {
   const donde = `escenas.md:${i + 1}`;
   let m;
@@ -36,7 +36,7 @@ md.split('\n').forEach((linea, i) => {
     bloque = /^(Apertura|Parte \d+|Cierre)$/.test(partes[0])
       ? { nombre: nombres.join(' · '), corto: partes[0], titulo: nombres.at(-1), minutos: minutosDe(partes), escenas: 0 }
       : null;
-    escena = paso = null;
+    escena = paso = notas = null;
     return;
   }
   if ((m = linea.match(/^### (E\d\d) · (.+)$/))) {
@@ -45,10 +45,19 @@ md.split('\n').forEach((linea, i) => {
     escena = { id: m[1], titulo: partes[0], bloque: bloque?.nombre, bloqueCorto: bloque?.corto, bloqueTitulo: bloque?.titulo, minutos: minutosDe(partes), enHub: partes.includes('en el hub'), pasos: [], deBloque: bloque };
     if (bloque) bloque.escenas++;
     escenas.push(escena);
-    paso = null;
+    paso = notas = null;
     return;
   }
   if (!escena) return;
+  // Notas para la vista de ponente, una por paso: «- (2) idea» y, sangrados, sus detalles «  - texto».
+  if (linea === 'Notas:') { notas = escena.notas = []; paso = null; return; }
+  if (notas) {
+    let n;
+    if ((n = linea.match(/^- \((\d+)\) (.+)$/))) { notas.push({ paso: Number(n[1]), idea: n[2], detalle: [] }); return; }
+    if ((n = linea.match(/^\s+- (.+)$/)) && notas.length) { notas.at(-1).detalle.push(n[1]); return; }
+    if (linea.startsWith('- ')) { error(`${donde}: cada nota de ${escena.id} empieza por su paso, «- (2) idea», y sus detalles van sangrados.`); return; }
+    if (linea.trim()) notas = null;
+  }
   if ((m = linea.match(/^Guion: (.+)$/))) { escena.guion = m[1].replace(/\.$/, ''); paso = null; return; }
   if ((m = linea.match(/^Mensaje: (.+)$/))) { escena.mensaje = m[1]; paso = null; return; }
   if ((m = linea.match(/^(\d+)\. (.*)$/))) {
@@ -81,6 +90,24 @@ for (const e of escenas) {
     if (/\*\*Pieza al hub\*\*/.test(p.texto)) error(`${e.id}/${p.n}: «Pieza al hub» ya no es un paso; la pieza se coloca sola al terminar su escena (HUB.llega en mapa.js).`);
     p.texto = sinNegrita(p.texto);
     p.detalle = p.detalle.map(sinNegrita);
+  }
+}
+
+// Notas de ponente: una por paso, en orden, y cortas, porque la vista nunca se desplaza.
+const MAX_IDEA = 90, MAX_DETALLES = 5, MAX_DETALLE = 125;
+const largo = t => t.replace(/\*\*|`/g, '').length;
+for (const e of escenas.filter(x => x.pasos.length)) {
+  const notas = e.notas ?? [];
+  if (notas.map(n => n.paso).join() !== e.pasos.map(p => p.n).join()) error(`${e.id}: «Notas:» debe tener una nota por paso, en orden (${e.pasos.length}); tiene ${notas.map(n => n.paso).join(', ') || 'ninguna'}.`);
+  for (const n of notas) {
+    if (largo(n.idea) > MAX_IDEA) error(`${e.id}/${n.paso}: la idea pasa de ${MAX_IDEA} caracteres: resúmela.`);
+    if (n.detalle.length > MAX_DETALLES) error(`${e.id}/${n.paso}: ${n.detalle.length} detalles; como mucho, ${MAX_DETALLES}.`);
+    for (const d of n.detalle) if (largo(d) > MAX_DETALLE) error(`${e.id}/${n.paso}: «${d}» pasa de ${MAX_DETALLE} caracteres: resúmelo.`);
+  }
+  for (const p of e.pasos) {
+    const n = notas.find(x => x.paso === p.n);
+    p.idea = n?.idea ?? '';
+    p.notas = n?.detalle ?? [];
   }
 }
 
@@ -126,50 +153,6 @@ for (const ref of HUB.contextoComoVentana ?? []) {
   else if (zonaDe(ref.split('/')[0]) !== 'hub') error(`HUB.contextoComoVentana: ${ref} no ocurre en el hub.`);
 }
 
-// ── El guion de cada escena, para la vista de ponente ──────────────────────
-// Guion Devin.md no se toca: se lee. Cada escena dice en «Guion:» de qué apartado sale: «2.1»
-// (el apartado entero), «2.1, «Cómo elegir»» (ese subapartado), «2.6, desde «Cómo las usa el
-// agente»» (de ahí al final del apartado), «2.3, definición…» (su introducción, hasta el primer
-// subapartado), «Apertura» o «Cierre». Se queda en una lista de líneas: «### » para un
-// subapartado, «- » para un punto de lista y el resto, párrafos.
-const guionLineas = readFileSync(new URL('Guion Devin.md', raiz), 'utf8').split('\n');
-const nivel = l => (l.match(/^(#{1,3}) /)?.[1].length ?? 0);
-function apartado(clave) {
-  const i = guionLineas.findIndex(l => nivel(l) === 2 && l.slice(3).startsWith(clave));
-  if (i < 0) return null;
-  let f = i + 1;
-  while (f < guionLineas.length && !(nivel(guionLineas[f]) && nivel(guionLineas[f]) <= 2)) f++;
-  return guionLineas.slice(i + 1, f);
-}
-function notasDe(guion) {
-  if (!guion) return [];
-  const [, clave, resto = ''] = guion.match(/^([\d.]*\d|Apertura|Cierre)\.?(?:,\s*(.*))?/) ?? [];
-  let lineas = clave && apartado(/^\d/.test(clave) ? `${clave}.` : clave);
-  if (!lineas) return [];
-  const sub = resto.match(/«([^»]+)»/)?.[1];
-  const inicio = sub ? lineas.findIndex(l => l === `### ${sub}`) : -1;
-  if (sub && inicio >= 0) {
-    const fin = /^desde /.test(resto) ? lineas.length : lineas.findIndex((l, k) => k > inicio && nivel(l) === 3);
-    lineas = lineas.slice(inicio + 1, fin < 0 ? lineas.length : fin);
-  } else if (resto) {
-    const fin = lineas.findIndex(l => nivel(l) === 3);
-    if (fin >= 0) lineas = lineas.slice(0, fin);
-  }
-  const notas = [];
-  let parrafo = [];
-  const cerrar = () => { if (parrafo.length) notas.push(parrafo.join(' ')); parrafo = []; };
-  for (const l of lineas.map(x => x.trim())) {
-    if (!l || l === '---') { cerrar(); continue; }
-    if (/^\|[\s|:-]+\|$/.test(l)) continue;
-    if (nivel(l) === 3) { cerrar(); notas.push(`### ${l.slice(4)}`); continue; }
-    if (l.startsWith('- ')) { cerrar(); notas.push(l); continue; }
-    if (l.startsWith('|')) { cerrar(); notas.push(`- ${l.slice(1, -1).split('|').map(c => c.trim()).filter(Boolean).join(' · ')}`); continue; }
-    parrafo.push(l);
-  }
-  cerrar();
-  return notas;
-}
-
 // ── Salida ──────────────────────────────────────────────────────────────────
 
 const salida = conPasos.map(e => {
@@ -179,14 +162,13 @@ const salida = conPasos.map(e => {
   const minutos = e.minutos ?? (e.deBloque?.escenas === 1 ? e.deBloque.minutos : null);
   return {
     id: e.id, titulo: e.titulo, bloque: e.bloque, bloqueCorto: e.bloqueCorto, bloqueTitulo: e.bloqueTitulo, mensaje: e.mensaje ?? '', guion: e.guion ?? '',
-    notas: notasDe(e.guion),
     minutos: minutos ?? null,
     zona, region: z.region,
     x: general ? null : z.x, y: general ? null : z.y, ancho, alto,
     pasos: e.pasos.map(p => {
       const ref = `${e.id}/${p.n}`, pieza = llegadas.get(ref);
       return {
-        n: p.n, texto: p.texto, detalle: p.detalle, avanzado: p.avanzado, detalleAvanzado: p.detalleAvanzado,
+        n: p.n, texto: p.texto, detalle: p.detalle, avanzado: p.avanzado, detalleAvanzado: p.detalleAvanzado, idea: p.idea, notas: p.notas,
         hub: pieza?.id ?? null, encuadre: ENCUADRES[ref] ?? null,
       };
     }),
@@ -203,12 +185,13 @@ const texto = `// Generado por \`npm run escenas\` a partir de escenas.md y src/
 // el texto se cambia en escenas.md, y la posición, los encuadres y las piezas del hub, en mapa.js.
 //
 // Por escena: id, título, bloque (nombre, corto y título de su tapa), mensaje, guion (su apartado
-// del guion) y notas (ese texto de Guion Devin.md, para la vista de ponente), minutos
+// del guion), minutos
 // previstos, zona (su pantalla) y región (su bloque del mapa), y el rectángulo de su pantalla
 // en el mundo (x, y, ancho, alto; null en las que se ven desde la vista general). Las escenas
 // de una misma zona comparten pantalla.
 // Por paso: n, texto, detalle (sublista o filas de tabla), avanzado ([A]: se puede saltar),
-// detalleAvanzado (un detalle [A] dentro del paso), hub (pieza que entra en el hub) y
+// detalleAvanzado (un detalle [A] dentro del paso), idea y notas (para la vista de ponente: lo que
+// hay que decir en el paso y sus detalles), hub (pieza que entra en el hub) y
 // encuadre propio: null (su pantalla) · 'general' · 'portada' · id de otra escena.
 
 export const ESCENAS = [

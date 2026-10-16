@@ -8,6 +8,7 @@
 
 - **Escena** (E01, E02…): una unidad de contenido con sus pasos. Se ve en una **pantalla** del mapa, de 1920×1080, que la cámara encuadra. Si un tema tiene varias escenas (Modelos, Contexto…), se suceden en la misma pantalla: el contenido cambia y la cámara no se mueve.
 - **Paso**: cada número de la lista de pasos es un click de «avanzar». Al llegar a una pantalla, el primer paso empieza cuando la cámara se detiene y pasa `--pausa-tras-camara`.
+- **Notas**: lo que dice el ponente en cada paso, para la vista de ponente: `- (2) idea` y, sangrados debajo, sus detalles. Una por paso; la idea, de 90 caracteres como mucho, y hasta cinco detalles de 125, para que la vista quepa sin desplazarse; si hay más, se resume.
 - **[A] Avanzado**: paso de detalle, en la misma pantalla. Se puede saltar con una tecla según el público.
 - **Componentes**: los del vocabulario visual del design system (ficha de token, capa, ventana de contexto, corchete de caché, contador de coste, agente, subagente, documento, skill y herramienta). Los que faltan se listan al final.
 - **Cifras ficticias**: las cifras de ejemplo no se rotulan; se da por hecho que lo son y la etiqueta solo distrae. Los costes de ejemplo van en ACUs, la unidad de consumo de Devin (nunca en una unidad sin explicar).
@@ -110,6 +111,18 @@ Guion: Apertura.
 
 Mensaje: esto es lo que vamos a recorrer.
 
+Notas:
+- (1) Presentación y objetivo de la charla.
+  - Soy Alex, de MLOps, en Data Science. Por petición popular: un Show and Tell a modo de guía de Devin.
+  - Muchos ya lo usáis para consultar código, corregir errores o implementar cambios.
+  - Lo que quizá falta: cuándo usar cada modelo, qué herramientas hay y cómo optimizar las ACUs.
+  - Objetivo: saber tomar esas decisiones y convertirlas en hábitos útiles.
+- (2) El recorrido por el mapa, en cinco bloques.
+  - Primeros pasos: las formas de usar Devin y dónde está cada control.
+  - Principales herramientas: modelos, effort, contexto, rules, skills, tools, MCP, subagentes y plugins.
+  - Coste: cuánto cuesta todo eso en tokens y cómo nos ayuda la caché.
+  - Buenas prácticas para el día a día y, al final, preguntas.
+
 1. Portada: el logo de Devin y, pegado debajo, «Devin», en grande, en el centro del mapa; pegado al nombre y discreto, el subtítulo, «Conceptos básicos y cómo aprovecharlo mejor», y, debajo, el logo de Openbank. Es la tapa del bloque central vista de cerca.
 2. La cámara se aleja a la vista general: los cinco bloques, cada uno con su tapa. En la del centro siguen el logo, «Devin» y su pie; en las de fuera, al principio solo su icono (Primeros pasos `footprints`, Coste `coins`, Buenas prácticas `route` y Preguntas `message-circle-question`). Cuando la cámara llega, cada icono sube y aparece su título debajo.
 
@@ -122,6 +135,28 @@ Mensaje: esto es lo que vamos a recorrer.
 Guion: 1.1.
 
 Mensaje: dónde se ejecuta decide qué podemos hacer.
+
+Notas:
+- (1) Dos preguntas: dónde se ejecuta el trabajo y desde dónde interactuamos con él.
+  - Separarlas ayuda a elegir: dónde se ejecuta decide qué podemos hacer.
+  - Según dónde se ejecuta, dos opciones: Local, en nuestra máquina, y Cloud, en remoto.
+  - Primero vemos Local entero; después, Cloud.
+- (2) Local trabaja en nuestra máquina, desde Desktop o desde la CLI.
+  - Más control: elegimos el modelo exacto y su nivel de effort.
+  - Acceso completo a lo local: repositorios, servicios y herramientas.
+  - Una revisión visual de los cambios mucho más cómoda.
+- (3) Dentro de Local, la diferencia es la interfaz.
+  - Desktop: trabajar desde el IDE, con el código y los cambios a la vista.
+  - Por ejemplo, investigar un error y revisar la solución mientras se desarrolla.
+  - CLI: el agente desde la terminal, integrado en comandos y scripts.
+  - Por ejemplo, analizar un proyecto desde consola o lanzar una tarea desde un script.
+- (4) Cloud trabaja en un entorno remoto preparado para la tarea.
+  - Para delegar tareas autónomas con un objetivo claro.
+  - Sobre todo, para automatizar flujos repetitivos que se ejecutan solos, por ejemplo cada semana.
+  - Puede trabajar con varios repositorios a la vez.
+  - En Web, el selector agrupa los modelos en niveles («Ultra», «Normal»); en Local se elige el modelo exacto.
+- (5) Las tres opciones pueden combinarse en un mismo flujo de trabajo.
+  - Transición: nos centraremos en Desktop, que es donde trabajamos normalmente.
 
 1. Dos preguntas, centradas juntas: «¿Dónde voy a ejecutar Devin?» y «¿Cómo interactúo con él?»; en la misma animación, debajo, dos islas: **Local** (icono `laptop`) y **Cloud** (icono `cloud`). Primero se explica Local entero; después, Cloud.
 2. Local: aparecen tres ventajas: «Control de modelo y effort», «Acceso completo local», «Revisión visual de cambios».
@@ -138,6 +173,28 @@ Diseño: arriba, las dos preguntas, centradas juntas; debajo, dos islas: Local (
 Guion: 1.2.
 
 Mensaje: dónde encontrar cada una de las opciones.
+
+Notas:
+- (1) Ahora solo dónde está cada cosa; qué hace cada una, en la segunda parte.
+  - Una captura de Devin Desktop: recorremos sus controles uno a uno.
+- (2) El cuadro de mensajes: donde escribimos las peticiones.
+  - Cómo escribir una buena petición lo veremos en Buenas prácticas.
+- (3) El selector de modelo, debajo del cuadro.
+  - Ahí también vemos la información de precios de nuestra cuenta.
+  - Qué modelo elegir, en la segunda parte.
+- (4) El effort, junto al modelo.
+  - Aparece a la derecha del nombre del modelo, solo si el modelo lo admite.
+  - El de la captura (SWE-1.6 Slow) no lo admite: por eso no se ve.
+  - En la CLI se cambia con Alt/Opt+T.
+- (5) El modo de trabajo: consultar, planificar o ejecutar.
+  - En el selector: Code, Smart, Ask, Plan y Bypass Permissions.
+  - Cuándo planificar antes de tocar código, en Buenas prácticas.
+- (6) El indicador de contexto: cuánto llevamos ocupado.
+  - Al pasar por encima muestra el contexto usado y la caché.
+  - El consumo de la sesión en ACUs depende de la organización: no lo vemos aquí.
+- (7) Antes de empezar una tarea, un vistazo rápido a modelo, effort y modo.
+  - No hace falta cambiarlos constantemente.
+  - Pero sí de forma consciente cuando la tarea cambia.
 
 1. Captura de Devin Desktop, entera.
 2. La captura se amplía hasta el panel de la sesión y se resalta el **cuadro de mensajes**.
@@ -163,6 +220,12 @@ Guion: transición a la parte 2.
 
 Mensaje: vamos a montar el agente pieza a pieza.
 
+Notas:
+- (1) Ya sabemos dónde está cada control; ahora, qué es cada pieza.
+  - Devin, en el centro, con sus herramientas de serie.
+  - Los huecos: modelos, effort, contexto, rules, skills, tools, MCP y subagentes.
+  - Al terminar cada tema, su pieza se coloca aquí; al final, el agente está completo.
+
 1. En una animación rápida y seguida aparecen Devin, en su círculo, sus herramientas de serie y, después, los huecos vacíos de cada pieza, en el orden de la ruta.
 
 Diseño: solo el diagrama, centrado en la pantalla, sin cabecera ni panel: Devin en el centro, sus herramientas de serie pegadas a él y las ocho piezas en un anillo, todas círculos punteados iguales. El logo de la tapa del centro y su nombre, centrados en la tapa, están justo encima del diagrama, centrado en su pantalla: al llegar desde E03, la tapa se funde mientras la cámara se acerca y Devin aparece en su lugar («su núcleo es esto»).
@@ -172,6 +235,21 @@ Diseño: solo el diagrama, centrado en la pantalla, sin cabecera ni panel: Devin
 Guion: 2.1, hasta la tabla y las generaciones.
 
 Mensaje: la efectividad de un modelo depende de su: **Familia**, **Generación** y **Effort**.
+
+Notas:
+- (1) En el selector hay familias de distintos proveedores.
+  - GPT, de OpenAI; Claude, de Anthropic, y SWE, de Cognition, la empresa que hace Devin.
+  - Y otras: Gemini, Kimi, GLM…
+- (2) Cada familia tiene niveles: de más capaz y caro a más rápido y barato.
+  - Los de OpenAI y Anthropic se corresponden bastante bien. Precios por millón de tokens, entrada / salida.
+  - Máximo: GPT-6 Astra y Fable 5.1, a 10 $ / 50 $. Alto: Opus 5.5, a 4 $ / 20 $, sin par en GPT-6.
+  - Medio: GPT-6 Sol y Sonnet 5.5, a 2 $ / 10 $. Económico: GPT-6 Luna y Haiku 5.5, a 0,10 $ / 0,50 $.
+  - Los saltos entre niveles: ×20, ×2 y ×2,5. Del económico al máximo, ×100.
+- (3) Además, cada familia tiene generaciones.
+  - GPT-5.5, 5.6, 6, 6.1…; Claude 4.x, 5, 5.5…
+  - Una generación nueva del mismo nivel suele rendir más por el mismo precio.
+  - Y no todos los niveles se renuevan a la vez.
+  - Los nombres no son una escala universal: comprobar qué modelo hay tras cada opción del selector.
 
 Diseño: el título, en una sola línea (es largo: va a `--tipo-titulo-ajustado`, un 5 % menor que el de las demás). Primero, las tres familias principales, solo con su logo y su nombre (GPT, Claude, SWE), grandes y en el centro; después, en fila bajo el título, sin píldora, con las demás. A la izquierda, la tabla de niveles con su fuente y, a su derecha, los saltos de precio; a la derecha, las generaciones de cada familia (la actual, destacada), con su cabecera a la altura de la de la tabla.
 
@@ -195,6 +273,22 @@ Guion: 2.1, «La relación entre rendimiento y coste».
 
 Mensaje: Comparativa Efectividad – Coste.
 
+Notas:
+- (1) Los proveedores publican gráficas como esta para comparar modelos.
+  - Cada línea es un modelo; cada punto, un nivel de effort, de Low a Max.
+  - En horizontal, el coste por intento (logarítmico); en vertical, el porcentaje de tareas resueltas.
+  - Arriba a la izquierda es mejor: más acierto por menos dinero.
+  - Terminal-Bench 4.0, publicada por Anthropic con el lanzamiento de Opus 5.5 (22-09-2026).
+- (2) La generación pesa tanto como el nivel.
+  - Opus 5.5, con su effort por defecto (Medium), supera a Opus 5 en Max por ~1/5 del coste.
+  - En esta prueba queda incluso por encima de Fable 5.1, que es de un nivel superior.
+  - Subir el effort encarece mucho más de lo que mejora: las líneas suben rápido y luego se aplanan.
+- (3) Un modelo con más effort puede igualar a otro con menos.
+  - Opus 5 en XHigh (50,6 %) y GPT-6 Astra en Low (49,7 %): casi el mismo acierto.
+  - Aunque pagando ~×2,7 por intento: 13,48 $ frente a 4,95 $.
+  - No hay un modelo «mejor»: hay una combinación de modelo y effort adecuada para cada tarea.
+  - Es una referencia de potencia, no una medida exacta: un proveedor, una prueba y los datos de GPT de OpenAI.
+
 1. Ejes de la gráfica: coste por intento (escala logarítmica) y efectividad (%). Nota de fuente visible: «Terminal-Bench 4.0 · Anthropic, 22-09-2026». Enseguida, en la misma animación, las líneas se dibujan seguidas y rápidas: GPT-5.6 Sol, Opus 5, Fable 5.1 y GPT-6 Astra. Después, sola y en acento, Opus 5.5: según la línea llega a cada punto, aparece el nombre de su nivel de esfuerzo (Low, Medium, High, XHigh, Max), para que se lea que cada punto es un esfuerzo mayor.
 2. Lectura 1: se resaltan Opus 5 en Max y Opus 5.5 en su esfuerzo por defecto (Medium); las demás líneas se atenúan mucho (`--opacidad-atenuado-serie`), para que la comparación se lea sola. Flecha: «más efectividad por ~1/5 del coste».
 3. Lectura 3: dos puntos a la misma altura, uno de un modelo barato con más esfuerzo y otro de uno caro con menos: Opus 5 en XHigh (50,6 %) y GPT-6 Astra en Low (49,7 %), unidos por una guía discontinua. La lectura añade el precio de igualarlo: «aunque pagando ~×2,7 por intento» (13,48 $ frente a 4,95 $). Opus 5.5 se atenúa y GPT-6 Astra se aviva: solo se ven bien los dos que se comparan.
@@ -215,6 +309,19 @@ Guion: 2.1, «Cómo elegir».
 
 Mensaje: lo que importa es el coste de completar bien la tarea.
 
+Notas:
+- (1) Un punto de partida según el tipo de tarea, que luego contrastamos con las nuestras.
+  - Localizar código o explicar una función sencilla: una opción rápida, con effort contenido.
+  - Un cambio pequeño y bien definido: buen equilibrio entre calidad y consumo.
+  - Trabajo repetitivo: comparar varias opciones sobre casos representativos.
+  - Diagnóstico complejo o revisión de un cambio importante: más capacidad y effort proporcionado.
+  - En pantalla: GPT-6 Luna para lo sencillo; GPT-6.1 Sol o SWE-2 (mientras esté en promoción) para lo complejo.
+- (2) Lo que importa es cuánto cuesta completar bien la tarea.
+  - El barato necesita tres intentos (0,40 cada uno: 1,20); el bueno acierta a la primera (0,90).
+  - La tarifa más baja puede acabar costando más si necesita varios intentos.
+  - Y al revés: pagar la máxima capacidad por una tarea mecánica aporta poco.
+  - Hay que contar las repeticiones y la revisión, no solo el precio por token.
+
 Diseño: la tabla a todo el ancho (el modelo recomendado de cada grupo, centrado en su columna, como su rótulo; para lo complejo, «GPT-6.1 Sol», «o» y «SWE-2 en promoción», apilados) y, debajo, una fila por modelo con sus intentos (✕ o ✓ y su coste) y el total, en ACUs (la unidad, solo en el total): las dos filas comparten columnas, así que los totales quedan alineados y el único intento del modelo bueno, centrado bajo los tres del barato. A la derecha, «El barato acaba costando más», centrado en el alto de las dos filas. Sin la etiqueta «Cifras ficticias»: se da por hecho y distrae.
 
 1. Tabla de tipo de tarea, estrategia inicial y modelo recomendado, con escalonado. Primero las tareas sencillas (localizar o explicar, cambio pequeño, trabajo repetitivo), con GPT-6 Luna; después, las complejas (diagnóstico, revisión de un cambio importante), con GPT-6.1 Sol / SWE-2 mientras esté en promoción. El modelo va una sola vez por grupo, centrado en la altura de sus tareas.
@@ -225,6 +332,19 @@ Diseño: la tabla a todo el ancho (el modelo recomendado de cada grupo, centrado
 Guion: 2.2.
 
 Mensaje: el effort regula cuánto «piensa» el modelo antes de responder.
+
+Notas:
+- (1) El effort regula cuánto «piensa» el modelo antes de responder.
+  - Niveles habituales: Low, Medium, High, XHigh y Max.
+  - Dependen del modelo: algunos GPT añaden «sin razonamiento»; SWE-2 solo tiene Medium, High y Max.
+- (2) Más effort, más latencia y más consumo.
+  - Puede ayudar ante un problema difícil.
+  - Para localizar una función o hacer un cambio mecánico, un effort alto aporta poco.
+  - Para diagnosticar un fallo en un flujo de Cefeo con varias etapas, uno alto puede ser muy útil.
+- (3) Rendimientos decrecientes, en la gráfica de antes: los puntos de Opus 5.5.
+  - De Low a Medium, +19 puntos de efectividad; de XHigh a Max, −2.
+  - El effort no sustituye a un buen contexto: si falta información clave, pensar más no la crea.
+  - Consejo: no uséis siempre el máximo. Empezad por un nivel medio y subid si la dificultad lo justifica.
 
 Diseño: dos columnas: a la izquierda, el dial y, centrados debajo, lo que crece al subirlo (latencia en segundos y coste en ACUs; cifras ficticias, sin rótulo); a la derecha, la gráfica de E06 en pequeño.
 
@@ -240,6 +360,18 @@ Guion: 2.3, definición y tres conceptos.
 
 Mensaje: el contexto es todo lo que el modelo lee en cada llamada.
 
+Notas:
+- (1) El contexto es toda la información que el modelo tiene en cada llamada.
+  - Instrucciones, conversación, reglas del proyecto, código leído y resultados de herramientas.
+  - Se mide en tokens (los veremos en Coste); por ahora, trozos de texto.
+  - Capacidad: cuánto puede admitir. Depende del modelo: 256K, 512K, 1M…
+- (2) Contexto utilizado: cuánto se está ocupando.
+  - La ventana se llena con todo lo que lee el modelo, llamada a llamada.
+  - Es lo que muestra el indicador de contexto de Desktop.
+- (3) Información relevante: la parte que ayuda de verdad a resolver la tarea.
+  - Suele ser una parte pequeña de lo ocupado.
+  - Tres conceptos distintos: lo que cabe, lo que ocupa y lo que sirve.
+
 Diseño: una fila por concepto, cada una con su ventana de contexto horizontal a todo el ancho. Cifras ficticias, sin rótulo.
 
 1. Capacidad: tres ventanas superpuestas, de 256K, 512K y 1M tokens, cada una en un tono (más oscuro cuanto más pequeña: superficie, superficie 2 y superficie 3). La capacidad depende del modelo.
@@ -251,6 +383,17 @@ Diseño: una fila por concepto, cada una con su ventana de contexto horizontal a
 Guion: 2.3, «Por qué no conviene llenarlo».
 
 Mensaje: cuanto más contexto, peor rendimiento ofrece el modelo.
+
+Notas:
+- (1) Una ventana grande no significa que debamos llenarla.
+  - Los modelos rinden peor cuanto más contexto manejan, y la caída empieza mucho antes del límite.
+  - La prueba: recuperar un dato concreto de una conversación larga llena de datos parecidos.
+  - De 64K a 256K empieza la degradación; de 256K a 512K, es alta.
+- (2) Con ventanas de 1M, la caída empieza con un cuarto ocupado o menos.
+  - GPT-5.6 Sol: 100 % casi vacía, 84 % al 25 % y 62 % al 50 %.
+  - Claude Opus 5: 99 %, 66 % y 43 %. Claude Sonnet 5: 96 %, 52 % y 32 %.
+  - Misma pregunta, solo lo relevante (~300 tokens) o todo el historial (~113.000): del 92 % al 38 %.
+  - Son pruebas sintéticas de recuperación, no tareas reales: la caída depende de la tarea.
 
 Diseño: a la izquierda, la gráfica; a la derecha, una tabla con los mismos datos, con su título centrado sobre ella. Cada modelo, con su color.
 
@@ -267,6 +410,24 @@ Guion: 2.3, «Continuar, compactar o empezar de nuevo».
 
 Mensaje: cómo podemos gestionar mejor el contexto.
 
+Notas:
+- (1) Continuar: misma tarea y contexto relevante.
+  - Aunque la ventana esté cargada (68 %), si lo que hay es necesario y relevante, se puede seguir.
+  - Si falta un dato concreto, aportarlo: reiniciar no lo resuelve.
+- (2) Compactar: misma tarea, con mucha exploración acumulada.
+  - Reduce el historial a una versión más breve (aquí, hasta el 12 %).
+  - Puede perder matices.
+  - En la CLI, con `/compact`.
+- (3) Sesión nueva: un objetivo nuevo e independiente.
+  - También si la conversación está llena de hipótesis descartadas: preparar un traspaso y empezar de nuevo.
+  - Consejo: una sesión por objetivo; mezclar tareas llena el contexto de lo que no ayuda.
+- (4) Antes de compactar o cambiar de sesión, guardar lo importante.
+  - Objetivo y criterios de aceptación; decisiones y restricciones.
+  - Archivos relevantes y cambios realizados; pruebas ejecutadas y resultados.
+  - Hipótesis descartadas y siguiente paso.
+  - No compactar siempre a un porcentaje fijo: depende de la relevancia y del trabajo pendiente.
+  - No reiniciéis continuamente: se pierde el contexto útil y, como veremos, la caché.
+
 Diseño: arriba, los tres caminos en columnas, que aparecen uno a uno (el anterior se atenúa); debajo, centrada en el espacio libre, la ventana de la sesión, que muestra cada camino. La línea de nivel va pegada al borde de lo ocupado mientras crece o se recoge, y su cifra cambia a la vez. Cifras ficticias, sin rótulo.
 
 1. Continuar, con sus situaciones. La ventana ya está cargada (68 %): aunque el contexto sea amplio, si es necesario y relevante se puede seguir, y lo ocupado crece un poco más (75 %).
@@ -281,6 +442,21 @@ Pendiente: comando `/compact` y limpiar contexto en Desktop.
 Guion: 2.4.
 
 Mensaje: normas fijas que debe cumplir el agente.
+
+Notas:
+- (1) Las rules y AGENTS.md se incluyen automáticamente en todos los prompts.
+  - Guardan instrucciones que el agente debe seguir siempre en un proyecto.
+- (2) AGENTS.md entra en la ventana y ocupa su principio.
+  - Qué guarda: la estructura del proyecto, los comandos de validación, las convenciones y las restricciones.
+- (3) Tienen niveles.
+  - Las rules y el AGENTS.md de la raíz se cargan al inicio de cada sesión.
+  - Los de los subdirectorios se descubren cuando el agente trabaja en ellos (aquí, `api/`).
+  - Así las instrucciones quedan cerca del código al que afectan.
+- (4) Se releen en cada llamada: 24.000 tokens × 3 llamadas = 72.000.
+  - Si son largos, engordan el principio de cada llamada y se pagan una y otra vez.
+- (5) Consejo: que sean breves y estables.
+  - Sin duplicidades, sin instrucciones contradictorias y sin documentos largos para casos concretos.
+  - Para eso están las skills: una rule puede indicar qué skill usar en cada caso.
 
 1. «Se incluyen automáticamente en todos los prompts», sobre la ventana vacía.
 2. Solo esto: el documento AGENTS.md entra en la ventana y ocupa su principio.
@@ -298,6 +474,19 @@ Guion: 2.5.
 
 Mensaje: instrucciones sobre cómo realizar una tarea.
 
+Notas:
+- (1) Una skill es un procedimiento reutilizable para una tarea que repetimos.
+  - Instrucciones y, si hace falta, scripts o plantillas.
+  - Se activa de dos formas: la invocamos con `/nombre-de-la-skill` o la elige el agente.
+  - El agente la elige cuando su descripción encaja con la tarea.
+- (2) La diferencia con las rules: cuándo se cargan.
+  - Al empezar, el agente solo ve el nombre y la descripción de cada skill: unas pocas líneas.
+  - El contenido completo entra en el contexto únicamente cuando se usa.
+- (3) Cuándo crear una: procedimientos propios que repetimos, con pasos y criterios.
+  - Por ejemplo, preparar una revisión, validar una migración o documentar con el formato del departamento.
+  - Debe explicar cuándo se aplica, qué necesita, qué pasos sigue y qué resultado entrega.
+  - La descripción tiene que ser clara: es lo que usa el agente para decidir si la necesita.
+
 1. Una skill plegada, `validar-migracion` (solo se ve su nombre y su descripción) y, a su lado, las dos formas de activarla: `/validar-migracion` (nosotros) o el agente la elige por su descripción. Las dos, centradas juntas.
 2. Encadenado: la skill y cómo se activa se corren a la izquierda y, a su derecha, llega una tarea que encaja; su contenido entra en la ventana. La tarjeta no se despliega: sigue mostrando solo nombre y descripción.
 3. «Cuándo crear una», a la izquierda, y debajo «Procedimientos propios repetitivos»; a su derecha, cuatro flechas curvas (abanico) hacia lo que debe explicar una skill, una parte encima de otra: cuándo, qué necesita, pasos y resultado. Después, el consejo.
@@ -310,6 +499,16 @@ Guion: 2.6, primeros párrafos.
 
 Mensaje: las herramientas convierten un modelo en un agente.
 
+Notas:
+- (1) Devin trae sus herramientas de serie.
+  - Buscar en el código, leer y editar archivos y ejecutar comandos.
+  - Las usa constantemente sin que tengamos que hacer nada.
+- (2) Las herramientas convierten un modelo en un agente.
+  - Hasta ahora, el modelo, que decide, y el contexto, que es lo que lee.
+  - El modelo decide qué hacer, una herramienta lo ejecuta y el resultado vuelve al contexto.
+  - El ciclo se repite hasta terminar la tarea, y la ventana se llena: lo retomamos en Coste.
+  - Lo interesante para nosotros: las herramientas propias del departamento.
+
 1. «Por defecto, Devin incluye una serie de tools disponibles» y, debajo, las herramientas de serie en una rejilla de 2 × 2, todas del mismo tamaño: `search` (buscar), `file-text` (leer), `pencil` (editar) y `terminal` (ejecutar).
 2. El bucle da tres vueltas, todas al mismo ritmo pausado: el modelo decide, una herramienta pulsa y su resultado entra como ficha en la ventana; en la primera, cada fase del panel aparece cuando ocurre. Sin otro clic, la ventana se llena (esto prepara la parte 3).
 
@@ -318,6 +517,22 @@ Mensaje: las herramientas convierten un modelo en un agente.
 Guion: 2.6, desde «Cómo las usa el agente».
 
 Mensaje: las tools otorgan nuevas capacidades a nuestro agente.
+
+Notas:
+- (1) El agente no ve el código de una herramienta.
+  - Ve su nombre, su descripción y sus parámetros, y con eso decide si la necesita.
+  - El ejemplo: `create_pull_request`, la tool de GitHub para abrir un pull request.
+- (2) La descripción es el disparador.
+  - Si no explica bien qué hace y cuándo usarla, no la usará, o la usará cuando no toca.
+  - Al empezar, el agente solo conoce la lista de servidores; cuando necesita uno, pide sus tools.
+  - Sus definiciones entran en el contexto y se quedan; al llamarla, solo vuelven argumentos y resultado.
+  - El código, las credenciales y las llamadas a nuestros sistemas se quedan fuera.
+- (3) ¿Tool o skill? Una tool da manos; una skill da oficio.
+  - Tool: una capacidad nueva; código nuestro, siempre igual, con entradas y salidas definidas.
+  - Skill: conocimiento de cómo y cuándo hacer algo; el modelo sigue instrucciones en texto.
+  - En el contexto: de una tool, solo la llamada y el resultado; de una skill, el procedimiento entero.
+  - No compiten: lo habitual es una tool con una skill que explica cuándo y cómo usarla.
+  - Al crear tools: descripción clara, varias pequeñas mejor que una enorme y resultados cortos.
 
 1. Un solo ejemplo claro: la herramienta `create_pull_request` (el icono oficial de GitHub para un pull request, el Octicon `git-pull-request`, y el nombre en mono) y su ficha, lo que el agente lee de ella: nombre, descripción y parámetros. Las dos, juntas, centradas y en grande: son las piezas principales.
 2. La pantalla se reordena en un esquema, de izquierda a derecha: Agente → Tool → sus tres elementos, uno encima de otro (Nombre, Descripción, Parámetros) → la ficha, con una flecha de cada elemento a su campo. Encima de los elementos, a la altura de la parte de arriba de la ficha: «Qué recibe el agente en el contexto:». Sin recuadro rojo.
@@ -334,6 +549,22 @@ Guion: 2.7.
 
 Mensaje: MCP es el estándar con el que conectamos herramientas a Devin.
 
+Notas:
+- (1) Sin un estándar, cada agente necesita su propia integración con cada servicio.
+  - Tres agentes (Devin, otro agente y un IDE con IA) y tres servicios (GitHub, Atlassian y Sonar): 3 × 3 = 9.
+- (2) MCP es el estándar con el que conectamos herramientas a Devin.
+  - Cada servicio publica un servidor una vez y cualquier agente compatible lo usa: 3 + 3 = 6.
+  - Un servidor MCP puede ejecutarse en nuestra máquina o ser un servicio remoto.
+- (3) Un servidor trae sus tools.
+  - El de GitHub incluye `create_pull_request`, la del ejemplo de antes.
+  - El agente las pide cuando necesita ese servidor, como vimos en Tools.
+- (4) Los MCPs del departamento.
+  - Externos: GitHub, Atlassian y Sonar. Internos: DS-Workspace y, a través de él, Datahub.
+  - En Local, `devin mcp add`: por defecto, en un fichero local; también pueden compartirse con el proyecto.
+  - En Cloud, desde Customize → MCPs.
+  - Credenciales, nunca en ficheros del repositorio: variables de entorno, OAuth o secretos de Devin.
+  - La guía de instalación completa está en el repositorio Master-Control-Program.
+
 1. Sin un estándar: arriba, tres agentes (Devin, otro agente y un IDE con IA); abajo, tres servicios (GitHub, Atlassian y Sonar, con su logo); un cable de cada agente a cada servicio. «Sin un estándar, cada agente necesita su propia integración con cada servicio: 3 × 3 = 9».
 2. Con MCP: los nueve cables se van y todo pasa por el conector, en el centro. «Con MCP, cada servicio publica un servidor una vez y cualquier agente compatible lo usa: 3 + 3 = 6». Debajo: «Cada servidor se ejecuta en nuestra máquina o como un servicio remoto».
 3. Qué trae un servidor: Devin, con el conector en su borde, unido al servidor de GitHub, que despliega algunas de sus tools; resaltada, `create_pull_request`, la del ejemplo de Tools propias (E15). Solo el esquema, sin texto debajo, centrado en la altura del espacio bajo el título (como el paso 4).
@@ -348,6 +579,32 @@ Diseño: dos fases que se relevan en la misma pantalla. En la primera, los agent
 Guion: 2.8.
 
 Mensaje: un subagente resuelve parte de la tarea en su propio contexto.
+
+Notas:
+- (1) Un subagente trabaja en su propia conversación.
+  - Permite dividir una tarea.
+  - Comparte herramientas y contexto del repositorio, pero no hereda el historial del principal.
+- (2) El agente solo recibe el resultado y mantiene limpio su contexto.
+  - Una investigación extensa se desarrolla aparte.
+  - A cambio, cada subagente hace sus propias llamadas y consume por su cuenta.
+- (3) El modelo del subagente depende de su perfil.
+  - El agente usa siempre el modelo que elegimos en el IDE.
+  - El subagente general hereda el del principal; el de exploración puede usar otro.
+  - En pantalla: Documentación (GPT-6 Luna), Research (SWE-2) y Análisis (GPT-6.1 Sol).
+  - No debemos asumir que todos cuestan igual.
+- (4) Cuándo compensan: partes independientes con entregables claros.
+  - Investigar varios módulos, analizar compatibilidad o revisar un aspecto concreto.
+  - Ventajas: trabajo enfocado, contexto separado y, cuando corresponde, paralelismo.
+- (5) Cuándo no: cambios triviales, o recargar mucho contexto para un resultado mínimo.
+  - Cada subagente vuelve a cargar el contexto: lo pagamos tres veces por un resultado mínimo.
+  - Costes: preparación, lecturas repetidas, ejecución e integración de los resultados.
+- (6) Contexto separado no significa archivos aislados.
+  - Si dos subagentes editan el mismo archivo a la vez, hay conflicto.
+  - Repartir qué archivos toca cada uno o usar entornos separados: un worktree por subagente.
+- (7) Consejo: no creéis muchos subagentes por defecto.
+  - Usadlos cuando separar el trabajo aporte más que el coste de coordinarlo.
+  - El encargo: contexto suficiente para su tarea, no toda nuestra conversación.
+  - Pedid evidencias y referencias a archivos, además de conclusiones: el resumen puede perder detalles.
 
 1. El agente lanza un subagente por el camino de puntos, con su propia ventana, vacía: no hereda la conversación.
 2. La ventana del subagente se llena y al final queda su resultado, una capa pequeña en rojo. Una flecha roja, por debajo de las dos ventanas, la lleva al final de la del agente, donde aparece la misma capa. Bajo la flecha: «El agente solo ve el resultado y mantiene limpio su contexto». A la vez que la flecha, sube el coste de cada uno, en ACUs (el del subagente, más).
@@ -367,6 +624,14 @@ Guion: 2.9.
 
 Mensaje: un plugin empaqueta todo lo anterior.
 
+Notas:
+- (1) Un plugin empaqueta todo lo anterior.
+  - Skills y, opcionalmente, rules, hooks (acciones automáticas), servidores MCP y subagentes.
+  - Se instala de una vez desde un repositorio; la organización lo marca obligatorio, opcional o prohibido.
+  - Para un departamento, la forma natural de distribuir sus herramientas, con un AGENTS.md mínimo.
+  - El nuestro: `ods-ds-mcp`, con MCPs, skills, tools y rules.
+  - Transición: ya conocemos las piezas. Veamos cuánto cuesta usarlas.
+
 1. Las piezas del hub se envuelven en la caja de plugin y, a la derecha, entra toda la columna de una vez, grupo a grupo: lo que trae un plugin, en una cuadrícula de dos columnas y tres filas (Rules, Skills, Tools, Servidores MCP, Subagentes y Hooks); cómo lo marca la organización, en una fila y con el icono en color (obligatorio, opcional y prohibido), y «El departamento tiene:» un plugin (`ods-ds-mcp`), centrado, y debajo lo que incluye (MCPs, Skills, Tools y Rules), unido a él por flechas curvas que se trazan.
 
 Componente nuevo: caja de plugin. Las marcas de la organización son etiquetas con el icono en color (`--color-obligatorio`, `--color-opcional`, `--color-prohibido`).
@@ -381,6 +646,16 @@ Guion: 3.2.
 
 Mensaje: ¿De qué depende el coste total?
 
+Notas:
+- (1) ¿De qué depende el coste total?
+  - En nuestra cuenta, el consumo se mide en ACUs.
+  - Crece con los tokens utilizados y con el modelo elegido: tokens, modelo, coste por token y ACUs.
+- (2) Un ejemplo: 50.000 tokens de salida con GPT-6.1 Sol, a 10 $ por millón.
+  - 0,50 $ en tokens; ≈ 0,30 ACUs, unos 0,60 $ (a 2 $ por ACU, el precio público del plan Teams).
+  - En una prueba interna, el coste en ACUs salía un 20 % por encima del calculado con los tokens.
+  - Es un benchmark interno con pocas tareas, no una tarifa: la del ACU la fija el contrato Enterprise.
+  - Por eso nos centramos en los tokens: es lo que podemos controlar.
+
 1. Arriba, el coste total (icono de dólar); debajo, una llave que abarca todo lo que lo forma, de izquierda a derecha: Tokens → Modelos → Coste por token → Coste en ACUs.
 2. Debajo de cada pieza, un ejemplo: 50.000 tokens de salida consumidos, el modelo elegido (GPT-6.1 Sol), su precio por token de salida (10 $ por millón, el de E05) y lo que sale en ACUs: ≈ 0,30 ACUs en la píldora y, debajo, su precio, ≈ 0,60 $ (0,50 $ en tokens), que suben a la vez como contadores. Los ACUs salen de un precio de referencia de 2 $ por ACU (el público del plan Teams; el de Enterprise lo fija el contrato). El ponente explica de palabra el +20 % (benchmark interno) y que no es una tarifa.
 
@@ -394,6 +669,14 @@ Guion: 3.3.
 
 Mensaje: no todos los tokens cuestan lo mismo.
 
+Notas:
+- (1) No todos los tokens cuestan lo mismo: hay cuatro tipos.
+  - Input sin caché: la entrada que el modelo procesa desde cero.
+  - Cache write: la entrada que se guarda para reutilizarla; algunos la cobran algo más cara, otros no.
+  - Cache read: lo que se reutiliza de la caché, entre un 2,5 % y un 10 % del precio del input.
+  - Output: lo que genera el modelo, normalmente con su razonamiento. El más caro por token.
+  - En Devin, Opus 5.5: 4 $ de input, 20 $ de output y 0,20 $ de cache read por millón.
+
 1. Los cuatro tipos, seguidos, en una sola animación, cada uno con su fila: **input sin caché** (la ventana se llena de una vez con todas las capas: input y output); **cache write** (el corchete se alarga sobre las capas y se queda con su nombre, sin pasar a cache read); **cache read** (barra de precio pequeña: «2,5–10 % del input»), y **output** («el más caro por token»).
 
 Diseño: arriba, una ventana (100K) a todo el ancho en la que se ve cada tipo (las capas, la salida de la llamada y el corchete de cache write); debajo, una fila por tipo con qué es y su precio por millón con GPT-6.1 Sol en una barra proporcional (docs.devin.ai: input 2 $, cache write 2,5 $, cache read 0,1 $, output 10 $), con su fuente.
@@ -403,6 +686,18 @@ Diseño: arriba, una ventana (100K) a todo el ancho en la que se ve cada tipo (l
 Guion: 3.4.
 
 Mensaje: lo ya visto se relee barato, mientras la caché no caduque.
+
+Notas:
+- (1) La primera llamada: todo el contexto se escribe y se paga completo.
+  - Instrucciones, AGENTS.md, definiciones de herramientas y nuestro mensaje.
+- (2) En la segunda, el principio del contexto es idéntico al de la anterior.
+  - El proveedor puede guardarlo y reutilizarlo: eso es la caché.
+  - Lo ya leído se vuelve a leer a precio reducido (aquí, un 10 % del input).
+  - Solo lo nuevo se paga completo.
+- (3) La caché caduca.
+  - Su duración depende del proveedor y de la configuración del agente.
+  - Anthropic usa por defecto cinco minutos, que se renuevan cada vez que se reutiliza.
+  - Tras una pausa más larga, la siguiente llamada tiene que volver a escribir todo el contexto.
 
 1. La primera llamada.
 2. Con un clic, la segunda: el principio es idéntico y el corchete lo cubre. Eso se relee de caché: toma su color y se encoge hasta su coste, un 10 % del input. Solo lo nuevo se paga completo.
@@ -415,6 +710,26 @@ Diseño: las dos llamadas una sobre otra (no una al lado de la otra: con la vent
 Guion: 3.5. Es la animación principal de la charla.
 
 Mensaje: la caché ahorra mucho, y las pausas largas la desperdician.
+
+Notas:
+- (1) Una tarea de 10 llamadas con tarifas ficticias, para separar el mecanismo de los precios.
+  - Partimos de 20.000 tokens fijos: instrucciones, AGENTS.md y definiciones de herramientas.
+  - En cada llamada entran 21.000 tokens nuevos (mensaje y resultados) y el modelo genera 2.000.
+  - A la izquierda, sin caché; a la derecha, con caché.
+- (2) Llamada 1: con caché cuesta un poco más.
+  - 0,123 $ frente a 0,102 $ (+21 %), porque escribe todo el contexto en la caché.
+- (3) Llamadas 2 a 10: sin caché, cada llamada cuesta más que la anterior.
+  - Sin caché se vuelve a pagar todo el contexto, que crece llamada a llamada.
+  - Con caché, lo ya visto se lee barato y solo lo nuevo se paga completo: apenas crece.
+  - Total: 3,090 $ frente a 0,940 $, un −70 %.
+- (4) Una pausa larga: en la llamada 6, la caché ha caducado.
+  - Esa llamada vuelve a escribirlo todo: 0,41 $, más que la misma sin caché (0,33 $).
+  - La sesión acaba en 1,259 $: un +34 % frente a la misma con caché y sin pausa (0,940 $).
+- (5) Las conclusiones.
+  - La caché es lo que más ahorra, y ahorra más cuanto más larga es la sesión.
+  - Las pausas largas y los reinicios la desperdician.
+  - Compactar sirve sobre todo para la calidad; el ahorro en dinero solo aparece en sesiones largas.
+  - Son tarifas ficticias: no es la facturación real de Devin.
 
 Diseño: dos ventanas, una sobre otra y a la misma escala, «Sin caché» y «Con caché», con el corchete de lo que se lee de caché en cada llamada; eso va en el color de la caché (como en E22), y la línea «Con caché» de la gráfica, también en azul. Sin capacidad escrita: la escala es la de lo que se llega a ocupar; las capas de salida (2.000 tokens), con un ancho mínimo para que se vea su relleno blanco; como lo demás, toman el color de la caché cuando se leen de ella: el output de una llamada entra en la siguiente como input nuevo (se escribe en caché) y se lee de caché desde la de después. Desde la llamada 1, a la derecha del rótulo «Sin caché»: «Cada bloque ≈ 20.000 tokens; los de salida, 2.000». Entre las dos ventanas, sitio para la etiqueta de la pausa; la etiqueta del corchete, en una línea y sin cifra («✓ Cache read»: un total de tokens leídos sería un número medio inventado), para que la gráfica conserve su alto. A la derecha de cada una, su coste por tipo en dólares (input sin caché; cache write, cache read y output) y el total, alineados con su ventana; los precios de los dos desgloses, en la misma columna. Encima, a la izquierda, la gráfica del coste acumulado (una línea por variante); a la derecha, las llamadas y el resultado del paso, en acento. En el paso 5, las conclusiones ocupan la columna derecha. Sin la variante de compactación.
 
@@ -440,6 +755,22 @@ Guion: 4.1.
 
 Mensaje: una buena petición responde cinco preguntas.
 
+Notas:
+- (1) Una petición útil responde a cinco preguntas.
+  - ¿Qué resultado necesito? ¿Qué contexto permite entenderlo?
+  - ¿Cuál es el alcance? ¿Qué restricciones hay?
+  - ¿Cómo comprobaremos que funciona?
+- (2) La petición inicial: «Arregla la paginación».
+  - Corta, pero ambigua: no dice qué falla, dónde mirar ni cómo saber que está bien.
+- (3) La petición mejorada.
+  - Qué pasa: al cambiar el filtro desde la página 3, la tabla queda vacía aunque hay resultados.
+  - Qué queremos: volver a la primera página cuando cambien los filtros.
+  - Por dónde empezar: el componente de tabla y la gestión de filtros.
+  - Restricciones y verificación: mantener la API, sin cambios visuales, y comprobar la paginación normal.
+- (4) Cada fragmento responde a una de las cinco preguntas.
+  - Es más larga, pero reduce la ambigüedad.
+  - Define el comportamiento esperado y cómo evaluarlo.
+
 1. Las cinco preguntas en lista.
 2. La petición inicial: «Arregla la paginación».
 3. La petición mejorada, en mono.
@@ -453,6 +784,16 @@ Guion: 4.2.
 
 Mensaje: primero lo esencial, el resto accesible.
 
+Notas:
+- (1) Primero, lo esencial.
+  - El error exacto, los pasos para reproducirlo y los archivos que sabemos que están relacionados.
+- (2) Si no conocemos la causa, lo decimos.
+  - Una hipótesis, sin convertirla en una orden.
+  - «Sospecho de la gestión del estado, pero comprueba la causa antes de modificarla».
+- (3) Nada de pegar miles de líneas de log sin filtrar.
+  - Aportar el fragmento relevante.
+  - Y dejar accesible el resto, por si hace falta.
+
 1. Lo primero: error exacto, pasos de reproducción y archivos relacionados.
 2. La hipótesis como sugerencia, no como orden (la cita del guion).
 3. Mil líneas de log se filtran hasta el fragmento relevante.
@@ -465,6 +806,15 @@ Guion: 4.3.
 
 Mensaje: un plan solo cuando aporta.
 
+Notas:
+- (1) Un plan solo cuando aporta.
+  - Un cambio pequeño y claro: ejecución directa.
+  - Una tarea amplia, con alternativas o dependencias importantes: modo de planificación.
+  - Planificar es investigar y acordar un plan antes de tocar nada.
+- (2) Qué debe tener el plan.
+  - Qué cambiar, por qué, qué riesgos existen y cómo validarlo.
+  - Con una extensión proporcional a la tarea.
+
 1. Dos caminos: cambio pequeño → ejecutar; tarea amplia → modo planificación.
 2. La tarjeta del plan: qué cambiar, por qué, riesgos y cómo validarlo.
 
@@ -475,6 +825,14 @@ Diseño: los dos caminos en dos filas (situación → qué hacer); debajo del se
 Guion: 4.4.
 
 Mensaje: corregir pronto y con datos concretos.
+
+Notas:
+- (1) Si vemos un supuesto equivocado, corregirlo pronto y con información concreta.
+  - En lugar de «eso está mal»: «El endpoint responde bien; el fallo ocurre al actualizar el estado».
+  - Y pedirle que reproduzca ese paso antes de seguir cambiando el backend.
+- (2) Si encadena intentos fallidos, una pausa de diagnóstico.
+  - Que resuma qué ha probado, qué evidencia apoya cada hipótesis y qué información falta.
+  - Sin más cambios hasta identificar el siguiente experimento útil.
 
 1. El agente se desvía del camino; la corrección con información concreta lo devuelve (la cita).
 2. Pausa de diagnóstico: la petición en mono.
@@ -487,6 +845,17 @@ Guion: 4.5.
 
 Mensaje: una respuesta convincente no demuestra que funcione.
 
+Notas:
+- (1) Una respuesta convincente no demuestra que el cambio funcione.
+  - Lo que hay que ver es la evidencia, no lo bien que suena.
+- (2) Qué revisar.
+  - Qué archivos cambió y si el alcance es el esperado.
+  - Qué comprobaciones hizo: para este bug, el caso corregido y que la paginación habitual sigue bien.
+  - Pruebas proporcionales al cambio, y que quede claro qué no se ha podido comprobar.
+- (3) La petición de cierre.
+  - «Resume los cambios, las comprobaciones realizadas y sus resultados».
+  - «Indica cualquier limitación o punto pendiente».
+
 1. Rótulo: «Convincente ≠ funciona».
 2. Lista de comprobación: archivos cambiados, alcance y pruebas, más lo que no se ha podido comprobar.
 3. La petición de cierre.
@@ -498,6 +867,17 @@ Diseño: el rótulo grande arriba; debajo, a la izquierda, la lista y, a la dere
 Guion: 4.6.
 
 Mensaje: lo que gasta sin aportar.
+
+Notas:
+- (1) Hábitos que gastan sin aportar, y su alternativa.
+  - Revisar todo el repositorio: mejor delimitar la pregunta y ampliar cuando haga falta.
+  - Repetir «prueba otra cosa»: mejor aportar evidencia o revisar las hipótesis.
+  - Pedir informes extensos en cada turno: mejor decisiones, resultados y evidencia relevante.
+  - Eliminar validaciones para ahorrar: mejor comprobaciones proporcionadas al riesgo.
+- (2) Y los propios de cada pieza, ya vistos.
+  - Usar siempre el effort máximo.
+  - Mezclar tareas en una sesión o reiniciar continuamente.
+  - Lanzar subagentes por defecto.
 
 1. Los cuatro hábitos genéricos con su alternativa.
 2. Recordatorio de los hábitos propios de cada pieza, con líneas hacia sus zonas: effort (E08), contexto (E11) y subagentes (E17).
@@ -516,6 +896,16 @@ Guion: Cierre.
 
 Mensaje: cinco preguntas antes de empezar.
 
+Notas:
+- (1) Antes de pulsar Enter, cinco preguntas.
+  - ¿Está claro el resultado que necesito? ¿He elegido una configuración proporcionada?
+  - ¿He aportado contexto relevante, y solo el relevante?
+  - ¿Existe una herramienta o un procedimiento del equipo que deba utilizar?
+  - ¿Cómo sabré que el trabajo está terminado?
+- (2) El objetivo: tareas correctas, verificables y fáciles de revisar, con menos consumo.
+  - Unas pocas decisiones conscientes: dónde ejecutar, modelo y effort, qué contexto y cómo comprobarlo.
+  - Caché, skills, tools y subagentes ayudan mucho, pero según la tarea y cómo los usemos.
+
 1. Las cinco preguntas entran en cascada, rápida y sin pausas (`--escalonado-filas`), cada una con la etiqueta de donde se explica: resultado → Buenas prácticas, configuración → Modelo, Effort y Modo, contexto → Contexto, herramientas → Tools y Skills, terminado → Verificar.
 2. Mensaje final: «Tareas correctas, verificables y fáciles de revisar, con menos trabajo y consumo innecesarios». Es la frase del guion con el consumo, la promesa de la charla, añadido; esa parte va en acento, el único de la pantalla.
 
@@ -524,6 +914,11 @@ Diseño: las cinco preguntas en filas, cada una con la etiqueta (e icono) de su 
 ### E31 · Preguntas
 
 Mensaje: turno de preguntas.
+
+Notas:
+- (1) Turno de preguntas.
+  - Para después: la guía de instalación, en el repositorio Master-Control-Program.
+  - Y el plugin del departamento: `ods-ds-mcp`.
 
 1. Una moneda en 3D con el signo «?» en relieve, en el centro, que gira despacio y sin parar sobre su eje vertical desde que llega, el logo de Openbank y, discreta, la franja con lo que queda para después: «Guía de instalación: repositorio Master-Control-Program» y «Plugin del departamento: ods-ds-mcp».
 
@@ -536,6 +931,13 @@ Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de pagi
 ### E33 · Post-créditos
 
 Mensaje: cómo se ha hecho esta presentación.
+
+Notas:
+- (1) Post-créditos: cómo se ha hecho esta presentación.
+  - Claude Code, con agentes de Claude Opus 5.5: código, diseño y pruebas.
+  - GSAP y d3-interpolate para la cámara y las animaciones; Vite, para un único HTML sin conexión.
+  - Impeccable, para el criterio de diseño; Playwright, para las pruebas; Lucide, para los iconos.
+  - Sin frameworks: colores, medidas y movimientos salen de un design system de variables.
 
 1. Las tecnologías principales con que se ha hecho, en dos columnas, cada una con su icono y para qué sirvió: Claude Code (agentes con Claude Opus 5.5: código, diseño y pruebas), GSAP (la cámara y todas las animaciones), d3-interpolate (el vuelo de la cámara), Vite y vite-plugin-singlefile (un único HTML sin conexión), Impeccable (criterio de diseño y revisión), Playwright (pruebas en un navegador sin ventanas), Lucide (los iconos) y Outfit, DM Mono e Inter (las tipografías). Debajo: «HTML, CSS y JavaScript, sin frameworks: todos los colores, medidas y movimientos salen de un design system de variables». A pie de página, centrado y en acento: «**DISCLAIMER:** Ninguna ACU sufrió daños durante esta presentación».
 

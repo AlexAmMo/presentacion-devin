@@ -1,60 +1,65 @@
 /* Vista de ponente (index.html?ponente). No se proyecta: se ve en el portátil, pero
    sigue el mismo sistema y ningún texto baja de --tipo-etiqueta. Un solo acento: el
-   botón «Siguiente». */
+   botón «Siguiente». Nunca se desplaza: nada tiene overflow: auto, y ponente.js compacta
+   el cuerpo por grados (data-ajuste) hasta que cabe. */
 
 body.ponente {
-  box-sizing: border-box; height: 100dvh; margin: 0; padding: var(--esp-3) var(--esp-5);
-  display: grid; grid-template-rows: auto minmax(0, 1fr) auto; gap: var(--esp-3);
+  box-sizing: border-box; height: 100dvh; margin: 0; padding: var(--esp-3) var(--esp-5); overflow: hidden;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto auto; gap: var(--esp-3);
   background: var(--color-fondo); color: var(--color-texto-1);
   font: var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
 }
 .ponente p, .ponente h1, .ponente h2, .ponente ul { margin: 0; }
 .ponente .icono { vertical-align: middle; }
 
+/* Arriba: dónde estamos y el cronómetro. */
 .ponente__barra { display: flex; justify-content: space-between; align-items: center; gap: var(--esp-4); flex-wrap: wrap; }
-.ponente__conexion { display: inline-flex; align-items: center; gap: var(--esp-1); color: var(--color-texto-2); font-weight: var(--peso-enfasis); }
-.ponente--desconectada .ponente__conexion { color: var(--color-texto-1); }
+.ponente__lugar { color: var(--color-texto-3); }
 .ponente__crono { display: flex; align-items: center; gap: var(--esp-2); }
+.ponente__conexion { display: inline-flex; align-items: center; gap: var(--esp-1); margin-right: var(--esp-2); color: var(--color-texto-3); }
+.ponente--desconectada .ponente__conexion { color: var(--color-texto-1); font-weight: var(--peso-enfasis); }
 .ponente__tiempo { min-width: 4ch; text-align: right; font: var(--peso-display) var(--tipo-entradilla)/var(--interlineado-cifra) var(--fuente-display); font-variant-numeric: var(--cifras); }
 
-/* Dos columnas independientes: a la izquierda, la escena, su guion (que se desplaza si no cabe) y
-   el progreso; a la derecha, «Ahora» (hasta dos tercios del alto) y «Siguiente», en una frase. */
-.ponente__cuerpo { min-height: 0; display: grid; grid-template-columns: 3fr 2fr; gap: var(--esp-5); }
-.ponente__columna { min-height: 0; display: flex; flex-direction: column; gap: var(--esp-3); }
-.ponente__escena { flex: 1 1 auto; min-height: 0; overflow: auto; display: flex; flex-direction: column; gap: var(--esp-2); }
-.ponente__paso { flex: 0 0 auto; max-height: 65%; }
-.ponente__paso--siguiente { flex: 0 1 auto; max-height: none; }
-.ponente__lugar { color: var(--color-texto-3); }
+/* El cuerpo: la escena y las notas del paso. Es lo único que puede no caber, y se compacta. */
+.ponente__cuerpo { min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: var(--esp-2); }
 .ponente__titulo { font: var(--peso-display) var(--tipo-entradilla)/var(--interlineado-display) var(--fuente-display); letter-spacing: var(--tracking-display); }
-.ponente__mensaje { color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__mensaje { color: var(--color-texto-2); font-size: var(--tipo-texto-s); }
 .ponente__mensaje::first-letter { text-transform: uppercase; }
-.ponente__guion { display: flex; flex-direction: column; gap: var(--esp-2); margin-top: var(--esp-2); padding-top: var(--esp-3); border-top: var(--trazo-fino) solid var(--color-separador); }
-.ponente__guion:empty { display: none; }
-.ponente__guion h3 { margin: var(--esp-1) 0 0; font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
-.ponente__guion ul { margin: 0; padding-left: var(--esp-4); }
+.ponente__rotulo { margin-top: var(--esp-2); padding-top: var(--esp-3); border-top: var(--trazo-fino) solid var(--color-separador); color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__idea { font: var(--peso-enfasis) var(--tipo-texto)/var(--interlineado-texto) var(--fuente-texto); }
+.ponente__notas { display: flex; flex-direction: column; gap: var(--esp-1); padding-left: var(--esp-4); color: var(--color-texto-2); font-size: var(--tipo-texto-s); }
+.ponente__notas:empty { display: none; }
 
-/* Si un paso es muy largo, su tarjeta se desplaza: los mandos nunca salen de la ventana. */
-.ponente__paso {
-  min-height: 0; overflow: auto; padding: var(--esp-3) var(--esp-4); border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-m);
-  background: var(--color-superficie); display: flex; flex-direction: column; gap: var(--esp-2);
-}
-.ponente__paso--siguiente { border-style: dashed; border-color: var(--color-texto-3); background: transparent; color: var(--color-texto-2); }
-.ponente__rotulo { color: var(--color-texto-3); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
-.ponente__texto { font: var(--peso-texto) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
-.ponente__paso--siguiente .ponente__texto { font-size: var(--tipo-etiqueta); }
-.ponente__texto ul { margin-top: var(--esp-1); padding-left: var(--esp-4); }
+/* Grados de ajuste: 1, letra menor; 2, sin el mensaje; 3, sin el título; 4 y 5, solo los tres
+   primeros detalles o el primero (el resumen), y 6, solo la idea. */
+[data-ajuste="1"] .ponente__titulo, [data-ajuste="2"] .ponente__titulo { font-size: var(--tipo-texto); }
+[data-ajuste="1"] .ponente__mensaje { font-size: var(--tipo-etiqueta); }
+[data-ajuste="1"] .ponente__idea, [data-ajuste="2"] .ponente__idea, [data-ajuste="3"] .ponente__idea,
+[data-ajuste="4"] .ponente__idea, [data-ajuste="5"] .ponente__idea, [data-ajuste="6"] .ponente__idea { font-size: var(--tipo-texto-s); }
+[data-ajuste="1"] .ponente__notas, [data-ajuste="2"] .ponente__notas, [data-ajuste="3"] .ponente__notas,
+[data-ajuste="4"] .ponente__notas, [data-ajuste="5"] .ponente__notas { font-size: var(--tipo-etiqueta); }
+[data-ajuste="2"] .ponente__mensaje, [data-ajuste="3"] .ponente__mensaje, [data-ajuste="4"] .ponente__mensaje,
+[data-ajuste="5"] .ponente__mensaje, [data-ajuste="6"] .ponente__mensaje,
+[data-ajuste="3"] .ponente__titulo, [data-ajuste="4"] .ponente__titulo, [data-ajuste="5"] .ponente__titulo, [data-ajuste="6"] .ponente__titulo,
+[data-ajuste="4"] .ponente__notas > li:nth-child(n + 4), [data-ajuste="5"] .ponente__notas > li:nth-child(n + 2),
+[data-ajuste="6"] .ponente__notas { display: none; }
 
-.ponente__progreso { flex: none; display: flex; flex-direction: column; gap: var(--esp-1); color: var(--color-texto-2); }
-.ponente__barra-progreso { height: var(--esp-1); border-radius: var(--radio-pildora); background: var(--color-separador); overflow: hidden; }
+/* Lo siguiente, en una sola línea. */
+.ponente__siguiente { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; color: var(--color-texto-2); }
+
+/* La fila final, en pequeño: el progreso, con dónde vamos a su derecha, y los mandos. */
+.ponente__pie { display: flex; flex-direction: column; gap: var(--esp-2); }
+.ponente__fila { display: flex; align-items: center; gap: var(--esp-3); }
+.ponente__barra-progreso { flex: 1; height: var(--esp-1); border-radius: var(--radio-pildora); background: var(--color-separador); overflow: hidden; }
 .ponente__barra-progreso > span { display: block; height: 100%; background: var(--color-texto-1); }
+.ponente__mandos { display: flex; flex-wrap: wrap; gap: var(--esp-1); }
+.ponente__progreso { flex: none; color: var(--color-texto-3); }
 
-.ponente__mandos { display: flex; flex-wrap: wrap; gap: var(--esp-2); }
 .ponente__boton {
-  display: inline-flex; align-items: center; gap: var(--esp-1); padding: var(--esp-2) var(--esp-4); cursor: pointer;
-  border: var(--trazo-contorno) solid var(--color-contorno); border-radius: var(--radio-pildora);
+  display: inline-flex; align-items: center; gap: var(--esp-1); padding: 0 var(--esp-2); cursor: pointer;
+  border: var(--trazo-fino) solid var(--color-contorno); border-radius: var(--radio-pildora);
   background: var(--color-superficie); color: var(--color-texto-1);
-  font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
+  font: var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
 }
 .ponente__boton:focus-visible { outline: var(--trazo-contorno) solid var(--color-contorno); outline-offset: var(--trazo-contorno); }
-.ponente__boton--principal { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); }
-.ponente__crono .ponente__boton { padding: var(--esp-1) var(--esp-3); }
+.ponente__boton--principal { border-color: var(--color-acento); background: var(--color-acento); color: var(--color-sobre-acento); font-weight: var(--peso-enfasis); }
