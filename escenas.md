@@ -537,9 +537,9 @@ Si se incluye, sería un recorrido de unos 5 minutos por el mapa: el bug de pagi
 
 Mensaje: cómo se ha hecho esta presentación.
 
-1. Las tecnologías principales con que se ha hecho, en dos columnas, cada una con su icono y para qué sirvió: Claude Code (agentes con Claude Opus 5.5: código, diseño y pruebas), GSAP (la cámara y todas las animaciones), d3-interpolate (el vuelo de la cámara), Vite y vite-plugin-singlefile (un único HTML sin conexión), Impeccable (criterio de diseño y revisión), Playwright (pruebas en un navegador sin ventanas), Lucide (los iconos) y Outfit, DM Mono e Inter (las tipografías). Debajo: «HTML, CSS y JavaScript, sin frameworks: todos los colores, medidas y movimientos salen de un design system de variables».
+1. Las tecnologías principales con que se ha hecho, en dos columnas, cada una con su icono y para qué sirvió: Claude Code (agentes con Claude Opus 5.5: código, diseño y pruebas), GSAP (la cámara y todas las animaciones), d3-interpolate (el vuelo de la cámara), Vite y vite-plugin-singlefile (un único HTML sin conexión), Impeccable (criterio de diseño y revisión), Playwright (pruebas en un navegador sin ventanas), Lucide (los iconos) y Outfit, DM Mono e Inter (las tipografías). Debajo: «HTML, CSS y JavaScript, sin frameworks: todos los colores, medidas y movimientos salen de un design system de variables». A pie de página, centrado y en acento: «**DISCLAIMER:** Ninguna ACU sufrió daños durante esta presentación».
 
-Diseño: después de las preguntas, en la misma pantalla (la sustituye); Fin sigue llevando a las preguntas (E31). Etiqueta con el icono `popcorn`; Claude Code, con el logo de Anthropic; las demás, con iconos de Lucide. Sin acento.
+Diseño: después de las preguntas, en la misma pantalla (la sustituye); Fin sigue llevando a las preguntas (E31). Etiqueta con el icono `popcorn`; Claude Code, con el logo de Anthropic; las demás, con iconos de Lucide. El único acento, el aviso del pie.
 
 ---
 

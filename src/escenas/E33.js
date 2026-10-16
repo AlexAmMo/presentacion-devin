@@ -1,7 +1,8 @@
 // E33 · Post-créditos. Comparte pantalla con E30 y E31 y va después de las preguntas (Fin sigue
 // llevando a E31). Sencilla: las tecnologías principales con que se ha hecho la presentación, en
 // dos columnas, cada una con su icono (Claude Code, con el logo de Anthropic) y para qué sirvió;
-// debajo, una línea sobre cómo está hecha.
+// debajo, una línea sobre cómo está hecha y, a pie de página y centrado, en acento, el aviso de que
+// ninguna ACU sufrió daños.
 // Pasos: 1 las tecnologías.
 import { icono } from '../../design/iconos.js';
 import logoAnthropic from '../../design/assets/logos/anthropic.svg';
@@ -30,9 +31,12 @@ export default function ({ escena, raiz }) {
     montar() {
       raiz.innerHTML =
         cabecera(escena, 1680, 120, 'tipo-titulo-s', 'popcorn') +
-        en(120, 336, `<div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(4, auto);gap:var(--esp-5) var(--esp-6)">${TECNOLOGIAS.map(fila).join('')}</div>`, 'width:1680px') +
-        en(120, 912, '<p class="tipo-texto-s" style="margin:0;color:var(--color-texto-2)">HTML, CSS y JavaScript, sin frameworks: todos los colores, medidas y movimientos salen de un design system de variables.</p>',
-          { paso: 1, orden: 1, estilo: 'width:1680px' });
+        en(120, 312, `<div style="display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(4, auto);gap:var(--esp-5) var(--esp-6)">${TECNOLOGIAS.map(fila).join('')}</div>`, 'width:1680px') +
+        en(120, 840, '<p class="tipo-texto-s" style="margin:0;color:var(--color-texto-2)">HTML, CSS y JavaScript, sin frameworks: todos los colores, medidas y movimientos salen de un design system de variables.</p>',
+          { paso: 1, orden: 1, estilo: 'width:1680px' }) +
+        // El aviso, a pie de página y centrado: el único acento de la pantalla.
+        en(120, 936, '<p class="tipo-texto-s" style="margin:0;text-align:center;color:var(--color-acento)"><b style="font-weight:var(--peso-fuerte)">DISCLAIMER:</b> Ninguna ACU sufrió daños durante esta presentación</p>',
+          { paso: 1, orden: 2, estilo: 'width:1680px' });
       pasos = crearPasos(raiz);
       pasos.poner(0);
     },
