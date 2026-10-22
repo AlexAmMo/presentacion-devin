@@ -106,6 +106,7 @@ Declaradas en el repositorio: plugins en `.claude/settings.json` y MCP en `.mcp.
 - **GSAP** (`gsap-skills`): para escribir las animaciones y la cámara.
 - **Impeccable** (`/impeccable <comando>`): criterio de diseño y revisión. Sustituye a frontend-design, que no se usa en este proyecto.
 - **Playwright MCP**: para ver lo que se construye, con capturas y grabación de vídeo (`--caps=devtools`), siempre en modo headless (`--headless`): no abre ventanas en la pantalla de quien revisa. Bloquea `file://`: los ficheros exportados se prueban sirviéndolos con un servidor estático simple.
+- **Scripts de verificación** (`scripts/captura.mjs`, `scripts/recorrido.mjs`): un Chrome headless propio, independiente del navegador del MCP, para que varios agentes verifiquen a la vez sin pisarse. Con `npm run dev` abierto, `node scripts/captura.mjs EXX <pasos> [--solo n] [--espera ms] [--ponente]` captura cada paso saltando y llegando animado (deben dar la misma imagen) en `.playwright-mcp/capturas/`, y `node scripts/recorrido.mjs` recorre toda la ruta en modo estático y falla si hay errores o avisos de consola. Toman el módulo `playwright` de la caché del MCP y abren el Google Chrome instalado (`scripts/navegador.mjs`).
 
 ## Impeccable, siempre por debajo del design system
 
