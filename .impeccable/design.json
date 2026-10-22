@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-16T01:43:54+02:00",
+  "generatedAt": "2026-10-22T11:02:59+02:00",
   "title": "Design System: Devin en el día a día",
   "extensions": {
     "colorMeta": {
@@ -1004,9 +1004,17 @@
       "name": "Hito de un recorrido",
       "kind": "custom",
       "refersTo": "hito",
-      "description": "Círculo con contorno e icono donde llega (o se desvía) un camino de puntos, con su nombre centrado encima (o debajo). El desvío equivocado lleva ✕ y el bueno, ✓; el desvío se atenúa cuando llega la vuelta.",
+      "description": "Círculo con contorno e icono donde llega (o se desvía) un camino de puntos, con su nombre centrado encima (o debajo). El desvío equivocado lleva ✕ y el bueno, ✓; el desvío se atenúa cuando llega la vuelta. El bloqueo (.hito--bloqueo) es el ✕ donde una barrera para el camino: contorno e icono en acento y sin nombre.",
       "html": "<div class=\"ds-hitos\"><div class=\"ds-hito ds-atenuado\"><p class=\"ds-hito__texto\">Desvío</p><div class=\"ds-hito__circulo\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M18 6 6 18\"/><path d=\"m6 6 12 12\"/></svg></div></div><div class=\"ds-hito\"><div class=\"ds-hito__circulo\"><svg class=\"ds-icono\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M20 6 9 17l-5-5\"/></svg></div><p class=\"ds-hito__texto ds-abajo\">Llegada</p></div></div>",
       "css": ".ds-hitos{display:flex;gap:var(--esp-8);padding:var(--esp-6) var(--esp-5)}.ds-icono{width:var(--icono-m);height:var(--icono-m);fill:none;stroke:currentColor;stroke-width:var(--icono-trazo);stroke-linecap:round;stroke-linejoin:round}.ds-hito{position:relative;width:var(--hito-diametro);height:var(--hito-diametro)}.ds-hito__circulo{box-sizing:border-box;display:grid;place-items:center;width:100%;height:100%;border:var(--trazo-contorno) solid var(--color-contorno);border-radius:var(--radio-pildora);background:var(--color-superficie);color:var(--color-texto-1);transition:opacity var(--dur-micro)}.ds-hito__texto{position:absolute;left:50%;bottom:calc(100% + var(--esp-2));translate:-50% 0;margin:0;white-space:nowrap;color:var(--color-texto-2);font:var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-hito__texto.ds-abajo{bottom:auto;top:calc(100% + var(--esp-2))}.ds-atenuado{opacity:var(--opacidad-atenuado-texto)}.ds-hito:hover{opacity:1}"
+    },
+    {
+      "name": "Barrera",
+      "kind": "custom",
+      "refersTo": "barrera",
+      "description": "Una capa de control cruzada en el camino del agente a producción: barra vertical sobre el camino y, debajo, su nombre, su verbo y un ejemplo en mono. La blanda (rules) va discontinua y el punto la atraviesa; las duras (permisos y hooks, sandbox) van continuas y el punto se para en la primera.",
+      "html": "<div class=\"ds-barreras\"><div class=\"ds-barrera ds-barrera--blanda\"><div class=\"ds-barrera__barra\"></div><p class=\"ds-barrera__nombre\">Rules</p><p class=\"ds-barrera__verbo\">piden</p><p class=\"ds-barrera__ejemplo\">AGENTS.md: «No despliegues»</p></div><div class=\"ds-barrera\"><div class=\"ds-barrera__barra\"></div><p class=\"ds-barrera__nombre\">Permisos y hooks</p><p class=\"ds-barrera__verbo\">impiden</p><p class=\"ds-barrera__ejemplo\">deny: Exec(ssh)</p></div></div>",
+      "css": ".ds-barreras{display:flex;gap:var(--esp-6);padding:var(--esp-6) var(--esp-5)}.ds-barrera{display:flex;flex-direction:column;align-items:center;gap:var(--esp-2);width:var(--barrera-ancho);color:var(--color-texto-1)}.ds-barrera__barra{box-sizing:border-box;width:var(--trazo-fuerte);height:var(--barrera-alto);border-left:var(--trazo-fuerte) solid var(--color-contorno)}.ds-barrera--blanda .ds-barrera__barra{border-left-style:dashed}.ds-barrera__nombre{margin:0;white-space:nowrap;font:var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto)}.ds-barrera__verbo{margin:0;color:var(--color-texto-2);font:var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto)}.ds-barrera__ejemplo{margin:0;color:var(--color-texto-3);text-align:center;white-space:pre-line;font:var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono)}"
     }
   ],
   "narrative": {

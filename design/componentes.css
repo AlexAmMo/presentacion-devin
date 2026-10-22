@@ -89,7 +89,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Ancho proporcional · alto, el de la ventana menos la holgura · --radio-s · --esp-1 de holgura con el contorno · --trazo-contorno entre capas · --tipo-etiqueta
    icono: —
    movimiento: llenarVentana (con --escalonado-capas) · vaciarVentana
-   escenas: E09, E11, E12, E21, E22, E23
+   escenas: E09, E11, E12, E21, E22, E23, E34
    ─────────────────────────────────────────────────────────────────────── */
 .capa {
   flex: none; display: flex; align-items: center; min-height: var(--trazo-contorno); padding: 0 var(--esp-3);
@@ -115,7 +115,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Capa: ancho proporcional a sus tokens, como cualquiera · flecha --trazo-contorno, esquinas --radio-s, punta --esp-1
    icono: —
    movimiento: llenarVentana (la capa, al final de la ventana del subagente) · trazar (la flecha, con --dur-trazado-serie) · llenarVentana (la capa del agente, cuando llega la flecha)
-   escenas: E17
+   escenas: E17, E34
    ─────────────────────────────────────────────────────────────────────── */
 .capa--resultado { background: var(--color-acento); color: var(--color-sobre-acento); }
 
@@ -126,7 +126,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Las de la capa · su ancho, el de sus tokens o, pesado por coste, multiplicado por el coeficiente (como mínimo --trazo-contorno)
    icono: —
    movimiento: cachearCapas (toman el color y se encogen hasta su coste; al caducar la caché, vuelven a ser de entrada y a su ancho; en E23, solo el color, al ritmo de cada llamada)
-   escenas: E21, E22, E23
+   escenas: E21, E22, E23, E34
    ─────────────────────────────────────────────────────────────────────── */
 .capa--cacheada, .leyenda__muestra--cacheada { background: var(--color-cacheado); color: var(--color-sobre-cacheado); box-shadow: none; }
 .traspaso { fill: none; stroke: var(--color-acento); stroke-width: var(--trazo-contorno); stroke-linecap: round; stroke-linejoin: round; }
@@ -138,7 +138,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Alto --ventana-alto (pequeña: --ventana-mini-alto) · --radio-pildora · relleno a --esp-1 del contorno · nivel --trazo-fuerte, --esp-3 más alto que la barra
    icono: app-window (en etiquetas)
    movimiento: llenarVentana y vaciarVentana (las capas) · moverNivel · ajustarVentana (lo ocupado crece o se recoge con el nivel pegado a su borde y su cifra a la vez) · entrarEnVentana (lo que entra desde fuera) · releerVentana (la línea de lectura)
-   escenas: E09, E11, E12, E13, E14, E15, E17, E21, E22, E23
+   escenas: E09, E11, E12, E13, E14, E15, E17, E21, E22, E23, E34
    ─────────────────────────────────────────────────────────────────────── */
 .ventana {
   position: relative; flex: none; box-sizing: border-box; height: var(--ventana-alto);
@@ -196,7 +196,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: --contador-alto · --tipo-mono · cifra --tipo-cifra (o --tipo-cifra-xl)
    icono: coins (coste) · repeat (llamadas) · hourglass (latencia)
    movimiento: subirContador
-   escenas: E07, E08, E12, E17, E20, E23
+   escenas: E07, E08, E12, E17, E20, E23, E34
    ─────────────────────────────────────────────────────────────────────── */
 .contador {
   display: inline-flex; align-items: center; gap: var(--esp-2); height: var(--contador-alto); padding: 0 var(--esp-4) 0 var(--esp-3);
@@ -218,7 +218,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Muestra --esp-5 × --esp-3 · --tipo-etiqueta
    icono: —
    movimiento: aparecer
-   escenas: E21, E23
+   escenas: E21, E23, E34
    ─────────────────────────────────────────────────────────────────────── */
 .leyenda { display: flex; flex-wrap: wrap; align-items: center; gap: var(--esp-2) var(--esp-4); color: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
 .leyenda__elemento { display: flex; align-items: center; gap: var(--esp-2); }
@@ -235,7 +235,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: --agente-ancho × --agente-alto · --radio-m · en círculo, --agente-diametro y nombre --tipo-texto-s
    icono: bot (--icono-l)
    movimiento: entrarConMuelle
-   escenas: E04, E14, E17, E18
+   escenas: E04, E14, E17, E18, E35
    ─────────────────────────────────────────────────────────────────────── */
 .agente {
   display: flex; align-items: center; gap: var(--esp-3); width: var(--agente-ancho); height: var(--agente-alto); padding: 0 var(--esp-4);
@@ -253,7 +253,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: --subagente-ancho × --subagente-alto · --radio-m
    icono: bot · corner-down-left (la ficha de resumen que devuelve)
    movimiento: entrarConMuelle (al final del camino de puntos, que se traza desde el agente) · llenarVentana (lo que lee, en su ventana; al final, su resultado, que vuelve al agente: ver «Resultado de un subagente»)
-   escenas: E17
+   escenas: E17, E34
    ─────────────────────────────────────────────────────────────────────── */
 .subagente {
   display: flex; align-items: center; gap: var(--esp-2); width: var(--subagente-ancho); height: var(--subagente-alto); padding: 0 var(--esp-3);
@@ -301,7 +301,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: --documento-ancho × --documento-alto · --radio-s
    icono: file-text (--icono-s)
    movimiento: entrarEnVentana
-   escenas: E12, E17, E18
+   escenas: E12, E17, E18, E34, E35
    ─────────────────────────────────────────────────────────────────────── */
 .documento {
   display: flex; flex-direction: column; width: var(--documento-ancho); height: var(--documento-alto); overflow: hidden;
@@ -496,8 +496,8 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    color: Texto --color-texto-1 · iconos y guías --color-texto-3 · cargado --color-entrada y --color-sobre-entrada.
    medidas: --tipo-mono-s · sangría --esp-4 · guía --trazo-fino
    icono: folder · folder-open · file · file-text (AGENTS.md)
-   movimiento: aparecer (filas, con --escalonado)
-   escenas: E12
+   movimiento: aparecer (filas, con --escalonado; en cascada, con --escalonado-filas)
+   escenas: E12, E35
    ─────────────────────────────────────────────────────────────────────── */
 .arbol, .arbol ul { margin: 0; padding: 0; list-style: none; }
 .arbol { color: var(--color-texto-1); font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
@@ -706,13 +706,13 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
 .tabla th.tabla__franja--critica, .tabla td.tabla__franja--critica { background: var(--color-franja-critica); }
 
 /* ── Componente · Hito de un recorrido ─────────────────────────────────────
-   clase: .hito · .hito__circulo · .hito__texto · .hito--abajo
-   forma: Un círculo con un icono donde llega (o se desvía) un camino de puntos, y su nombre encima (o debajo, .hito--abajo), centrado. El desvío equivocado lleva ✕ y el bueno, ✓.
-   color: Círculo --color-superficie con --color-contorno · icono --color-texto-1 · nombre --color-texto-2.
+   clase: .hito · .hito__circulo · .hito__texto · .hito--abajo · .hito--bloqueo
+   forma: Un círculo con un icono donde llega (o se desvía) un camino de puntos, y su nombre encima (o debajo, .hito--abajo), centrado. El desvío equivocado lleva ✕ y el bueno, ✓. El bloqueo (.hito--bloqueo, E35) es el ✕ donde una barrera para el camino: va en acento y sin nombre.
+   color: Círculo --color-superficie con --color-contorno · icono --color-texto-1 · nombre --color-texto-2 · bloqueo: contorno e icono --color-acento.
    medidas: --hito-diametro · --trazo-contorno · icono --icono-m · nombre --tipo-etiqueta, a --esp-2 del círculo
-   icono: x · check (el del sitio al que se llega)
+   icono: x · check · server (el del sitio al que se llega)
    movimiento: entrarConMuelle (al llegar el camino) · atenuar (el desvío, cuando llega la vuelta)
-   escenas: E27
+   escenas: E27, E35
    ─────────────────────────────────────────────────────────────────────── */
 .hito { position: relative; width: var(--hito-diametro); height: var(--hito-diametro); }
 .hito__circulo {
@@ -724,18 +724,36 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
   color: var(--color-texto-2); font: var(--peso-enfasis) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto);
 }
 .hito--abajo .hito__texto { bottom: auto; top: calc(100% + var(--esp-2)); }
+.hito--bloqueo .hito__circulo { border-color: var(--color-acento); color: var(--color-acento); }
 
 /* ── Componente · Camino de puntos y guía ──────────────────────────────────
-   clase: .camino
-   forma: Línea de puntos redondos: la ruta de la cámara en el mapa y el camino por el que sale un subagente; los puntos son siempre movimiento. La guía (.camino--guia) es una línea fina continua que une una etiqueta con lo que señala.
-   color: --color-contorno (guía: --color-texto-3).
-   medidas: --ruta-grosor · --ruta-hueco (guía: --trazo-fino, continua)
+   clase: .camino · .camino--guia · .camino__punto
+   forma: Línea de puntos redondos: la ruta de la cámara en el mapa y el camino por el que sale un subagente; los puntos son siempre movimiento. La guía (.camino--guia) es una línea fina continua que une una etiqueta con lo que señala. El punto (.camino__punto) es lo que recorre un camino: el comando del agente hacia producción (E35).
+   color: --color-contorno (guía: --color-texto-3) · punto --color-texto-1.
+   medidas: --ruta-grosor · --ruta-hueco (guía: --trazo-fino, continua) · punto --punto-diametro
    icono: —
-   movimiento: trazar
-   escenas: E01, E03, E17, E29, E30
+   movimiento: trazar · recorrerCamino (el punto)
+   escenas: E01, E03, E17, E29, E30, E35
    ─────────────────────────────────────────────────────────────────────── */
 .camino { fill: none; stroke: var(--color-contorno); stroke-width: var(--ruta-grosor); stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 0 var(--ruta-hueco); }
 .camino--guia { stroke: var(--color-texto-3); stroke-width: var(--trazo-fino); stroke-dasharray: none; }
+.camino__punto { fill: var(--color-texto-1); }
+
+/* ── Componente · Barrera ──────────────────────────────────────────────────
+   clase: .barrera · .barrera--blanda · .barrera__barra · .barrera__nombre · .barrera__verbo · .barrera__ejemplo
+   forma: Una capa de control cruzada en el camino del agente a producción: una barra vertical sobre el camino y, debajo, centrados, su nombre, lo que hace (su verbo) y un ejemplo en mono. La blanda (.barrera--blanda: las rules, que piden) va discontinua y el punto la atraviesa; las duras (permisos y hooks, sandbox) van continuas y el punto se para en la primera, con el hito ✕ encima.
+   color: Barra --color-contorno · nombre --color-texto-1 · verbo --color-texto-2 · ejemplo --color-texto-3.
+   medidas: Barra --barrera-alto × --trazo-fuerte · textos en --barrera-ancho · nombre --tipo-texto-s · verbo --tipo-etiqueta · ejemplo --tipo-mono-s
+   icono: —
+   movimiento: aparecer (una tras otra, de blanda a dura) · recorrerCamino (el punto del camino, que se para en la primera dura)
+   escenas: E35
+   ─────────────────────────────────────────────────────────────────────── */
+.barrera { display: flex; flex-direction: column; align-items: center; gap: var(--esp-2); width: var(--barrera-ancho); color: var(--color-texto-1); }
+.barrera__barra { box-sizing: border-box; width: var(--trazo-fuerte); height: var(--barrera-alto); border-left: var(--trazo-fuerte) solid var(--color-contorno); }
+.barrera--blanda .barrera__barra { border-left-style: dashed; }
+.barrera__nombre { white-space: nowrap; font: var(--peso-enfasis) var(--tipo-texto-s)/var(--interlineado-texto) var(--fuente-texto); }
+.barrera__verbo { color: var(--color-texto-2); font: var(--peso-texto) var(--tipo-etiqueta)/var(--interlineado-texto) var(--fuente-texto); }
+.barrera__ejemplo { color: var(--color-texto-3); text-align: center; white-space: pre-line; font: var(--peso-texto) var(--tipo-mono-s)/var(--interlineado-mono) var(--fuente-mono); }
 
 /* ── Componente · Gráfica de líneas ────────────────────────────────────────
    clase: .grafica · .fuente
@@ -744,7 +762,7 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
    medidas: Líneas --trazo-contorno (protagonista --trazo-fuerte) · --grafica-discontinua · --grafica-punteada · marcas --tipo-mono-s · punto --esp-1 de radio (resaltado: --esp-2 y --trazo-fuerte) · flecha --trazo-contorno, punta --esp-2
    icono: —
    movimiento: trazar (las líneas, seguidas, con --dur-trazado-serie y --escalonado-series; la protagonista, a su ritmo, con el nombre de cada punto según llega a él; y las flechas) · aparecer (puntos, etiquetas y notas) · atenuar y avivar (las series que no toca mirar, hasta --opacidad-atenuado-serie)
-   escenas: E06, E08, E10, E23
+   escenas: E06, E08, E10, E23, E34
    ─────────────────────────────────────────────────────────────────────── */
 .grafica { overflow: visible; }
 .grafica__eje { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-fino); }
@@ -845,12 +863,12 @@ svg .atenuado, .capa.atenuado, .documento__linea.atenuado { opacity: var(--opaci
 
 /* ── Componente · Circuito ─────────────────────────────────────────────────
    clase: .circuito
-   forma: Circuito cerrado con una parada numerada (del 1 al 6) por paso del método. La parada actual va en acento; al pasar a la siguiente, un punto recorre la pista entre las dos. Si el acento está en otra parte (el mapa con otra zona actual), va sin parada actual ni punto.
+   forma: Circuito cerrado con una parada numerada (del 1 al 7) por paso del método. La parada actual va en acento; al pasar a la siguiente, un punto recorre la pista entre las dos. Si el acento está en otra parte (el mapa con otra zona actual), va sin parada actual ni punto.
    color: Pista --color-contorno · paradas --color-superficie (hechas: --color-entrada; actual y punto: --color-acento).
    medidas: --circuito-parada · --punto-diametro · pista --trazo-contorno · nombres --tipo-etiqueta
    icono: list-checks (en etiquetas)
    movimiento: recorrerCamino (entre paradas)
-   escenas: E24–E29
+   escenas: E24–E29 y E35
    ─────────────────────────────────────────────────────────────────────── */
 .circuito { overflow: visible; }
 .circuito__pista { fill: none; stroke: var(--color-contorno); stroke-width: var(--trazo-contorno); }

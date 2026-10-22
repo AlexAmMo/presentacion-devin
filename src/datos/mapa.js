@@ -55,8 +55,8 @@ export const ZONA_DE = {
   E16: 'mcp',
   E17: 'subagentes',
   E18: 'hub',
-  E20: 'parte3', E21: 'parte3', E22: 'parte3', E23: 'parte3',
-  E24: 'parte4', E25: 'parte4', E26: 'parte4', E27: 'parte4', E28: 'parte4', E29: 'parte4',
+  E20: 'parte3', E21: 'parte3', E22: 'parte3', E23: 'parte3', E34: 'parte3',
+  E24: 'parte4', E25: 'parte4', E26: 'parte4', E27: 'parte4', E28: 'parte4', E35: 'parte4', E29: 'parte4',
   E30: 'cierre', E31: 'cierre', E33: 'cierre',
 };
 
@@ -144,6 +144,6 @@ export const HUB = {
  * al pasar a la siguiente, el punto recorre la pista hasta ella. Medidas en px dentro de la pantalla.
  */
 export const CIRCUITO = {
-  zona: 'parte4', x: 1180, y: 84, ancho: 620, alto: 280,
-  paradas: { E24: 'Definir', E25: 'Contexto', E26: 'Planificar', E27: 'Intervenir', E28: 'Verificar', E29: 'Hábitos' },
+  zona: 'parte4', x: 1060, y: 84, ancho: 740, alto: 280,   // con siete paradas, 620 px no bastaban: los nombres de arriba se tocaban
+  paradas: { E24: 'Definir', E25: 'Contexto', E26: 'Planificar', E27: 'Intervenir', E28: 'Verificar', E35: 'Límites', E29: 'Hábitos' },
 };

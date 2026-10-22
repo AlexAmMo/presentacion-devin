@@ -195,6 +195,8 @@
   /* ── Componentes · medidas ───────────────────────────────────────────── */
   --ficha-alto: 60px;                 /* Ficha de token */
   --hito-diametro: 62px;              /* Hito de un recorrido: el círculo, con su contorno, donde llega o se desvía el camino */
+  --barrera-alto: 140px;              /* Barrera: alto de la barra vertical que cruza el camino (E35) */
+  --barrera-ancho: 360px;             /* Barrera: ancho de su columna de textos (nombre, verbo y ejemplo), centrados en la barra */
   --ficha-alto-s: 52px;               /* Ficha de token pequeña, con texto mono s */
   --contador-alto: 64px;              /* Contador en píldora */
   --ventana-alto: 96px;               /* Ventana de contexto: alto de la barra (el ancho lo da la escena, a escala de su capacidad) */

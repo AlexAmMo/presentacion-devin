@@ -638,7 +638,7 @@ Componente nuevo: caja de plugin. Las marcas de la organización son etiquetas c
 
 ---
 
-## Parte 3 · Coste · ~8 min
+## Parte 3 · Coste · ~11 min
 
 ### E20 · El coste total · ~1 min
 
@@ -743,9 +743,43 @@ Todas las cifras en dólares de la escena (textos, leyenda de la gráfica y desg
 
 Datos: tarifas de GPT-6.1 Sol (las de E21: input 2, cache write 2,5, cache read 0,1 y output 10 $ por millón). 20.000 tokens fijos; en cada llamada, 21.000 nuevos (el mensaje y lo que leen las herramientas) y 2.000 de salida, que entran en el contexto de la siguiente: la llamada 10 lleva 248.000 tokens. Las fórmulas, en `src/escenas/E23.js`; el Anexo A del guion sigue con el caso ficticio anterior.
 
+### E34 · Delegar, en cifras · ~3 min
+
+Guion: 2.8 y 3.5.
+
+Mensaje: delegar no abarata por sí mismo; elegir el modelo según la tarea, sí.
+
+Notas:
+- (1) El principal lleva 120.000 tokens de una mañana; la tarea: investigar tres módulos.
+  - Mismas cuentas que en E23: 21.000 tokens nuevos y 2.000 de salida por llamada; tarifas de GPT-6.1 Sol.
+  - Tres llamadas por módulo y, después, seis de implementación que usan el resultado.
+  - Dos formas: él mismo, 15 llamadas seguidas; o encargar los tres módulos a tres subagentes a la vez.
+- (2) Con el mismo modelo cuesta lo mismo: 1,576 $ frente a 1,552 $.
+  - Arrastrar contexto es barato: se relee de caché al 5 % del precio de input.
+  - Cada subagente escribe sus 20.000 fijos y el encargo: las dos cosas se compensan.
+  - Lo que cambia: el principal acaba en 271.000 tokens en vez de 465.000, y los tres trabajan en paralelo.
+  - Menos contexto es más calidad (la degradación de E10) y margen para seguir.
+- (3) El modelo según la tarea: dos en económico y uno en medio, 1,000 $, un −37 %.
+  - Un subagente de tres llamadas: 0,291 $ en GPT-6.1 Sol; 0,015 $ en GPT-6 Luna, el ×20 de E05.
+  - El que documenta o localiza no necesita el modelo que diseña; el análisis difícil, sí.
+  - En Devin: un perfil de subagente propio con su `model:`; el general hereda el del principal.
+- (4) Cuándo no: tres consultas triviales desde un principal a 150.000 tokens.
+  - Él mismo: 17.000 tokens nuevos. Tres subagentes: 78.000, porque cada uno paga 20.000 fijos y el encargo para leer 5.000.
+  - Con el mismo modelo, ×1,9: 0,225 $ frente a 0,119 $. Y encargar e integrar lleva tiempo.
+  - Delegar tiene un coste fijo por subagente: compensa cuando lo que lee es grande y lo que devuelve, pequeño.
+
+1. La premisa: la ventana del principal ya ocupada (120.000 tokens, «una mañana de trabajo») y la tarea, «Investiga tres módulos pequeños». Dos variantes, una sobre otra y a la misma escala, como en E23: «Él mismo» y «Con 3 subagentes»; en la segunda, el orquestador con la misma ventana.
+2. Mismo modelo, en reproducción continua (`--dur-llamada` por llamada): arriba, la ventana del principal crece con las nueve llamadas de investigación y las seis de implementación; abajo, el orquestador encarga, los tres subagentes (tarjeta y ventana pequeña, como en E17) se llenan a la vez hasta 90.000 y devuelven su resultado en rojo, que entra en la ventana del orquestador, y este sigue con sus seis llamadas. A la derecha de cada variante, su coste sube; arriba, la gráfica del coste acumulado, una línea por variante. Resultado: **1,576 $ frente a 1,552 $: lo mismo** y, debajo, «271.000 frente a 465.000 tokens de contexto, y en paralelo».
+3. El clic: la etiqueta de modelo de dos subagentes pasa de GPT-6.1 Sol a GPT-6 Luna (el tercero, el análisis, sigue en Sol); sus costes se encogen, la gráfica añade la tercera línea y el total baja a **1,000 $: un −37 %**, en acento, la cifra que hay que recordar. Debajo: «Un subagente de tres llamadas: 0,291 $ en medio, 0,015 $ en económico» y «El modelo según la tarea: el que documenta no necesita el modelo que diseña».
+4. Cuándo no (fase nueva en la misma pantalla: se van las ventanas y la gráfica): el principal, a 150.000 tokens, delega tres consultas triviales. Dos filas, «Él mismo» y «Tres subagentes», con sus capas en tokens: él mismo, 17.000 tokens nuevos; los tres subagentes, 78.000, porque cada uno paga 20.000 fijos y 1.000 de encargo para leer 5.000, y devuelve 1.000. Con el mismo modelo, **×1,9** (0,225 $ frente a 0,119 $). «Delegar tiene un coste fijo por subagente: compensa cuando lo que lee es grande y lo que devuelve, pequeño».
+
+Diseño: la composición de E23. Arriba a la izquierda, la gráfica del coste acumulado (una línea por variante: «Él mismo», «Con 3 subagentes» y, desde el paso 3, «Con el modelo según la tarea»); a su derecha, el contador de llamadas y el resultado del paso, en acento. Debajo, las dos variantes a la misma escala (unos 480.000 tokens, lo que llega a ocupar el principal): «Él mismo», una ventana; «Con 3 subagentes», la fila de los tres subagentes con su ventana pequeña (`.subagente` y `.ventana--mini`, de E17) y, debajo, la ventana del orquestador; los resultados, en rojo (`.capa--resultado`), bajan por su flecha (`.traspaso`) hasta el final de la ventana del orquestador, como en E17. A la derecha de cada variante, su coste total, alineado con su ventana. La etiqueta de modelo de cada subagente va en su tarjeta (`subagente__detalle`); al cambiar en el paso 3, la tarjeta pulsa (`--dur-micro`, `--ease-estado`). Lo que se relee de caché va en el color de la caché, como en E22 y E23. El paso 4 es una fase nueva en la misma pantalla: quedan dos filas, «Él mismo» y «Tres subagentes», con sus capas en tokens y, a la derecha, los tokens nuevos de cada una como contador, más la frase. Las cifras en dólares, con tres decimales, como en E23. Sin componentes nuevos.
+
+Datos: las fórmulas de E23 (tarifas de GPT-6.1 Sol: input 2, cache write 2,5, cache read 0,1 y output 10 $ por millón; en cada llamada, 21.000 tokens nuevos y 2.000 de salida, que se escriben en caché en la siguiente). El principal parte de 120.000 tokens ya cacheados. «Él mismo»: 15 llamadas (9 de investigación y 6 de implementación): 1,576 $ y 465.000 tokens. «Con 3 subagentes»: el orquestador encarga (2.000 nuevos, 3.000 de salida), recibe (6.000 nuevos, 2.000 de salida) e implementa (6 llamadas); cada subagente escribe 20.000 fijos y 1.000 de encargo y hace tres llamadas (la última devuelve 2.000): 1,552 $ (−2 %); el orquestador acaba en 271.000 tokens y cada subagente, en 90.000. Con dos subagentes en GPT-6 Luna (0,10 $ input y 0,50 $ output por millón, con la caché en la misma proporción que Sol: write ×1,25 y read al 5 %) y uno en Sol: 1,000 $ (−37 %); un subagente de tres llamadas cuesta 0,291 $ en Sol y 0,015 $ en Luna. Cuándo no: principal a 150.000; tres consultas de 5.000 tokens leídos y 1.000 de resultado: él mismo, 17.000 tokens nuevos y 0,119 $; tres subagentes, 78.000 y 0,225 $ (×1,9). Si Devin compartiera en caché el prefijo fijo entre subagentes, la variante del mismo modelo bajaría a 1,408 $ (−11 %): la documentación no lo dice, así que queda como nota de ponente. Las fórmulas, en `src/escenas/E34.js`.
+
 ---
 
-## Parte 4 · Buenas prácticas · ~9,5 min
+## Parte 4 · Buenas prácticas · ~12 min
 
 La pantalla es un circuito fijo. Cada escena es una parada del método: al pasar de una a otra, un punto recorre el circuito hasta la parada siguiente y su contenido sustituye al de la anterior, sin mover la cámara.
 
@@ -862,6 +896,43 @@ Notas:
 
 Diseño: el rótulo grande arriba; debajo, a la izquierda, la lista y, a la derecha, la petición de cierre.
 
+### E35 · Límites · ~2,5 min
+
+Guion: 2.4 y 4.5.
+
+Mensaje: las rules piden; los permisos impiden.
+
+Notas:
+- (1) Sin CI y con despliegue manual desde local, el agente está a un comando de producción.
+  - Tiene shell: puede ejecutar el script de despliegue o abrir una conexión al servidor como lo haríamos nosotros.
+  - No hay una integración continua que pare un cambio malo antes de llegar.
+  - Sin CI, el único control es el que pongamos nosotros.
+- (2) Tres capas: las rules piden, los permisos y los hooks impiden, el sandbox limita.
+  - Una rule es una instrucción: el agente puede no hacerle caso, sobre todo con el contexto cargado.
+  - Un deny de permisos siempre gana, aunque haya un allow más concreto; la organización puede fijarlos y nadie los anula.
+  - Un hook corre antes de cada herramienta y puede bloquearla con su propia lógica.
+  - El sandbox, a nivel de sistema, limita rutas de escritura y red: lo que no se puede ni intentar.
+  - Rules y permisos van juntos: lo que el AGENTS.md pide, la configuración lo impide.
+- (3) Un AGENTS.md de veinte líneas basta, si dice lo que importa.
+  - Qué hay en cada carpeta y cómo validar un cambio con los comandos del repo.
+  - Los límites: no desplegar ni conectarse a servidores, no ejecutar nada de scripts/, explicar cada permiso nuevo.
+  - Cómo entregar: diff, resumen de cambios y comprobaciones, y lo que no se ha podido comprobar.
+  - El procedimiento de despliegue, en una skill: lo ejecuta una persona.
+  - Unos 1.500 tokens: releerlo en cada llamada cuesta poco (E12).
+- (4) Rules por directorio: la norma, junto al código al que afecta.
+  - Se cargan cuando el agente entra en la carpeta (E12), así no engordan el principio de cada llamada.
+  - infra/: validar la plantilla antes de proponer. funciones/: sus tests y una invocación en local.
+  - permisos/: mínimo privilegio, sin comodines y cada permiso explicado. scripts/: solo lectura.
+
+1. La situación: a la izquierda, el agente con su terminal y un comando de despliegue (`./scripts/deploy.sh --env prod`) y, a la derecha, producción (icono `server`); entre los dos, un camino. Debajo: «Sin CI, el único control es el nuestro».
+2. Tres capas en el camino, de blanda a dura, que entran una a una: **Rules** («piden»: el comando la atraviesa), **Permisos y hooks** («impiden»: el comando se para aquí, con el hito ✕ de E27) y **Sandbox** («limita»: lo que no se puede ni intentar). Bajo cada capa, su ejemplo en mono: `AGENTS.md: «No despliegues»`; `deny: Exec(ssh), Exec(./scripts/deploy.sh)` y un hook `PreToolUse`; `--sandbox`. El punto recorre el camino, atraviesa la primera capa y se detiene en la segunda. Frase, en acento: «Las rules piden; los permisos impiden».
+3. El AGENTS.md del repo en una pantalla (fase nueva: la situación y las capas se van): un documento en mono de unas veinte líneas, por bloques: estructura, validar, límites, entregar y desplegar (→ skill). A su derecha, su pareja, `.devin/config.json` con las líneas de deny, y la frase «Lo que el AGENTS.md pide, la configuración lo impide; fijado por la organización, nadie lo anula». Pie: «≈ 1.500 tokens: releerlo en cada llamada cuesta poco».
+4. Rules por directorio (el documento se atenúa y deja sitio): el árbol del repositorio (`.arbol`, de E12) con `infra/`, `funciones/`, `permisos/` y `scripts/`, cada carpeta con su rule en una línea, que entran en cascada (`--escalonado-filas`): «valida la plantilla antes de proponer», «ejecuta sus tests e invócala en local», «mínimo privilegio: sin comodines y cada permiso explicado», «solo lectura: no ejecutar».
+
+Componente nuevo: barrera (cada capa de control en el camino: su nombre, su verbo y su ejemplo en mono; la blanda, discontinua; las duras, continuas).
+
+Diseño: arriba a la derecha, el circuito (fijo). La pantalla tiene dos fases. Primera (pasos 1 y 2): el camino del agente a producción, a todo el ancho bajo la cabecera, con las tres capas como barreras verticales y el punto que lo recorre (`.camino`, como en E27 y E29); el hito ✕ donde se para. Segunda (pasos 3 y 4): a la izquierda, el documento AGENTS.md en mono (como la petición de E24, `peticion()`), con sus bloques; a la derecha, la configuración de permisos y, en el paso 4, el árbol con las rules. Todo genérico: nombres de carpetas y comandos de ejemplo, sin la infraestructura concreta del equipo. El acento, solo en la frase del paso 2 y en el ✕ del hito.
+
 ### E29 · Hábitos · ~1 min
 
 Guion: 4.6.
@@ -952,10 +1023,10 @@ Diseño: después de las preguntas, en la misma pantalla (la sustituye); Fin sig
 | Apertura | E01 | 2 | ~2 min |
 | Parte 1 · Primeros pasos | E02–E03 | 12 | ~8 min |
 | Parte 2 · Principales herramientas | E04–E18 | 46 | ~27 min |
-| Parte 3 · Coste | E20–E23 | 11 | ~8 min |
-| Parte 4 · Buenas prácticas | E24–E29 | 16 | ~9,5 min |
+| Parte 3 · Coste | E20–E23, E34 | 15 | ~11 min |
+| Parte 4 · Buenas prácticas | E24–E29, E35 | 20 | ~12 min |
 | Cierre · Preguntas | E30–E31, E33 | 4 | ~2 min + preguntas |
-| **Total** | **31** | **91** | **~57 min + preguntas** |
+| **Total** | **33** | **99** | **~62 min + preguntas** |
 
 Ya no queda nada marcado con [A]: la tecla `A` sigue disponible para pasos de detalle que se añadan.
 
@@ -972,3 +1043,4 @@ Todos los que necesitan estas escenas ya están dibujados en `design/componentes
 - [ ] Tarifas reales de los modelos de la cuenta (E21).
 - [ ] Duración de la caché en Devin (E22).
 - [ ] Decidir el caso práctico (E32).
+- [ ] Comprobar en Devin si los subagentes comparten en caché el prefijo fijo (E34, nota de ponente).

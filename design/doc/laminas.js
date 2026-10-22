@@ -304,8 +304,28 @@ function v7(n) {
     en(x, 910, '<div class="vregla" style="width:1680px">Sin captura real, el marcador «Captura pendiente» queda a la vista. El resaltado rodea el control que se explica y una guía en rojo, en codo, lo une a su etiqueta.</div>'));
 }
 
-/** Cada lámina recibe su número («1 de 7») al montarse. */
-export const VOCABULARIO = [v1, v2, v3, v4, v5, v6, v7];
+// Barrera: las capas de control cruzadas en el camino del agente a producción (E35). El punto
+// atraviesa la blanda y se para en la primera dura, con el hito de bloqueo: el único acento de la lámina.
+function v8(n) {
+  const y = 470, [x0, x1] = [200, 1560], r = px('--hito-diametro') / 2;
+  const barrera = (nombre, verbo, ejemplo, blanda = false) =>
+    `<div class="barrera${blanda ? ' barrera--blanda' : ''}"><div class="barrera__barra"></div><div class="barrera__nombre">${nombre}</div><div class="barrera__verbo">${verbo}</div><div class="barrera__ejemplo">${ejemplo}</div></div>`;
+  const hito = (cx, ic, clase = '', texto = '') =>
+    en(cx - r, y - r, `<div class="hito${clase}"><div class="hito__circulo">${icono(ic)}</div>${texto ? `<p class="hito__texto">${texto}</p>` : ''}</div>`);
+  const BARRERAS = [[560, 'Rules', 'piden', 'AGENTS.md:\n«No despliegues»', true], [900, 'Permisos y hooks', 'impiden', 'deny: Exec(ssh),\nExec(./scripts/deploy.sh)\nhook PreToolUse'], [1240, 'Sandbox', 'limita', '--sandbox']];
+  return lamina('vocabulario-8', `Vocabulario ${n} · Barrera`,
+    cabecera(`Vocabulario · ${n} · Barrera`) +
+    en(120, 150, '<div class="vh">Barrera · capas de control en el camino a producción</div>') +
+    en(120, 210, vet('Blanda (discontinua): el punto la atraviesa. Duras (continuas): el punto se para en la primera, con el hito de bloqueo en acento.'), 'width:1000px') +
+    `<svg class="abs" style="left:0;top:0;overflow:visible" ${lienzo()}><path class="camino" d="M${x0} ${y}H${x1 - r - 12}"/><circle class="camino__punto" cx="${x0 + 180}" cy="${y}" r="${px('--punto-diametro') / 2}"/></svg>` +
+    BARRERAS.map(([cx, nombre, verbo, ejemplo, blanda]) => en(cx - px('--barrera-ancho') / 2, y - px('--barrera-alto') / 2, barrera(nombre, verbo, ejemplo, blanda))).join('') +
+    hito(900, 'x', ' hito--bloqueo') +
+    hito(x1, 'server', ' hito--abajo', 'Producción') +
+    en(120, 900, '<div class="vregla" style="width:1680px">Las rules piden; los permisos y los hooks impiden; el sandbox limita. El punto del camino (.camino__punto) es el comando del agente: nace en su terminal y, si nada lo para, llega a producción.</div>'));
+}
+
+/** Cada lámina recibe su número («1 de 8») al montarse. */
+export const VOCABULARIO = [v1, v2, v3, v4, v5, v6, v7, v8];
 
 // ── Aplicado ──────────────────────────────────────────────────────────────
 
@@ -330,11 +350,11 @@ export function mapa(duraciones) {
     bloque(cx - 160, 96, '1', 'map-pin', 'Primeros pasos', 'E02 E03') +
     temas +
     en(cx - 195, cy - 75, agente('2 · Devin', 'E04 E14 E18')) +
-    bloque(1540, 452, '3', 'coins', 'Coste', 'E20–E23') +
+    bloque(1540, 452, '3', 'coins', 'Coste', 'E20–E23 E34') +
     bloque(180, 452, '5', 'map-pin', 'Preguntas', 'E30 E31') +
     en(cx - 410, 800, circuito({
       ancho: 820, alto: 240, actual: 0,
-      paradas: ['Definir', 'Contexto', 'Planificar', 'Intervenir', 'Verificar', 'Hábitos'].map((nombre, i) => ({ id: String(24 + i), nombre })),
+      paradas: [['Definir', 24], ['Contexto', 25], ['Planificar', 26], ['Intervenir', 27], ['Verificar', 28], ['Límites', 35], ['Hábitos', 29]].map(([nombre, id]) => ({ id: String(id), nombre })),
     })) +
     en(1480, 900, `<span class="etiqueta">${icono('list-checks', 'icono--s')}4 · Buenas prácticas</span>`));
 }

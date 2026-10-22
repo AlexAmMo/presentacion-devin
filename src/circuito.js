@@ -1,5 +1,5 @@
 // El circuito de Buenas prácticas (src/datos/mapa.js, CIRCUITO): fijo en su pantalla mientras
-// E24–E29 se relevan. Como el hub, su estado sale del paso (pasos.js): la parada de la escena
+// E24–E29 y E35 se relevan. Como el hub, su estado sale del paso (pasos.js): la parada de la escena
 // que se ve en esa pantalla va en acento, con el punto encima, y las anteriores, hechas.
 import { gsap } from 'gsap';
 import { circuito } from '../design/dibujos.js';
